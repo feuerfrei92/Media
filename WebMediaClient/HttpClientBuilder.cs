@@ -29,6 +29,22 @@ namespace WebMediaClient
 			}
 		}
 
+		public async static Task<List<T>> GetListAsync(string url, string token)
+		{
+			using (var client = new HttpClient())
+			{
+				InitializeClient(client, url, token);
+
+				HttpResponseMessage response = await client.GetAsync(url);
+				if (response.IsSuccessStatusCode)
+				{
+					List<T> items = await response.Content.ReadAsAsync<List<T>>();
+					return items;
+				}
+				else throw new Exception(string.Concat("Request failed with status code: ", response.StatusCode.ToString()));
+			}
+		}
+
 		public static T Get(string url, string token)
 		{
 			using (var client = new HttpClient())

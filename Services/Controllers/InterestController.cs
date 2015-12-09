@@ -71,7 +71,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
-		public IHttpActionResult CreateInterest(InterestModel interest)
+		public IHttpActionResult CreateInterest(int authorID, InterestModel interest)
 		{
 			if (!(ModelState.IsValid))
 			{
@@ -81,6 +81,7 @@ namespace Services.Controllers
 			var newInterest = new Interest
 			{
 				Name = interest.Name,
+				AuthorID = authorID,
 			};
 
 			_nest.Interests.Create(newInterest);

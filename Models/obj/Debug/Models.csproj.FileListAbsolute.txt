@@ -11,4 +11,3 @@ C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\Models\bin
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\Models\obj\Debug\Models.dll
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\Models\obj\Debug\Models.pdb
-C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\Models\obj\Debug\Models.csprojResolveAssemblyReference.cache

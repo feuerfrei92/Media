@@ -71,6 +71,36 @@ namespace Services.Controllers
 			return Ok(user);
 		}
 
+        [HttpPut]
+        public IHttpActionResult ChangeActivity(int ID)
+        {
+            if (!(ModelState.IsValid))
+            {
+                return BadRequest(ModelState);
+            }
+
+            User existingUser = _nest.Users.All().Where(u => u.ID == ID).FirstOrDefault();
+
+            if (existingUser == null)
+            {
+                return BadRequest("No user with the specified ID exists.");
+            }
+
+            existingUser.IsActive = !existingUser.IsActive;
+            _nest.Users.Update(existingUser);
+
+            try
+            {
+                _nest.SaveChanges();
+            }
+            catch
+            {
+                throw;
+            }
+
+            return Ok(existingUser);
+        }
+
 		[HttpPost]
 		public IHttpActionResult CreateUser(UserModel user)
 		{
@@ -82,6 +112,7 @@ namespace Services.Controllers
 			var newUser = new User
 			{
 				Username = user.Username,
+                IsActive = true,
 			};
 
 			_nest.Users.Create(newUser);
