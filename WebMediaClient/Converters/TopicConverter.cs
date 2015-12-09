@@ -10,7 +10,7 @@ namespace WebMediaClient.Converters
 {
 	public class TopicConverter
 	{
-		public TopicViewModel FromBasicToVisual(TopicModel topicModel)
+		public static TopicViewModel FromBasicToVisual(TopicModel topicModel)
 		{
 			var viewModel = new TopicViewModel
 			{
@@ -23,7 +23,7 @@ namespace WebMediaClient.Converters
 			return viewModel;
 		}
 
-		public TopicModel FromVisualToBasic(TopicViewModel viewModel)
+		public static TopicModel FromVisualToBasic(TopicViewModel viewModel)
 		{
 			var topicModel = new TopicModel
 			{
@@ -35,5 +35,37 @@ namespace WebMediaClient.Converters
 
 			return topicModel;
 		}
+
+        public static TopicCriteriaViewModel CriteriaFromBasicToVisual(TopicCriteria criteria)
+        {
+            var viewModel = new TopicCriteriaViewModel
+            {
+                AuthorID = criteria.AuthorID,
+                DateCreatedFrom = criteria.DateCreatedFrom,
+                DateCreatedTo = criteria.DateCreatedTo,
+                DateModifiedFrom = criteria.DateModifiedFrom,
+                DateModifiedTo = criteria.DateModifiedTo,
+                Name = criteria.Name,
+                SectionID = criteria.SectionID
+            };
+
+            return viewModel;
+        }
+
+        public static TopicCriteria CriteriaFromVisualToBasic(TopicCriteriaViewModel viewModel)
+        {
+            var criteria = new TopicCriteria
+            {
+                AuthorID = viewModel.AuthorID,
+                DateCreatedFrom = viewModel.DateCreatedFrom,
+                DateCreatedTo = viewModel.DateCreatedTo,
+                DateModifiedFrom = viewModel.DateModifiedFrom,
+                DateModifiedTo = viewModel.DateModifiedTo,
+                Name = viewModel.Name,
+                SectionID = viewModel.SectionID
+            };
+
+            return criteria;
+        }
 	}
 }

@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebMediaClient.Converters;
+using WebMediaClient.Models;
 
 namespace WebMediaClient.Controllers
 {
@@ -22,6 +24,11 @@ namespace WebMediaClient.Controllers
 			{
 				string url = "http://localhost:8080/api/User/GetAllUsers";
 				var users = await HttpClientBuilder<UserModel>.GetListAsync(url, token);
+                var viewModels = new List<UserViewModel>();
+                foreach (UserModel u in users)
+                {
+                    viewModels.Add(UserConverter.FromBasicToVisual(u));
+                }
 				return View();
 			}
 			catch
@@ -50,7 +57,8 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetUserByID?ID={0}", ID);
 				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
-				return View();
+                var viewModel = UserConverter.FromBasicToVisual(user);
+				return View(viewModel);
 			}
 			catch
 			{
@@ -64,7 +72,8 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetUserByUsername?Username={0}", username);
 				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
-				return View();
+                var viewModel = UserConverter.FromBasicToVisual(user);
+				return View(viewModel);
 			}
 			catch
 			{
@@ -79,6 +88,11 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/User/SearchUsernameByString?PartialUsername={0}", partialUsername);
 				var users = await HttpClientBuilder<UserModel>.GetListAsync(url, token);
+                var viewModels = new List<UserViewModel>();
+                foreach (UserModel u in users)
+                {
+                    viewModels.Add(UserConverter.FromBasicToVisual(u));
+                }
 				return View();
 			}
 			catch

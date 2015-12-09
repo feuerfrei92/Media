@@ -10,7 +10,7 @@ namespace WebMediaClient.Converters
 {
 	public class UserConverter
 	{
-		public UserViewModel FromBasicToVisual(UserModel userModel)
+		public static UserViewModel FromBasicToVisual(UserModel userModel)
 		{
 			var viewModel = new UserViewModel
 			{
@@ -21,7 +21,7 @@ namespace WebMediaClient.Converters
 			return viewModel;
 		}
 
-		public UserModel FromVisualToBasic(UserViewModel viewModel)
+		public static UserModel FromVisualToBasic(UserViewModel viewModel)
 		{
 			var userModel = new UserModel
 			{

@@ -10,7 +10,7 @@ namespace WebMediaClient.Converters
 {
 	public class CommentConverter
 	{
-		public CommentViewModel FromBasicToVisual(CommentModel commentModel)
+		public static CommentViewModel FromBasicToVisual(CommentModel commentModel)
 		{
 			var viewModel = new CommentViewModel
 			{
@@ -24,7 +24,7 @@ namespace WebMediaClient.Converters
 			return viewModel;
 		}
 
-		public CommentModel FromVisualToBasic(CommentViewModel viewModel)
+		public static CommentModel FromVisualToBasic(CommentViewModel viewModel)
 		{
 			var commentModel = new CommentModel
 			{
@@ -37,5 +37,37 @@ namespace WebMediaClient.Converters
 
 			return commentModel;
 		}
+
+        public static CommentCriteriaViewModel CriteriaFromBasicToVisual(CommentCriteria criteria)
+        {
+            var viewModel = new CommentCriteriaViewModel
+            {
+                AuthorID = criteria.AuthorID,
+                DateCreatedFrom = criteria.DateCreatedFrom,
+                DateCreatedTo = criteria.DateCreatedTo,
+                DateModifiedFrom = criteria.DateModifiedFrom,
+                DateModifiedTo = criteria.DateModifiedTo,
+                Name = criteria.Name,
+                TopicID = criteria.TopicID
+            };
+
+            return viewModel;
+        }
+
+        public static CommentCriteria CriteriaFromVisualToBasic(CommentCriteriaViewModel viewModel)
+        {
+            var criteria = new CommentCriteria
+            {
+                AuthorID = viewModel.AuthorID,
+                DateCreatedFrom = viewModel.DateCreatedFrom,
+                DateCreatedTo = viewModel.DateCreatedTo,
+                DateModifiedFrom = viewModel.DateModifiedFrom,
+                DateModifiedTo = viewModel.DateModifiedTo,
+                Name = viewModel.Name,
+                TopicID = viewModel.TopicID
+            };
+
+            return criteria;
+        }
 	}
 }

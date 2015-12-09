@@ -178,7 +178,7 @@ namespace Services.Controllers
 			return Ok(comments);
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public IHttpActionResult SearchByCriteria(CommentCriteria criteria)
 		{
 			List<CommentModel> comments = _nest.Comments.All().Where(c => DoesMatchCriteria(c, criteria)).Select(BuildCommentModel).ToList();

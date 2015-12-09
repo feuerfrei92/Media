@@ -10,7 +10,7 @@ namespace WebMediaClient.Converters
 {
 	public class InterestConverter
 	{
-		public InterestViewModel FromBasicToVisual(InterestModel interestModel)
+		public static InterestViewModel FromBasicToVisual(InterestModel interestModel)
 		{
 			var viewModel = new InterestViewModel
 			{
@@ -21,7 +21,7 @@ namespace WebMediaClient.Converters
 			return viewModel;
 		}
 
-		public InterestModel FromVisualToBasic(InterestViewModel viewModel)
+		public static InterestModel FromVisualToBasic(InterestViewModel viewModel)
 		{
 			var interestModel = new InterestModel
 			{

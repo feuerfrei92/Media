@@ -10,7 +10,7 @@ namespace WebMediaClient.Converters
 {
 	public class SectionConverter
 	{
-		public SectionViewModel FromBasicToVisual(SectionModel sectionModel)
+		public static SectionViewModel FromBasicToVisual(SectionModel sectionModel)
 		{
 			var viewModel = new SectionViewModel
 			{
@@ -21,7 +21,7 @@ namespace WebMediaClient.Converters
 			return viewModel;
 		}
 
-		public SectionModel FromVisualToBasic(SectionViewModel viewModel)
+		public static SectionModel FromVisualToBasic(SectionViewModel viewModel)
 		{
 			var sectionModel = new SectionModel
 			{

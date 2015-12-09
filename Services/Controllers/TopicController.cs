@@ -172,7 +172,7 @@ namespace Services.Controllers
 			return Ok(topics);
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public IHttpActionResult SearchByCriteria(TopicCriteria criteria)
 		{
 			List<TopicModel> topics = _nest.Topics.All().Where(t => DoesMatchCriteria(t, criteria)).Select(BuildTopicModel).ToList();

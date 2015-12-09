@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebMediaClient.Converters;
 using WebMediaClient.Models;
 
 namespace WebMediaClient.Controllers
@@ -23,6 +24,11 @@ namespace WebMediaClient.Controllers
 			{
 				string url = "http://localhost:8080/api/Topic/GetAllTopics";
 				var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+                var viewModels = new List<TopicViewModel>();
+                foreach (TopicModel t in topics)
+                {
+                    viewModels.Add(TopicConverter.FromBasicToVisual(t));
+                }
 				return View();
 			}
 			catch
@@ -33,14 +39,20 @@ namespace WebMediaClient.Controllers
 
 		public async Task<ActionResult> CreateTopic(int sectionID, TopicViewModel topicModel, string token)
 		{
-			//TODO: Implement constructors or static methods in converters 
-			return View();
+            string url = string.Format("http://localhost:8080/api/Topic/CreateTopic?SectionID={0}", sectionID);
+            var topic = TopicConverter.FromVisualToBasic(topicModel);
+            var createdTopic = await HttpClientBuilder<TopicModel>.PutAsync(topic, url, token);
+            var viewModel = TopicConverter.FromBasicToVisual(createdTopic);
+            return View(viewModel);
 		}
 
 		public async Task<ActionResult> UpdateTopic(int ID, int sectionID, TopicViewModel topicModel, string token)
 		{
-			//TODO: Implement constructors or static methods in converters 
-			return View();
+            string url = string.Format("http://localhost:8080/api/Topic/CreateTopic?ID={0}&SectionID={1}", ID, sectionID);
+            var topic = TopicConverter.FromVisualToBasic(topicModel);
+            var updatedTopic = await HttpClientBuilder<TopicModel>.PostAsync(topic, url, token);
+            var viewModel = TopicConverter.FromBasicToVisual(updatedTopic);
+            return View(viewModel);
 		}
 
 		public ActionResult DeleteTopic(int ID, string token)
@@ -63,7 +75,8 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicByID?ID={0}", ID);
 				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
-				return View();
+                var viewModel = TopicConverter.FromBasicToVisual(topic);
+				return View(viewModel);
 			}
 			catch
 			{
@@ -77,7 +90,12 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsByUserID?SectionID={0}", sectionID);
 				var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
-				return View();
+                var viewModels = new List<TopicViewModel>();
+                foreach (TopicModel t in topics)
+                {
+                    viewModels.Add(TopicConverter.FromBasicToVisual(t));
+                }
+                return View();
 			}
 			catch
 			{
@@ -91,6 +109,11 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicByAuthorID?AuthorID={0}", authorID);
 				var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+                var viewModels = new List<TopicViewModel>();
+                foreach (TopicModel t in topics)
+                {
+                    viewModels.Add(TopicConverter.FromBasicToVisual(t));
+                }
 				return View();
 			}
 			catch
@@ -101,8 +124,15 @@ namespace WebMediaClient.Controllers
 
 		public async Task<ActionResult> SearchTopicsByCriteria(TopicCriteriaViewModel criteria, string token)
 		{
-			//TODO: Add all current converters and implement constructors or static methods in converters
-			return View();
+            string url = "http://localhost:8080/api/Topic/SearchTopicsByCriteria";
+            var topicCriteria = TopicConverter.CriteriaFromVisualToBasic(criteria);
+            var topics = await HttpClientBuilder<TopicCriteria>.GetListAsync<TopicModel>(topicCriteria, url, token);
+            var viewModels = new List<TopicViewModel>();
+            foreach (TopicModel t in topics)
+            {
+                viewModels.Add(TopicConverter.FromBasicToVisual(t));
+            }
+            return View();
 		}
     }
 }

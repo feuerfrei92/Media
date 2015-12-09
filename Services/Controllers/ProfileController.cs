@@ -178,7 +178,7 @@ namespace Services.Controllers
 			return Ok(profile);
 		}
 
-		[HttpGet]
+		[HttpPost]
 		public IHttpActionResult SearchProfilesByCriteria(ProfileCriteria criteria)
 		{
 			List<ProfileModel> profiles = _nest.Profiles.All().Where(p => DoesMatchCriteria(p, criteria)).Select(BuildProfileModel).ToList();

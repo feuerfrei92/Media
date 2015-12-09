@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebMediaClient.Converters;
 using WebMediaClient.Models;
 
 namespace WebMediaClient.Controllers
@@ -23,6 +24,11 @@ namespace WebMediaClient.Controllers
 			{
 				string url = "http://localhost:8080/api/Section/GetAllSections";
 				var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+                var viewModels = new List<SectionViewModel>();
+                foreach (SectionModel s in sections)
+                {
+                    viewModels.Add(SectionConverter.FromBasicToVisual(s));
+                }
 				return View();
 			}
 			catch
@@ -31,16 +37,22 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> CreateSection(SectionViewModel profileModel, string token, int? parentID = null)
+		public async Task<ActionResult> CreateSection(SectionViewModel sectionModel, string token, int? parentID = null)
 		{
-			//TODO: Implement constructors or static methods in converters 
-			return View();
+            string url = string.Format("http://localhost:8080/api/Section/CreateSection?ParentID={0}", parentID);
+            var section = SectionConverter.FromVisualToBasic(sectionModel);
+            var createdSection = await HttpClientBuilder<SectionModel>.PutAsync(section, url, token);
+            var viewModel = SectionConverter.FromBasicToVisual(createdSection);
+            return View(viewModel);
 		}
 
-		public async Task<ActionResult> UpdateSection(int ID, SectionViewModel profileModel, string token, int? parentID = null)
+		public async Task<ActionResult> UpdateSection(int ID, SectionViewModel sectionModel, string token, int? parentID = null)
 		{
-			//TODO: Implement constructors or static methods in converters 
-			return View();
+            string url = string.Format("http://localhost:8080/api/Section/CreateSection?ID={0}&ParentID={1}", ID, parentID);
+            var section = SectionConverter.FromVisualToBasic(sectionModel);
+            var updatedSection = await HttpClientBuilder<SectionModel>.PostAsync(section, url, token);
+            var viewModel = SectionConverter.FromBasicToVisual(updatedSection);
+            return View(viewModel);
 		}
 
 		public ActionResult DeleteSection(int ID, string token)
@@ -63,7 +75,8 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/Section/GetSectionByID?ID={0}", ID);
 				var section = await HttpClientBuilder<SectionModel>.GetAsync(url, token);
-				return View();
+                var viewModel = SectionConverter.FromBasicToVisual(section);
+				return View(viewModel);
 			}
 			catch
 			{
@@ -77,7 +90,8 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/Section/GetSectionByParentID?ParentID={0}", parentID);
 				var section = await HttpClientBuilder<SectionModel>.GetAsync(url, token);
-				return View();
+                var viewModel = SectionConverter.FromBasicToVisual(section);
+				return View(viewModel);
 			}
 			catch
 			{

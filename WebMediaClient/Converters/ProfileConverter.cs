@@ -10,7 +10,7 @@ namespace WebMediaClient.Converters
 {
 	public class ProfileConverter
 	{
-		public ProfileViewModel FromBasicToVisual(ProfileModel profileModel)
+		public static ProfileViewModel FromBasicToVisual(ProfileModel profileModel)
 		{
 			var viewModel = new ProfileViewModel
 			{
@@ -24,7 +24,7 @@ namespace WebMediaClient.Converters
 			return viewModel;
 		}
 
-		public ProfileModel FromVisualToBasic(ProfileViewModel viewModel)
+		public static ProfileModel FromVisualToBasic(ProfileViewModel viewModel)
 		{
 			var profileModel = new ProfileModel
 			{
@@ -37,5 +37,31 @@ namespace WebMediaClient.Converters
 
 			return profileModel;
 		}
+
+        public static ProfileCriteriaViewModel CriteriaFromBasicToVisual(ProfileCriteria criteria)
+        {
+            var viewModel = new ProfileCriteriaViewModel
+            {
+                Gender = criteria.Gender,
+                MaximumAge = criteria.MaximumAge,
+                MinimumAge = criteria.MinimumAge,
+                Name = criteria.Name
+            };
+
+            return viewModel;
+        }
+
+        public static ProfileCriteria CriteriaFromVisualToBasic(ProfileCriteriaViewModel viewModel)
+        {
+            var criteria = new ProfileCriteria
+            {
+                Gender = viewModel.Gender,
+                MaximumAge = viewModel.MaximumAge,
+                MinimumAge = viewModel.MinimumAge,
+                Name = viewModel.Name
+            };
+
+            return criteria;
+        }
 	}
 }

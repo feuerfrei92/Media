@@ -11,3 +11,45 @@ C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\Models\bin
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\Models\obj\Debug\Models.dll
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\Models\obj\Debug\Models.pdb
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\Models.dll.config
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\Models.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\Models.pdb
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\EntityFramework.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\EntityFramework.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\obj\Debug\Models.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\obj\Debug\Models.pdb
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Media\Models\obj\Debug\Models.csprojResolveAssemblyReference.cache
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\Models.dll.config
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\Models.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\Models.pdb
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\EntityFramework.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\EntityFramework.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\obj\Debug\Models.csprojResolveAssemblyReference.cache
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\obj\Debug\Models.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Projects\Models\obj\Debug\Models.pdb
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\Models.dll.config
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\Models.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\Models.pdb
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\EntityFramework.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\EntityFramework.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\obj\Debug\Models.csprojResolveAssemblyReference.cache
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\obj\Debug\Models.dll
+C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\obj\Debug\Models.pdb
