@@ -34,12 +34,10 @@ C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaCl
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Net.Http.Formatting.dll
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.Http.Owin.dll
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.OData.dll
-C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.Http.Cors.dll
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.Http.WebHost.dll
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\Microsoft.OData.Edm.dll
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\Microsoft.OData.Core.dll
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\Microsoft.Spatial.dll
-C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.Cors.dll
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\Data.pdb
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\Models.pdb
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\Services.pdb
@@ -70,7 +68,6 @@ C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaCl
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Net.Http.Formatting.xml
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.Http.Owin.xml
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.OData.xml
-C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.Http.Cors.xml
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.Http.WebHost.xml
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\Microsoft.OData.Edm.xml
 C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\Microsoft.OData.Core.xml
@@ -426,3 +423,6 @@ C:\Users\Marin\Documents\Visual Studio 2013\Media\WebMediaClient\bin\zh-Hant\Mic
 C:\Users\Marin\Documents\Visual Studio 2013\Media\WebMediaClient\obj\Debug\WebMediaClient.csprojResolveAssemblyReference.cache
 C:\Users\Marin\Documents\Visual Studio 2013\Media\WebMediaClient\obj\Debug\WebMediaClient.dll
 C:\Users\Marin\Documents\Visual Studio 2013\Media\WebMediaClient\obj\Debug\WebMediaClient.pdb
+C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.Http.Cors.dll
+C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.Cors.dll
+C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\WebMediaClient\bin\System.Web.Http.Cors.xml

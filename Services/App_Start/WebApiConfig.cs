@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.OData.Extensions;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using System.Web.Http.Cors;
 
 namespace Services
 {

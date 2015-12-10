@@ -23,13 +23,14 @@ namespace WebMediaClient.Controllers
 			try
 			{
 				string url = "http://localhost:8080/api/Comment/GetAllComments";
-				var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
-                var viewModels = new List<CommentViewModel>();
-                foreach (CommentModel c in comments)
-                {
-                    viewModels.Add(CommentConverter.FromBasicToVisual(c));
-                }
-				return View();
+				var username = await HttpClientBuilder<string>.GetAsync(url, token);
+				//var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
+				//var viewModels = new List<CommentViewModel>();
+				//foreach (CommentModel c in comments)
+				//{
+				//	viewModels.Add(CommentConverter.FromBasicToVisual(c));
+				//}
+				return Json(new { Username = username }, JsonRequestBehavior.AllowGet);
 			}
 			catch
 			{

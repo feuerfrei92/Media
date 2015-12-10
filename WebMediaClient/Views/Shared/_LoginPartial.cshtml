@@ -1,13 +1,28 @@
 ﻿@using Microsoft.AspNet.Identity
 <script type="text/javascript">
+	window.onload = function () { document.getElementById("load_token").click(); }
+
 	function getToken()
 	{
 		if (Modernizr.localstorage)
 		{
-			var localProfile = localStorage;
+			var localProfile = window.localStorage;
 			var token = JSON.parse(localProfile.getItem("MediaToken"));
 			return token;
 		}
+	}
+
+	function showUsername()
+	{
+		var token = getToken();
+		$.ajax
+		({
+			url: '@Url.Action("GetAllComments", "Comment")',
+			data: { token: token },
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) { document.getElementById("username_area").value = data.Username; }
+		})
 	}
 </script>
 @if (Request.IsAuthenticated)
@@ -22,11 +37,13 @@
         </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
-    }
+	}
 }
 else
 {
     <ul class="nav navbar-nav navbar-right">
+		<li><button id="load_token" hidden="hidden" onclick="showUsername()" /></li>
+		<li><textarea id="username_area" rows="1" cols="20">Username</textarea></li>
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
