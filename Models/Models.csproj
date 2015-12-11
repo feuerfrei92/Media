@@ -61,6 +61,7 @@
     <Compile Include="DatabaseModels\Friendship.cs" />
     <Compile Include="DatabaseModels\Interest.cs" />
     <Compile Include="DatabaseModels\Membership.cs" />
+    <Compile Include="DatabaseModels\Photo.cs" />
     <Compile Include="Gender.cs" />
     <Compile Include="DatabaseModels\Comment.cs" />
     <Compile Include="DatabaseModels\Profile.cs" />

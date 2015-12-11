@@ -71,6 +71,11 @@ namespace Data
 			get { return GetRepository<Membership>(); }
 		}
 
+		public IRepository<Photo> Photos
+		{
+			get { return GetRepository<Photo>(); }
+		}
+
 		public void SaveChanges()
 		{
 			_context.SaveChanges();

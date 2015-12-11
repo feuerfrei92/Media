@@ -1,0 +1,15 @@
+﻿body
+{
+	margin:3px;
+}
+body,table
+{
+	font-family: sans-serif, Arial, Verdana, 'Trebuchet MS';
+font-size: 13px;
+}
+p,div
+{
+	font:inherits;
+}
+
+

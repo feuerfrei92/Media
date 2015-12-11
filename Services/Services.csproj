@@ -252,6 +252,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\InterestController.cs" />
+    <Compile Include="Controllers\PhotoController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
@@ -266,6 +267,7 @@
     <Compile Include="Models\GenderCriterion.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\InterestModel.cs" />
+    <Compile Include="Models\PhotoModel.cs" />
     <Compile Include="Models\ProfileCriteria.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\SectionModel.cs" />
