@@ -76,6 +76,11 @@ namespace Data
 			get { return GetRepository<Photo>(); }
 		}
 
+		public IRepository<Video> Videos
+		{
+			get { return GetRepository<Video>(); }
+		}
+
 		public void SaveChanges()
 		{
 			_context.SaveChanges();

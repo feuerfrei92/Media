@@ -53,4 +53,3 @@ C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\Microsoft.Asp
 C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\obj\Debug\Models.csprojResolveAssemblyReference.cache
 C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\obj\Debug\Models.dll
 C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\obj\Debug\Models.pdb
-C:\Users\Marin Bakardjiev\documents\visual studio 2013\Projects\Media\Models\obj\Debug\Models.csprojResolveAssemblyReference.cache

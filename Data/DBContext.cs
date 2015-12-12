@@ -29,6 +29,7 @@ namespace Data
 		public virtual IDbSet<Follower> Followers { get; set; }
 		public virtual IDbSet<Membership> Memberships { get; set; }
 		public virtual IDbSet<Photo> Photos { get; set; }
+		public virtual IDbSet<Video> Videos { get; set; }
 
 		public new void SaveChanges()
 		{
