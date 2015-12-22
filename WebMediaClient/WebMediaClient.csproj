@@ -172,12 +172,14 @@
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="Controllers\VideoController.cs" />
     <Compile Include="Converters\CommentConverter.cs" />
     <Compile Include="Converters\InterestConverter.cs" />
     <Compile Include="Converters\ProfileConverter.cs" />
     <Compile Include="Converters\SectionConverter.cs" />
     <Compile Include="Converters\TopicConverter.cs" />
     <Compile Include="Converters\UserConverter.cs" />
+    <Compile Include="Converters\VideoConverter.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -186,10 +188,15 @@
     <Compile Include="Models\CommentViewModels.cs" />
     <Compile Include="Models\InterestViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="Models\PhotoViewModels.cs" />
+>>>>>>> 4b1decff8efb38854e3b29388171c1b61438b3b1
     <Compile Include="Models\ProfileViewModels.cs" />
     <Compile Include="Models\SectionViewModels.cs" />
     <Compile Include="Models\TopicViewModels.cs" />
     <Compile Include="Models\UserViewModels.cs" />
+    <Compile Include="Models\VideoViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TokenInfo.cs" />
@@ -272,6 +279,7 @@
     <Folder Include="Views\Section\" />
     <Folder Include="Views\Topic\" />
     <Folder Include="Views\User\" />
+    <Folder Include="Views\Video\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -20,6 +20,11 @@ namespace Data
 		IRepository<Interest> Interests { get; }
 		IRepository<Follower> Followers { get; }
 		IRepository<Membership> Memberships { get; }
+<<<<<<< HEAD
+=======
+		IRepository<Photo> Photos { get; }
+		IRepository<Video> Videos { get; }
+>>>>>>> 4b1decff8efb38854e3b29388171c1b61438b3b1
 		void SaveChanges();
 	}
 }

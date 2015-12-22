@@ -21,6 +21,11 @@ namespace Data
 		IDbSet<Interest> Interests { get; set; }
 		IDbSet<Follower> Followers { get; set; }
 		IDbSet<Membership> Memberships { get; set; }
+<<<<<<< HEAD
+=======
+		IDbSet<Photo> Photos { get; set; }
+		IDbSet<Video> Videos { get; set; }
+>>>>>>> 4b1decff8efb38854e3b29388171c1b61438b3b1
 		void SaveChanges();
 		DbSet<TEntity> Set<TEntity>() where TEntity : class;
 		DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

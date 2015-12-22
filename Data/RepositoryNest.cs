@@ -71,6 +71,19 @@ namespace Data
 			get { return GetRepository<Membership>(); }
 		}
 
+<<<<<<< HEAD
+=======
+		public IRepository<Photo> Photos
+		{
+			get { return GetRepository<Photo>(); }
+		}
+
+		public IRepository<Video> Videos
+		{
+			get { return GetRepository<Video>(); }
+		}
+
+>>>>>>> 4b1decff8efb38854e3b29388171c1b61438b3b1
 		public void SaveChanges()
 		{
 			_context.SaveChanges();

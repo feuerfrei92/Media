@@ -61,6 +61,11 @@
     <Compile Include="DatabaseModels\Friendship.cs" />
     <Compile Include="DatabaseModels\Interest.cs" />
     <Compile Include="DatabaseModels\Membership.cs" />
+<<<<<<< HEAD
+=======
+    <Compile Include="DatabaseModels\Photo.cs" />
+    <Compile Include="DatabaseModels\Video.cs" />
+>>>>>>> 4b1decff8efb38854e3b29388171c1b61438b3b1
     <Compile Include="Gender.cs" />
     <Compile Include="DatabaseModels\Comment.cs" />
     <Compile Include="DatabaseModels\Profile.cs" />
