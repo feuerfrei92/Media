@@ -21,7 +21,20 @@
 			data: { token: token },
 			dataType: 'json',
 			type: 'GET',
-			success: function (data) { document.getElementById("username_area").value = data.Username; }
+			success: function (data)
+			{
+				var actionsList = document.getElementById("actions_list");
+				var manageNode = document.createElement("li");
+				var actionLinkElement = document.createElement("a");
+				var manageElem = '@Html.ActionLink("Hello ", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })' + data.Username;
+				actionLinkElement.innerHTML = manageElem;
+				manageNode.appendChild(actionLinkElement);
+				actionsList.appendChild(manageNode);
+				var registerLink = document.getElementById("registerLink");
+				registerLink.parentNode.removeChild(registerLink);
+				var loginLink = document.getElementById("loginLink");
+				loginLink.parentNode.removeChild(loginLink);
+			}
 		})
 	}
 </script>
@@ -32,18 +45,14 @@
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
-        </li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
 	}
 }
 else
 {
-    <ul class="nav navbar-nav navbar-right">
+    <ul id="actions_list" class="nav navbar-nav navbar-right">
 		<li><button id="load_token" hidden="hidden" onclick="showUsername()" /></li>
-		<li><textarea id="username_area" rows="1" cols="20">Username</textarea></li>
         <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
         <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
     </ul>
