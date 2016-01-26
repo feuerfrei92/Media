@@ -130,7 +130,7 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(InterestConverter.FromBasicToVisual(i));
                 }
-				return View();
+				return View(viewModels);
 			}
 			catch
 			{

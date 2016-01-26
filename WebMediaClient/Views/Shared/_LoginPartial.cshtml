@@ -2,18 +2,22 @@
 <script type="text/javascript">
 	window.onload = function () { document.getElementById("load_token").click(); }
 
-	function getToken()
-	{
-		if (Modernizr.localstorage)
-		{
+	function getToken() {
+		if (Modernizr.localstorage) {
 			var localProfile = window.localStorage;
 			var token = JSON.parse(localProfile.getItem("MediaToken"));
 			return token;
 		}
 	}
 
-	function showUsername()
-	{
+	function deleteToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			localProfile.removeItem("MediaToken");
+		}
+	}
+
+	function showUsername() {
 		var token = getToken();
 		$.ajax
 		({
@@ -21,8 +25,7 @@
 			data: { token: token },
 			dataType: 'json',
 			type: 'GET',
-			success: function (data)
-			{
+			success: function (data) {
 				var actionsList = document.getElementById("actions_list");
 				var manageNode = document.createElement("li");
 				var actionLinkElement = document.createElement("a");
@@ -30,6 +33,14 @@
 				actionLinkElement.innerHTML = manageElem;
 				manageNode.appendChild(actionLinkElement);
 				actionsList.appendChild(manageNode);
+				var logoffNode = document.createElement("li");
+				var labelElement = document.createElement("a");
+				labelElement.setAttribute("id", "logoff_link");
+				labelElement.setAttribute("href", '@Url.Action("Index", "Home")');
+				labelElement.setAttribute("onclick", "deleteToken()");
+				labelElement.text = "Log off";
+				logoffNode.appendChild(labelElement);
+				actionsList.appendChild(logoffNode);
 				var registerLink = document.getElementById("registerLink");
 				registerLink.parentNode.removeChild(registerLink);
 				var loginLink = document.getElementById("loginLink");

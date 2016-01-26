@@ -1,0 +1,14 @@
+﻿@model List<WebMediaClient.Models.InterestViewModel>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="list-group-item">
+					@Html.ActionLink(item.Name, "GetInterestByName", "Interest", new { Name = item.Name }, null);
+				</div>
+			}
+		</div>
+	</div>
+</div>
