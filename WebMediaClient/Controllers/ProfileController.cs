@@ -37,13 +37,29 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult CreateProfile(int userID)
+		{
+			return View();
+		}
+
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<ActionResult> CreateProfile(int userID, ProfileViewModel profileModel, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Profile/CreateProfile?UserID={0}", userID);
+			var profile = ProfileConverter.FromVisualToBasic(profileModel);
+			var createdProfile = await HttpClientBuilder<ProfileModel>.PostAsync(profile, url, token);
+			var viewModel = ProfileConverter.FromBasicToVisual(createdProfile);
+			return View(viewModel);
+		}
+
 		public async Task<ActionResult> UpdateProfile(int ID, int userID, ProfileViewModel profileModel, string token)
 		{
             try
             {
                 string url = string.Format("http://localhost:8080/api/Profile/UpdateProfile?ID={0}&UserID={1}", ID, userID);
                 var profile = ProfileConverter.FromVisualToBasic(profileModel);
-                var updatedProfile = await HttpClientBuilder<ProfileModel>.PostAsync(profile, url, token);
+                var updatedProfile = await HttpClientBuilder<ProfileModel>.PutAsync(profile, url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(updatedProfile);
                 return View(viewModel);
             }

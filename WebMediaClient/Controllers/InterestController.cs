@@ -119,18 +119,19 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetInterestsForUser(int userID, string token)
+		public ActionResult GetInterestsForUser(int userID, string token)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Interest/GetInterestsForUser?UserID={0}", userID);
-				var interests = await HttpClientBuilder<InterestModel>.GetListAsync(url, token);
+				//var interests = await HttpClientBuilder<InterestModel>.GetListAsync(url, token);
+				var interests = Task.Run<List<InterestModel>>(() => HttpClientBuilder<InterestModel>.GetListAsync(url, token)).Result;
                 var viewModels = new List<InterestViewModel>();
                 foreach (InterestModel i in interests)
                 {
                     viewModels.Add(InterestConverter.FromBasicToVisual(i));
                 }
-				return View(viewModels);
+				return PartialView(viewModels);
 			}
 			catch
 			{

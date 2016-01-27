@@ -1344,12 +1344,13 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Comment\Index.cshtml" />
     <Content Include="Views\Home\SuccessfulLogin.cshtml" />
+    <Content Include="Views\Interest\GetInterestsForUser.cshtml" />
+    <Content Include="Views\Interest\GetInterestByName.cshtml" />
+    <Content Include="Views\Profile\CreateProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Interest\" />
     <Folder Include="Views\Photo\" />
-    <Folder Include="Views\Profile\" />
     <Folder Include="Views\Section\" />
     <Folder Include="Views\Topic\" />
     <Folder Include="Views\User\" />

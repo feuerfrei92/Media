@@ -2,6 +2,18 @@
     ViewBag.Title = "Home Page";
 }
 
+@*<script type="text/javascript">
+	window.onload = function () { document.getElementById("load_token").click(); }
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
+</script>*@
+
 <div class="jumbotron">
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
@@ -28,4 +40,7 @@
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
+	<div class="col-md-4">
+    	@Html.Action("GetInterestsForUser", "Interest", new { userID = 1 });
+	</div>
 </div>

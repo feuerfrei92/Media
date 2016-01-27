@@ -84,7 +84,6 @@ namespace WebMediaClient.Controllers
 				token.Issued = DateTime.Now;
 				token.Expired = token.Issued.AddMinutes(30);
 
-				//return View("/Views/Account/SuccessfulLogin.cshtml");
 				return RedirectToAction("SuccessfulLogin", "Home", new { Token = token.Access_Token });
 			}
 			catch
