@@ -18,7 +18,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Profile, ProfileModel>> BuildProfileModel
 		{
-			get { return p => new ProfileModel { ID = p.ID, Username = p.Username, Name = p.Name, Age = p.Age, 
+			get { return p => new ProfileModel { ID = p.ID, Username = p.Username, Name = p.Name, Age = p.Age,
 												Gender = p.Gender }; }
 		}
 
@@ -168,14 +168,21 @@ namespace Services.Controllers
 		[HttpGet]
 		public IHttpActionResult GetProfileByUsername(string username)
 		{
-			ProfileModel profile = _nest.Profiles.All().Where(p => p.Username == username).Select(BuildProfileModel).FirstOrDefault();
-
-			if (profile == null)
+			try
 			{
-				return BadRequest("No profile with the specified username exists.");
-			}
+				ProfileModel profile = _nest.Profiles.All().Where(p => p.Username == username).Select(BuildProfileModel).FirstOrDefault();
 
-			return Ok(profile);
+				if (profile == null)
+				{
+					return BadRequest("No profile with the specified username exists.");
+				}
+				
+				return Ok(profile);
+			}
+			catch(Exception ex)
+			{
+				throw;
+			}
 		}
 
 		[HttpPost]

@@ -1,0 +1,50 @@
+﻿<script type="text/javascript">
+	window.onload = function () { getUsername(); }
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
+
+	function getUsername() {
+		var token = getToken();
+		$.ajax
+		({
+			url: '@Url.Action("GetAllComments", "Comment")',
+			data: { token: token },
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+
+				changeHref(data.Username);
+			}
+		})
+	}
+
+	function changeHref(username) {
+		var href = document.getElementById("update_profile").getAttribute("href");
+		href = href + '?Username=' + username;
+		document.getElementById("update_profile").setAttribute("href", href);
+	}
+</script>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+<div>
+    <h4>Change your settings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>Password:</dt>
+        <dd>
+            @Html.ActionLink("Change your password", "ChangePassword")
+        </dd>
+    </dl>
+	<dl class="dl-horizontal">
+		<dt>Update your profile:</dt>
+		<dd>
+			@Html.ActionLink("Update profile", "GetProfileByUsername", "Profile", null, new { id = "update_profile" });
+		</dd>
+	</dl>
+</div>

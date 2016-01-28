@@ -115,17 +115,17 @@ namespace WebMediaClient.Controllers
 
 		public async Task<ActionResult> GetProfileByUsername(string username, string token)
 		{
-			try
-			{
+			//try
+			//{
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByUsername?Username={0}", username);
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(profile);
                 return View(viewModel);
-			}
-			catch
-			{
-				return RedirectToAction("Error", "Account");
-			}
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
 		}
 
 		public async Task<ActionResult> SearchProfilesByCriteria(ProfileCriteriaViewModel criteria, string token)
