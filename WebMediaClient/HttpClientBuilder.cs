@@ -77,13 +77,13 @@ namespace WebMediaClient
 			}
 		}
 
-		public async static Task<HttpResponseMessage> PostEmptyAsync(T item, string url, string token)
+		public async static Task<HttpResponseMessage> PostEmptyAsync(string url, string token)
 		{
 			using (var client = new HttpClient())
 			{
 				InitializeClient(client, url, token);
 
-				HttpResponseMessage response = await client.PostAsJsonAsync<T>(url, item);
+				HttpResponseMessage response = await client.PostAsync(url, null);
 				if (response.IsSuccessStatusCode)
 				{
 					return response;

@@ -18,8 +18,8 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Profile, ProfileModel>> BuildProfileModel
 		{
-			get { return p => new ProfileModel { ID = p.ID, Username = p.Username, Name = p.Name, Age = p.Age,
-												Gender = p.Gender }; }
+			get { return p => new ProfileModel { ID = p.ID, Username = p.Username, Name = p.Name, Age = p.Age, }; }
+												//Gender = p.Gender }; }
 		}
 
 		public ProfileController()
@@ -110,6 +110,29 @@ namespace Services.Controllers
 			return Ok(profile);
 		}
 
+		[HttpPost]
+		public IHttpActionResult AddFriend(int userID, int friendID)
+		{
+			var newFriendship = new Friendship
+			{
+				UserID_1 = userID,
+				UserID_2 = friendID,
+			};
+
+			_nest.Friendships.Create(newFriendship);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
 		[HttpDelete]
 		public IHttpActionResult DeleteProfile(int ID)
 		{
@@ -188,9 +211,17 @@ namespace Services.Controllers
 		[HttpPost]
 		public IHttpActionResult SearchProfilesByCriteria(ProfileCriteria criteria)
 		{
-			List<ProfileModel> profiles = _nest.Profiles.All().Where(p => DoesMatchCriteria(p, criteria)).Select(BuildProfileModel).ToList();
+			try
+			{
+				List<ProfileModel> profiles = _nest.Profiles.All().Select(BuildProfileModel).ToList();
+				profiles = profiles.Where(p => DoesMatchCriteria(p, criteria)).ToList();
 
-			return Ok(profiles);
+				return Ok(profiles);
+			}
+			catch
+			{
+				throw;
+			}
 		}
 
 		[HttpGet]
@@ -214,7 +245,7 @@ namespace Services.Controllers
 			return Ok(profiles);
 		}
 
-		private bool DoesMatchCriteria(Profile profile, ProfileCriteria criteria)
+		private bool DoesMatchCriteria(ProfileModel profile, ProfileCriteria criteria)
 		{
 			if (!(profile.Name.Contains(criteria.Name)))
 				return false;

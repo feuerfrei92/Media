@@ -29,8 +29,9 @@ namespace WebMediaClient.Controllers
 		}
 
 		[AllowAnonymous]
-		public async Task<ActionResult> SuccessfulLogin(string token)
+		public async Task<ActionResult> SuccessfulLogin()
 		{
+			string token = TempData["token"].ToString();
 			string url = "http://localhost:8080/api/Comment/GetAllComments";
 			string username = await HttpClientBuilder<string>.GetAsync(url, token);
 			ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", username);

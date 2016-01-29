@@ -1,0 +1,101 @@
+﻿@model List<WebMediaClient.Models.ProfileViewModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<script type="text/javascript">
+	window.onload = function () { getUsername(); }
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
+
+	function getUsername() {
+		var token = getToken();
+		$.ajax
+		({
+			url: '@Url.Action("GetAllComments", "Comment")',
+			data: { token: token },
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				document.getElementById("hidden_label").innerHTML = data.Username;
+			}
+		})
+	}
+
+	function compareUsername(username) {
+		var text1 = document.getElementById("hidden_label").value;
+		//if (text1 != username && username != null) {
+			var profileList = document.getElementById("add_friend");
+			var buttonFriend = document.createElement("button");
+			buttonFriend.id = 'button ' + username;
+			buttonFriend.value = "Add friend";
+			buttonFriend.onclick = function () { getFriend(username); };
+			profileList.appendChild(buttonFriend);
+		//}
+	}
+
+	function getFriend(username) {
+		$.ajax
+		({
+			url: '@Url.Action("GetUserbyUsername", "User")',
+			data: { username: username },
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				var text1 = document.getElementById("hidden_label").value;
+				addFriend(text1, username);
+			}
+		})
+	}
+
+	function addFriend(text1, text2) {
+		$.ajax
+		({
+			url: '@Url.Action("AddFriend", "Profile")',
+			data: { username1: text1, username2: text2 },
+			type: 'POST',
+			success: function (data) {
+				var button = document.getElementById('button' + text2);
+				if(data.Response == "OK")
+					button.value = "Request sent";
+			}
+		})
+	}
+</script>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DisplayProfileSearchResults</title>
+</head>
+<body>
+	<div class="row">
+		<div class="col-md-8">
+			<div class="list-group">
+				@foreach (var item in Model)
+				{
+					<div class="list-group-item">
+						@Html.ActionLink(item.Username, "GetProfileByUsername", "Profile", new { Username = item.Username }, null);
+					</div>
+					<div id="add_friend" class="col-md-8">
+						<script type="text/javascript">
+							var username = @Html.Raw(Json.Encode(item.Username));
+							compareUsername(username);
+						</script>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+	<textarea id="hidden_label" hidden="hidden">Kur</textarea>
+</body>
+</html>

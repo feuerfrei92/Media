@@ -1349,6 +1349,9 @@
     <Content Include="Views\Interest\GetInterestByName.cshtml" />
     <Content Include="Views\Profile\CreateProfile.cshtml" />
     <Content Include="Views\Profile\GetProfileByUsername.cshtml" />
+    <Content Include="Views\Shared\SearchProfile.cshtml" />
+    <Content Include="Views\Profile\SearchProfilesByCriteria.cshtml" />
+    <Content Include="Views\Profile\DisplayProfileSearchResults.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

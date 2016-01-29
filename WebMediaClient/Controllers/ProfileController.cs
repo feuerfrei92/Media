@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -51,6 +52,14 @@ namespace WebMediaClient.Controllers
 			var createdProfile = await HttpClientBuilder<ProfileModel>.PostAsync(profile, url, token);
 			var viewModel = ProfileConverter.FromBasicToVisual(createdProfile);
 			return View(viewModel);
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> AddFriend(int userID, int friendID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Profile/AddFriend?UserID={0}&FriendID={1}", userID, friendID);
+			var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
+			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 		}
 
 		public async Task<ActionResult> UpdateProfile(int ID, int userID, ProfileViewModel profileModel, string token)
@@ -128,6 +137,12 @@ namespace WebMediaClient.Controllers
 			//}
 		}
 
+		public ActionResult SearchProfilesByCriteria(string token)
+		{
+			return View();
+		}
+
+		[HttpPost]
 		public async Task<ActionResult> SearchProfilesByCriteria(ProfileCriteriaViewModel criteria, string token)
 		{
             string url = "http://localhost:8080/api/Profile/SearchProfilesByCriteria";
@@ -138,7 +153,16 @@ namespace WebMediaClient.Controllers
             {
                 viewModels.Add(ProfileConverter.FromBasicToVisual(p));
             }
-            return View();
+			TempData["viewModels"] = viewModels;
+			return RedirectToAction("DisplayProfileSearchResults");
+		}
+
+		public ActionResult DisplayProfileSearchResults()
+		{
+			List<ProfileViewModel> viewModels = new List<ProfileViewModel>();
+			if (TempData["viewModels"] != null)
+				viewModels = (List<ProfileViewModel>)TempData["viewModels"];
+			return View(viewModels);
 		}
 
 		public async Task<ActionResult> GetAllFriends(int userID, string token)
