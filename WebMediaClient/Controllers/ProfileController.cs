@@ -62,6 +62,12 @@ namespace WebMediaClient.Controllers
 			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 		}
 
+		public ActionResult UpdateProfile()
+		{
+			return View();
+		}
+
+		[HttpPut]
 		public async Task<ActionResult> UpdateProfile(int ID, int userID, ProfileViewModel profileModel, string token)
 		{
             try
@@ -120,6 +126,13 @@ namespace WebMediaClient.Controllers
 			{
 				return RedirectToAction("Error", "Account");
 			}
+		}
+
+		public async Task<ActionResult> GetProfileByUsernameRaw(string username, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Profile/GetProfileByUsername?Username={0}", username);
+			var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
+			return Json(new { ID = profile.ID, Username = profile.Username, Name = profile.Name, Age = profile.Age, Gender = profile.Gender }, JsonRequestBehavior.AllowGet);
 		}
 
 		public async Task<ActionResult> GetProfileByUsername(string username, string token)

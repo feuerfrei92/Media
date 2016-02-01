@@ -1,0 +1,111 @@
+﻿@model WebMediaClient.Models.ProfileViewModel
+
+@{
+    ViewBag.Title = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Update profile</h2>
+
+<script type="text/javascript">
+	window.onload = function () { getUsername(); }
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
+
+	function getUsername() {
+		var token = getToken();
+		$.ajax
+		({
+			url: '@Url.Action("GetAllComments", "Comment")',
+			data: { token: token },
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				loadValues(data.Username);
+			}
+		})
+	}
+
+	function loadValues(username) {
+		$.ajax
+		({
+			url: '@Url.Action("GetProfileByUsernameRaw", "Profile")',
+			data: { username: username },
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				var hiddenText = document.getElementById("hidden_input");
+				hiddenText.value = data.ID;
+				var usernameText = document.getElementById("username_text");
+				usernameText.value = data.Username;
+				var nameText = document.getElementById("name_text");
+				nameText.value = data.Name;
+				var ageText = document.getElementById("age_text");
+				ageText.value = data.Age;
+			}
+		})
+	}
+
+	function updateProfile() {
+		var hiddenText = document.getElementById("hidden_input");
+		var id = hiddenText.value;
+		var usernameText = document.getElementById("username_text");
+		var username = usernameText.value;
+		var nameText = document.getElementById("name_text");
+		var name = nameText.value;
+		var ageText = document.getElementById("age_text");
+		var age = ageText.value;
+		$.ajax
+		({
+			url: '@Url.Action("UpdateProfile", "Profile")',
+			data:
+			{
+				token: token,
+				id: id,
+				userID: 1,
+				username: username,
+				name: name,
+				age: age,
+			},
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) { }
+		})
+	}
+</script>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			<label id="username_label" class="label-default">Username:</label>
+			<div class="col-md-10">
+				<input id="username_text" class="input-group-lg" readonly="readonly" />
+			</div>
+		</div>
+		<div class="list-group">
+			<label id="name_label" class="label-default">Name:</label>
+			<div class="col-md-10">
+				<input id="name_text" class="input-group-lg" required="required" />
+			</div>
+		</div>
+		<div class="list-group">
+			<label id="age_label" class="label-default">Age:</label>
+			<div class="col-md-10">
+				<input id="age_text" class="input-group-lg" />
+			</div>
+		</div>
+		<div class="list-group">
+			<button id="submit" class="formbutton" onclick="updateProfile()">Update profile</button>
+		</div>
+		<div class="list-group">
+			<input id="hidden_input" hidden="hidden" />
+		</div>
+	</div>
+</div>
+

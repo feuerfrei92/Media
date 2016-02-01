@@ -1352,6 +1352,7 @@
     <Content Include="Views\Shared\SearchProfile.cshtml" />
     <Content Include="Views\Profile\SearchProfilesByCriteria.cshtml" />
     <Content Include="Views\Profile\DisplayProfileSearchResults.cshtml" />
+    <Content Include="Views\Profile\UpdateProfile.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

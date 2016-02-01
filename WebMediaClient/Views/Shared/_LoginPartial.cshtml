@@ -1,5 +1,4 @@
-﻿@using Microsoft.AspNet.Identity
-<script type="text/javascript">
+﻿<script type="text/javascript">
 	window.onload = function () { document.getElementById("load_token").click(); }
 
 	function getToken() {
@@ -28,25 +27,55 @@
 			success: function (data) {
 				var actionsList = document.getElementById("actions_list");
 				var manageNode = document.createElement("li");
-				var actionLinkElement = document.createElement("a");
-				var manageElem = '@Html.ActionLink("Hello ", "Index", "Settings", routeValues: null, htmlAttributes: new { id = "create_profile_link" })' + data.Username;
+				manageNode.setAttribute("id", "manage_profile");
+				manageNode.setAttribute("class", "dropdown");
+				var actionLinkElement = document.createElement("label");
+				actionLinkElement.setAttribute("class", "label-default dropdown-toggle");
+				actionLinkElement.setAttribute("data-toggle", "dropdown");
+				var manageElem = "Hello, " + data.Username;
 				actionLinkElement.innerHTML = manageElem;
 				manageNode.appendChild(actionLinkElement);
 				actionsList.appendChild(manageNode);
-				var logoffNode = document.createElement("li");
-				var labelElement = document.createElement("a");
-				labelElement.setAttribute("id", "logoff_link");
-				labelElement.setAttribute("href", '@Url.Action("Index", "Home")');
-				labelElement.setAttribute("onclick", "deleteToken()");
-				labelElement.text = "Log off";
-				logoffNode.appendChild(labelElement);
-				actionsList.appendChild(logoffNode);
-				var registerLink = document.getElementById("registerLink");
-				registerLink.parentNode.removeChild(registerLink);
-				var loginLink = document.getElementById("loginLink");
-				loginLink.parentNode.removeChild(loginLink);
+				populateDropdownMenu();
+				populateLogOffNode();
 			}
 		})
+	}
+
+	function populateDropdownMenu() {
+		var manageNode = document.getElementById("manage_profile");
+		var dropdownMenu = document.createElement("ul");
+		dropdownMenu.setAttribute("class", "dropdown-menu");
+		var updateProfile = document.createElement("li");
+		var updateProfileLink = document.createElement("a");
+		var updateElem = '@Html.ActionLink("Update profile", "UpdateProfile", "Profile", routeValues: null, htmlAttributes: new { id = "update_profile_link" })';
+		updateProfileLink.innerHTML = updateElem;
+		updateProfile.appendChild(updateProfileLink);
+		var manageProfile = document.createElement("li");
+		var manageProfileLink = document.createElement("a");
+		var manageElem = '@Html.ActionLink("Update settings", "Index", "Settings", routeValues: null, htmlAttributes: new { id = "setting_link" })';
+		manageProfileLink.innerHTML = manageElem;
+		manageProfile.appendChild(manageProfileLink);
+		dropdownMenu.appendChild(updateProfile);
+		dropdownMenu.appendChild(manageProfile);
+		manageNode.appendChild(dropdownMenu);
+	}
+
+	function populateLogOffNode()
+	{
+		var actionsList = document.getElementById("actions_list");
+		var logoffNode = document.createElement("li");
+		var labelElement = document.createElement("a");
+		labelElement.setAttribute("id", "logoff_link");
+		labelElement.setAttribute("href", '@Url.Action("Index", "Home")');
+		labelElement.setAttribute("onclick", "deleteToken()");
+		labelElement.text = "Log off";
+		logoffNode.appendChild(labelElement);
+		actionsList.appendChild(logoffNode);
+		var registerLink = document.getElementById("registerLink");
+		registerLink.parentNode.removeChild(registerLink);
+		var loginLink = document.getElementById("loginLink");
+		loginLink.parentNode.removeChild(loginLink);
 	}
 </script>
     <ul id="actions_list" class="nav navbar-nav navbar-right">
