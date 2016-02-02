@@ -63,12 +63,9 @@
 		var age = ageText.value;
 		$.ajax
 		({
-			url: '@Url.Action("UpdateProfile", "Profile")',
+			url: '@Html.Raw(@Url.Action("UpdateProfile", "Profile", new { ID = 1 }))',
 			data:
 			{
-				token: token,
-				id: id,
-				userID: 1,
 				username: username,
 				name: name,
 				age: age,

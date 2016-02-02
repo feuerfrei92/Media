@@ -68,15 +68,15 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> UpdateProfile(int ID, int userID, ProfileViewModel profileModel, string token)
+		public async Task<ActionResult> UpdateProfile(int ID, ProfileViewModel profileModel, string token)
 		{
             try
             {
-                string url = string.Format("http://localhost:8080/api/Profile/UpdateProfile?ID={0}&UserID={1}", ID, userID);
+                string url = string.Format("http://localhost:8080/api/Profile/UpdateProfile?ID={0}", ID);
                 var profile = ProfileConverter.FromVisualToBasic(profileModel);
                 var updatedProfile = await HttpClientBuilder<ProfileModel>.PutAsync(profile, url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(updatedProfile);
-                return View(viewModel);
+				return RedirectToAction("Index", "Home");
             }
             catch
             {

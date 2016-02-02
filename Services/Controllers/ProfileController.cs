@@ -41,7 +41,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
-		public IHttpActionResult UpdateProfile(int ID, int userID, ProfileModel profile)
+		public IHttpActionResult UpdateProfile(int ID, ProfileModel profile)
 		{
 			if(!(ModelState.IsValid))
 			{
@@ -49,18 +49,16 @@ namespace Services.Controllers
 			}
 
 			Profile existingProfile = _nest.Profiles.All().Where(p => p.ID == ID).FirstOrDefault();
-			
-			if(existingProfile == null)
+
+			if (existingProfile == null)
 			{
 				return BadRequest("No profile with the specified ID exists");
 			}
 
-			existingProfile.UserID = userID;
-			existingProfile.Username = profile.Username;
 			existingProfile.Name = profile.Name;
 			existingProfile.Age = profile.Age;
 			existingProfile.Gender = profile.Gender;
-			
+
 			_nest.Profiles.Update(existingProfile);
 
 			profile.ID = ID;

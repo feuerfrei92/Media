@@ -1,10 +1,9 @@
 ﻿@model List<WebMediaClient.Models.ProfileViewModel>
 
 @{
-    Layout = null;
+    ViewBag.Title = "DisplayProfileSearchResults";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<!DOCTYPE html>
 
 <script type="text/javascript">
 	window.onload = function () { getUsername(); }
@@ -26,42 +25,33 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				document.getElementById("hidden_label").innerHTML = data.Username;
+				document.getElementById("hidden_label").value = data.Username;
 			}
 		})
 	}
 
 	function compareUsername(username) {
-		var text1 = document.getElementById("hidden_label").value;
+		//var text1 = document.getElementById("hidden_label").value;
 		//if (text1 != username && username != null) {
 			var profileList = document.getElementById("add_friend");
 			var buttonFriend = document.createElement("button");
-			buttonFriend.id = 'button ' + username;
-			buttonFriend.value = "Add friend";
-			buttonFriend.onclick = function () { getFriend(username); };
+			buttonFriend.setAttribute("id", "button" + username);
+			buttonFriend.setAttribute("class", "dialogbutton");
+			buttonFriend.setAttribute("value", "Add friend");
+			buttonFriend.setAttribute("onclick", function() { getFriend(username) });
 			profileList.appendChild(buttonFriend);
 		//}
 	}
 
 	function getFriend(username) {
-		$.ajax
-		({
-			url: '@Url.Action("GetUserbyUsername", "User")',
-			data: { username: username },
-			dataType: 'json',
-			type: 'GET',
-			success: function (data) {
-				var text1 = document.getElementById("hidden_label").value;
-				addFriend(text1, username);
-			}
-		})
+		var text1 = document.getElementById("hidden_label").value;
+		addFriend(text1, username);
 	}
 
 	function addFriend(text1, text2) {
 		$.ajax
 		({
-			url: '@Url.Action("AddFriend", "Profile")',
-			data: { username1: text1, username2: text2 },
+			url: '@Html.Raw(@Url.Action("AddFriend", "Profile", new { userID = 1, friendID = 1 }))',
 			type: 'POST',
 			success: function (data) {
 				var button = document.getElementById('button' + text2);
@@ -72,10 +62,12 @@
 	}
 </script>
 
+<!DOCTYPE html>
+
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <title>DisplayProfileSearchResults</title>
+	<meta name="viewport" content="width=device-width" />
+	<title>DisplayProfileSearchResults</title>
 </head>
 <body>
 	<div class="row">
@@ -99,3 +91,4 @@
 	<textarea id="hidden_label" hidden="hidden">Kur</textarea>
 </body>
 </html>
+
