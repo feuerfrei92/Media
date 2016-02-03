@@ -62,6 +62,14 @@ namespace WebMediaClient.Controllers
 			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 		}
 
+		[HttpPut]
+		public async Task<ActionResult> AcceptFriendship(int userID, int friendID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Profile/AcceptFriendship?UserID={0}&FriendID={1}", userID, friendID);
+			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+		}
+
 		public ActionResult UpdateProfile()
 		{
 			return View();

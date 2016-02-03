@@ -6,7 +6,7 @@
 }
 
 <script type="text/javascript">
-	window.onload = function () { getUsername(); }
+	window.addEventListener("load", function () { getUsername() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -38,25 +38,20 @@
 			buttonFriend.setAttribute("id", "button" + username);
 			buttonFriend.setAttribute("class", "dialogbutton");
 			buttonFriend.setAttribute("value", "Add friend");
-			buttonFriend.setAttribute("onclick", function() { getFriend(username) });
+			buttonFriend.setAttribute("onclick", "addFriend()");
 			profileList.appendChild(buttonFriend);
 		//}
 	}
 
-	function getFriend(username) {
-		var text1 = document.getElementById("hidden_label").value;
-		addFriend(text1, username);
-	}
-
-	function addFriend(text1, text2) {
+	function addFriend() {
 		$.ajax
 		({
 			url: '@Html.Raw(@Url.Action("AddFriend", "Profile", new { userID = 1, friendID = 1 }))',
 			type: 'POST',
 			success: function (data) {
-				var button = document.getElementById('button' + text2);
-				if(data.Response == "OK")
-					button.value = "Request sent";
+				//var button = document.getElementById('button' + text2);
+				//if(data.Response == "OK")
+				//	button.value = "Request sent";
 			}
 		})
 	}
@@ -80,15 +75,16 @@
 					</div>
 					<div id="add_friend" class="col-md-8">
 						<script type="text/javascript">
-							var username = @Html.Raw(Json.Encode(item.Username));
-							compareUsername(username);
+							compareUsername('@Html.Raw(Json.Encode(item.Username))');
 						</script>
 					</div>
 				}
 			</div>
+			<div class="list-group">
+				<input id="hidden_label" hidden="hidden" />
+			</div>
 		</div>
 	</div>
-	<textarea id="hidden_label" hidden="hidden">Kur</textarea>
 </body>
 </html>
 

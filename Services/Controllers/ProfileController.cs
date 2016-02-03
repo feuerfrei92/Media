@@ -57,7 +57,7 @@ namespace Services.Controllers
 
 			existingProfile.Name = profile.Name;
 			existingProfile.Age = profile.Age;
-			existingProfile.Gender = profile.Gender;
+			existingProfile.Gender = profile.Gender.ToString();
 
 			_nest.Profiles.Update(existingProfile);
 
@@ -89,7 +89,7 @@ namespace Services.Controllers
 				Username = profile.Username,
 				Name = profile.Name,
 				Age = profile.Age,
-				Gender = profile.Gender,
+				Gender = profile.Gender.ToString(),
 			};
 
 			_nest.Profiles.Create(newProfile);
@@ -115,9 +115,33 @@ namespace Services.Controllers
 			{
 				UserID_1 = userID,
 				UserID_2 = friendID,
+				IsAccepted = false,
 			};
 
 			_nest.Friendships.Create(newFriendship);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
+		[HttpPut]
+		public IHttpActionResult AcceptFriendship(int userID, int friendID)
+		{
+			Friendship friendship = _nest.Friendships.All().Where(f => f.UserID_1 == friendID && f.UserID_2 == userID).FirstOrDefault();
+			if (friendship.IsAccepted == true)
+				return BadRequest("Friendship is already confirmed");
+			else
+				friendship.IsAccepted = true;
+			
+			_nest.Friendships.Update(friendship);
 
 			try
 			{
@@ -225,7 +249,7 @@ namespace Services.Controllers
 		[HttpGet]
 		public IHttpActionResult GetAllFriends(int userID)
 		{
-			List<Friendship> friendships = _nest.Friendships.All().Where(f => f.UserID_1 == userID || f.UserID_2 == userID).ToList();
+			List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == true).ToList();
 			var profiles = new List<ProfileModel>();
 			foreach (Friendship f in friendships)
 			{

@@ -15,7 +15,7 @@
     <div class="row"> 
 		<div class="col-md-8">
 			<section id="profile_form">
-				@using (Html.BeginForm("CreateProfile", "Profile", new { UserID = 1 }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+				@using (Html.BeginForm("CreateProfile", "Profile", new { UserID = 2 }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 				{
 					@Html.AntiForgeryToken()
 					<h4>Fill your data</h4>

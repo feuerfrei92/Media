@@ -16,5 +16,7 @@ namespace Models.DatabaseModels
 		public int UserID_1 { get; set; }
 		[Required]
 		public int UserID_2 { get; set; }
+		[Required]
+		public bool IsAccepted { get; set; }
 	}
 }

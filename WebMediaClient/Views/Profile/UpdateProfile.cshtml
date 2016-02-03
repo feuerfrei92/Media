@@ -1,14 +1,14 @@
 ﻿@model WebMediaClient.Models.ProfileViewModel
 
 @{
-    ViewBag.Title = "View";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "View";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Update profile</h2>
 
 <script type="text/javascript">
-	window.onload = function () { getUsername(); }
+	window.addEventListener("load", function () { getUsername() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -48,6 +48,10 @@
 				nameText.value = data.Name;
 				var ageText = document.getElementById("age_text");
 				ageText.value = data.Age;
+			},
+			error: function (xhr) {
+				if (xhr.status == 500)
+					window.location.href = '@Url.Action("CreateProfile", "Profile", new { userID = 2 })';
 			}
 		})
 	}
@@ -105,4 +109,5 @@
 		</div>
 	</div>
 </div>
+
 

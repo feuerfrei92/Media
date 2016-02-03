@@ -17,6 +17,6 @@ namespace Models
 		public string Username { get; set; }
 		public string Name { get; set; }
 		public int? Age { get; set; }
-		public Gender Gender { get; set; }
+		public string Gender { get; set; }
 	}
 }

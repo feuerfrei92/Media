@@ -126,6 +126,21 @@ namespace WebMediaClient
 			}
 		}
 
+		public async static Task<HttpResponseMessage> PutEmptyAsync(string url, string token)
+		{
+			using (var client = new HttpClient())
+			{
+				InitializeClient(client, url, token);
+
+				HttpResponseMessage response = await client.PutAsync(url, null);
+				if (response.IsSuccessStatusCode)
+				{
+					return response;
+				}
+				else throw new Exception(string.Concat("Request failed with status code: ", response.StatusCode.ToString()));
+			}
+		}
+
 		public async static Task<T> PutAsync(T item, string url, string token)
 		{
 			using (var client = new HttpClient())
