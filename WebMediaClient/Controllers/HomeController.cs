@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Services.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,9 +33,9 @@ namespace WebMediaClient.Controllers
 		public async Task<ActionResult> SuccessfulLogin()
 		{
 			string token = TempData["token"].ToString();
-			string url = "http://localhost:8080/api/Comment/GetAllComments";
-			string username = await HttpClientBuilder<string>.GetAsync(url, token);
-			ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", username);
+			string url = "http://localhost:8080/api/User/GetCurrentUser";
+			UserModel user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
+			ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", user.Username);
 			ViewBag.Token = token;
 			return View();
 		}

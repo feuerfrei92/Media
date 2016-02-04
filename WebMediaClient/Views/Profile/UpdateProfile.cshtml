@@ -22,11 +22,13 @@
 		var token = getToken();
 		$.ajax
 		({
-			url: '@Url.Action("GetAllComments", "Comment")',
+			url: '@Url.Action("GetCurrentUser", "User")',
 			data: { token: token },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
+				var hiddenID = document.getElementById("store_id");
+				hiddenID.value = data.ID;
 				loadValues(data.Username);
 			}
 		})
@@ -50,8 +52,13 @@
 				ageText.value = data.Age;
 			},
 			error: function (xhr) {
-				if (xhr.status == 500)
-					window.location.href = '@Url.Action("CreateProfile", "Profile", new { userID = 2 })';
+				if (xhr.status == 500) {
+					var hiddenID = document.getElementById("store_id");
+					var id = hiddenID.value;
+					var link = '@Url.Action("CreateProfile", "Profile", new { userID = -1 })';
+					link = link.replace("1", id);
+					window.location.href = link;
+				}
 			}
 		})
 	}
@@ -59,15 +66,19 @@
 	function updateProfile() {
 		var hiddenText = document.getElementById("hidden_input");
 		var id = hiddenText.value;
+		var hiddenID = document.getElementById("store_id");
+		var userID = hiddenID.value;
 		var usernameText = document.getElementById("username_text");
 		var username = usernameText.value;
 		var nameText = document.getElementById("name_text");
 		var name = nameText.value;
 		var ageText = document.getElementById("age_text");
 		var age = ageText.value;
+		var link = '@Url.Action("UpdateProfile", "Profile", new { ID = -1 })';
+		link = link.replace("1", userID);
 		$.ajax
 		({
-			url: '@Html.Raw(@Url.Action("UpdateProfile", "Profile", new { ID = 1 }))',
+			url: link,
 			data:
 			{
 				username: username,
@@ -106,6 +117,9 @@
 		</div>
 		<div class="list-group">
 			<input id="hidden_input" hidden="hidden" />
+		</div>
+		<div class="list-group">
+			<input id="store_id" hidden="hidden" />
 		</div>
 	</div>
 </div>

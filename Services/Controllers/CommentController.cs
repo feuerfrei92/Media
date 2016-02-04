@@ -37,10 +37,8 @@ namespace Services.Controllers
 		[Authorize]
 		public IHttpActionResult GetAllComments()
 		{
-			//IQueryable<CommentModel> comments = _nest.Comments.All().Select(BuildCommentModel);
-			//return Ok(comments);
-			string username = User.Identity.Name;
-			return Ok(username);
+			IQueryable<CommentModel> comments = _nest.Comments.All().Select(BuildCommentModel);
+			return Ok(comments);
 		}
 
 		[HttpPut]

@@ -40,6 +40,13 @@ namespace Services.Controllers
 			return Ok(users);
 		}
 
+		[HttpGet]
+		public IHttpActionResult GetCurrentUser()
+		{
+			UserModel currentUser = _nest.Users.All().Where(u => u.Username == User.Identity.Name).Select(BuildUserModel).FirstOrDefault();
+			return Ok(currentUser);
+		}
+
 		[HttpPut]
 		public IHttpActionResult UpdateUser(int ID, UserModel user)
 		{

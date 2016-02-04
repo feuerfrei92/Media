@@ -5,6 +5,8 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<h2>Profile search results</h2>
+
 <script type="text/javascript">
 	window.addEventListener("load", function () { getUsername() }, false);
 
@@ -20,33 +22,67 @@
 		var token = getToken();
 		$.ajax
 		({
-			url: '@Url.Action("GetAllComments", "Comment")',
+			url: '@Url.Action("GetCurrentUser", "User")',
 			data: { token: token },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				document.getElementById("hidden_label").value = data.Username;
+				var hiddenID = document.getElementById("hidden_ID");
+				hiddenID.value = data.ID;
+				var hiddenUsername = document.getElementById("hidden_label");
+				hiddenUsername.value = data.Username;
+				compareUsername();
 			}
 		})
 	}
 
-	function compareUsername(username) {
-		//var text1 = document.getElementById("hidden_label").value;
-		//if (text1 != username && username != null) {
+	function addButton(username) {
 			var profileList = document.getElementById("add_friend");
 			var buttonFriend = document.createElement("button");
-			buttonFriend.setAttribute("id", "button" + username);
+			buttonFriend.setAttribute("id", username);
 			buttonFriend.setAttribute("class", "dialogbutton");
 			buttonFriend.setAttribute("value", "Add friend");
-			buttonFriend.setAttribute("onclick", "addFriend()");
+			buttonFriend.setAttribute("onclick", "getFriendID(\"" + username + "\")");
 			profileList.appendChild(buttonFriend);
-		//}
 	}
 
-	function addFriend() {
+	function compareUsername()
+	{
+		var profileList = document.getElementById("add_friend");
+		var currentUsername = document.getElementById("hidden_label").value;
+		var buttons = document.getElementsByClassName("dialogbutton");
+		for (var i = 0; i < buttons.length; i++)
+		{
+			var item = buttons[i];
+			if (item.id == currentUsername || item.id == null)
+				profileList.removeChild(item);
+		}
+	}
+
+	function getFriendID(username) {
+		var link = '@Url.Action("GetUserByUsername", "User", new { Username = "oooo" })';
+		link = link.replace("oooo", username);
 		$.ajax
 		({
-			url: '@Html.Raw(@Url.Action("AddFriend", "Profile", new { userID = 1, friendID = 1 }))',
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				var id = data.ID;
+				addFriend(id);
+			}
+		})
+	}
+
+	function addFriend(id) {
+		var hiddenID = document.getElementById("hidden_ID");
+		var userID = hiddenID.value;
+		var link = '@Html.Raw(@Url.Action("AddFriend", "Profile", new { UserID = -1, FriendID = -2 }))';
+		link = link.replace("-1", userID);
+		link = link.replace("-2", id);
+		$.ajax
+		({
+			url: link,
 			type: 'POST',
 			success: function (data) {
 				//var button = document.getElementById('button' + text2);
@@ -57,34 +93,25 @@
 	}
 </script>
 
-<!DOCTYPE html>
-
-<html>
-<head>
-	<meta name="viewport" content="width=device-width" />
-	<title>DisplayProfileSearchResults</title>
-</head>
-<body>
 	<div class="row">
 		<div class="col-md-8">
-			<div class="list-group">
+			<div id ="add_friend" class="list-group">
 				@foreach (var item in Model)
 				{
 					<div class="list-group-item">
 						@Html.ActionLink(item.Username, "GetProfileByUsername", "Profile", new { Username = item.Username }, null);
 					</div>
-					<div id="add_friend" class="col-md-8">
-						<script type="text/javascript">
-							compareUsername('@Html.Raw(Json.Encode(item.Username))');
-						</script>
-					</div>
+					<script type="text/javascript">
+						addButton(@Html.Raw(Json.Encode(item.Username)));
+					</script>
 				}
 			</div>
 			<div class="list-group">
 				<input id="hidden_label" hidden="hidden" />
 			</div>
+			<div class="list-group">
+				<input id="hidden_ID" hidden="hidden" />
+			</div>
 		</div>
 	</div>
-</body>
-</html>
 

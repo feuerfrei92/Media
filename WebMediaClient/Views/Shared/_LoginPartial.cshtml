@@ -20,7 +20,7 @@
 		var token = getToken();
 		$.ajax
 		({
-			url: '@Url.Action("GetAllComments", "Comment")',
+			url: '@Url.Action("GetCurrentUser", "User")',
 			data: { token: token },
 			dataType: 'json',
 			type: 'GET',

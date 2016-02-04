@@ -37,6 +37,13 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetCurrentUser(string token)
+		{
+			string url = "http://localhost:8080/api/User/GetCurrentUser";
+			var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
+			return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
+		}
+
 		public ActionResult DeleteUser(int ID, string token)
 		{
 			try
@@ -72,8 +79,7 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetUserByUsername?Username={0}", username);
 				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
-                var viewModel = UserConverter.FromBasicToVisual(user);
-				return View(viewModel);
+				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
 			}
 			catch
 			{
