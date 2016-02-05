@@ -1353,6 +1353,7 @@
     <Content Include="Views\Profile\SearchProfilesByCriteria.cshtml" />
     <Content Include="Views\Profile\UpdateProfile.cshtml" />
     <Content Include="Views\Profile\DisplayProfileSearchResults.cshtml" />
+    <Content Include="Views\Profile\GetAllFriends.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -186,18 +186,19 @@ namespace WebMediaClient.Controllers
 			return View(viewModels);
 		}
 
-		public async Task<ActionResult> GetAllFriends(int userID, string token)
+		public ActionResult GetAllFriends(int userID, string token)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetAllFriends?UserID={0}", userID);
-				var profiles = await HttpClientBuilder<ProfileModel>.GetListAsync(url, token);
+				//var profiles = await HttpClientBuilder<ProfileModel>.GetListAsync(url, token);
+				var profiles = Task.Run<List<ProfileModel>>(() => HttpClientBuilder<ProfileModel>.GetListAsync(url, token)).Result;
                 var viewModels = new List<ProfileViewModel>();
                 foreach (ProfileModel p in profiles)
                 {
                     viewModels.Add(ProfileConverter.FromBasicToVisual(p));
                 }
-				return View();
+				return View(viewModels);
 			}
 			catch
 			{

@@ -249,7 +249,8 @@ namespace Services.Controllers
 		[HttpGet]
 		public IHttpActionResult GetAllFriends(int userID)
 		{
-			List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == true).ToList();
+			List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID)) //&& f.IsAccepted == true)
+			.ToList();
 			var profiles = new List<ProfileModel>();
 			foreach (Friendship f in friendships)
 			{

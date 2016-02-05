@@ -2,8 +2,8 @@
     ViewBag.Title = "Home Page";
 }
 
-@*<script type="text/javascript">
-	window.onload = function () { document.getElementById("load_token").click(); }
+<script type="text/javascript">
+	window.addEventListener("load", function () { getUsername() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -12,7 +12,39 @@
 			return token;
 		}
 	}
-</script>*@
+
+	function getUsername() {
+		var token = getToken();
+		if (token != null) {
+			$.ajax
+			({
+				url: '@Url.Action("GetCurrentUser", "User")', 
+				data: { token: token },
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					var hiddenID = document.getElementById("store_id");
+					hiddenID.value = data.ID;
+					loadFriends(data.ID);
+					loadInterests(data.ID);
+				}
+			})
+		}
+	}
+
+	function loadFriends(id) {
+		var link = '@Url.Action("GetAllFriends", "Profile", new { userID = -1 })';
+		link = link.replace("-1", id);
+		$('#friends_container').load(link);
+	}
+
+	function loadInterests(id) {
+		var link = '@Url.Action("GetInterestsForUser", "Interest", new { userID = -1 })';
+		link = link.replace("-1", id);
+		$('#interests_container').load(link);
+	}
+
+</script>
 
 <div class="jumbotron">
     <h1>ASP.NET</h1>
@@ -46,7 +78,11 @@
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
-	<div class="col-md-4">
-    	@Html.Action("GetInterestsForUser", "Interest", new { userID = 1 });
+	<div id="friends_container" class="col-md-4">
+	</div>
+	<div id="interests_container" class="col-md-4">
+	</div>
+	<div class="list-group">
+		<input id="store_id" hidden="hidden" />
 	</div>
 </div>

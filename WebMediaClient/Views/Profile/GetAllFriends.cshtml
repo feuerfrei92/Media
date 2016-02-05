@@ -1,0 +1,15 @@
+﻿@model List<WebMediaClient.Models.ProfileViewModel>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="list-group-item">
+					@Html.ActionLink(item.Name, "GetProfileByID", "Profile", new { ID = item.ID }, null);
+				</div>
+			}
+		</div>
+	</div>
+</div>
+
