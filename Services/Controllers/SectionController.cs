@@ -1,5 +1,6 @@
 ﻿using Data;
 using Models;
+using Models.DatabaseModels;
 using Services.Models;
 using System;
 using System.Collections.Generic;
@@ -145,16 +146,97 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
-		public IHttpActionResult GetSectionByParentID(int parentID)
+		public IHttpActionResult GetSectionsByParentID(int parentID)
 		{
-			SectionModel section = _nest.Sections.All().Where(s => s.ParentSectionID == parentID).Select(BuildSectionModel).FirstOrDefault();
+			List<SectionModel> sections = _nest.Sections.All().Where(s => s.ParentSectionID == parentID).Select(BuildSectionModel).ToList();
 
-			if (section == null)
+			//if (sections == null)
+			//{
+			//	return BadRequest("No section with the specified parent ID exists.");
+			//}
+
+			return Ok(sections);
+		}
+
+		[HttpPost]
+		public IHttpActionResult AddMembership(int sectionID, int userID)
+		{
+			if(sectionID == null || userID == null)
+				return BadRequest("Section or user is null");
+
+			var membership = new Membership
 			{
-				return BadRequest("No section with the specified parent ID exists.");
+				SectionID = sectionID,
+				UserID = userID,
+				Role = SectionRole.Regular,
+			};
+
+			_nest.Memberships.Create(membership);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
 			}
 
-			return Ok(section);
+			return Ok(membership);
+		}
+
+		[HttpPut]
+		public IHttpActionResult UpdateMembership(int sectionID, int userID, string role, DateTime? suspension = null)
+		{
+			var membership = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.UserID == userID).FirstOrDefault();
+			membership.Role = (SectionRole)Enum.Parse(typeof(SectionRole), role);
+			membership.SuspendedUntil = suspension;
+
+			_nest.Memberships.Update(membership);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok(membership);
+		}
+
+		[HttpDelete]
+		public IHttpActionResult DeleteMembership(int sectionID, int userID)
+		{
+			var membership = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.UserID == userID).FirstOrDefault();
+
+			_nest.Memberships.Delete(membership);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetMembershipsForUser(int userID)
+		{
+			List<Membership> memberships = _nest.Memberships.All().Where(m => m.UserID == userID).ToList();
+			var sections = new List<SectionModel>();
+			foreach(Membership m in memberships)
+			{
+				SectionModel section = _nest.Sections.All().Where(s => s.ID == m.SectionID).Select(BuildSectionModel).FirstOrDefault();
+				sections.Add(section);
+			}
+
+			return Ok(sections);
 		}
 	}
 }

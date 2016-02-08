@@ -18,7 +18,7 @@
 		if (token != null) {
 			$.ajax
 			({
-				url: '@Url.Action("GetCurrentUser", "User")', 
+				url: '@Url.Action("GetCurrentUser", "User")',
 				data: { token: token },
 				dataType: 'json',
 				type: 'GET',
@@ -27,6 +27,7 @@
 					hiddenID.value = data.ID;
 					loadFriends(data.ID);
 					loadInterests(data.ID);
+					loadSections(data.ID);
 				}
 			})
 		}
@@ -44,6 +45,11 @@
 		$('#interests_container').load(link);
 	}
 
+	function loadSections(id) {
+		var link = '@Url.Action("GetMembershipsForUser", "Section", new { userID = -1 })';
+		link = link.replace("-1", id);
+		$('#sections_container').load(link);
+	}
 </script>
 
 <div class="jumbotron">
@@ -81,6 +87,8 @@
 	<div id="friends_container" class="col-md-4">
 	</div>
 	<div id="interests_container" class="col-md-4">
+	</div>
+	<div id="sections_container" class="col-md-4">
 	</div>
 	<div class="list-group">
 		<input id="store_id" hidden="hidden" />

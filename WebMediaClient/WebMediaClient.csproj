@@ -1354,12 +1354,15 @@
     <Content Include="Views\Profile\UpdateProfile.cshtml" />
     <Content Include="Views\Profile\DisplayProfileSearchResults.cshtml" />
     <Content Include="Views\Profile\GetAllFriends.cshtml" />
+    <Content Include="Views\Section\GetMembershipsForUser.cshtml" />
+    <Content Include="Views\Section\GetSectionsByParentID.cshtml" />
+    <Content Include="Views\Topic\GetTopicsBySectionID.cshtml" />
+    <Content Include="Views\Topic\GetTopicsByAuthorID.cshtml" />
+    <Content Include="Views\Section\GetSectionByID.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Photo\" />
-    <Folder Include="Views\Section\" />
-    <Folder Include="Views\Topic\" />
     <Folder Include="Views\User\" />
     <Folder Include="Views\Video\" />
   </ItemGroup>

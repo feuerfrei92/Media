@@ -37,11 +37,12 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> CreateTopic(int sectionID, TopicViewModel topicModel, string token)
+		[HttpPost]
+		public async Task<ActionResult> CreateTopic(int sectionID, int authorID, TopicViewModel topicModel, string token)
 		{
-            string url = string.Format("http://localhost:8080/api/Topic/CreateTopic?SectionID={0}", sectionID);
+            string url = string.Format("http://localhost:8080/api/Topic/CreateTopic?SectionID={0}&AuthorID={1}", sectionID, authorID);
             var topic = TopicConverter.FromVisualToBasic(topicModel);
-            var createdTopic = await HttpClientBuilder<TopicModel>.PutAsync(topic, url, token);
+            var createdTopic = await HttpClientBuilder<TopicModel>.PostAsync(topic, url, token);
             var viewModel = TopicConverter.FromBasicToVisual(createdTopic);
             return View(viewModel);
 		}
@@ -88,14 +89,14 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
-				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsByUserID?SectionID={0}", sectionID);
+				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsBySectionID?SectionID={0}", sectionID);
 				var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
                 var viewModels = new List<TopicViewModel>();
                 foreach (TopicModel t in topics)
                 {
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
-                return View();
+                return View(viewModels);
 			}
 			catch
 			{
@@ -114,7 +115,7 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
-				return View();
+				return View(viewModels);
 			}
 			catch
 			{

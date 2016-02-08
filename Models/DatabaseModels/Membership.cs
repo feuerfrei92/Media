@@ -16,5 +16,8 @@ namespace Models.DatabaseModels
 		public int UserID { get; set; }
 		[Required]
 		public int SectionID { get; set; }
+		[Required]
+		public SectionRole Role { get; set; }
+		public DateTime? SuspendedUntil { get; set; }
 	}
 }

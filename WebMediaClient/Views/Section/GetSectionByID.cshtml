@@ -1,0 +1,71 @@
+﻿@model WebMediaClient.Models.SectionViewModel
+
+@{
+    ViewBag.Title = "GetSectionByID";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+
+<script type="text/javascript">
+	window.addEventListener("load", function () { getUsername() }, false);
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
+
+	function getUsername() {
+		var token = getToken();
+		if (token != null) {
+			$.ajax
+			({
+				url: '@Url.Action("GetCurrentUser", "User")',
+				data: { token: token },
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					var hiddenID = document.getElementById("store_id");
+					hiddenID.value = data.ID;
+					loadChildSections(data.ID);
+					loadTopics(data.ID);
+				}
+			})
+		}
+	}
+
+	function loadChildSections(id) {
+		var link = '@Url.Action("GetSectionsByParentID", "Section", new { parentID = @Model.ID })';
+		$('#sections_container').load(link);
+	}
+
+	function loadTopics(id) {
+		var link = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
+		$('#topics_container').load(link);
+	}
+
+	function postTopic() {
+		var link = '@Html.Raw(@Url.Action("CreateTopic", "Topic", new { sectionID = @Model.ID, authorID = -1 }))';
+		var hiddenID = document.getElementById("store_id");
+		var id = hiddenID.value;
+		link = link.replace("-1", id);
+		window.location.href = link;
+	}
+</script>
+
+<div class="row">
+	<div id="sections_container" class="col-md-4">
+	</div>
+	<div id="topics_container" class="col-md-4">
+	</div>
+	<div class="list-group">
+		<button class="button" onclick="postTopic()">Add new topic</button>
+	</div>
+	<div class="list-group">
+		<input id="store_id" hidden="hidden" />
+	</div>
+</div>
+
