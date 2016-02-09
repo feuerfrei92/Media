@@ -47,6 +47,7 @@ namespace WebMediaClient.Controllers
             return View(viewModel);
 		}
 
+		[HttpPut]
 		public async Task<ActionResult> UpdateTopic(int ID, int sectionID, TopicViewModel topicModel, string token)
 		{
             string url = string.Format("http://localhost:8080/api/Topic/CreateTopic?ID={0}&SectionID={1}", ID, sectionID);
@@ -56,6 +57,7 @@ namespace WebMediaClient.Controllers
             return View(viewModel);
 		}
 
+		[HttpDelete]
 		public ActionResult DeleteTopic(int ID, string token)
 		{
 			try

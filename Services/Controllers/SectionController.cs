@@ -161,9 +161,6 @@ namespace Services.Controllers
 		[HttpPost]
 		public IHttpActionResult AddMembership(int sectionID, int userID)
 		{
-			if(sectionID == null || userID == null)
-				return BadRequest("Section or user is null");
-
 			var membership = new Membership
 			{
 				SectionID = sectionID,

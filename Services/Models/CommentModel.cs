@@ -13,6 +13,8 @@ namespace Services.Models
 		public string Name { get; set; }
 		[Required]
 		public string Text { get; set; }
+		public int TopicID { get; set; }
+		public int AuthorID { get; set; }
 		[Required]
 		public DateTime DateCreated { get; set; }
 		public DateTime? DateModified { get; set; }

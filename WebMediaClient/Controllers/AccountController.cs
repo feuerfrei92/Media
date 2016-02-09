@@ -407,17 +407,6 @@ namespace WebMediaClient.Controllers
         }
 
         //
-        // POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
-        {
-			string url = "http://localhost:8080/api/Account/Logout";
-			HttpClientBuilder<RegisterViewModel>.PostAsync(null, url, null);
-            return RedirectToAction("Index", "Home");
-        }
-
-        //
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]
         public ActionResult ExternalLoginFailure()

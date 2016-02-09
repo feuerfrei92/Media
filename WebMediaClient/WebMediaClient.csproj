@@ -1359,11 +1359,13 @@
     <Content Include="Views\Topic\GetTopicsBySectionID.cshtml" />
     <Content Include="Views\Topic\GetTopicsByAuthorID.cshtml" />
     <Content Include="Views\Section\GetSectionByID.cshtml" />
+    <Content Include="Views\Comment\GetCommentsByTopicID.cshtml" />
+    <Content Include="Views\User\GetUserByID.cshtml" />
+    <Content Include="Views\Topic\GetTopicByID.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Photo\" />
-    <Folder Include="Views\User\" />
     <Folder Include="Views\Video\" />
   </ItemGroup>
   <ItemGroup>

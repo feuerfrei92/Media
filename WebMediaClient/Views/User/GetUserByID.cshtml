@@ -1,0 +1,8 @@
+﻿@model WebMediaClient.Models.UserViewModel
+
+<div class="row">
+	<div class="col-md-8">
+		@Html.ActionLink(@Model.Username, "GetProfileByUserID", "Profile", new { userID = @Model.ID });
+	</div>
+</div>
+

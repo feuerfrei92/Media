@@ -19,7 +19,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Comment, CommentModel>> BuildCommentModel
 		{
-			get { return c => new CommentModel { ID = c.ID, Name = c.Name, Text = c.Text, DateCreated = c.DateCreated, DateModified = c.DateModified }; }
+			get { return c => new CommentModel { ID = c.ID, Name = c.Name, Text = c.Text, TopicID = c.TopicID, AuthorID = c.AuthorID, DateCreated = c.DateCreated, DateModified = c.DateModified }; }
 		}
 
 		public CommentController()
@@ -107,6 +107,8 @@ namespace Services.Controllers
 			}
 
 			comment.ID = newComment.ID;
+			comment.AuthorID = newComment.AuthorID;
+			comment.TopicID = newComment.TopicID;
 
 			return Ok(comment);
 		}

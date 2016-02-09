@@ -38,24 +38,27 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> CreateComment(int topicID, CommentViewModel commentModel, string token)
+		[HttpPost]
+		public async Task<ActionResult> CreateComment(int topicID, int authorID, CommentViewModel commentModel, string token)
 		{
-            string url = string.Format("http://localhost:8080/api/Comment/CreateComment?TopicID={0}", topicID);
+            string url = string.Format("http://localhost:8080/api/Comment/CreateComment?TopicID={0}&AuthorID={1}", topicID, authorID);
             var comment = CommentConverter.FromVisualToBasic(commentModel);
-            var createdComment = await HttpClientBuilder<CommentModel>.PutAsync(comment, url, token);
+            var createdComment = await HttpClientBuilder<CommentModel>.PostAsync(comment, url, token);
             var viewModel = CommentConverter.FromBasicToVisual(createdComment);
             return View(viewModel);
 		}
 
+		[HttpPut]
 		public async Task<ActionResult> UpdateComment(int ID, int topicID, CommentViewModel commentModel, string token)
 		{
             string url = string.Format("http://localhost:8080/api/Comment/CreateComment?ID={0}&TopicID={1}", ID, topicID);
             var comment = CommentConverter.FromVisualToBasic(commentModel);
-            var updatedComment = await HttpClientBuilder<CommentModel>.PostAsync(comment, url, token);
+            var updatedComment = await HttpClientBuilder<CommentModel>.PutAsync(comment, url, token);
             var viewModel = CommentConverter.FromBasicToVisual(updatedComment);
             return View(viewModel);
 		}
 
+		[HttpDelete]
 		public ActionResult DeleteComment(int ID, string token)
 		{
 			try
@@ -85,18 +88,19 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetCommentsByTopicID(int topicID, string token)
+		public ActionResult GetCommentsByTopicID(int topicID, string token)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Comment/GetCommentsByTopicID?TopicID={0}", topicID);
-				var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
+				//var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
+				var comments = Task.Run<List<CommentModel>>(() => HttpClientBuilder<CommentModel>.GetListAsync(url, token)).Result;
                 var viewModels = new List<CommentViewModel>();
                 foreach (CommentModel c in comments)
                 {
                     viewModels.Add(CommentConverter.FromBasicToVisual(c));
                 }
-				return View();
+				return View(viewModels);
 			}
 			catch
 			{
@@ -115,7 +119,7 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(CommentConverter.FromBasicToVisual(c));
                 }
-				return View();
+				return View(viewModels);
 			}
 			catch
 			{

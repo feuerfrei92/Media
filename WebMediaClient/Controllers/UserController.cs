@@ -58,12 +58,13 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetUserByID(int ID, string token)
+		public ActionResult GetUserByID(int ID, string token)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetUserByID?ID={0}", ID);
-				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
+				//var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
+				var user = Task.Run<UserModel>(() => HttpClientBuilder<UserModel>.GetAsync(url, token)).Result;
                 var viewModel = UserConverter.FromBasicToVisual(user);
 				return View(viewModel);
 			}

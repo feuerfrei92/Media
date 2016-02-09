@@ -17,6 +17,8 @@ namespace WebMediaClient.Converters
 				ID = commentModel.ID,
 				Name = commentModel.Name,
 				Text = commentModel.Text,
+				TopicID = commentModel.TopicID,
+				AuthorID = commentModel.AuthorID,
 				DateCreated = commentModel.DateCreated,
 				DateModified = commentModel.DateModified
 			};

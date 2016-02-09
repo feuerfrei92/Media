@@ -16,6 +16,7 @@ namespace WebMediaClient.Converters
 			{
 				ID = topicModel.ID,
 				Name = topicModel.Name,
+				AuthorID = topicModel.AuthorID,
 				DateCreated = topicModel.DateCreated,
 				DateModified = topicModel.DateModified
 			};
