@@ -1,0 +1,15 @@
+﻿@model List<WebMediaClient.Models.TopicViewModel>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="list-group-item">
+					@Html.ActionLink(item.Name, "GetTopicByID", "Topic", new { ID = item.ID }, null);
+				</div>
+			}
+		</div>
+	</div>
+</div>
+

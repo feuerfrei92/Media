@@ -18,5 +18,6 @@ namespace Models.DatabaseModels
 		public byte[] Content { get; set; }
 		[Required]
 		public DateTime DateCreated { get; set; }
+		public int Rating { get; set; }
 	}
 }

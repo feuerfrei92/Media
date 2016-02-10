@@ -22,7 +22,8 @@ namespace WebMediaClient.Converters
 				ID = photoModel.ID,
 				Content = content,
 				OwnerID = photoModel.OwnerID,
-				DateCreated = photoModel.DateCreated
+				DateCreated = photoModel.DateCreated,
+				Rating = photoModel.Rating
 			};
 
 			return viewModel;
@@ -37,7 +38,8 @@ namespace WebMediaClient.Converters
 				ID = viewModel.ID,
 				Content = content,
 				OwnerID = viewModel.OwnerID,
-				DateCreated = viewModel.DateCreated
+				DateCreated = viewModel.DateCreated,
+				Rating = viewModel.Rating
 			};
 
 			return PhotoModel;

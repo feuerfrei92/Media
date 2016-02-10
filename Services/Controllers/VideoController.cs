@@ -118,5 +118,29 @@ namespace Services.Controllers
 
 			return Ok(videos);
 		}
+
+		[HttpPut]
+		public IHttpActionResult UpdateRating(int videoID, bool like)
+		{
+			Video video = _nest.Videos.All().Where(v => v.ID == videoID).FirstOrDefault();
+
+			if (like)
+				video.Rating++;
+			else
+				video.Rating--;
+
+			_nest.Videos.Update(video);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
     }
 }

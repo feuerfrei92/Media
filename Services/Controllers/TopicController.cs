@@ -181,6 +181,21 @@ namespace Services.Controllers
 			return Ok(topics);
 		}
 
+		[HttpGet]
+		public IHttpActionResult GetSubscribedTopics(int userID)
+		{
+			List<Comment> comments = _nest.Comments.All().Where(c => c.AuthorID == userID).ToList();
+			var topics = new List<TopicModel>();
+			foreach (Comment c in comments)
+			{
+				var topic = _nest.Topics.All().Where(t => t.ID == c.TopicID).Select(BuildTopicModel).FirstOrDefault();
+				if (!topics.Contains(topic))
+					topics.Add(topic);
+			}
+
+			return Ok(topics);
+		}
+
 		private bool DoesMatchCriteria(Topic topic, TopicCriteria criteria)
 		{
 			if (!topic.Name.Contains(criteria.Name))

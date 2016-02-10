@@ -249,7 +249,7 @@ namespace Services.Controllers
 		[HttpGet]
 		public IHttpActionResult GetAllFriends(int userID)
 		{
-			List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID)) //&& f.IsAccepted == true)
+			List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == true)
 			.ToList();
 			var profiles = new List<ProfileModel>();
 			foreach (Friendship f in friendships)
@@ -264,6 +264,20 @@ namespace Services.Controllers
 					ProfileModel profile = _nest.Profiles.All().Where(p => p.UserID == f.UserID_1).Select(BuildProfileModel).FirstOrDefault();
 					profiles.Add(profile);
 				}
+			}
+			return Ok(profiles);
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetPendingFriends(int userID)
+		{
+			List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == false)
+			.ToList();
+			var profiles = new List<ProfileModel>();
+			foreach (Friendship f in friendships)
+			{
+				ProfileModel profile = _nest.Profiles.All().Where(p => p.UserID == f.UserID_2).Select(BuildProfileModel).FirstOrDefault();
+				profiles.Add(profile);
 			}
 			return Ok(profiles);
 		}

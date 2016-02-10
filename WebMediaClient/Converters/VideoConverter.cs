@@ -17,7 +17,8 @@ namespace WebMediaClient.Converters
 				ID = videoModel.ID,
 				Location = videoModel.Location,
 				OwnerID = videoModel.OwnerID,
-				DateCreated = videoModel.DateCreated
+				DateCreated = videoModel.DateCreated,
+				Rating = videoModel.Rating
 			};
 
 			return viewModel;
@@ -30,7 +31,8 @@ namespace WebMediaClient.Converters
 				ID = viewModel.ID,
 				Location = viewModel.Location,
 				OwnerID = viewModel.OwnerID,
-				DateCreated = viewModel.DateCreated
+				DateCreated = viewModel.DateCreated,
+				Rating = viewModel.Rating
 			};
 
 			return videoModel;

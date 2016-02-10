@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -92,6 +93,13 @@ namespace WebMediaClient.Controllers
 			{
 				return RedirectToAction("Error", "Account");
 			}
+		}
+
+		public async Task<ActionResult> UpdateRating(int photoID, bool like, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Photo/UpdateRating?PhotoID={0}&Like={1}", photoID, like);
+			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 		}
     }
 }

@@ -1362,6 +1362,8 @@
     <Content Include="Views\Comment\GetCommentsByTopicID.cshtml" />
     <Content Include="Views\User\GetUserByID.cshtml" />
     <Content Include="Views\Topic\GetTopicByID.cshtml" />
+    <Content Include="Views\Settings\GetPendingFriends.cshtml" />
+    <Content Include="Views\Settings\GetSubscribedTopics.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

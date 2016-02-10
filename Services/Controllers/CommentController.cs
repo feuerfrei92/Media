@@ -93,6 +93,7 @@ namespace Services.Controllers
 				TopicID = topicID,
 				AuthorID = authorID,
 				DateCreated = DateTime.Now,
+				Rating = 0,
 			};
 
 			_nest.Comments.Create(newComment);
@@ -185,6 +186,30 @@ namespace Services.Controllers
 			List<CommentModel> comments = _nest.Comments.All().Where(c => DoesMatchCriteria(c, criteria)).Select(BuildCommentModel).ToList();
 
 			return Ok(comments);
+		}
+
+		[HttpPut]
+		public IHttpActionResult UpdateRating(int commentID, bool like)
+		{
+			Comment comment = _nest.Comments.All().Where(c => c.ID == commentID).FirstOrDefault();
+
+			if (like)
+				comment.Rating++;
+			else
+				comment.Rating--;
+
+			_nest.Comments.Update(comment);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
 		}
 
 		private bool DoesMatchCriteria(Comment comment, CommentCriteria criteria)

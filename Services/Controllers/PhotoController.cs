@@ -118,5 +118,29 @@ namespace Services.Controllers
 
 			return Ok(photos);
 		}
+
+		[HttpPut]
+		public IHttpActionResult UpdateRating(int photoID, bool like)
+		{
+			Photo photo = _nest.Photos.All().Where(p => p.ID == photoID).FirstOrDefault();
+
+			if (like)
+				photo.Rating++;
+			else
+				photo.Rating--;
+
+			_nest.Photos.Update(photo);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
     }
 }

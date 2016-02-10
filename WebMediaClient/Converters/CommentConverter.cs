@@ -20,7 +20,8 @@ namespace WebMediaClient.Converters
 				TopicID = commentModel.TopicID,
 				AuthorID = commentModel.AuthorID,
 				DateCreated = commentModel.DateCreated,
-				DateModified = commentModel.DateModified
+				DateModified = commentModel.DateModified,
+				Rating = commentModel.Rating
 			};
 
 			return viewModel;
@@ -34,7 +35,8 @@ namespace WebMediaClient.Converters
 				Name = viewModel.Name,
 				Text = viewModel.Text,
 				DateCreated = viewModel.DateCreated,
-				DateModified = viewModel.DateModified
+				DateModified = viewModel.DateModified,
+				Rating = viewModel.Rating
 			};
 
 			return commentModel;

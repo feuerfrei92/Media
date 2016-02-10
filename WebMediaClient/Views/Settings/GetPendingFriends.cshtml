@@ -1,0 +1,85 @@
+﻿@model List<WebMediaClient.Models.ProfileViewModel>
+
+<script type="text/javascript">
+	window.addEventListener("load", function () { getUsername() }, false);
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
+
+	function getUsername() {
+		var token = getToken();
+		if (token != null) {
+			$.ajax
+			({
+				url: '@Url.Action("GetCurrentUser", "User")',
+				data: { token: token },
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					var hiddenID = document.getElementById("store_id");
+					hiddenID.value = data.ID;
+					loadFriends(data.ID);
+					loadInterests(data.ID);
+					loadSections(data.ID);
+				}
+			})
+		}
+	}
+
+	function acceptFriendship(username) {
+		var link = '@Url.Action("GetUserByUsername", "User", new { Username = "oooo" })';
+		link = link.replace("oooo", username);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				var id = data.ID;
+				confirm(id);
+			}
+		})
+	}
+
+	function confirm(id)
+	{
+		var hiddenID = document.getElementById("store_id");
+		var userID = hiddenID.value;
+		var link = '@Html.Raw(@Url.Action("AcceptFriendship", "Profile", new { UserID = -1, FriendID = -2 }))';
+		link = link.replace("-1", userID);
+		link = link.replace("-2", id);
+		$.ajax
+		({
+			url: link,
+			type: 'POST',
+			success: function (data) {
+
+			}
+		})
+	}
+</script>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="list-group-item">
+					@Html.ActionLink(item.Name, "GetProfileByID", "Profile", new { ID = item.ID }, null);
+				</div>
+				<div class="list-group-item">
+					<button class="button" onclick="acceptFriendship(@Html.Raw(Json.Encode(item.Username)))">Accept</button>
+				</div>
+			}
+		</div>
+		<div class="list-group">
+			<input id="store_id" hidden="hidden" />
+		</div>
+	</div>
+</div>
+

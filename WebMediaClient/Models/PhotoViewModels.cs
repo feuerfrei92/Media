@@ -17,5 +17,6 @@ namespace WebMediaClient.Models
 		public Image Content { get; set; }
 		[Required]
 		public DateTime DateCreated { get; set; }
+		public int Rating { get; set; }
 	}
 }

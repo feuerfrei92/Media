@@ -3,6 +3,7 @@ using Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -158,6 +159,13 @@ namespace WebMediaClient.Controllers
                 viewModels.Add(CommentConverter.FromBasicToVisual(c));
             }
             return View();
+		}
+
+		public async Task<ActionResult> UpdateRating(int commentID, bool like, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Comment/UpdateRating?CommentID={0}&Like={1}", commentID, like);
+			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 		}
     }
 }
