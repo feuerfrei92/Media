@@ -1,0 +1,33 @@
+﻿
+@{
+    Layout = null;
+}
+
+<script type="text/javascript">
+	window.onload = function () { deleteToken(); }
+
+	function deleteToken() {
+		var localProfile = window.localStorage;
+		localProfile.removeItem("MediaToken");
+		redirectHome();
+	}
+
+	function redirectHome()
+	{
+		window.location.href = '@Url.Action("Index", "Home")';
+	}
+</script>
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>LogOff</title>
+</head>
+<body>
+    <div> 
+		Logging you off...
+    </div>
+</body>
+</html>

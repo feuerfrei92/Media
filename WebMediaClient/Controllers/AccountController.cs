@@ -110,6 +110,14 @@ namespace WebMediaClient.Controllers
 			//}
         }
 
+		[HttpPost]
+		[AllowAnonymous]
+		public ActionResult LogOff()
+		{
+			GlobalUser.User = null;
+			return View();
+		}
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]

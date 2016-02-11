@@ -3,7 +3,7 @@
 }
 
 <script type="text/javascript">
-	window.addEventListener("load", function () { getUsername() }, false);
+	//window.addEventListener("load", function () { getUsername() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -85,10 +85,22 @@
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 	<div id="friends_container" class="col-md-4">
+		@if(ViewBag.User != null)
+		{
+			Html.RenderAction("GetAllFriends", "Profile", new { userID = ViewBag.User.ID });
+		}
 	</div>
 	<div id="interests_container" class="col-md-4">
+		@if(ViewBag.User != null)
+		{
+			Html.RenderAction("GetInterestsForUser", "Interest", new { userID = ViewBag.User.ID });
+		}
 	</div>
 	<div id="sections_container" class="col-md-4">
+		@if(ViewBag.User != null)
+		{
+			Html.RenderAction("GetMembershipsForUser", "Section", new { userID = ViewBag.User.ID });
+		}
 	</div>
 	<div class="list-group">
 		<input id="store_id" hidden="hidden" />

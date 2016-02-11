@@ -130,12 +130,13 @@ namespace WebMediaClient.Controllers
 			return View();
 		}
 
-		public async Task<ActionResult> GetMembershipsForUser(int userID, string token)
+		public ActionResult GetMembershipsForUser(int userID, string token)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/GetMembershipsForUser?UserID={0}", userID);
-				var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+				//var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+				var sections = Task.Run<List<SectionModel>>(() => HttpClientBuilder<SectionModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<SectionViewModel>();
                 foreach (SectionModel s in sections)
                 {

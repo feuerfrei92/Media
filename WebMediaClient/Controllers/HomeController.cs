@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -12,6 +13,8 @@ namespace WebMediaClient.Controllers
 	{
 		public ActionResult Index()
 		{
+			ViewBag.User = GlobalUser.User;
+
 			return View();
 		}
 
@@ -37,6 +40,14 @@ namespace WebMediaClient.Controllers
 			UserModel user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 			ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", user.Username);
 			ViewBag.Token = token;
+			GlobalUser.User = user;
+			return View();
+		}
+
+		[AllowAnonymous]
+		public ActionResult LogOff()
+		{
+			GlobalUser.User = null;
 			return View();
 		}
 	}

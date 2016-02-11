@@ -1,5 +1,5 @@
 ﻿<script type="text/javascript">
-	window.addEventListener("load", function () { showUsername() }, false);
+	//window.addEventListener("load", function () { showUsername() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -9,14 +9,7 @@
 		}
 	}
 
-	function deleteToken() {
-		if (Modernizr.localstorage) {
-			var localProfile = window.localStorage;
-			localProfile.removeItem("MediaToken");
-		}
-	}
-
-	function showUsername() {
+	@*function showUsername() {
 		var token = getToken();
 		$.ajax
 		({
@@ -76,10 +69,18 @@
 		registerLink.parentNode.removeChild(registerLink);
 		var loginLink = document.getElementById("loginLink");
 		loginLink.parentNode.removeChild(loginLink);
-	}
+	}*@
 </script>
 	<ul id="actions_list" class="nav navbar-nav navbar-right">
-		<li id="register">@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-		<li id="login">@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+		@if(GlobalUser.User == null)
+		{ 
+			<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+			<li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+		}
+		else
+		{
+			<li>@Html.ActionLink("Update profile", "UpdateProfile", "Profile", routeValues: null, htmlAttributes: new { id = "update_profile_link" })</li>
+			<li>@Html.ActionLink("Log off", "LogOff", "Home", routeValues: null, htmlAttributes: new { id = "logoff_link" })</li>
+		}
 	</ul>
 }
