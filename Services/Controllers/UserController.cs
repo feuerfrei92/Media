@@ -201,5 +201,65 @@ namespace Services.Controllers
 
 			return Ok(users);
 		}
+
+		[HttpPost]
+		public IHttpActionResult CreateVisit(int userID, int topicID)
+		{
+			var newVisit = new Visit
+			{
+				UserID = userID,
+				TopicID = topicID,
+				LastVisit = DateTime.Now,
+			};
+
+			_nest.Visits.Create(newVisit);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
+		[HttpPut]
+		public IHttpActionResult UpdateVisit(int userID, int topicID)
+		{
+			Visit visit = _nest.Visits.All().Where(v => v.UserID == userID && v.TopicID == topicID).FirstOrDefault();
+			visit.LastVisit = DateTime.Now;
+
+			_nest.Visits.Update(visit);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetVisitsByUserID(int userID)
+		{
+			List<Visit> visits = _nest.Visits.All().Where(v => v.UserID == userID).ToList();
+
+			return Ok(visits);
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetVisitsByTopicID(int topicID)
+		{
+			List<Visit> visits = _nest.Visits.All().Where(v => v.TopicID == topicID).ToList();
+
+			return Ok(visits);
+		}
     }
 }

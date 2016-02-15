@@ -40,6 +40,7 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult CreateProfile(int userID)
 		{
+			ViewBag.User = GlobalUser.User;
 			return View();
 		}
 
@@ -51,6 +52,7 @@ namespace WebMediaClient.Controllers
 			var profile = ProfileConverter.FromVisualToBasic(profileModel);
 			var createdProfile = await HttpClientBuilder<ProfileModel>.PostAsync(profile, url, token);
 			var viewModel = ProfileConverter.FromBasicToVisual(createdProfile);
+			ViewBag.User = GlobalUser.User;
 			return View(viewModel);
 		}
 
@@ -72,6 +74,7 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult UpdateProfile()
 		{
+			ViewBag.User = GlobalUser.User;
 			return View();
 		}
 
@@ -84,6 +87,7 @@ namespace WebMediaClient.Controllers
                 var profile = ProfileConverter.FromVisualToBasic(profileModel);
                 var updatedProfile = await HttpClientBuilder<ProfileModel>.PutAsync(profile, url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(updatedProfile);
+				ViewBag.User = GlobalUser.User;
 				return RedirectToAction("Index", "Home");
             }
             catch
@@ -183,6 +187,7 @@ namespace WebMediaClient.Controllers
 			List<ProfileViewModel> viewModels = new List<ProfileViewModel>();
 			if (TempData["viewModels"] != null)
 				viewModels = (List<ProfileViewModel>)TempData["viewModels"];
+			ViewBag.User = GlobalUser.User;
 			return View(viewModels);
 		}
 

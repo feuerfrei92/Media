@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -101,6 +102,66 @@ namespace WebMediaClient.Controllers
                     viewModels.Add(UserConverter.FromBasicToVisual(u));
                 }
 				return View();
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> CreateVisit(int userID, int topicID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/User/CreateVisit?UserID={0}&TopicID={1}", userID, topicID);
+				var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+		[HttpPut]
+		public async Task<ActionResult> UpdateVisit(int userID, int topicID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/User/UpdateVisit?UserID={0}&TopicID={1}", userID, topicID);
+				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+		[HttpGet]
+		public async Task<ActionResult> GetVisitsByUserID(int userID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/User/GetVisitsByUserID?UserID={0}", userID);
+				var visits = await HttpClientBuilder<HttpResponseMessage>.GetListAsync(url, token);
+				return Json(new { Visits = visits }, JsonRequestBehavior.AllowGet);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+		[HttpGet]
+		public async Task<ActionResult> GetVisitsByTopicID(int topicID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/User/GetVisitsByTopicID?TopicID={0}", topicID);
+				var visits = await HttpClientBuilder<HttpResponseMessage>.GetListAsync(url, token);
+				return Json(new { Visits = visits }, JsonRequestBehavior.AllowGet);
 			}
 			catch
 			{

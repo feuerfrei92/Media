@@ -1,7 +1,7 @@
 ﻿@model List<WebMediaClient.Models.ProfileViewModel>
 
 <script type="text/javascript">
-	window.addEventListener("load", function () { getUsername() }, false);
+	//window.addEventListener("load", function () { getUsername() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -11,7 +11,7 @@
 		}
 	}
 
-	function getUsername() {
+	@*function getUsername() {
 		var token = getToken();
 		if (token != null) {
 			$.ajax
@@ -29,7 +29,7 @@
 				}
 			})
 		}
-	}
+	}*@
 
 	function acceptFriendship(username) {
 		var link = '@Url.Action("GetUserByUsername", "User", new { Username = "oooo" })';
@@ -48,11 +48,11 @@
 
 	function confirm(id)
 	{
-		var hiddenID = document.getElementById("store_id");
-		var userID = hiddenID.value;
-		var link = '@Html.Raw(@Url.Action("AcceptFriendship", "Profile", new { UserID = -1, FriendID = -2 }))';
-		link = link.replace("-1", userID);
-		link = link.replace("-2", id);
+		//var hiddenID = document.getElementById("store_id");
+		//var userID = hiddenID.value;
+		var link = '@Html.Raw(@Url.Action("AcceptFriendship", "Profile", new { UserID = @ViewBag.User.ID, FriendID = -1 }))';
+		//link = link.replace("-1", userID);
+		link = link.replace("-1", id);
 		$.ajax
 		({
 			url: link,

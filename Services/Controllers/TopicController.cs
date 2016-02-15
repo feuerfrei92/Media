@@ -1,5 +1,6 @@
 ﻿using Data;
 using Models;
+using Models.DatabaseModels;
 using Services.Models;
 using System;
 using System.Collections.Generic;
@@ -75,7 +76,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
-		public IHttpActionResult CreateTopic(int sectionID, int authorID, TopicModel topic)
+		public IHttpActionResult CreateTopic(int sectionID, int authorID, TopicModel topic, bool isProfile = false, bool isInterest = false)
 		{
 			if (!(ModelState.IsValid))
 			{
@@ -88,6 +89,8 @@ namespace Services.Controllers
 				SectionID = sectionID,
 				AuthorID = authorID,
 				DateCreated = DateTime.Now,
+				IsProfileTopic = isProfile,
+				IsInterestTopic = isInterest,
 			};
 
 			_nest.Topics.Create(newTopic);
@@ -152,9 +155,25 @@ namespace Services.Controllers
 		[HttpGet]
 		public IHttpActionResult GetTopicsBySectionID(int sectionID)
 		{
-			List<TopicModel> topics = _nest.Topics.All().Where(t => t.SectionID == sectionID).Select(BuildTopicModel).ToList();
+			List<TopicModel> topics = _nest.Topics.All().Where(t => t.SectionID == sectionID && t.IsProfileTopic == false && t.IsInterestTopic == false).Select(BuildTopicModel).ToList();
 
 			return Ok(topics);
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetTopicForProfile(int profileID)
+		{
+			TopicModel topic = _nest.Topics.All().Where(t => t.SectionID == profileID && t.IsProfileTopic == true).Select(BuildTopicModel).FirstOrDefault();
+
+			return Ok(topic);
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetTopicForInterest(int profileID)
+		{
+			TopicModel topic = _nest.Topics.All().Where(t => t.SectionID == profileID && t.IsInterestTopic == true).Select(BuildTopicModel).FirstOrDefault();
+
+			return Ok(topic);
 		}
 
 		[HttpGet]

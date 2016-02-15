@@ -8,7 +8,7 @@
 <h2>Profile search results</h2>
 
 <script type="text/javascript">
-	window.addEventListener("load", function () { getUsername() }, false);
+	window.addEventListener("load", function () { compareUsername() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -18,7 +18,7 @@
 		}
 	}
 
-	function getUsername() {
+	@*function getUsername() {
 		var token = getToken();
 		$.ajax
 		({
@@ -34,7 +34,7 @@
 				compareUsername();
 			}
 		})
-	}
+	}*@
 
 	function addButton(username) {
 			var profileList = document.getElementById("add_friend");
@@ -49,7 +49,7 @@
 	function compareUsername()
 	{
 		var profileList = document.getElementById("add_friend");
-		var currentUsername = document.getElementById("hidden_label").value;
+		var currentUsername = '@ViewBag.User.Username';
 		var buttons = document.getElementsByClassName("dialogbutton");
 		for (var i = 0; i < buttons.length; i++)
 		{
@@ -75,11 +75,8 @@
 	}
 
 	function addFriend(id) {
-		var hiddenID = document.getElementById("hidden_ID");
-		var userID = hiddenID.value;
-		var link = '@Html.Raw(@Url.Action("AddFriend", "Profile", new { UserID = -1, FriendID = -2 }))';
-		link = link.replace("-1", userID);
-		link = link.replace("-2", id);
+		var link = '@Html.Raw(@Url.Action("AddFriend", "Profile", new { UserID = @ViewBag.User.ID, FriendID = -1 }))';
+		link = link.replace("-1", id);
 		$.ajax
 		({
 			url: link,
@@ -105,12 +102,6 @@
 						addButton(@Html.Raw(Json.Encode(item.Username)));
 					</script>
 				}
-			</div>
-			<div class="list-group">
-				<input id="hidden_label" hidden="hidden" />
-			</div>
-			<div class="list-group">
-				<input id="hidden_ID" hidden="hidden" />
 			</div>
 		</div>
 	</div>

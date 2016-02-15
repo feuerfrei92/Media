@@ -50,5 +50,11 @@ namespace WebMediaClient.Controllers
 			GlobalUser.User = null;
 			return View();
 		}
+
+		public ActionResult SetUser(UserModel user)
+		{
+			GlobalUser.User = user;
+			return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
+		}
 	}
 }

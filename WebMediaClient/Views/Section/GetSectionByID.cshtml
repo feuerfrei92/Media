@@ -8,7 +8,7 @@
 <h2>@Model.Name</h2>
 
 <script type="text/javascript">
-	window.addEventListener("load", function () { getUsername() }, false);
+	//window.addEventListener("load", function () { getUsername() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -18,7 +18,7 @@
 		}
 	}
 
-	function getUsername() {
+	@*function getUsername() {
 		var token = getToken();
 		if (token != null) {
 			$.ajax
@@ -35,9 +35,9 @@
 				}
 			})
 		}
-	}
+	}*@
 
-	function loadChildSections(id) {
+	@*function loadChildSections(id) {
 		var link = '@Url.Action("GetSectionsByParentID", "Section", new { parentID = @Model.ID })';
 		$('#sections_container').load(link);
 	}
@@ -45,27 +45,34 @@
 	function loadTopics(id) {
 		var link = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
 		$('#topics_container').load(link);
-	}
+	}*@
 
 	function postTopic() {
-		var link = '@Html.Raw(@Url.Action("CreateTopic", "Topic", new { sectionID = @Model.ID, authorID = -1 }))';
-		var hiddenID = document.getElementById("store_id");
-		var id = hiddenID.value;
-		link = link.replace("-1", id);
+		var link = '@Html.Raw(@Url.Action("CreateTopic", "Topic", new { sectionID = @Model.ID, authorID = @ViewBag.User.ID }))';
+		//var hiddenID = document.getElementById("store_id");
+		//var id = hiddenID.value;
+		//link = link.replace("-1", id);
 		window.location.href = link;
 	}
 </script>
 
 <div class="row">
 	<div id="sections_container" class="col-md-4">
+		@Html.Action("GetSectionsByParentID", "Section", new { parentID = @Model.ID })
 	</div>
+</div>
+<div class="row">
 	<div id="topics_container" class="col-md-4">
+		@Html.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })
 	</div>
+</div>
+<div class="row">
 	<div class="list-group">
 		<button class="button" onclick="postTopic()">Add new topic</button>
 	</div>
-	<div class="list-group">
+</div>
+	@*<div class="list-group">
 		<input id="store_id" hidden="hidden" />
 	</div>
-</div>
+</div>*@
 

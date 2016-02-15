@@ -8,7 +8,7 @@
 <h2>Update profile</h2>
 
 <script type="text/javascript">
-	window.addEventListener("load", function () { getUsername() }, false);
+	window.addEventListener("load", function () { loadValues() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -18,7 +18,7 @@
 		}
 	}
 
-	function getUsername() {
+	@*function getUsername() {
 		var token = getToken();
 		$.ajax
 		({
@@ -32,9 +32,10 @@
 				loadValues(data.Username);
 			}
 		})
-	}
+	}*@
 
-	function loadValues(username) {
+	function loadValues() {
+		var username = '@ViewBag.User.Username';
 		$.ajax
 		({
 			url: '@Url.Action("GetProfileByUsernameRaw", "Profile")',
@@ -53,10 +54,10 @@
 			},
 			error: function (xhr) {
 				if (xhr.status == 500) {
-					var hiddenID = document.getElementById("store_id");
-					var id = hiddenID.value;
-					var link = '@Url.Action("CreateProfile", "Profile", new { userID = -1 })';
-					link = link.replace("1", id);
+					//var hiddenID = document.getElementById("store_id");
+					//var id = hiddenID.value;
+					var link = '@Url.Action("CreateProfile", "Profile", new { userID = @ViewBag.User.ID })';
+					//link = link.replace("-1", id);
 					window.location.href = link;
 				}
 			}
@@ -66,8 +67,8 @@
 	function updateProfile() {
 		var hiddenText = document.getElementById("hidden_input");
 		var id = hiddenText.value;
-		var hiddenID = document.getElementById("store_id");
-		var userID = hiddenID.value;
+		//var hiddenID = document.getElementById("store_id");
+		//var userID = hiddenID.value;
 		var usernameText = document.getElementById("username_text");
 		var username = usernameText.value;
 		var nameText = document.getElementById("name_text");
@@ -75,7 +76,7 @@
 		var ageText = document.getElementById("age_text");
 		var age = ageText.value;
 		var link = '@Url.Action("UpdateProfile", "Profile", new { ID = -1 })';
-		link = link.replace("1", userID);
+		link = link.replace("-1", id);
 		$.ajax
 		({
 			url: link,
@@ -117,9 +118,6 @@
 		</div>
 		<div class="list-group">
 			<input id="hidden_input" hidden="hidden" />
-		</div>
-		<div class="list-group">
-			<input id="store_id" hidden="hidden" />
 		</div>
 	</div>
 </div>

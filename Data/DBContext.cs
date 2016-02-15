@@ -30,6 +30,7 @@ namespace Data
 		public virtual IDbSet<Membership> Memberships { get; set; }
 		public virtual IDbSet<Photo> Photos { get; set; }
 		public virtual IDbSet<Video> Videos { get; set; }
+		public virtual IDbSet<Visit> Visits { get; set; }
 
 		public new void SaveChanges()
 		{

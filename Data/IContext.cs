@@ -23,6 +23,7 @@ namespace Data
 		IDbSet<Membership> Memberships { get; set; }
 		IDbSet<Photo> Photos { get; set; }
 		IDbSet<Video> Videos { get; set; }
+		IDbSet<Visit> Visits { get; set; }
 		void SaveChanges();
 		DbSet<TEntity> Set<TEntity>() where TEntity : class;
 		DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

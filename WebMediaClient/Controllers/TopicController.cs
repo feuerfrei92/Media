@@ -79,6 +79,7 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicByID?ID={0}", ID);
 				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
                 var viewModel = TopicConverter.FromBasicToVisual(topic);
+				ViewBag.User = GlobalUser.User;
 				return View(viewModel);
 			}
 			catch
@@ -87,18 +88,51 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetTopicsBySectionID(int sectionID, string token)
+		public ActionResult GetTopicsBySectionID(int sectionID, string token)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsBySectionID?SectionID={0}", sectionID);
-				var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+				var topics = Task.Run<List<TopicModel>>(() => HttpClientBuilder<TopicModel>.GetListAsync(url, token)).Result;
                 var viewModels = new List<TopicViewModel>();
                 foreach (TopicModel t in topics)
                 {
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
                 return View(viewModels);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+		public async Task<ActionResult> GetTopicForProfile(int profileID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Topic/GetTopicForProfile?ProfileID={0}", profileID);
+				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
+				var viewModel = TopicConverter.FromBasicToVisual(topic);
+				ViewBag.User = GlobalUser.User;
+				return View(viewModel);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+		public async Task<ActionResult> GetTopicForInterest(int interestID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Topic/GetTopicForInterest?InterestID={0}", interestID);
+				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
+				var viewModel = TopicConverter.FromBasicToVisual(topic);
+				ViewBag.User = GlobalUser.User;
+				return View(viewModel);
 			}
 			catch
 			{

@@ -81,6 +81,11 @@ namespace Data
 			get { return GetRepository<Video>(); }
 		}
 
+		public IRepository<Visit> Visits
+		{
+			get { return GetRepository<Visit>(); }
+		}
+
 		public void SaveChanges()
 		{
 			_context.SaveChanges();

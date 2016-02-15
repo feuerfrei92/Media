@@ -13,7 +13,7 @@
 		}
 	}
 
-	function getUsername() {
+	@*function getUsername() {
 		var token = getToken();
 		if (token != null) {
 			$.ajax
@@ -49,7 +49,7 @@
 		var link = '@Url.Action("GetMembershipsForUser", "Section", new { userID = -1 })';
 		link = link.replace("-1", id);
 		$('#sections_container').load(link);
-	}
+	}*@
 </script>
 
 <div class="jumbotron">
@@ -84,6 +84,8 @@
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
+</div>
+<div class="row">
 	<div id="friends_container" class="col-md-4">
 		@if(ViewBag.User != null)
 		{
@@ -102,7 +104,7 @@
 			Html.RenderAction("GetMembershipsForUser", "Section", new { userID = ViewBag.User.ID });
 		}
 	</div>
-	<div class="list-group">
-		<input id="store_id" hidden="hidden" />
-	</div>
 </div>
+	@*<div class="list-group">
+		<input id="store_id" hidden="hidden" />
+	</div>*@

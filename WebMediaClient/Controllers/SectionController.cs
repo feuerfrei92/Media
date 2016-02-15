@@ -79,6 +79,7 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Section/GetSectionByID?ID={0}", ID);
 				var section = await HttpClientBuilder<SectionModel>.GetAsync(url, token);
                 var viewModel = SectionConverter.FromBasicToVisual(section);
+				ViewBag.User = GlobalUser.User;
 				return View(viewModel);
 			}
 			catch
@@ -87,12 +88,13 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetSectionsByParentID(int parentID, string token)
+		public ActionResult GetSectionsByParentID(int parentID, string token)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/GetSectionsByParentID?ParentID={0}", parentID);
-				var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+				//var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+				var sections = Task.Run<List<SectionModel>>(() => HttpClientBuilder<SectionModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<SectionViewModel>();
 				foreach(SectionModel s in sections)
 				{

@@ -20,5 +20,9 @@ namespace Models
 		[Required]
 		public DateTime DateCreated { get; set; }
 		public DateTime? DateModified { get; set; }
+		[Required]
+		public bool IsProfileTopic { get; set; }
+		[Required]
+		public bool IsInterestTopic { get; set; }
 	}
 }

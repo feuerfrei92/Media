@@ -6,7 +6,7 @@
 }
 
 <script type="text/javascript">
-	window.addEventListener("load", function () { getUsername() }, false);
+	//window.addEventListener("load", function () { getUsername() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -16,7 +16,7 @@
 		}
 	}
 
-	function getUsername() {
+	@*function getUsername() {
 		var token = getToken();
 		if (token != null) {
 			$.ajax
@@ -31,26 +31,30 @@
 				}
 			})
 		}
-	}
+	}*@
 
 	function addComment() {
-		var hiddenID = document.getElementById("store_id");
-		var id = hiddenID.value;
+		//var hiddenID = document.getElementById("store_id");
+		//var id = hiddenID.value;
 		var textblock = document.getElementById("comment_text");
 		var text = textblock.value;
-		var link = '@Html.Raw(@Url.Action("CreateComment", "Comment", new { topicID = @Model.ID, authorID = -1 }))';
-		link = link.replace("-1", id);
-			$.ajax
-			({
-				url: link,
-				data:
-					{
-						text: text,
-						datecreated: Date.now(),
-					},
-				type: 'POST',
-				success: function (data) {
-					$('#comments').empty();
+		var link = '@Html.Raw(@Url.Action("CreateComment", "Comment", new { topicID = @Model.ID, authorID = @ViewBag.User.ID }))';
+		//link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			data:
+				{
+					text: text,
+					datecreated: Date.now(),
+				},
+			type: 'POST',
+			success: function (data) {
+				//$('#comments').empty();
+				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+					$('#comments').load(link);
+				},
+				error: function (xhr) {
 					var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
 					$('#comments').load(link);
 				}

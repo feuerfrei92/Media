@@ -1349,7 +1349,6 @@
     <Content Include="Views\Interest\GetInterestsForUser.cshtml" />
     <Content Include="Views\Interest\GetInterestByName.cshtml" />
     <Content Include="Views\Profile\CreateProfile.cshtml" />
-    <Content Include="Views\Profile\GetProfileByUsername.cshtml" />
     <Content Include="Views\Shared\SearchProfile.cshtml" />
     <Content Include="Views\Profile\SearchProfilesByCriteria.cshtml" />
     <Content Include="Views\Profile\UpdateProfile.cshtml" />
@@ -1366,6 +1365,9 @@
     <Content Include="Views\Settings\GetPendingFriends.cshtml" />
     <Content Include="Views\Settings\GetSubscribedTopics.cshtml" />
     <Content Include="Views\Home\LogOff.cshtml" />
+    <Content Include="Views\Profile\GetProfileByUserID.cshtml" />
+    <Content Include="Views\Profile\GetProfileByUsername.cshtml" />
+    <Content Include="Views\Profile\GetProfileByID.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

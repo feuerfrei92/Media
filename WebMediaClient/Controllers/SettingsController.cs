@@ -30,6 +30,7 @@ namespace WebMediaClient.Controllers
 				{
 					viewModels.Add(ProfileConverter.FromBasicToVisual(p));
 				}
+				ViewBag.User = GlobalUser.User;
 				return View(viewModels);
 			}
 			catch

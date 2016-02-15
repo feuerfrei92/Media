@@ -1,12 +1,50 @@
 ﻿<script type="text/javascript">
-	//window.addEventListener("load", function () { showUsername() }, false);
+	window.addEventListener("load", function () { getToken() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
 			var localProfile = window.localStorage;
 			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			return token;
+			if (token != null && @Html.Raw(@Json.Encode(@GlobalUser.User)) == null)
+			{
+				$.ajax
+				({
+					url: '@Url.Action("GetCurrentUser", "User")',
+					data: { token: token },
+					dataType: 'json',
+					type: 'GET',
+					success: function (data) {
+						setUser(data.ID, data.Username);
+					}
+				})
+			}
 		}
+	}
+
+	function setUser(id, username)
+	{
+		$.ajax
+		({
+			url: '@Url.Action("SetUser", "Home")',
+			data: { id: id, username: username},
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				var actionsList = document.getElementById("actions_list");
+				var manageNode = document.createElement("li");
+				manageNode.setAttribute("id", "manage_profile");
+				manageNode.setAttribute("class", "dropdown");
+				var actionLinkElement = document.createElement("label");
+				actionLinkElement.setAttribute("class", "label-default dropdown-toggle");
+				actionLinkElement.setAttribute("data-toggle", "dropdown");
+				var manageElem = "Hello, " + data.Username;
+				actionLinkElement.innerHTML = manageElem;
+				manageNode.appendChild(actionLinkElement);
+				actionsList.appendChild(manageNode);
+				populateDropdownMenu();
+				populateLogOffNode();
+			}
+		})
 	}
 
 	@*function showUsername() {
@@ -33,7 +71,7 @@
 				populateLogOffNode();
 			}
 		})
-	}
+	}*@
 
 	function populateDropdownMenu() {
 		var manageNode = document.getElementById("manage_profile");
@@ -69,7 +107,7 @@
 		registerLink.parentNode.removeChild(registerLink);
 		var loginLink = document.getElementById("loginLink");
 		loginLink.parentNode.removeChild(loginLink);
-	}*@
+	}
 </script>
 	<ul id="actions_list" class="nav navbar-nav navbar-right">
 		@if(GlobalUser.User == null)
@@ -79,7 +117,12 @@
 		}
 		else
 		{
-			<li>@Html.ActionLink("Update profile", "UpdateProfile", "Profile", routeValues: null, htmlAttributes: new { id = "update_profile_link" })</li>
+			<li class="dropdown"><label class="label-default dropdown-toggle" data-toggle="dropdown">Hello, @GlobalUser.User.Username</label>
+				<ul class="dropdown-menu">
+					<li>@Html.ActionLink("Update profile", "UpdateProfile", "Profile", routeValues: null, htmlAttributes: new { id = "update_profile_link" })</li>
+					<li>@Html.ActionLink("Update settings", "Index", "Settings", routeValues: null, htmlAttributes: new { id = "setting_link" })</li>
+				</ul>
+			</li>
 			<li>@Html.ActionLink("Log off", "LogOff", "Home", routeValues: null, htmlAttributes: new { id = "logoff_link" })</li>
 		}
 	</ul>
