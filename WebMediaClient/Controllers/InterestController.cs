@@ -43,6 +43,7 @@ namespace WebMediaClient.Controllers
             var interest = InterestConverter.FromVisualToBasic(interestModel);
             var createdInterest = await HttpClientBuilder<InterestModel>.PutAsync(interest, url, token);
             var viewModel = InterestConverter.FromBasicToVisual(createdInterest);
+			ViewBag.AuthorID = userID;
             return View(viewModel);
 		}
 

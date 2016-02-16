@@ -117,6 +117,7 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByID?ID={0}", ID);
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(profile);
+				ViewBag.ID = ID;
 				return View(viewModel);
 			}
 			catch
@@ -132,6 +133,7 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByUserID?UserID={0}", userID);
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(profile);
+				ViewBag.UserID = userID;
                 return View(viewModel);
 			}
 			catch
@@ -154,6 +156,7 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByUsername?Username={0}", username);
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(profile);
+				ViewBag.Username = username;
                 return View(viewModel);
 			//}
 			//catch

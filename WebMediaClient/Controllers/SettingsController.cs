@@ -58,5 +58,25 @@ namespace WebMediaClient.Controllers
 				return RedirectToAction("Error", "Account");
 			}
 		}
+
+		public ActionResult GetTopicsWithNewComments(int userID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Topic/GetSubscribedTopics?UserID={0}", userID);
+				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+				var topics = Task.Run<List<TopicModel>>(() => HttpClientBuilder<TopicModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<TopicViewModel>();
+				foreach (TopicModel t in topics)
+				{
+					viewModels.Add(TopicConverter.FromBasicToVisual(t));
+				}
+				return View(viewModels);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
     }
 }

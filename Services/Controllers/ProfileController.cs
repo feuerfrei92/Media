@@ -94,6 +94,18 @@ namespace Services.Controllers
 
 			_nest.Profiles.Create(newProfile);
 
+			var newTopic = new Topic
+			{
+				Name = profile.Name,
+				SectionID = newProfile.ID,
+				AuthorID = userID,
+				DateCreated = DateTime.Now,
+				IsProfileTopic = true,
+				IsInterestTopic = false,
+			};
+
+			_nest.Topics.Create(newTopic);
+
 			try
 			{
 				_nest.SaveChanges();
@@ -271,12 +283,12 @@ namespace Services.Controllers
 		[HttpGet]
 		public IHttpActionResult GetPendingFriends(int userID)
 		{
-			List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == false)
+			List<Friendship> friendships = _nest.Friendships.All().Where(f => f.UserID_2 == userID && f.IsAccepted == false)
 			.ToList();
 			var profiles = new List<ProfileModel>();
 			foreach (Friendship f in friendships)
 			{
-				ProfileModel profile = _nest.Profiles.All().Where(p => p.UserID == f.UserID_2).Select(BuildProfileModel).FirstOrDefault();
+				ProfileModel profile = _nest.Profiles.All().Where(p => p.UserID == f.UserID_1).Select(BuildProfileModel).FirstOrDefault();
 				profiles.Add(profile);
 			}
 			return Ok(profiles);

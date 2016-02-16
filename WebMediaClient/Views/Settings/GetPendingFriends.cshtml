@@ -50,13 +50,13 @@
 	{
 		//var hiddenID = document.getElementById("store_id");
 		//var userID = hiddenID.value;
-		var link = '@Html.Raw(@Url.Action("AcceptFriendship", "Profile", new { UserID = @ViewBag.User.ID, FriendID = -1 }))';
+		var link = '@Html.Raw(@Url.Action("AcceptFriendship", "Profile", new { userID = @ViewBag.User.ID, friendID = -1 }))';
 		//link = link.replace("-1", userID);
 		link = link.replace("-1", id);
 		$.ajax
 		({
 			url: link,
-			type: 'POST',
+			type: 'PUT',
 			success: function (data) {
 
 			}
@@ -70,15 +70,12 @@
 			@foreach (var item in Model)
 			{
 				<div class="list-group-item">
-					@Html.ActionLink(item.Name, "GetProfileByID", "Profile", new { ID = item.ID }, null);
+					@Html.ActionLink(item.Name, "GetProfileByID", "Profile", new { ID = item.ID }, null)
 				</div>
 				<div class="list-group-item">
-					<button class="button" onclick="acceptFriendship(@Html.Raw(Json.Encode(item.Username)))">Accept</button>
+					<button class="button" onclick="@("acceptFriendship(" + @Html.Raw(Json.Encode(item.Username)) + ")")">Accept</button>
 				</div>
 			}
-		</div>
-		<div class="list-group">
-			<input id="store_id" hidden="hidden" />
 		</div>
 	</div>
 </div>

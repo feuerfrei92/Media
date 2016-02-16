@@ -37,6 +37,13 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult CreateTopic(int sectionID, int authorID)
+		{
+			ViewBag.SectionID = sectionID;
+			ViewBag.AuthorID = authorID;
+			return View();
+		}
+
 		[HttpPost]
 		public async Task<ActionResult> CreateTopic(int sectionID, int authorID, TopicViewModel topicModel, string token)
 		{
@@ -44,7 +51,7 @@ namespace WebMediaClient.Controllers
             var topic = TopicConverter.FromVisualToBasic(topicModel);
             var createdTopic = await HttpClientBuilder<TopicModel>.PostAsync(topic, url, token);
             var viewModel = TopicConverter.FromBasicToVisual(createdTopic);
-            return View(viewModel);
+			return RedirectToAction("GetTopicByID", "Topic", new { ID = viewModel.ID });
 		}
 
 		[HttpPut]

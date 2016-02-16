@@ -1368,6 +1368,9 @@
     <Content Include="Views\Profile\GetProfileByUserID.cshtml" />
     <Content Include="Views\Profile\GetProfileByUsername.cshtml" />
     <Content Include="Views\Profile\GetProfileByID.cshtml" />
+    <Content Include="Views\Topic\CreateTopic.cshtml" />
+    <Content Include="Views\Settings\GetTopicsWithNewComments.cshtml" />
+    <Content Include="Views\Interest\CreateInterest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

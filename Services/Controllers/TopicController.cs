@@ -76,7 +76,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
-		public IHttpActionResult CreateTopic(int sectionID, int authorID, TopicModel topic, bool isProfile = false, bool isInterest = false)
+		public IHttpActionResult CreateTopic(int sectionID, int authorID, TopicModel topic)
 		{
 			if (!(ModelState.IsValid))
 			{
@@ -89,8 +89,8 @@ namespace Services.Controllers
 				SectionID = sectionID,
 				AuthorID = authorID,
 				DateCreated = DateTime.Now,
-				IsProfileTopic = isProfile,
-				IsInterestTopic = isInterest,
+				IsProfileTopic = false,
+				IsInterestTopic = false,
 			};
 
 			_nest.Topics.Create(newTopic);
@@ -105,7 +105,7 @@ namespace Services.Controllers
 			}
 
 			topic.ID = newTopic.ID;
-			topic.ID = newTopic.AuthorID;
+			topic.AuthorID = newTopic.AuthorID;
 
 			return Ok(topic);
 		}
@@ -208,8 +208,27 @@ namespace Services.Controllers
 			foreach (Comment c in comments)
 			{
 				var topic = _nest.Topics.All().Where(t => t.ID == c.TopicID).Select(BuildTopicModel).FirstOrDefault();
-				if (!topics.Contains(topic))
+				if (!topics.Exists(t => t.ID == topic.ID))
 					topics.Add(topic);
+			}
+
+			return Ok(topics);
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetTopicsWithNewComments(int userID)
+		{
+			List<Comment> comments = _nest.Comments.All().Where(c => c.AuthorID == userID).ToList();
+			var topics = new List<TopicModel>();
+			foreach (Comment c in comments)
+			{
+				var topic = _nest.Topics.All().Where(t => t.ID == c.TopicID).Select(BuildTopicModel).FirstOrDefault();
+				var visit = _nest.Visits.All().Where(v => v.TopicID == topic.ID && v.UserID == userID).FirstOrDefault();
+				if (visit.LastVisit.CompareTo(topic.DateModified) == -1)
+				{
+					if (!topics.Exists(t => t.ID == topic.ID))
+						topics.Add(topic);
+				}
 			}
 
 			return Ok(topics);

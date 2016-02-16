@@ -1,4 +1,5 @@
 ﻿using Data;
+using Models;
 using Models.DatabaseModels;
 using Services.Models;
 using System;
@@ -85,6 +86,18 @@ namespace Services.Controllers
 			};
 
 			_nest.Interests.Create(newInterest);
+
+			var newTopic = new Topic
+			{
+				Name = interest.Name,
+				SectionID = newInterest.ID,
+				AuthorID = authorID,
+				DateCreated = DateTime.Now,
+				IsProfileTopic = false,
+				IsInterestTopic = true,
+			};
+
+			_nest.Topics.Create(newTopic);
 
 			try
 			{
