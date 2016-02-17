@@ -97,8 +97,8 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult GetTopicsBySectionID(int sectionID, string token)
 		{
-			try
-			{
+			//try
+			//{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsBySectionID?SectionID={0}", sectionID);
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var topics = Task.Run<List<TopicModel>>(() => HttpClientBuilder<TopicModel>.GetListAsync(url, token)).Result;
@@ -108,43 +108,45 @@ namespace WebMediaClient.Controllers
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
                 return View(viewModels);
-			}
-			catch
-			{
-				return RedirectToAction("Error", "Account");
-			}
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
 		}
 
-		public async Task<ActionResult> GetTopicForProfile(int profileID, string token)
+		public ActionResult GetTopicForProfile(int profileID, string token)
 		{
-			try
-			{
+			//try
+			//{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicForProfile?ProfileID={0}", profileID);
-				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
+				//var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
+				var topic = Task.Run<TopicModel>(() => HttpClientBuilder<TopicModel>.GetAsync(url, token)).Result;
 				var viewModel = TopicConverter.FromBasicToVisual(topic);
 				ViewBag.User = GlobalUser.User;
 				return View(viewModel);
-			}
-			catch
-			{
-				return RedirectToAction("Error", "Account");
-			}
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
 		}
 
-		public async Task<ActionResult> GetTopicForInterest(int interestID, string token)
+		public ActionResult GetTopicForInterest(int interestID, string token)
 		{
-			try
-			{
+			//try
+			//{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicForInterest?InterestID={0}", interestID);
-				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
+				//var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
+				var topic = Task.Run<TopicModel>(() => HttpClientBuilder<TopicModel>.GetAsync(url, token)).Result;
 				var viewModel = TopicConverter.FromBasicToVisual(topic);
 				ViewBag.User = GlobalUser.User;
 				return View(viewModel);
-			}
-			catch
-			{
-				return RedirectToAction("Error", "Account");
-			}
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
 		}
 
 		public async Task<ActionResult> GetTopicsByAuthorID(int authorID, string token)
@@ -158,6 +160,25 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
+				return View(viewModels);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+		public async Task<ActionResult> SearchByTopicName(string name, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Topic/SearchByTopicName?Name={0}", name);
+				var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+				var viewModels = new List<TopicViewModel>();
+				foreach (TopicModel t in topics)
+				{
+					viewModels.Add(TopicConverter.FromBasicToVisual(t));
+				}
 				return View(viewModels);
 			}
 			catch

@@ -13,9 +13,7 @@ namespace WebMediaClient.Models
 		public int ID { get; set; }
 		[Required]
 		public int OwnerID { get; set; }
-		[Required]
 		public Image Content { get; set; }
-		[Required]
 		public DateTime DateCreated { get; set; }
 		public int Rating { get; set; }
 	}

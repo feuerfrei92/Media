@@ -35,5 +35,8 @@
 			}
 		</section>
 	</div>
+	<div class="col-md-8">
+		@Html.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })
+	</div>
 </div>
 

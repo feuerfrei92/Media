@@ -230,6 +230,12 @@ namespace Services.Controllers
 		public IHttpActionResult UpdateVisit(int userID, int topicID)
 		{
 			Visit visit = _nest.Visits.All().Where(v => v.UserID == userID && v.TopicID == topicID).FirstOrDefault();
+
+			if (visit == null)
+			{
+				return BadRequest("No visit with the specified ID exists.");
+			}
+
 			visit.LastVisit = DateTime.Now;
 
 			_nest.Visits.Update(visit);

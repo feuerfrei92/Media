@@ -92,12 +92,21 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Interest/GetInterestByName?Name={0}", name);
 				var interest = await HttpClientBuilder<InterestModel>.GetAsync(url, token);
                 var viewModel = InterestConverter.FromBasicToVisual(interest);
+				ViewBag.Name = name;
                 return View(viewModel);
 			}
 			catch
 			{
 				return RedirectToAction("Error", "Account");
 			}
+		}
+
+		public async Task<ActionResult> GetInterestByNameRaw(string name, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Interest/GetInterestByName?Name={0}", name);
+			var interest = await HttpClientBuilder<InterestModel>.GetAsync(url, token);
+			return Json(new { ID = interest.ID, Name = interest.Name }, JsonRequestBehavior.AllowGet);
+			
 		}
 
 		[HttpGet]

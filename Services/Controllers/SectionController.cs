@@ -158,6 +158,14 @@ namespace Services.Controllers
 			return Ok(sections);
 		}
 
+		[HttpGet]
+		public IHttpActionResult SearchBySectionName(string name)
+		{
+			List<SectionModel> sections = _nest.Sections.All().Where(s => s.Name.Contains(name)).Select(BuildSectionModel).ToList();
+
+			return Ok(sections);
+		}
+
 		[HttpPost]
 		public IHttpActionResult AddMembership(int sectionID, int userID)
 		{

@@ -1,10 +1,5 @@
 ﻿@model WebMediaClient.Models.TopicViewModel
 
-@{
-    ViewBag.Title = "GetTopicByID";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
 <script type="text/javascript">
 	window.addEventListener("load", function () { updateVisit() }, false);
 
@@ -26,7 +21,7 @@
 			success: function (data) {
 			},
 			error: function (xhr) {
-				if (xhr.status == 400) {
+				if (xhr.status == 404) {
 					createVisit();
 				}
 			},
@@ -107,4 +102,7 @@
 		<button class="button" onclick="addComment()">Reply</button>
 	</div>
 </div>
+
+
+
 

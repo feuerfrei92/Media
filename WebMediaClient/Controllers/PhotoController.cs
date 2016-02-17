@@ -1,6 +1,7 @@
 ﻿using Services.Models;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -38,13 +39,28 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> CreatePhoto(int userID, PhotoViewModel photoModel, string token)
+		public ActionResult CreatePhoto(int userID, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Photo/CreatePhoto?UserID={0}", userID);
-			var photo = PhotoConverter.FromVisualToBasic(photoModel);
-			var createdPhoto = await HttpClientBuilder<PhotoModel>.PutAsync(photo, url, token);
-			var viewModel = PhotoConverter.FromBasicToVisual(createdPhoto);
-			return View(viewModel);
+			ViewBag.User = GlobalUser.User;
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> CreatePhoto(int userID, PhotoViewModel photoModel, HttpPostedFileBase file, string token)
+		{
+			if (file != null && file.ContentLength > 0)
+			{
+				Image image = Image.FromStream(file.InputStream, true, true);
+				photoModel.Content = image;
+				photoModel.DateCreated = DateTime.Now;
+				string url = string.Format("http://localhost:8080/api/Photo/CreatePhoto?UserID={0}", userID);
+				var photo = PhotoConverter.FromVisualToBasic(photoModel);
+				var createdPhoto = await HttpClientBuilder<PhotoModel>.PostAsync(photo, url, token);
+				var viewModel = PhotoConverter.FromBasicToVisual(createdPhoto);
+				ViewBag.User = GlobalUser.User;
+				return View(viewModel);
+			}
+			else throw new ArgumentNullException(file.FileName);
 		}
 
 		public ActionResult DeletePhoto(int ID, string token)

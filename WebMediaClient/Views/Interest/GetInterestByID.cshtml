@@ -1,16 +1,16 @@
 ﻿@model WebMediaClient.Models.InterestViewModel
 
 @{
-	ViewBag.Title = "GetInterestByName";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "GetInterestByID";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Get interest by name</h2>
+<h2>Get interest by ID</h2>
 
 <div class="row">
 	<div class="col-md-8">
 		<section id="profile_form">
-			@using (Html.BeginForm("GetInterestByName", "Interest", new { name = @ViewBag.Name }, FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+			@using (Html.BeginForm("GetInterestByID", "Interest", new { ID = @ViewBag.ID }, FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
 			{
 				<div class="form-group">
 					@Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
@@ -22,6 +22,7 @@
 		</section>
 	</div>
 	<div class="col-md-8">
-		@Html.Action("GetTopicForInterest", "Topic", new { interestID = @Model.ID })
+		@Html.Action("GetTopicForInterest", "Topic", new { interestID = @ViewBag.ID })
 	</div>
 </div>
+

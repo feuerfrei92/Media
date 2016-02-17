@@ -1371,10 +1371,15 @@
     <Content Include="Views\Topic\CreateTopic.cshtml" />
     <Content Include="Views\Settings\GetTopicsWithNewComments.cshtml" />
     <Content Include="Views\Interest\CreateInterest.cshtml" />
+    <Content Include="Views\Topic\GetTopicForProfile.cshtml" />
+    <Content Include="Views\Topic\GetTopicForInterest.cshtml" />
+    <Content Include="Views\Interest\GetInterestByID.cshtml" />
+    <Content Include="Views\Interest\UpdateInterest.cshtml" />
+    <Content Include="Views\Shared\SearchSection.cshtml" />
+    <Content Include="Views\Photo\CreatePhoto.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Photo\" />
     <Folder Include="Views\Video\" />
   </ItemGroup>
   <ItemGroup>

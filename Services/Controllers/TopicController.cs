@@ -169,9 +169,9 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
-		public IHttpActionResult GetTopicForInterest(int profileID)
+		public IHttpActionResult GetTopicForInterest(int interestID)
 		{
-			TopicModel topic = _nest.Topics.All().Where(t => t.SectionID == profileID && t.IsInterestTopic == true).Select(BuildTopicModel).FirstOrDefault();
+			TopicModel topic = _nest.Topics.All().Where(t => t.SectionID == interestID && t.IsInterestTopic == true).Select(BuildTopicModel).FirstOrDefault();
 
 			return Ok(topic);
 		}

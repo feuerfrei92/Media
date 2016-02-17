@@ -108,6 +108,25 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> SearchBySectionName(string name, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Section/SearchBySectionName?Name={0}", name);
+				var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+				var viewModels = new List<SectionViewModel>();
+				foreach (SectionModel s in sections)
+				{
+					viewModels.Add(SectionConverter.FromBasicToVisual(s));
+				}
+				return View(viewModels);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
 		[HttpPost]
 		public async Task<ActionResult> AddMembership(int sectionID, int userID, string token)
 		{

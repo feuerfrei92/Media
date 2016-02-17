@@ -1,0 +1,87 @@
+﻿@model WebMediaClient.Models.InterestViewModel
+
+@{
+    ViewBag.Title = "UpdateInterest";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UpdateInterest</h2>
+
+<script type="text/javascript">
+	window.addEventListener("load", function () { loadValues() }, false);
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
+
+	@*function getUsername() {
+		var token = getToken();
+		$.ajax
+		({
+			url: '@Url.Action("GetCurrentUser", "User")',
+			data: { token: token },
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				var hiddenID = document.getElementById("store_id");
+				hiddenID.value = data.ID;
+			}
+		})
+	}*@
+
+	function loadValues() {
+		var name = '@ViewBag.Name';
+		$.ajax
+		({
+			url: '@Url.Action("GetInterestRaw", "Interest")',
+			data: { name: name },
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				var hiddenText = document.getElementById("hidden_input");
+				hiddenText.value = data.ID;
+				var nameText = document.getElementById("name_text");
+				nameText.value = data.Name;
+			},
+		})
+	}
+
+	function updateInterest() {
+		var hiddenText = document.getElementById("hidden_input");
+		var id = hiddenText.value;
+		var nameText = document.getElementById("name_text");
+		var name = nameText.value;
+		var link = '@Url.Action("UpdateInterest", "Interest", new { ID = -1 })';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			data: { name: name },
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) { }
+		})
+	}
+	</script>
+
+	<div class="row">
+		<div class="col-md-8">
+			<div class="list-group">
+				<label id="name_label" class="label-default">Name:</label>
+				<div class="col-md-10">
+					<input id="name_text" class="input-group-lg" required="required" />
+				</div>
+			</div>
+			<div class="list-group">
+				<button id="submit" class="formbutton" onclick="updateInterest()">Update interest</button>
+			</div>
+			<div class="list-group">
+				<input id="hidden_input" hidden="hidden" />
+			</div>
+		</div>
+	</div>
+
