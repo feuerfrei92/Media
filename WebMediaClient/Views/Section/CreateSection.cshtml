@@ -1,16 +1,16 @@
-﻿@model WebMediaClient.Models.TopicViewModel
+﻿@model WebMediaClient.Models.SectionViewModel
 
 @{
-	ViewBag.Title = "CreateTopic";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "CreateSection";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create topic</h2>
+<h2>CreateSection</h2>
 
 <div class="row">
 	<div class="col-md-8">
-		<section id="topic_form">
-			@using (Html.BeginForm("CreateTopic", "Topic", new { SectionID = @ViewBag.SectionID, AuthorID = @ViewBag.AuthorID }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+		<section id="section_form">
+			@using (Html.BeginForm("SectionTopic", "Section", new { parentID = @ViewBag.ParentID }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 			{
 				@Html.AntiForgeryToken()
 				@Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -30,8 +30,4 @@
 		</section>
 	</div>
 </div>
-
-
-
-
 

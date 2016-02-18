@@ -213,5 +213,14 @@ namespace WebMediaClient.Controllers
 			//	return RedirectToAction("Error", "Account");
 			//}
 		}
+
+		public async Task<ActionResult> GetFriendship(int userID, int friendID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Profile/GetFriendship?UserID={0}&FriendID={1}", userID, friendID);
+			var friendship = await HttpClientBuilder<FriendshipInfo>.GetAsync(url, token);
+			if (friendship == null)
+				return HttpNotFound("No friendship");
+			else return Json(new { Friendship = friendship }, JsonRequestBehavior.AllowGet);
+		}
     }
 }

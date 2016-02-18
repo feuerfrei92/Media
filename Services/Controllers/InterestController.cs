@@ -188,5 +188,20 @@ namespace Services.Controllers
 			}
 			return Ok(interests);
 		}
+
+		[HttpGet]
+		public IHttpActionResult GetFollower(int userID, int interestID)
+		{
+			Follower follower = _nest.Followers.All().Where(f => f.UserID == userID && f.InterestID == interestID).FirstOrDefault();
+
+			var followerInfo = new FollowerInfo
+			{
+				ID = follower.ID,
+				UserID = follower.UserID,
+				InterestID = follower.InterestID,
+			};
+
+			return Ok(followerInfo);
+		}
     }
 }

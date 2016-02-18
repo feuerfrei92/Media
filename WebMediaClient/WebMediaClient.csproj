@@ -1377,6 +1377,9 @@
     <Content Include="Views\Interest\UpdateInterest.cshtml" />
     <Content Include="Views\Shared\SearchSection.cshtml" />
     <Content Include="Views\Photo\CreatePhoto.cshtml" />
+    <Content Include="Views\Photo\GetPhotosForOwner.cshtml" />
+    <Content Include="Views\Section\DisplaySectionSearchResults.cshtml" />
+    <Content Include="Views\Section\CreateSection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

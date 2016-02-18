@@ -1,0 +1,18 @@
+﻿@model List<WebMediaClient.Models.PhotoOutViewModel>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				var base64 = Convert.ToBase64String(item.Content);
+				var imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+				<div class="list-group-item">
+					<img src="@imgSrc" height="100" width="100" />
+					@*<img src="@Url.Action("GetPhotoByID", "Photo", new { @item.ID })" height="100" width="100" />*@
+				</div>
+			}
+		</div>
+	</div>
+</div>
+

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -26,10 +27,10 @@ namespace WebMediaClient.Controllers
 			{
 				string url = "http://localhost:8080/api/Photo/GetAllPhotos";
 				var photos = await HttpClientBuilder<PhotoModel>.GetListAsync(url, token);
-				var viewModels = new List<PhotoViewModel>();
+				var viewModels = new List<PhotoOutViewModel>();
 				foreach (PhotoModel p in photos)
 				{
-					viewModels.Add(PhotoConverter.FromBasicToVisual(p));
+					viewModels.Add(PhotoConverter.FromBasicToVisualOut(p));
 				}
 				return View();
 			}
@@ -46,7 +47,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreatePhoto(int userID, PhotoViewModel photoModel, HttpPostedFileBase file, string token)
+		public async Task<ActionResult> CreatePhoto(int userID, PhotoInViewModel photoModel, HttpPostedFileBase file, string token)
 		{
 			if (file != null && file.ContentLength > 0)
 			{
@@ -54,9 +55,9 @@ namespace WebMediaClient.Controllers
 				photoModel.Content = image;
 				photoModel.DateCreated = DateTime.Now;
 				string url = string.Format("http://localhost:8080/api/Photo/CreatePhoto?UserID={0}", userID);
-				var photo = PhotoConverter.FromVisualToBasic(photoModel);
+				var photo = PhotoConverter.FromVisualToBasicIn(photoModel);
 				var createdPhoto = await HttpClientBuilder<PhotoModel>.PostAsync(photo, url, token);
-				var viewModel = PhotoConverter.FromBasicToVisual(createdPhoto);
+				var viewModel = PhotoConverter.FromBasicToVisualIn(createdPhoto);
 				ViewBag.User = GlobalUser.User;
 				return View(viewModel);
 			}
@@ -79,36 +80,36 @@ namespace WebMediaClient.Controllers
 
 		public async Task<ActionResult> GetPhotoByID(int ID, string token)
 		{
-			try
-			{
+			//try
+			//{
 				string url = string.Format("http://localhost:8080/api/Photo/GetPhotoByID?ID={0}", ID);
 				var photo = await HttpClientBuilder<PhotoModel>.GetAsync(url, token);
-				var viewModel = PhotoConverter.FromBasicToVisual(photo);
-				return View(viewModel);
-			}
-			catch
-			{
-				return RedirectToAction("Error", "Account");
-			}
+				return File(photo.Content, "image/jpeg");
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
 		}
 
-		public async Task<ActionResult> GetPhotosForOwner(int userID, string token)
+		public ActionResult GetPhotosForOwner(int ownerID, string token)
 		{
-			try
-			{
-				string url = string.Format("http://localhost:8080/api/Photo/GetPhotosForOwner?UserID={0}", userID);
-				var photos = await HttpClientBuilder<PhotoModel>.GetListAsync(url, token);
-				var viewModels = new List<PhotoViewModel>();
+			//try
+			//{
+				string url = string.Format("http://localhost:8080/api/Photo/GetPhotosForOwner?OwnerID={0}", ownerID);
+				//var photos = await HttpClientBuilder<PhotoModel>.GetListAsync(url, token);
+				var photos = Task.Run<List<PhotoModel>>(() => HttpClientBuilder<PhotoModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<PhotoOutViewModel>();
 				foreach (PhotoModel p in photos)
 				{
-					viewModels.Add(PhotoConverter.FromBasicToVisual(p));
+					viewModels.Add(PhotoConverter.FromBasicToVisualOut(p));
 				}
-				return View();
-			}
-			catch
-			{
-				return RedirectToAction("Error", "Account");
-			}
+				return View(viewModels);
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
 		}
 
 		public async Task<ActionResult> UpdateRating(int photoID, bool like, string token)

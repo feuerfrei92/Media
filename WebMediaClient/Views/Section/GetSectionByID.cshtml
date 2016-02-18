@@ -8,7 +8,7 @@
 <h2>@Model.Name</h2>
 
 <script type="text/javascript">
-	//window.addEventListener("load", function () { getUsername() }, false);
+	window.addEventListener("load", function () { checkMember() }, false);
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -47,8 +47,37 @@
 		$('#topics_container').load(link);
 	}*@
 
+	function checkMember() {
+		var parentID = @ViewBag.ParentID;
+		if (parentID == null)
+		{
+			$.ajax
+			({
+				url: '@Html.Raw(Url.Action("GetMembership", "Section", new { userID = @ViewBag.User.ID, sectionID = @Model.ID }))',
+				dataType: 'json',
+				type: 'GET',
+				error: function (xhr){
+					if (xhr.status == 404)
+						$('#apply').prop('disabled', true);
+				}
+			})
+		}
+	}
+
+	function applyForMember() {
+		
+	}
+
 	function postTopic() {
 		var link = '@Html.Raw(@Url.Action("CreateTopic", "Topic", new { sectionID = @Model.ID, authorID = @ViewBag.User.ID }))';
+		//var hiddenID = document.getElementById("store_id");
+		//var id = hiddenID.value;
+		//link = link.replace("-1", id);
+		window.location.href = link;
+	}
+
+	function postSection() {
+		var link = '@Html.Raw(@Url.Action("CreateSection", "Section", new { parentID = @Model.ID }))';
 		//var hiddenID = document.getElementById("store_id");
 		//var id = hiddenID.value;
 		//link = link.replace("-1", id);
@@ -68,7 +97,17 @@
 </div>
 <div class="row">
 	<div class="list-group">
+		<button class="button" onclick="postSection()">Add subsection</button>
+	</div>
+</div>
+<div class="row">
+	<div class="list-group">
 		<button class="button" onclick="postTopic()">Add new topic</button>
+	</div>
+</div>
+<div class="row">
+	<div class="list-group">
+		<button id="apply" class="button" onclick="applyForMember()">Apply for membership</button>
 	</div>
 </div>
 	@*<div class="list-group">

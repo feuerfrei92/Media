@@ -148,5 +148,14 @@ namespace WebMediaClient.Controllers
 				return RedirectToAction("Error", "Account");
 			}
 		}
+
+		public async Task<ActionResult> GetFollower(int userID, int interestID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Interest/GetFollower?UserID={0}&InterestID={1}", userID, interestID);
+			var follower = await HttpClientBuilder<FollowerInfo>.GetAsync(url, token);
+			if (follower == null)
+				return HttpNotFound("No follower");
+			else return Json(new { Follower = follower }, JsonRequestBehavior.AllowGet);
+		}
     }
 }

@@ -8,12 +8,22 @@ using System.Threading.Tasks;
 
 namespace WebMediaClient.Models
 {
-	public class PhotoViewModel
+	public class PhotoInViewModel
 	{
 		public int ID { get; set; }
 		[Required]
 		public int OwnerID { get; set; }
 		public Image Content { get; set; }
+		public DateTime DateCreated { get; set; }
+		public int Rating { get; set; }
+	}
+
+	public class PhotoOutViewModel
+	{
+		public int ID { get; set; }
+		[Required]
+		public int OwnerID { get; set; }
+		public byte[] Content { get; set; }
 		public DateTime DateCreated { get; set; }
 		public int Rating { get; set; }
 	}

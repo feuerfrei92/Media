@@ -294,6 +294,22 @@ namespace Services.Controllers
 			return Ok(profiles);
 		}
 
+		[HttpGet]
+		public IHttpActionResult GetFriendship(int userID, int friendID)
+		{
+			Friendship friendship = _nest.Friendships.All().Where(f => (f.UserID_1 == userID && f.UserID_2 == friendID) || (f.UserID_1 == friendID && f.UserID_2 == userID)).FirstOrDefault();
+
+			var friendshipInfo = new FriendshipInfo
+			{
+				ID = friendship.ID,
+				UserID_1 = friendship.UserID_1,
+				UserID_2 = friendship.UserID_2,
+				IsAccepted = friendship.IsAccepted,
+			};
+
+			return Ok(friendshipInfo);
+		}
+
 		private bool DoesMatchCriteria(ProfileModel profile, ProfileCriteria criteria)
 		{
 			if (!(profile.Name.Contains(criteria.Name)))

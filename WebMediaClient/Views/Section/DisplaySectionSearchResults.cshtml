@@ -1,0 +1,35 @@
+﻿@model List<WebMediaClient.Models.SectionViewModel>
+
+@{
+    ViewBag.Title = "DisplaySectionSearchResults";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>DisplaySectionSearchResults</h2>
+
+<script type="text/javascript">
+	//window.addEventListener("load", function () { getToken() }, false);
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
+</script>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="list-group-item">
+					@Html.ActionLink(item.Name, "GetSectionByID", "Section", new { ID = item.ID }, null);
+				</div>
+			}
+		</div>
+	</div>
+</div>
+
+

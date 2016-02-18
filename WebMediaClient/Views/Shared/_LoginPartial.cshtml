@@ -1,5 +1,6 @@
 ﻿<script type="text/javascript">
 	window.addEventListener("load", function () { getToken() }, false);
+	window.addEventListener("load", function() { $('.dropdown-toggle').dropdown(); }, false) ;
 
 	function getToken() {
 		if (Modernizr.localstorage) {
@@ -117,7 +118,7 @@
 		}
 		else
 		{
-			<li class="dropdown"><label class="label-default dropdown-toggle" data-toggle="dropdown">Hello, @GlobalUser.User.Username</label>
+			<li class="dropdown"><label class="label-default dropdown-toggle" data-toggle="dropdown">@GlobalUser.User.Username<span class="caret" /></label>
 				<ul class="dropdown-menu">
 					<li>@Html.ActionLink("Update profile", "UpdateProfile", "Profile", routeValues: null, htmlAttributes: new { id = "update_profile_link" })</li>
 					<li>@Html.ActionLink("Update settings", "Index", "Settings", routeValues: null, htmlAttributes: new { id = "setting_link" })</li>

@@ -44,6 +44,7 @@ namespace WebMediaClient.Controllers
             var section = SectionConverter.FromVisualToBasic(sectionModel);
             var createdSection = await HttpClientBuilder<SectionModel>.PutAsync(section, url, token);
             var viewModel = SectionConverter.FromBasicToVisual(createdSection);
+			ViewBag.ParentID = parentID;
             return View(viewModel);
 		}
 
@@ -169,6 +170,15 @@ namespace WebMediaClient.Controllers
 			{
 				return RedirectToAction("Error", "Account");
 			}
+		}
+
+		public async Task<ActionResult> GetMembership(int userID, int sectionID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Section/GetMembership?UserID={0}&SectionID={1}", userID, sectionID);
+			var membership = await HttpClientBuilder<MembershipInfo>.GetAsync(url, token);
+			if (membership == null)
+				return HttpNotFound("No membership");
+			else return Json(new { Membership = membership }, JsonRequestBehavior.AllowGet);
 		}
     }
 }

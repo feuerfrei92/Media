@@ -41,8 +41,8 @@
 			var buttonFriend = document.createElement("button");
 			buttonFriend.setAttribute("id", username);
 			buttonFriend.setAttribute("class", "button");
-			buttonFriend.setAttribute("value", "Add friend");
 			buttonFriend.setAttribute("onclick", "getFriendID(\"" + username + "\")");
+			buttonFriend.innerHTML = "Add friend";
 			profileList.appendChild(buttonFriend);
 	}
 
@@ -96,11 +96,15 @@
 				@foreach (var item in Model)
 				{
 					<div class="list-group-item">
-						@Html.ActionLink(item.Username, "GetProfileByUsername", "Profile", new { Username = item.Username }, null);
+						@Html.ActionLink(item.Username, "GetProfileByID", "Profile", new { ID = item.ID }, null);
 					</div>
-					<script type="text/javascript">
-						addButton(@Html.Raw(Json.Encode(item.Username)));
-					</script>
+					<div class="col-md-8">
+						<div class="list-group-item">
+							<script type="text/javascript">
+								addButton(@Html.Raw(Json.Encode(item.Username)));
+							</script>
+						</div>
+					</div>
 				}
 			</div>
 		</div>

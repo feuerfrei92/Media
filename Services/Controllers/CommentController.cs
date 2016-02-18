@@ -98,6 +98,11 @@ namespace Services.Controllers
 
 			_nest.Comments.Create(newComment);
 
+			var topic = _nest.Topics.All().Where(t => t.ID == topicID).FirstOrDefault();
+			topic.DateModified = newComment.DateCreated;
+
+			_nest.Topics.Update(topic);
+
 			try
 			{
 				_nest.SaveChanges();

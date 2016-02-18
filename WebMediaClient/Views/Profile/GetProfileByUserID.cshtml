@@ -39,4 +39,9 @@
 		@Html.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })
 	</div>
 </div>
+<div class="row">
+	<div class="col-md-8">
+		@Html.Action("GetPhotosForOwner", "Photo", new { ownerID = @ViewBag.UserID })
+	</div>
+</div>
 

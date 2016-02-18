@@ -18,7 +18,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Section, SectionModel>> BuildSectionModel
 		{
-			get { return s => new SectionModel { ID = s.ID, Name = s.Name }; }
+			get { return s => new SectionModel { ID = s.ID, Name = s.Name, ParentID = s.ParentSectionID }; }
 		}
 
 		public SectionController()
@@ -60,6 +60,7 @@ namespace Services.Controllers
 			_nest.Sections.Update(existingSection);
 
 			section.ID = ID;
+			section.ParentID = parentID;
 
 			try
 			{
@@ -242,6 +243,23 @@ namespace Services.Controllers
 			}
 
 			return Ok(sections);
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetMembership(int userID, int sectionID)
+		{
+			Membership membership = _nest.Memberships.All().Where(m => m.UserID == userID && m.SectionID == sectionID).FirstOrDefault();
+
+			var membershipInfo = new MembershipInfo
+			{
+				ID = membership.ID,
+				UserID = membership.UserID,
+				SectionID = membership.SectionID,
+				Role = membership.Role,
+				SuspendedUntil = membership.SuspendedUntil,
+			};
+
+			return Ok(membershipInfo);
 		}
 	}
 }

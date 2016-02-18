@@ -1,8 +1,8 @@
 ﻿@model WebMediaClient.Models.ProfileViewModel
 
 @{
-    ViewBag.Title = "GetProfileByID";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "GetProfileByID";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>GetProfileByID</h2>
@@ -10,7 +10,7 @@
 <div class="row">
 	<div class="col-md-8">
 		<section id="profile_form">
-			@using (Html.BeginForm("GetProfileByID", "Profile", new { UserID = @ViewBag.ID }, FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
+			@using (Html.BeginForm("GetProfileByID", "Profile", new { ID = @ViewBag.ID }, FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
 			{
 				<h4></h4>
 				<hr />
