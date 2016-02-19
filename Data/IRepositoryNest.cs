@@ -23,6 +23,7 @@ namespace Data
 		IRepository<Photo> Photos { get; }
 		IRepository<Video> Videos { get; }
 		IRepository<Visit> Visits { get; }
+		IRepository<Album> Albums { get; }
 		void SaveChanges();
 	}
 }

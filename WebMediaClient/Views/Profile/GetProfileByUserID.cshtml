@@ -7,6 +7,55 @@
 
 <h2>GetProfileByUserID</h2>
 
+<script type="text/javascript">
+	window.addEventListener("load", function () { compareUsername() }, false);
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
+
+	function compareUsername() {
+		var currentUsername = '@ViewBag.User.Username';
+		var profileUsername = '@Model.Username';
+		if (currentUsername == profileUsername)
+			$('#add_friend').prop('disabled', true);
+	}
+
+	function getFriendID(username) {
+		var link = '@Url.Action("GetUserByUsername", "User", new { Username = "oooo" })';
+		link = link.replace("oooo", username);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				var id = data.ID;
+				addFriend(id);
+			}
+		})
+	}
+
+	function addFriend(id) {
+		var link = '@Html.Raw(@Url.Action("AddFriend", "Profile", new { UserID = @ViewBag.User.ID, FriendID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			type: 'POST',
+			success: function (data) {
+				//var button = document.getElementById('button' + text2);
+				//if(data.Response == "OK")
+				//	button.value = "Request sent";
+			}
+		})
+	}
+</script>
+
 <div class="row">
 	<div class="col-md-8">
 		<section id="profile_form">
@@ -39,9 +88,12 @@
 		@Html.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })
 	</div>
 </div>
-<div class="row">
+<div class="col-md-8">
+	<button id="add_friend" class="btn btn-default" onclick="@("getFriendID(" + @Html.Raw(Json.Encode(Model.Username)) + ")")">Add friend</button>
+</div>
+@*<div class="row">
 	<div class="col-md-8">
 		@Html.Action("GetPhotosForOwner", "Photo", new { ownerID = @ViewBag.UserID })
 	</div>
-</div>
+</div>*@
 

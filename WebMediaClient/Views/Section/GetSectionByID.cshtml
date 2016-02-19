@@ -65,7 +65,14 @@
 	}
 
 	function applyForMember() {
-		
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("GetMembership", "Section", new { sectionID = @Model.ID, userID = @ViewBag.User.ID }))',
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data){
+			}
+		})
 	}
 
 	function postTopic() {

@@ -7,18 +7,17 @@ using System.Threading.Tasks;
 
 namespace Models.DatabaseModels
 {
-	public class Membership
+	public class Album
 	{
 		[Required]
-		[Key]
 		public int ID { get; set; }
 		[Required]
-		public int UserID { get; set; }
+		public string Name { get; set; }
 		[Required]
-		public int SectionID { get; set; }
-		public bool IsAccepted { get; set; }
-		[Required]
-		public SectionRole Role { get; set; }
-		public DateTime? SuspendedUntil { get; set; }
+		public int OwnerID { get; set; }
+		public bool IsProfile { get; set; }
+		public bool IsInterest { get; set; }
+		public int Size { get; set; }
+		public int Rating { get; set; }
 	}
 }

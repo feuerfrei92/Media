@@ -11,6 +11,7 @@ namespace Services.Models
 		public int ID { get; set; }
 		public int UserID { get; set; }
 		public int SectionID { get; set; }
+		public bool IsAccepted { get; set; }
 		public SectionRole Role { get; set; }
 		public DateTime? SuspendedUntil { get; set; }
 	}

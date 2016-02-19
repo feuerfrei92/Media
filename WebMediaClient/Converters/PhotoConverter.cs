@@ -21,7 +21,7 @@ namespace WebMediaClient.Converters
 			{
 				ID = photoModel.ID,
 				Content = content,
-				OwnerID = photoModel.OwnerID,
+				AlbumID = photoModel.AlbumID,
 				DateCreated = photoModel.DateCreated,
 				Rating = photoModel.Rating
 			};
@@ -37,7 +37,7 @@ namespace WebMediaClient.Converters
 			{
 				ID = viewModel.ID,
 				Content = content,
-				OwnerID = viewModel.OwnerID,
+				AlbumID = viewModel.AlbumID,
 				DateCreated = viewModel.DateCreated,
 				Rating = viewModel.Rating
 			};
@@ -51,7 +51,7 @@ namespace WebMediaClient.Converters
 			{
 				ID = photoModel.ID,
 				Content = photoModel.Content,
-				OwnerID = photoModel.OwnerID,
+				AlbumID = photoModel.AlbumID,
 				DateCreated = photoModel.DateCreated,
 				Rating = photoModel.Rating
 			};
@@ -65,7 +65,7 @@ namespace WebMediaClient.Converters
 			{
 				ID = viewModel.ID,
 				Content = viewModel.Content,
-				OwnerID = viewModel.OwnerID,
+				AlbumID = viewModel.AlbumID,
 				DateCreated = viewModel.DateCreated,
 				Rating = viewModel.Rating
 			};

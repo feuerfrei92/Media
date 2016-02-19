@@ -86,6 +86,11 @@ namespace Data
 			get { return GetRepository<Visit>(); }
 		}
 
+		public IRepository<Album> Albums
+		{
+			get { return GetRepository<Album>(); }
+		}
+
 		public void SaveChanges()
 		{
 			_context.SaveChanges();

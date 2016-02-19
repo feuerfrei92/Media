@@ -176,13 +176,14 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InterestController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
-    <Compile Include="Controllers\PhotoController.cs" />
+    <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
     <Compile Include="Controllers\SettingsController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VideoController.cs" />
+    <Compile Include="Converters\AlbumConverter.cs" />
     <Compile Include="Converters\CommentConverter.cs" />
     <Compile Include="Converters\InterestConverter.cs" />
     <Compile Include="Converters\PhotoConverter.cs" />
@@ -197,6 +198,7 @@
     <Compile Include="GlobalUser.cs" />
     <Compile Include="HttpClientBuilder.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AlbumViewModels.cs" />
     <Compile Include="Models\CommentViewModels.cs" />
     <Compile Include="Models\InterestViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -1377,9 +1379,12 @@
     <Content Include="Views\Interest\UpdateInterest.cshtml" />
     <Content Include="Views\Shared\SearchSection.cshtml" />
     <Content Include="Views\Photo\CreatePhoto.cshtml" />
-    <Content Include="Views\Photo\GetPhotosForOwner.cshtml" />
+    <Content Include="Views\Photo\GetPhotosForAlbum.cshtml" />
     <Content Include="Views\Section\DisplaySectionSearchResults.cshtml" />
     <Content Include="Views\Section\CreateSection.cshtml" />
+    <Content Include="Views\Album\CreateAlbum.cshtml" />
+    <Content Include="Views\Album\GetAlbumsForProfile.cshtml" />
+    <Content Include="Views\Album\GetAlbumsForInterest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

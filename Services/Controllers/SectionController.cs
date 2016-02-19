@@ -175,6 +175,7 @@ namespace Services.Controllers
 				SectionID = sectionID,
 				UserID = userID,
 				Role = SectionRole.Regular,
+				IsAccepted = false,
 			};
 
 			_nest.Memberships.Create(membership);
@@ -188,7 +189,27 @@ namespace Services.Controllers
 				throw;
 			}
 
-			return Ok(membership);
+			return Ok();
+		}
+
+		[HttpPut]
+		public IHttpActionResult AcceptMembership(int sectionID, int userID)
+		{
+			var membership = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.UserID == userID).FirstOrDefault();
+			membership.IsAccepted = true;
+
+			_nest.Memberships.Update(membership);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
 		}
 
 		[HttpPut]
@@ -209,7 +230,7 @@ namespace Services.Controllers
 				throw;
 			}
 
-			return Ok(membership);
+			return Ok();
 		}
 
 		[HttpDelete]

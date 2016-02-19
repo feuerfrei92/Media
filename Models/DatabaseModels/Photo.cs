@@ -13,7 +13,7 @@ namespace Models.DatabaseModels
 		[Key]
 		public int ID { get; set; }
 		[Required]
-		public int OwnerID { get; set; }
+		public int AlbumID { get; set; }
 		[Required]
 		public byte[] Content { get; set; }
 		[Required]

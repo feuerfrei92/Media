@@ -118,6 +118,7 @@ namespace WebMediaClient.Controllers
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(profile);
 				ViewBag.ID = ID;
+				ViewBag.User = GlobalUser.User;
 				return View(viewModel);
 			//}
 			//catch
@@ -134,6 +135,7 @@ namespace WebMediaClient.Controllers
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(profile);
 				ViewBag.UserID = userID;
+				ViewBag.User = GlobalUser.User;
                 return View(viewModel);
 			//}
 			//catch

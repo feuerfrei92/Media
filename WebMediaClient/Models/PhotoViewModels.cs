@@ -12,7 +12,7 @@ namespace WebMediaClient.Models
 	{
 		public int ID { get; set; }
 		[Required]
-		public int OwnerID { get; set; }
+		public int AlbumID { get; set; }
 		public Image Content { get; set; }
 		public DateTime DateCreated { get; set; }
 		public int Rating { get; set; }
@@ -22,7 +22,7 @@ namespace WebMediaClient.Models
 	{
 		public int ID { get; set; }
 		[Required]
-		public int OwnerID { get; set; }
+		public int AlbumID { get; set; }
 		public byte[] Content { get; set; }
 		public DateTime DateCreated { get; set; }
 		public int Rating { get; set; }

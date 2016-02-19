@@ -7,15 +7,16 @@ using System.Threading.Tasks;
 
 namespace Services.Models
 {
-	public class PhotoModel
+	public class AlbumModel
 	{
 		public int ID { get; set; }
 		[Required]
-		public int AlbumID { get; set; }
+		public string Name { get; set; }
 		[Required]
-		public byte[] Content { get; set; }
-		[Required]
-		public DateTime DateCreated { get; set; }
+		public int OwnerID { get; set; }
+		public bool IsProfile { get; set; }
+		public bool IsInterest { get; set; }
+		public int Size { get; set; }
 		public int Rating { get; set; }
 	}
 }

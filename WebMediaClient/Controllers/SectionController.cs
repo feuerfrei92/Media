@@ -137,6 +137,14 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
+		public async Task<ActionResult> AcceptMembership(int sectionID, int userID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Section/AcceptMembership?SectionID={0}&UserID={1}", sectionID, userID);
+			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpPut]
 		public async Task<ActionResult> UpdateMembership(int sectionID, int userID, string role, DateTime? suspension, string token)
 		{
 			string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}&Role={2}&Suspension={3}", sectionID, userID, role, suspension);
