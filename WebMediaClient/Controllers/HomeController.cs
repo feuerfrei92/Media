@@ -13,7 +13,7 @@ namespace WebMediaClient.Controllers
 	{
 		public ActionResult Index()
 		{
-			ViewBag.User = GlobalUser.User;
+			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 
 			return View();
 		}
@@ -40,20 +40,20 @@ namespace WebMediaClient.Controllers
 			UserModel user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 			ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", user.Username);
 			ViewBag.Token = token;
-			GlobalUser.User = user;
+			HttpContext.Session.Add("currentUser", user);
 			return View();
 		}
 
 		[AllowAnonymous]
 		public ActionResult LogOff()
 		{
-			GlobalUser.User = null;
+			HttpContext.Session.Remove("currentUser");
 			return View();
 		}
 
 		public ActionResult SetUser(UserModel user)
 		{
-			GlobalUser.User = user;
+			HttpContext.Session.Add("currentUser", user);
 			return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
 		}
 	}

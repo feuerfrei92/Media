@@ -114,7 +114,7 @@ namespace WebMediaClient.Controllers
 		[AllowAnonymous]
 		public ActionResult LogOff()
 		{
-			GlobalUser.User = null;
+			HttpContext.Session.Remove("currentUser");
 			return View();
 		}
 

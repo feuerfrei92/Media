@@ -86,3 +86,25 @@ C:\Users\Marin\Documents\Visual Studio 2013\Media\Data\obj\Debug\Data.Migrations
 C:\Users\Marin\Documents\Visual Studio 2013\Media\Data\obj\Debug\Data.csproj.GenerateResource.Cache
 C:\Users\Marin\Documents\Visual Studio 2013\Media\Data\obj\Debug\Data.dll
 C:\Users\Marin\Documents\Visual Studio 2013\Media\Data\obj\Debug\Data.pdb
+D:\Projects\Media\Data\bin\Debug\Data.dll.config
+D:\Projects\Media\Data\bin\Debug\Data.dll
+D:\Projects\Media\Data\bin\Debug\Data.pdb
+D:\Projects\Media\Data\bin\Debug\EntityFramework.dll
+D:\Projects\Media\Data\bin\Debug\EntityFramework.SqlServer.dll
+D:\Projects\Media\Data\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+D:\Projects\Media\Data\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Projects\Media\Data\bin\Debug\Models.dll
+D:\Projects\Media\Data\bin\Debug\Models.pdb
+D:\Projects\Media\Data\bin\Debug\EntityFramework.xml
+D:\Projects\Media\Data\bin\Debug\EntityFramework.SqlServer.xml
+D:\Projects\Media\Data\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+D:\Projects\Media\Data\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Projects\Media\Data\obj\Debug\Data.csprojResolveAssemblyReference.cache
+D:\Projects\Media\Data\obj\Debug\Data.Migrations.Initial.resources
+D:\Projects\Media\Data\obj\Debug\Data.Migrations.Update10.resources
+D:\Projects\Media\Data\obj\Debug\Data.Migrations.Update11.resources
+D:\Projects\Media\Data\obj\Debug\Data.Migrations.Update12.resources
+D:\Projects\Media\Data\obj\Debug\Data.Migrations.InterestsUpdate.resources
+D:\Projects\Media\Data\obj\Debug\Data.csproj.GenerateResource.Cache
+D:\Projects\Media\Data\obj\Debug\Data.dll
+D:\Projects\Media\Data\obj\Debug\Data.pdb

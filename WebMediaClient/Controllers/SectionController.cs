@@ -80,7 +80,7 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Section/GetSectionByID?ID={0}", ID);
 				var section = await HttpClientBuilder<SectionModel>.GetAsync(url, token);
                 var viewModel = SectionConverter.FromBasicToVisual(section);
-				ViewBag.User = GlobalUser.User;
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModel);
 			}
 			catch

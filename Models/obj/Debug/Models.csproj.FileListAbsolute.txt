@@ -53,3 +53,16 @@ C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\bin\Debug\Microsoft.Asp
 C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\obj\Debug\Models.csprojResolveAssemblyReference.cache
 C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\obj\Debug\Models.dll
 C:\Users\Marin\Documents\Visual Studio 2013\Media\Models\obj\Debug\Models.pdb
+D:\Projects\Media\Models\bin\Debug\Models.dll.config
+D:\Projects\Media\Models\bin\Debug\Models.dll
+D:\Projects\Media\Models\bin\Debug\Models.pdb
+D:\Projects\Media\Models\bin\Debug\EntityFramework.dll
+D:\Projects\Media\Models\bin\Debug\EntityFramework.SqlServer.dll
+D:\Projects\Media\Models\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+D:\Projects\Media\Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+D:\Projects\Media\Models\bin\Debug\EntityFramework.xml
+D:\Projects\Media\Models\bin\Debug\EntityFramework.SqlServer.xml
+D:\Projects\Media\Models\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+D:\Projects\Media\Models\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml
+D:\Projects\Media\Models\obj\Debug\Models.dll
+D:\Projects\Media\Models\obj\Debug\Models.pdb

@@ -86,7 +86,7 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicByID?ID={0}", ID);
 				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
                 var viewModel = TopicConverter.FromBasicToVisual(topic);
-				ViewBag.User = GlobalUser.User;
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModel);
 			}
 			catch
@@ -123,7 +123,7 @@ namespace WebMediaClient.Controllers
 				//var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
 				var topic = Task.Run<TopicModel>(() => HttpClientBuilder<TopicModel>.GetAsync(url, token)).Result;
 				var viewModel = TopicConverter.FromBasicToVisual(topic);
-				ViewBag.User = GlobalUser.User;
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModel);
 			//}
 			//catch
@@ -140,7 +140,7 @@ namespace WebMediaClient.Controllers
 				//var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
 				var topic = Task.Run<TopicModel>(() => HttpClientBuilder<TopicModel>.GetAsync(url, token)).Result;
 				var viewModel = TopicConverter.FromBasicToVisual(topic);
-				ViewBag.User = GlobalUser.User;
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModel);
 			//}
 			//catch

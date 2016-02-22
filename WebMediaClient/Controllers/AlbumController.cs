@@ -42,7 +42,7 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult CreateAlbum(int ownerID, bool isProfile, string token)
 		{
-			ViewBag.User = GlobalUser.User;
+			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 			ViewBag.IsProfile = isProfile;
 			return View();
 		}
@@ -54,7 +54,7 @@ namespace WebMediaClient.Controllers
 			var album = AlbumConverter.FromVisualToBasic(albumModel);
 			var createdAlbum = await HttpClientBuilder<AlbumModel>.PostAsync(album, url, token);
 			var	viewModel = AlbumConverter.FromBasicToVisual(createdAlbum);
-			ViewBag.User = GlobalUser.User;
+			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 			ViewBag.IsProfile = isProfile;
 			return View(viewModel);
 		}
@@ -156,7 +156,7 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult CreatePhoto(int userID, string token)
 		{
-			ViewBag.User = GlobalUser.User;
+			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 			return View();
 		}
 
@@ -172,7 +172,7 @@ namespace WebMediaClient.Controllers
 				var photo = PhotoConverter.FromVisualToBasicIn(photoModel);
 				var createdPhoto = await HttpClientBuilder<PhotoModel>.PostAsync(photo, url, token);
 				var viewModel = PhotoConverter.FromBasicToVisualIn(createdPhoto);
-				ViewBag.User = GlobalUser.User;
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModel);
 			}
 			else throw new ArgumentNullException(file.FileName);

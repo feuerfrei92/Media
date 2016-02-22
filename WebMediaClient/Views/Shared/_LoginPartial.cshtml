@@ -6,7 +6,8 @@
 		if (Modernizr.localstorage) {
 			var localProfile = window.localStorage;
 			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			if (token != null && @Html.Raw(@Json.Encode(@GlobalUser.User)) == null)
+			var user = @HttpContext.Current.Session["currentUser"];
+			if (token != null && user == null)
 			{
 				$.ajax
 				({
@@ -111,14 +112,15 @@
 	}
 </script>
 	<ul id="actions_list" class="nav navbar-nav navbar-right">
-		@if(GlobalUser.User == null)
+		@if((Services.Models.UserModel)HttpContext.Current.Session["currentUser"] == null)
 		{ 
 			<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
 			<li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 		}
 		else
 		{
-			<li class="dropdown"><label class="label-default dropdown-toggle" data-toggle="dropdown">@GlobalUser.User.Username<span class="caret" /></label>
+			var user = (Services.Models.UserModel)HttpContext.Current.Session["currentUser"];
+			<li class="dropdown"><label class="label-default dropdown-toggle" data-toggle="dropdown">@user.Username<span class="caret" /></label>
 				<ul class="dropdown-menu">
 					<li>@Html.ActionLink("Update profile", "UpdateProfile", "Profile", routeValues: null, htmlAttributes: new { id = "update_profile_link" })</li>
 					<li>@Html.ActionLink("Update settings", "Index", "Settings", routeValues: null, htmlAttributes: new { id = "setting_link" })</li>
