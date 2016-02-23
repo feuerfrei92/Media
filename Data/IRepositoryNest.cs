@@ -24,6 +24,7 @@ namespace Data
 		IRepository<Video> Videos { get; }
 		IRepository<Visit> Visits { get; }
 		IRepository<Album> Albums { get; }
+		IRepository<Setting> Settings { get; }
 		void SaveChanges();
 	}
 }

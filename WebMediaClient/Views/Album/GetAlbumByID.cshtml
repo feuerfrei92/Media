@@ -1,0 +1,19 @@
+﻿@model WebMediaClient.Models.AlbumViewModel
+
+@{
+    ViewBag.Title = "GetAlbumByID";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+
+<div id="photos" class="form-group">
+	@Html.Action("GetPhotosByAlbum", "Album", new { albumID = @Model.ID });
+</div>
+
+<div class="row">
+	<div class="col-md-8">
+		@Html.ActionLink("Upload photo", "CreatePhoto", "Photo", new { userID = @ViewBag.User.ID }, null)
+	</div>
+</div>
+

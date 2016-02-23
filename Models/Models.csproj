@@ -63,6 +63,7 @@
     <Compile Include="DatabaseModels\Interest.cs" />
     <Compile Include="DatabaseModels\Membership.cs" />
     <Compile Include="DatabaseModels\Photo.cs" />
+    <Compile Include="DatabaseModels\Setting.cs" />
     <Compile Include="DatabaseModels\Video.cs" />
     <Compile Include="DatabaseModels\Visit.cs" />
     <Compile Include="Gender.cs" />

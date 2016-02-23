@@ -40,9 +40,9 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateComment(int topicID, int authorID, CommentViewModel commentModel, string token)
+		public async Task<ActionResult> CreateComment(int parentID, int topicID, int authorID, CommentViewModel commentModel, string token)
 		{
-            string url = string.Format("http://localhost:8080/api/Comment/CreateComment?TopicID={0}&AuthorID={1}", topicID, authorID);
+            string url = string.Format("http://localhost:8080/api/Comment/CreateComment?ParentID={0}&TopicID={1}&AuthorID={2}", parentID, topicID, authorID);
             var comment = CommentConverter.FromVisualToBasic(commentModel);
             var createdComment = await HttpClientBuilder<CommentModel>.PostAsync(comment, url, token);
             var viewModel = CommentConverter.FromBasicToVisual(createdComment);
@@ -89,6 +89,26 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult GetCommentsByParentID(int parentID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Comment/GetCommentsByParentID?ParentID={0}", parentID);
+				//var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
+				var comments = Task.Run<List<CommentModel>>(() => HttpClientBuilder<CommentModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<CommentViewModel>();
+				foreach (CommentModel c in comments)
+				{
+					viewModels.Add(CommentConverter.FromBasicToVisual(c));
+				}
+				return View(viewModels);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
 		public ActionResult GetCommentsByTopicID(int topicID, string token)
 		{
 			try
@@ -101,6 +121,8 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(CommentConverter.FromBasicToVisual(c));
                 }
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				ViewBag.TopicID = topicID;
 				return View(viewModels);
 			}
 			catch

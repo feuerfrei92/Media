@@ -5,17 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Services.Models
+namespace Models.DatabaseModels
 {
-	public class AlbumModel
+	public class Setting
 	{
+		[Required]
 		public int ID { get; set; }
 		[Required]
-		public string Name { get; set; }
 		public int OwnerID { get; set; }
-		public bool IsProfile { get; set; }
-		public bool IsInterest { get; set; }
-		public int Size { get; set; }
-		public int Rating { get; set; }
+		[Required]
+		public string OwnerType { get; set; }
+		[Required]
+		public string Publicity { get; set; }
 	}
 }

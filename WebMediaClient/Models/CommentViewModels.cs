@@ -13,6 +13,7 @@ namespace WebMediaClient.Models
 		public string Name { get; set; }
 		[Required]
 		public string Text { get; set; }
+		public int? ParentID { get; set; }
 		public int TopicID { get; set; }
 		public int AuthorID { get; set; }
 		[Required]

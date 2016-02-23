@@ -91,9 +91,9 @@
 <div class="col-md-8">
 	<button id="add_friend" class="btn btn-default" onclick="@("getFriendID(" + @Html.Raw(Json.Encode(Model.Username)) + ")")">Add friend</button>
 </div>
-@*<div class="row">
+<div class="row">
 	<div class="col-md-8">
-		@Html.Action("GetPhotosForOwner", "Photo", new { ownerID = @ViewBag.UserID })
+		@Html.Action("GetAlbumsForProfile", "Profile", new { profileID = @Model.ID })
 	</div>
-</div>*@
+</div>
 

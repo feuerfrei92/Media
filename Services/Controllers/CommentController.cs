@@ -19,7 +19,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Comment, CommentModel>> BuildCommentModel
 		{
-			get { return c => new CommentModel { ID = c.ID, Name = c.Name, Text = c.Text, TopicID = c.TopicID, AuthorID = c.AuthorID, DateCreated = c.DateCreated, DateModified = c.DateModified }; }
+			get { return c => new CommentModel { ID = c.ID, Name = c.Name, Text = c.Text, ParentID = c.ParentID, TopicID = c.TopicID, AuthorID = c.AuthorID, DateCreated = c.DateCreated, DateModified = c.DateModified, Rating = c.Rating }; }
 		}
 
 		public CommentController()
@@ -79,7 +79,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
-		public IHttpActionResult CreateComment(int topicID, int authorID, CommentModel comment)
+		public IHttpActionResult CreateComment(int parentID, int topicID, int authorID, CommentModel comment)
 		{
 			if (!(ModelState.IsValid))
 			{
@@ -90,6 +90,7 @@ namespace Services.Controllers
 			{
 				Name = comment.Name,
 				Text = comment.Text,
+				ParentID = parentID,
 				TopicID = topicID,
 				AuthorID = authorID,
 				DateCreated = DateTime.Now,
@@ -113,6 +114,7 @@ namespace Services.Controllers
 			}
 
 			comment.ID = newComment.ID;
+			comment.ParentID = newComment.ParentID;
 			comment.AuthorID = newComment.AuthorID;
 			comment.TopicID = newComment.TopicID;
 
@@ -159,6 +161,14 @@ namespace Services.Controllers
 			}
 
 			return Ok(comment);
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetCommentsByParentID(int parentID)
+		{
+			List<CommentModel> comments = _nest.Comments.All().Where(c => c.ParentID == parentID).Select(BuildCommentModel).ToList();
+
+			return Ok(comments);
 		}
 
 		[HttpGet]

@@ -91,6 +91,11 @@ namespace Data
 			get { return GetRepository<Album>(); }
 		}
 
+		public IRepository<Setting> Settings
+		{
+			get { return GetRepository<Setting>(); }
+		}
+
 		public void SaveChanges()
 		{
 			_context.SaveChanges();

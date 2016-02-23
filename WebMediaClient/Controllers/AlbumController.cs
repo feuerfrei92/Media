@@ -80,6 +80,7 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Album/GetAlbumByID?ID={0}", ID);
 				var album = await HttpClientBuilder<AlbumModel>.GetAsync(url, token);
 				var viewModel = AlbumConverter.FromBasicToVisual(album);
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModel);
 			//}
 			//catch

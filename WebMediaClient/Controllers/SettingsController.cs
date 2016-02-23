@@ -18,6 +18,80 @@ namespace WebMediaClient.Controllers
             return View();
         }
 
+		public ActionResult CreateSetting(int ownerID)
+		{
+			ViewBag.OwnerID = ownerID;
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> CreateSetting(int ownerID, SettingViewModel settingModel, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Setting/CreateSetting?OwnerID={0}", ownerID);
+			var setting = SettingConverter.FromVisualToBasic(settingModel);
+			var createdSetting = await HttpClientBuilder<SettingModel>.PostAsync(setting, url, token);
+			var viewModel = SettingConverter.FromBasicToVisual(createdSetting);
+			return View(viewModel);
+		}
+
+		[HttpPut]
+		public async Task<ActionResult> ChangePublicity(int settingID, string publicity, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Setting/ChangePublicity?SettingID={0}&Publicity={1}", settingID, publicity);
+			var response = await HttpClientBuilder<SettingModel>.PutEmptyAsync(url, token);
+			return Json(new { Response = response }, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpDelete]
+		public ActionResult DeleteSetting(int ID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Setting/DeleteSetting?ID={0}", ID);
+				HttpClientBuilder<SettingModel>.DeleteAsync(url, token);
+				return RedirectToAction("Index", "Home");
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+		public async Task<ActionResult> GetSettingByID(int ID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Setting/GetSettingByID?ID={0}", ID);
+				var setting = await HttpClientBuilder<SettingModel>.GetAsync(url, token);
+				var viewModel = SettingConverter.FromBasicToVisual(setting);
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				ViewBag.ID = ID;
+				return View(viewModel);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+		public async Task<ActionResult> GetSettingByOwnerIDAndType(int ownerID, string settingType, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Setting/GetSettingByOwnerIDAndType?OwnerID={0}&Type={1}", ownerID, settingType);
+				var setting = await HttpClientBuilder<SettingModel>.GetAsync(url, token);
+				var viewModel = SettingConverter.FromBasicToVisual(setting);
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				ViewBag.OwnerID = ownerID;
+				ViewBag.SettingType = settingType;
+				return View(viewModel);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
 		public ActionResult GetPendingFriends(int userID, string token)
 		{
 			try

@@ -17,6 +17,7 @@ namespace WebMediaClient.Converters
 				ID = commentModel.ID,
 				Name = commentModel.Name,
 				Text = commentModel.Text,
+				ParentID = commentModel.ParentID,
 				TopicID = commentModel.TopicID,
 				AuthorID = commentModel.AuthorID,
 				DateCreated = commentModel.DateCreated,
@@ -34,6 +35,9 @@ namespace WebMediaClient.Converters
 				ID = viewModel.ID,
 				Name = viewModel.Name,
 				Text = viewModel.Text,
+				ParentID = viewModel.ParentID,
+				TopicID = viewModel.TopicID,
+				AuthorID = viewModel.AuthorID,
 				DateCreated = viewModel.DateCreated,
 				DateModified = viewModel.DateModified,
 				Rating = viewModel.Rating

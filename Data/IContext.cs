@@ -25,6 +25,7 @@ namespace Data
 		IDbSet<Video> Videos { get; set; }
 		IDbSet<Visit> Visits { get; set; }
 		IDbSet<Album> Albums { get; set; }
+		IDbSet<Setting> Settings { get; set; }
 		void SaveChanges();
 		DbSet<TEntity> Set<TEntity>() where TEntity : class;
 		DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

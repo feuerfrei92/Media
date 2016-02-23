@@ -1,5 +1,26 @@
 ﻿@model List<WebMediaClient.Models.CommentViewModel>
 
+<script type="text/javascript">
+	function addReply(id)
+	{
+		var link = '@Html.Raw(Url.Action("CreateComment", "Comment", new { parentID = -1, topicID = @ViewBag.TopicID, authorID = @ViewBag.User.ID }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			data:
+				{
+					text: text,
+					datecreated: Date.now(),
+				},
+			dataType: 'json',
+			type: 'POST',
+			success: function (data) {
+			}
+		})
+	}
+</script>
+
 <div class="row">
 	<div class="col-md-8">
 		<div class="list-group">
@@ -17,6 +38,11 @@
 					</div>
 					<div class="col-md-4">
 						@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<button class="button" onclick="addReply(@Html.Raw(Json.Encode(item.ID)))" />
 					</div>
 				</div>
 			}

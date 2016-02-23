@@ -274,6 +274,7 @@
     <Compile Include="Controllers\AlbumController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\SectionController.cs" />
+    <Compile Include="Controllers\SettingController.cs" />
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -295,6 +296,7 @@
     <Compile Include="Models\ProfileCriteria.cs" />
     <Compile Include="Models\ProfileModel.cs" />
     <Compile Include="Models\SectionModel.cs" />
+    <Compile Include="Models\SettingModel.cs" />
     <Compile Include="Models\TopicCriteria.cs" />
     <Compile Include="Models\TopicModel.cs" />
     <Compile Include="Models\UserModel.cs" />

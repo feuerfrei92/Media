@@ -38,22 +38,23 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		[HttpPost]
 		public async Task<ActionResult> CreateSection(SectionViewModel sectionModel, string token, int? parentID = null)
 		{
             string url = string.Format("http://localhost:8080/api/Section/CreateSection?ParentID={0}", parentID);
             var section = SectionConverter.FromVisualToBasic(sectionModel);
-            var createdSection = await HttpClientBuilder<SectionModel>.PutAsync(section, url, token);
+            var createdSection = await HttpClientBuilder<SectionModel>.PostAsync(section, url, token);
             var viewModel = SectionConverter.FromBasicToVisual(createdSection);
 			ViewBag.ParentID = parentID;
             return View(viewModel);
 		}
 
-		[HttpPost]
+		[HttpPut]
 		public async Task<ActionResult> UpdateSection(int ID, SectionViewModel sectionModel, string token, int? parentID = null)
 		{
             string url = string.Format("http://localhost:8080/api/Section/CreateSection?ID={0}&ParentID={1}", ID, parentID);
             var section = SectionConverter.FromVisualToBasic(sectionModel);
-            var updatedSection = await HttpClientBuilder<SectionModel>.PostAsync(section, url, token);
+            var updatedSection = await HttpClientBuilder<SectionModel>.PutAsync(section, url, token);
             var viewModel = SectionConverter.FromBasicToVisual(updatedSection);
             return View(viewModel);
 		}
