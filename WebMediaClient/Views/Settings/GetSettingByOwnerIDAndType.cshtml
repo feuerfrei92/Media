@@ -11,7 +11,7 @@
 	function changePublicity(){
 		var dropDownList = document.getElementById("publicity_list");
 		var publicity = dropDownList.options[dropDownList.selectedIndex].text;
-		var link = '@Html.Raw(Url.Action("ChangePublicity", "Setting", new { settingID = @Model.ID, publicity = "oooo" }))';
+		var link = '@Html.Raw(Url.Action("ChangePublicity", "Settings", new { settingID = @Model.ID, publicity = "oooo" }))';
 		link = link.replace("oooo", publicity);
 		$.ajax
 		({
@@ -25,27 +25,15 @@
 </script>
 
 <div class="row">
-	<div class="col-md-8">
-		<section id="topic_form">
-			@using (Html.BeginForm("GetSettingByOwnerIDAndType", "Setting", new { OwnerID = @ViewBag.OwnerID, SettingType = @ViewBag.SettingType }, FormMethod.Get, new { @class = "form-horizontal", role = "form" }))
-			{
-				<div class="form-group" hidden="hidden">
-					@Html.LabelFor(m => m.OwnerType, new { @class = "col-md-2 control-label" })
-					<div class="col-md-10" hidden="hidden">
-						@Html.EnumDropDownListFor(m => m.OwnerType, new { @class = "form-control" })
-					</div>
-				</div>
-				<div class="form-group">
-					@Html.LabelFor(m => m.Publicity, new { @class = "col-md-2 control-label" })
-					<div class="col-md-10">
-						@Html.EnumDropDownListFor(m => m.Publicity, new { @id = "publicity_list", @class = "form-control" })
-					</div>
-					<div class="col-md-10">
-						<button id="change_publicity" class="btn btn-default" onclick="changePublicity()" />
-					</div>
-				</div>
-			}
-		</section>
+	<div class="form-group">
+		@Html.LabelFor(m => m.Publicity, new { @class = "col-md-2 control-label" })
+		<div class="col-md-10">
+			@Html.EnumDropDownListFor(m => m.Publicity, new { @id = "publicity_list", @class = "form-control" })
+		</div>
+		<div class="col-md-8">
+			<button id="change_publicity" class="btn btn-default" onclick="changePublicity()">Update</button>
+		</div>
 	</div>
 </div>
+
 

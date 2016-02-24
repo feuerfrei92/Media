@@ -99,6 +99,24 @@ namespace Services.Controllers
 
 			_nest.Topics.Create(newTopic);
 
+			var newSetting = new Setting
+			{
+				OwnerID = newInterest.ID,
+				OwnerType = "Interest",
+				Publicity = "Everyone",
+			};
+
+			_nest.Settings.Create(newSetting);
+
+			var newTopicSetting = new Setting
+			{
+				OwnerID = newTopic.ID,
+				OwnerType = "Topic",
+				Publicity = "Everyone",
+			};
+
+			_nest.Settings.Create(newTopicSetting);
+
 			try
 			{
 				_nest.SaveChanges();

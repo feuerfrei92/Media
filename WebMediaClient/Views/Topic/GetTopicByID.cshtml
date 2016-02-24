@@ -91,6 +91,8 @@
 	}
 </script>
 
+<script src="~/ckeditor/ckeditor.js"></script>
+
 <h2>@Model.Name</h2>
 
 <div id="comments" class="form-group">
@@ -107,4 +109,7 @@
 		<button class="button" onclick="addComment()">Reply</button>
 	</div>
 </div>
+<script>
+	CKEDITOR.replace("comment_text");
+</script>
 

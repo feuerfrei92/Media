@@ -9,6 +9,7 @@ namespace WebMediaClient
 	public enum SettingType
 	{
 		Profile,
+		Interest,
 		Section,
 		Topic,
 		Album,

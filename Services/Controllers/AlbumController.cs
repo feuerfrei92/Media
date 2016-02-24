@@ -1,4 +1,5 @@
 ﻿using Data;
+using Models;
 using Models.DatabaseModels;
 using Services.Models;
 using System;
@@ -69,6 +70,36 @@ namespace Services.Controllers
 			};
 
 			_nest.Albums.Create(newAlbum);
+
+			var newTopic = new Topic
+			{
+				Name = album.Name,
+				SectionID = newAlbum.ID,
+				AuthorID = ownerID,
+				DateCreated = DateTime.Now,
+				IsProfileTopic = false,
+				IsInterestTopic = false,
+			};
+
+			_nest.Topics.Create(newTopic);
+
+			var newSetting = new Setting
+			{
+				OwnerID = newAlbum.ID,
+				OwnerType = "Album",
+				Publicity = "Everyone",
+			};
+
+			_nest.Settings.Create(newSetting);
+
+			var newTopicSetting = new Setting
+			{
+				OwnerID = newTopic.ID,
+				OwnerType = "Topic",
+				Publicity = "Everyone",
+			};
+
+			_nest.Settings.Create(newTopicSetting);
 
 			try
 			{

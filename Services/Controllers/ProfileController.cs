@@ -106,6 +106,24 @@ namespace Services.Controllers
 
 			_nest.Topics.Create(newTopic);
 
+			var newSetting = new Setting
+			{
+				OwnerID = newProfile.ID,
+				OwnerType = "Profile",
+				Publicity = "Everyone",
+			};
+
+			_nest.Settings.Create(newSetting);
+
+			var newTopicSetting = new Setting
+			{
+				OwnerID = newTopic.ID,
+				OwnerType = "Topic",
+				Publicity = "Everyone",
+			};
+
+			_nest.Settings.Create(newTopicSetting);
+
 			try
 			{
 				_nest.SaveChanges();
@@ -310,6 +328,56 @@ namespace Services.Controllers
 			return Ok(friendshipInfo);
 		}
 
+		[HttpGet]
+		public IHttpActionResult GetLatestProfileActivity(int userID)
+		{
+			var activities = new List<ActivityModel>();
+			User user = _nest.Users.All().Where(u => u.ID == userID).FirstOrDefault();
+			var userModel = new UserModel
+			{
+				ID = user.ID,
+				Username = user.Username,
+			};
+			activities.AddRange(GetLatestActivities(userModel));
+
+			return Ok(activities);
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetLatestFriendsActivity(int userID)
+		{
+			List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == true)
+			.ToList();
+			var activities = new List<ActivityModel>();
+			foreach (Friendship f in friendships)
+			{
+				if (f.UserID_1 == userID)
+				{
+					User user = _nest.Users.All().Where(u => u.ID == f.UserID_2).FirstOrDefault();
+					var userModel = new UserModel
+					{
+						ID = user.ID,
+						Username = user.Username,
+					};
+					activities.AddRange(GetLatestActivities(userModel));
+				}
+				else
+				{
+					User user = _nest.Users.All().Where(u => u.ID == f.UserID_1).FirstOrDefault();
+					var userModel = new UserModel
+					{
+						ID = user.ID,
+						Username = user.Username,
+					};
+					activities.AddRange(GetLatestActivities(userModel));
+				}
+			}
+
+			activities = activities.OrderByDescending(a => a.DateCreated).Take(200).ToList();
+
+			return Ok(activities);
+		}
+
 		private bool DoesMatchCriteria(ProfileModel profile, ProfileCriteria criteria)
 		{
 			if (!(profile.Name.Contains(criteria.Name)))
@@ -321,6 +389,35 @@ namespace Services.Controllers
 				return false;
 
 			return true;
+		}
+
+		private List<ActivityModel> GetLatestActivities(UserModel user)
+		{
+			var activities = new List<ActivityModel>();
+			List<Topic> topics = _nest.Topics.All().Where(t => t.AuthorID == user.ID).OrderByDescending(t => t.DateCreated).Take(100).ToList();
+			foreach (Topic t in topics)
+			{
+				activities.Add(new ActivityModel { ActionID = t.ID, Author = user, Action = "topic", DateCreated = t.DateCreated });
+			}
+			List<Comment> comments = _nest.Comments.All().Where(c => c.AuthorID == user.ID).OrderByDescending(c => c.DateCreated).Take(100).ToList();
+			foreach (Comment c in comments)
+			{
+				activities.Add(new ActivityModel { ActionID = c.ID, Author = user, Action = "comment", DateCreated = c.DateCreated });
+			}
+			List<int> albumsIDs = _nest.Albums.All().Where(a => a.OwnerID == user.ID).Select(a => a.ID).ToList();
+			List<Photo> photos = _nest.Photos.All().Where(p => albumsIDs.Exists(a => a == p.AlbumID)).OrderByDescending(p => p.DateCreated).Take(100).ToList();
+			foreach (Photo p in photos)
+			{
+				activities.Add(new ActivityModel { ActionID = p.ID, Author = user, Action = "photo", DateCreated = p.DateCreated });
+			}
+			List<Video> videos = _nest.Videos.All().Where(v => v.OwnerID == user.ID).OrderByDescending(v => v.DateCreated).Take(100).ToList();
+			foreach (Video v in videos)
+			{
+				activities.Add(new ActivityModel { ActionID = v.ID, Author = user, Action = "video", DateCreated = v.DateCreated });
+			}
+
+			activities = activities.OrderByDescending(a => a.DateCreated).Take(100).ToList();
+			return activities;
 		}
 	}
 }

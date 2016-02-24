@@ -111,8 +111,8 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult GetCommentsByTopicID(int topicID, string token)
 		{
-			try
-			{
+			//try
+			//{
 				string url = string.Format("http://localhost:8080/api/Comment/GetCommentsByTopicID?TopicID={0}", topicID);
 				//var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
 				var comments = Task.Run<List<CommentModel>>(() => HttpClientBuilder<CommentModel>.GetListAsync(url, token)).Result;
@@ -124,11 +124,11 @@ namespace WebMediaClient.Controllers
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				ViewBag.TopicID = topicID;
 				return View(viewModels);
-			}
-			catch
-			{
-				return RedirectToAction("Error", "Account");
-			}
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
 		}
 
 		public async Task<ActionResult> GetCommentsByAuthorID(int authorID, string token)

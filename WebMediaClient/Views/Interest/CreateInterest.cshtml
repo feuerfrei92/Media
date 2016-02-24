@@ -10,7 +10,7 @@
 <div class="row">
 	<div class="col-md-8">
 		<section id="topic_form">
-			@using (Html.BeginForm("CreateInterest", "Interest", new { AuthorID = @ViewBag.AuthorID }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+			@using (Html.BeginForm("CreateInterest", "Interest", new { UserID = @ViewBag.AuthorID }, FormMethod.Post, new { @id = "interest_create", @class = "form-horizontal", role = "form" }))
 			{
 				@Html.AntiForgeryToken()
 				@Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -36,5 +36,6 @@
 		</section>
 	</div>
 </div>
+
 
 

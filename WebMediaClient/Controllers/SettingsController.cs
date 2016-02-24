@@ -25,11 +25,12 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateSetting(int ownerID, SettingViewModel settingModel, string token)
+		public ActionResult CreateSetting(int ownerID, SettingViewModel settingModel, string token)
 		{
 			string url = string.Format("http://localhost:8080/api/Setting/CreateSetting?OwnerID={0}", ownerID);
 			var setting = SettingConverter.FromVisualToBasic(settingModel);
-			var createdSetting = await HttpClientBuilder<SettingModel>.PostAsync(setting, url, token);
+			//var createdSetting = await HttpClientBuilder<SettingModel>.PostAsync(setting, url, token);
+			var createdSetting = Task.Run<SettingModel>(() => HttpClientBuilder<SettingModel>.PostAsync(setting, url, token)).Result;
 			var viewModel = SettingConverter.FromBasicToVisual(createdSetting);
 			return View(viewModel);
 		}
@@ -146,6 +147,47 @@ namespace WebMediaClient.Controllers
 					viewModels.Add(TopicConverter.FromBasicToVisual(t));
 				}
 				return View(viewModels);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+		public ActionResult GetLatestProfileActivity(int userID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Profile/GetLatestProfileActivity?UserID={0}", userID);
+				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
+				//var viewModels = new List<TopicViewModel>();
+				//foreach (TopicModel t in topics)
+				//{
+				//	viewModels.Add(TopicConverter.FromBasicToVisual(t));
+				//}
+				return View(activities);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
+
+		public ActionResult GetLatestFriendsActivity(int userID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Profile/GetLatestFriendsActivity?UserID={0}", userID);
+				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
+				//var viewModels = new List<TopicViewModel>();
+				//foreach (TopicModel t in topics)
+				//{
+				//	viewModels.Add(TopicConverter.FromBasicToVisual(t));
+				//}
+				return View(activities);
 			}
 			catch
 			{

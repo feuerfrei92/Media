@@ -85,6 +85,7 @@ namespace Services.Controllers
 			}
 
 			setting.ID = newSetting.ID;
+			setting.OwnerID = newSetting.OwnerID;
 
 			return Ok(setting);
 		}

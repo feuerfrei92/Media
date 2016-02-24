@@ -8,12 +8,12 @@
 <h2>@Model.Name</h2>
 
 <div id="photos" class="form-group">
-	@Html.Action("GetPhotosByAlbum", "Album", new { albumID = @Model.ID });
+	@Html.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID });
 </div>
 
 <div class="row">
 	<div class="col-md-8">
-		@Html.ActionLink("Upload photo", "CreatePhoto", "Photo", new { userID = @ViewBag.User.ID }, null)
+		@Html.ActionLink("Upload photo", "CreatePhoto", "Album", new { userID = @ViewBag.User.ID }, null)
 	</div>
 </div>
 

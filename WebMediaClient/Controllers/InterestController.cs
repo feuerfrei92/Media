@@ -37,11 +37,18 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult CreateInterest(int userID)
+		{
+			ViewBag.AuthorID = userID;
+			return View();
+		}
+
+		[HttpPost]
 		public async Task<ActionResult> CreateInterest(int userID, InterestViewModel interestModel, string token)
 		{
-            string url = string.Format("http://localhost:8080/api/Interest/CreateInterest?UserID={0}", userID);
+            string url = string.Format("http://localhost:8080/api/Interest/CreateInterest?AuthorID={0}", userID);
             var interest = InterestConverter.FromVisualToBasic(interestModel);
-            var createdInterest = await HttpClientBuilder<InterestModel>.PutAsync(interest, url, token);
+            var createdInterest = await HttpClientBuilder<InterestModel>.PostAsync(interest, url, token);
             var viewModel = InterestConverter.FromBasicToVisual(createdInterest);
 			ViewBag.AuthorID = userID;
             return View(viewModel);

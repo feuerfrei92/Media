@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
 using WebMediaClient.Converters;
 using WebMediaClient.Models;
 
@@ -207,11 +208,11 @@ namespace WebMediaClient.Controllers
 			//}
 		}
 
-		public ActionResult GetPhotosForOwner(int ownerID, string token)
+		public ActionResult GetPhotosForAlbum(int albumID, string token)
 		{
 			//try
 			//{
-				string url = string.Format("http://localhost:8080/api/Album/GetPhotosForOwner?OwnerID={0}", ownerID);
+				string url = string.Format("http://localhost:8080/api/Album/GetPhotosForAlbum?AlbumID={0}", albumID);
 				//var photos = await HttpClientBuilder<PhotoModel>.GetListAsync(url, token);
 				var photos = Task.Run<List<PhotoModel>>(() => HttpClientBuilder<PhotoModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<PhotoOutViewModel>();

@@ -90,6 +90,15 @@ namespace Services.Controllers
 
 			_nest.Sections.Create(newSection);
 
+			var newSetting = new Setting
+			{
+				OwnerID = newSection.ID,
+				OwnerType = "Section",
+				Publicity = "Everyone",
+			};
+
+			_nest.Settings.Create(newSetting);
+
 			try
 			{
 				_nest.SaveChanges();
