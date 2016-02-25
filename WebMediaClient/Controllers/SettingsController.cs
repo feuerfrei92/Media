@@ -161,11 +161,11 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Profile/GetLatestProfileActivity?UserID={0}", userID);
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
-				//var viewModels = new List<TopicViewModel>();
-				//foreach (TopicModel t in topics)
-				//{
-				//	viewModels.Add(TopicConverter.FromBasicToVisual(t));
-				//}
+				var viewModels = new List<ActivityViewModel>();
+				foreach (ActivityModel a in activities)
+				{
+					viewModels.Add(ActivityConverter.FromBasicToVisual(a));
+				}
 				return View(activities);
 			}
 			catch
@@ -182,11 +182,11 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Profile/GetLatestFriendsActivity?UserID={0}", userID);
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
-				//var viewModels = new List<TopicViewModel>();
-				//foreach (TopicModel t in topics)
-				//{
-				//	viewModels.Add(TopicConverter.FromBasicToVisual(t));
-				//}
+				var viewModels = new List<ActivityViewModel>();
+				foreach (ActivityModel a in activities)
+				{
+					viewModels.Add(ActivityConverter.FromBasicToVisual(a));
+				}
 				return View(activities);
 			}
 			catch

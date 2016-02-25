@@ -593,3 +593,6 @@ D:\Projects\Media\Services\bin\zh-Hant\Microsoft.Spatial.resources.dll
 D:\Projects\Media\Services\obj\Debug\Services.csprojResolveAssemblyReference.cache
 D:\Projects\Media\Services\obj\Debug\Services.dll
 D:\Projects\Media\Services\obj\Debug\Services.pdb
+D:\Projects\Media\Services\bin\HtmlAgilityPack.dll
+D:\Projects\Media\Services\bin\HtmlAgilityPack.pdb
+D:\Projects\Media\Services\bin\HtmlAgilityPack.xml

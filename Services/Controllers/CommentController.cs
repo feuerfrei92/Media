@@ -3,10 +3,12 @@ using Models;
 using Services.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Cors;
@@ -19,7 +21,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Comment, CommentModel>> BuildCommentModel
 		{
-			get { return c => new CommentModel { ID = c.ID, Name = c.Name, Text = c.Text, ParentID = c.ParentID, TopicID = c.TopicID, AuthorID = c.AuthorID, DateCreated = c.DateCreated, DateModified = c.DateModified, Rating = c.Rating }; }
+			get { return c => new CommentModel { ID = c.ID, Name = c.Name, Text = c.Text, TopicID = c.TopicID, AuthorID = c.AuthorID, DateCreated = c.DateCreated, DateModified = c.DateModified, Rating = c.Rating }; }
 		}
 
 		public CommentController()
@@ -79,18 +81,27 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
-		public IHttpActionResult CreateComment(int parentID, int topicID, int authorID, CommentModel comment)
+		public IHttpActionResult CreateComment(int topicID, int authorID, CommentModel comment)
 		{
 			if (!(ModelState.IsValid))
 			{
 				return BadRequest(ModelState);
 			}
 
+			var text = comment.Text;
+			HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+			MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(text));
+			doc.Load(ms);
+			doc.DocumentNode.Descendants()
+				.Where(n => n.Name == "script" || n.Name == "object" || n.Name == "embed" || n.Name == "link")
+				.ToList()
+				.ForEach(n => n.Remove());
+			var cleanText = doc.DocumentNode.OuterHtml;
+
 			var newComment = new Comment
 			{
 				Name = comment.Name,
-				Text = comment.Text,
-				ParentID = parentID,
+				Text = cleanText,
 				TopicID = topicID,
 				AuthorID = authorID,
 				DateCreated = DateTime.Now,
@@ -114,7 +125,6 @@ namespace Services.Controllers
 			}
 
 			comment.ID = newComment.ID;
-			comment.ParentID = newComment.ParentID;
 			comment.AuthorID = newComment.AuthorID;
 			comment.TopicID = newComment.TopicID;
 
@@ -161,14 +171,6 @@ namespace Services.Controllers
 			}
 
 			return Ok(comment);
-		}
-
-		[HttpGet]
-		public IHttpActionResult GetCommentsByParentID(int parentID)
-		{
-			List<CommentModel> comments = _nest.Comments.All().Where(c => c.ParentID == parentID).Select(BuildCommentModel).ToList();
-
-			return Ok(comments);
 		}
 
 		[HttpGet]

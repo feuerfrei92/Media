@@ -537,3 +537,10 @@ D:\Projects\Media\WebMediaClient\bin\zh-Hant\Microsoft.Spatial.resources.dll
 D:\Projects\Media\WebMediaClient\obj\Debug\WebMediaClient.csprojResolveAssemblyReference.cache
 D:\Projects\Media\WebMediaClient\obj\Debug\WebMediaClient.dll
 D:\Projects\Media\WebMediaClient\obj\Debug\WebMediaClient.pdb
+D:\Projects\Media\WebMediaClient\bin\HtmlAgilityPack.dll
+D:\Projects\Media\WebMediaClient\bin\HtmlAgilityPack.pdb
+D:\Projects\Media\WebMediaClient\bin\HtmlAgilityPack.xml
+D:\Projects\Media\WebMediaClient\bin\Microsoft.AspNet.SignalR.Core.dll
+D:\Projects\Media\WebMediaClient\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
+D:\Projects\Media\WebMediaClient\bin\Microsoft.AspNet.SignalR.Core.xml
+D:\Projects\Media\WebMediaClient\bin\Microsoft.AspNet.SignalR.SystemWeb.xml

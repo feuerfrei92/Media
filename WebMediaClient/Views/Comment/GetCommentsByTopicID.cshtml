@@ -1,10 +1,11 @@
 ﻿@model List<WebMediaClient.Models.CommentViewModel>
 
 <script type="text/javascript">
-	function addReply(id)
+	window.addEventListener("load", function () { setIDs(); }, false);
+
+	function addReply()
 	{
-		var link = '@Html.Raw(Url.Action("CreateComment", "Comment", new { parentID = -1, topicID = @ViewBag.TopicID, authorID = @ViewBag.User.ID }))';
-		link = link.replace("-1", id);
+		var link = '@Html.Raw(Url.Action("CreateComment", "Comment", new { topicID = @ViewBag.TopicID, authorID = @ViewBag.User.ID }))';
 		$.ajax
 		({
 			url: link,
@@ -19,7 +20,22 @@
 			}
 		})
 	}
+
+	function setIDs() {
+		var textAreas = document.getElementsByTagName("textarea");
+		for (i = 0; i < textAreas.length; i++)
+		{
+			var textArea = textAreas[i];
+			if (textArea.id != "comment_text")
+			{
+				textArea.setAttribute("id", "textarea" + "_" + i.toString());
+				CKEDITOR.replace("textarea" + "_" + i.toString(), { customConfig: "/Scripts/Myconfig.js", readOnly: true });
+			}
+		}
+	}
 </script>
+
+<script src="~/ckeditor/ckeditor.js"></script>
 
 <div class="row">
 	<div class="col-md-8">
@@ -42,7 +58,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-4">
-						<button class="button" onclick="addReply(@Html.Raw(Json.Encode(item.ID)))" />
+						<button class="button" onclick="addReply()" />
 					</div>
 				</div>
 			}

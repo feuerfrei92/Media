@@ -43,6 +43,14 @@
       <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="NetSpell.SpellChecker, Version=2.1.7.24956, Culture=neutral, PublicKeyToken=318b389f0db66e46, processorArchitecture=MSIL">
       <HintPath>..\packages\RichTextEditor.8.1.9\lib\NetSpell.SpellChecker.dll</HintPath>
@@ -171,6 +179,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Chat\ChatHub.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -183,6 +192,7 @@
     <Compile Include="Controllers\TopicController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\VideoController.cs" />
+    <Compile Include="Converters\ActivityConverter.cs" />
     <Compile Include="Converters\AlbumConverter.cs" />
     <Compile Include="Converters\CommentConverter.cs" />
     <Compile Include="Converters\InterestConverter.cs" />
@@ -198,6 +208,7 @@
     </Compile>
     <Compile Include="HttpClientBuilder.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ActivityViewModels.cs" />
     <Compile Include="Models\AlbumViewModels.cs" />
     <Compile Include="Models\CommentViewModels.cs" />
     <Compile Include="Models\InterestViewModels.cs" />
@@ -431,6 +442,31 @@
     <Content Include="ckeditor\plugins\wsc\dialogs\wsc.css" />
     <Content Include="ckeditor\plugins\wsc\dialogs\wsc.js" />
     <Content Include="ckeditor\plugins\wsc\dialogs\wsc_ie.js" />
+    <Content Include="ckeditor\plugins\youtube\images\icon.png" />
+    <Content Include="ckeditor\plugins\youtube\lang\ar.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\cs.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\de.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\el.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\en.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\es.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\et.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\fi.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\fr.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\he.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\hu.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\it.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\ja.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\nb.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\nl.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\nn.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\pl.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\pt.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\ru.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\sk.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\tr.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\vi.js" />
+    <Content Include="ckeditor\plugins\youtube\lang\zh.js" />
+    <Content Include="ckeditor\plugins\youtube\plugin.js" />
     <Content Include="ckeditor\samples\css\samples.css" />
     <Content Include="ckeditor\samples\img\github-top.png" />
     <Content Include="ckeditor\samples\img\header-bg.png" />
@@ -547,6 +583,9 @@
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
+    <Content Include="Scripts\Myconfig.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />

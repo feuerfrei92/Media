@@ -65,9 +65,8 @@
 	function addComment() {
 		//var hiddenID = document.getElementById("store_id");
 		//var id = hiddenID.value;
-		var textblock = document.getElementById("comment_text");
-		var text = textblock.value;
-		var link = '@Html.Raw(@Url.Action("CreateComment", "Comment", new { parentID = 0, topicID = @Model.ID, authorID = @ViewBag.User.ID }))';
+		var text = CKEDITOR.instances.comment_text.getData();
+		var link = '@Html.Raw(@Url.Action("CreateComment", "Comment", new { topicID = @Model.ID, authorID = @ViewBag.User.ID }))';
 		//link = link.replace("-1", id);
 		$.ajax
 		({

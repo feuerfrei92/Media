@@ -6,7 +6,7 @@
 		if (Modernizr.localstorage) {
 			var localProfile = window.localStorage;
 			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			var user = @HttpContext.Current.Session["currentUser"];
+			var user = '@HttpContext.Current.Session["currentUser"]';
 			if (token != null && user == null)
 			{
 				$.ajax

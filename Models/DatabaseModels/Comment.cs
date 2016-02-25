@@ -15,8 +15,6 @@ namespace Models
 		[Required]
 		public string Text { get; set; }
 		[Required]
-		public int? ParentID { get; set; }
-		[Required]
 		public int TopicID { get; set; }
 		[Required]
 		public int AuthorID { get; set; }
