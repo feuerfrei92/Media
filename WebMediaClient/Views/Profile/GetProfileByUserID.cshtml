@@ -93,7 +93,12 @@
 </div>
 <div class="row">
 	<div class="col-md-8">
-		@Html.Action("GetAlbumsForProfile", "Profile", new { profileID = @Model.ID })
+		@Html.Action("GetAlbumsForProfile", "Album", new { profileID = @Model.ID })
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-8">
+		@Html.Action("GetFirstLatestProfileActivity", "Settings", new { userID = @Model.ID })
 	</div>
 </div>
 

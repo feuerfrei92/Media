@@ -224,5 +224,26 @@ namespace WebMediaClient.Controllers
 				return HttpNotFound("No friendship");
 			else return Json(new { Friendship = friendship }, JsonRequestBehavior.AllowGet);
 		}
+
+		[HttpPost]
+		public async Task<ActionResult> CreateMessage(int senderID, int receiverID, MessageViewModel messageModel, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Profile/CreateMessage?SenderID={0}&ReceiverID={1}", senderID, receiverID);
+			var message = MessageConverter.FromVisualToBasic(messageModel);
+			var createdMessage = await HttpClientBuilder<MessageModel>.PostAsync(message, url, token);
+			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+			return Json(new { ID = createdMessage.ID, SenderID = createdMessage.SenderID, ReceiverID = createdMessage.ReceiverID, Text = createdMessage.Text, DateCreated = createdMessage.DateCreated }, JsonRequestBehavior.AllowGet);
+		}
+
+		public async Task<ActionResult> GetMessages(int senderID, int receiverID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Profile/GetMessages?senderID={0}&receiverID={1}", senderID, receiverID);
+			var message = await HttpClientBuilder<MessageModel>.GetAsync(url, token);
+			var viewModel = MessageConverter.FromBasicToVisual(message);
+			ViewBag.SenderID = senderID;
+			ViewBag.ReceiverID = receiverID;
+			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+			return View(viewModel);
+		}
     }
 }

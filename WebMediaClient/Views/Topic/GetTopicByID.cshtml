@@ -78,13 +78,14 @@
 				},
 			type: 'POST',
 			success: function (data) {
-				//$('#comments').empty();
 				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
-				$('#comments').load(link);
+				$("#comments").empty();
+				$('#comments').load(link, function () { setIDs(); });
 			},
 			error: function (xhr) {
 				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
-				$('#comments').load(link);
+				$("#comments").empty();
+				$('#comments').load(link, function () { setIDs(); });
 			}
 		})
 	}

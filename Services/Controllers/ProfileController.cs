@@ -346,36 +346,83 @@ namespace Services.Controllers
 		[HttpGet]
 		public IHttpActionResult GetLatestFriendsActivity(int userID)
 		{
-			List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == true)
-			.ToList();
-			var activities = new List<ActivityModel>();
-			foreach (Friendship f in friendships)
+			try
 			{
-				if (f.UserID_1 == userID)
+				List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == true)
+				.ToList();
+				var activities = new List<ActivityModel>();
+				foreach (Friendship f in friendships)
 				{
-					User user = _nest.Users.All().Where(u => u.ID == f.UserID_2).FirstOrDefault();
-					var userModel = new UserModel
+					if (f.UserID_1 == userID)
 					{
-						ID = user.ID,
-						Username = user.Username,
-					};
-					activities.AddRange(GetLatestActivities(userModel));
-				}
-				else
-				{
-					User user = _nest.Users.All().Where(u => u.ID == f.UserID_1).FirstOrDefault();
-					var userModel = new UserModel
+						User user = _nest.Users.All().Where(u => u.ID == f.UserID_2).FirstOrDefault();
+						var userModel = new UserModel
+						{
+							ID = user.ID,
+							Username = user.Username,
+						};
+						activities.AddRange(GetLatestActivities(userModel));
+					}
+					else
 					{
-						ID = user.ID,
-						Username = user.Username,
-					};
-					activities.AddRange(GetLatestActivities(userModel));
+						User user = _nest.Users.All().Where(u => u.ID == f.UserID_1).FirstOrDefault();
+						var userModel = new UserModel
+						{
+							ID = user.ID,
+							Username = user.Username,
+						};
+						activities.AddRange(GetLatestActivities(userModel));
+					}
 				}
+
+				activities = activities.OrderByDescending(a => a.DateCreated).Take(200).ToList();
+
+				return Ok(activities);
+			}
+			catch
+			{
+				throw;
+			}
+		}
+
+		[HttpPost]
+		public IHttpActionResult CreateMessage(int senderID, int receiverID, MessageModel message)
+		{
+			if (!(ModelState.IsValid))
+			{
+				return BadRequest(ModelState);
 			}
 
-			activities = activities.OrderByDescending(a => a.DateCreated).Take(200).ToList();
+			var newMessage = new Message
+			{
+				SenderID = senderID,
+				ReceiverID = receiverID,
+				Text = message.Text,
+				DateCreated = message.DateCreated,
+			};
 
-			return Ok(activities);
+			_nest.Messages.Create(newMessage);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			message.ID = newMessage.ID;
+
+			return Ok(message);
+		}
+
+		public IHttpActionResult GetMessages(int senderID, int receiverID)
+		{
+			List<MessageModel> messages = _nest.Messages.All().Where(m => m.SenderID == senderID && m.ReceiverID == receiverID)
+				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated}).ToList();
+
+			return Ok(messages);
 		}
 
 		private bool DoesMatchCriteria(ProfileModel profile, ProfileCriteria criteria)
@@ -402,11 +449,12 @@ namespace Services.Controllers
 			List<Comment> comments = _nest.Comments.All().Where(c => c.AuthorID == user.ID).OrderByDescending(c => c.DateCreated).Take(100).ToList();
 			foreach (Comment c in comments)
 			{
-				activities.Add(new ActivityModel { ActionID = c.ID, Author = user, Action = "comment", DateCreated = c.DateCreated });
+				activities.Add(new ActivityModel { ActionID = c.TopicID, Author = user, Action = "comment", DateCreated = c.DateCreated });
 			}
 			List<int> albumsIDs = _nest.Albums.All().Where(a => a.OwnerID == user.ID).Select(a => a.ID).ToList();
-			List<Photo> photos = _nest.Photos.All().Where(p => albumsIDs.Exists(a => a == p.AlbumID)).OrderByDescending(p => p.DateCreated).Take(100).ToList();
-			foreach (Photo p in photos)
+			List<PhotoModel> photos = _nest.Photos.All().Select(p => new PhotoModel { ID = p.ID, AlbumID = p.AlbumID, Content = p.Content, DateCreated = p.DateCreated, Rating = p.Rating }).ToList();
+			photos = photos.Where(p => albumsIDs.Exists(a => a == p.AlbumID)).OrderByDescending(p => p.DateCreated).Take(100).ToList();
+			foreach (PhotoModel p in photos)
 			{
 				activities.Add(new ActivityModel { ActionID = p.ID, Author = user, Action = "photo", DateCreated = p.DateCreated });
 			}

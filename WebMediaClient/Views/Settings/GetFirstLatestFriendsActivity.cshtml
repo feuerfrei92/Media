@@ -1,0 +1,40 @@
+﻿@model List<WebMediaClient.Models.ActivityViewModel>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="list-group-item">
+					@Html.ActionLink(item.Author.Username, "GetProfileByUserID", "Profile", new { userID = item.Author.ID }, null)
+					<div class="col-md-4">
+						@switch (item.Action)
+						{
+							case "topic":
+							case "comment":
+								@Html.ActionLink(item.Action, "GetTopicByID", "Topic", new { ID = item.ActionID }, null)
+								break;
+								@Html.ActionLink(item.Action, "GetTopicByID", "Topic", new { ID = item.ActionID }, null)
+								break;
+							case "photo":
+							@Html.ActionLink(item.Action, "GetPhotoByID", "Album", new { ID = item.ActionID }, null)
+								break;
+							default:
+								break;
+						}
+					</div>
+					<div class="col-md-4">
+						@item.DateCreated
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-8">
+		@Html.ActionLink("View full activity", "GetLatestFriendsActivity", "Settings", new { userID = @ViewBag.User.ID }, null)
+	</div>
+</div>
+
+

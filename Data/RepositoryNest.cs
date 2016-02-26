@@ -96,6 +96,11 @@ namespace Data
 			get { return GetRepository<Setting>(); }
 		}
 
+		public IRepository<Message> Messages
+		{
+			get { return GetRepository<Message>();  }
+		}
+
 		public void SaveChanges()
 		{
 			_context.SaveChanges();

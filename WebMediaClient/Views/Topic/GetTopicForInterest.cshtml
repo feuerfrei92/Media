@@ -76,15 +76,19 @@
 			success: function (data) {
 				//$('#comments').empty();
 				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
-				$('#comments').load(link);
+				$("#comments").empty();
+				$('#comments').load(link, function () { setIDs(); });
 			},
 			error: function (xhr) {
 				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
-				$('#comments').load(link);
+				$("#comments").empty();
+				$('#comments').load(link, function () { setIDs(); });
 			}
 		})
 	}
 </script>
+
+<script src="~/ckeditor/ckeditor.js"></script>
 
 <h2>@Model.Name</h2>
 
@@ -102,6 +106,9 @@
 		<button class="button" onclick="addComment()">Reply</button>
 	</div>
 </div>
+<script>
+	CKEDITOR.replace("comment_text");
+</script>
 
 
 

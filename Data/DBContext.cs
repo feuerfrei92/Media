@@ -33,6 +33,7 @@ namespace Data
 		public virtual IDbSet<Visit> Visits { get; set; }
 		public virtual IDbSet<Album> Albums { get; set; }
 		public virtual IDbSet<Setting> Settings { get; set; }
+		public virtual IDbSet<Message> Messages { get; set; }
 
 		public new void SaveChanges()
 		{

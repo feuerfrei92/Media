@@ -25,6 +25,7 @@ namespace Data
 		IRepository<Visit> Visits { get; }
 		IRepository<Album> Albums { get; }
 		IRepository<Setting> Settings { get; }
+		IRepository<Message> Messages { get; }
 		void SaveChanges();
 	}
 }

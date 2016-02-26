@@ -1,0 +1,36 @@
+﻿@model List<WebMediaClient.Models.ActivityViewModel>
+
+@{
+    ViewBag.Title = "GetLatestProfileActivity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetLatestProfileActivity</h2>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="list-group-item">
+					@switch (item.Action)
+					{
+						case "topic":
+						case "comment":
+							@Html.ActionLink(item.Action, "GetTopicByID", "Topic", new { ID = item.ActionID }, null)
+							break;
+						case "photo":
+							@Html.ActionLink(item.Action, "GetPhotoByID", "Album", new { ID = item.ActionID }, null)
+							break;
+						default:
+							break;
+					}
+					<div class="col-md-4">
+						@item.DateCreated
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+

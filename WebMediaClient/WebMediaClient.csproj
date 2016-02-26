@@ -196,6 +196,7 @@
     <Compile Include="Converters\AlbumConverter.cs" />
     <Compile Include="Converters\CommentConverter.cs" />
     <Compile Include="Converters\InterestConverter.cs" />
+    <Compile Include="Converters\MessageConverter.cs" />
     <Compile Include="Converters\PhotoConverter.cs" />
     <Compile Include="Converters\ProfileConverter.cs" />
     <Compile Include="Converters\SectionConverter.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Models\CommentViewModels.cs" />
     <Compile Include="Models\InterestViewModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\MessageViewModels.cs" />
     <Compile Include="Models\PhotoViewModels.cs" />
     <Compile Include="Models\ProfileViewModels.cs" />
     <Compile Include="Models\SectionViewModels.cs" />
@@ -677,6 +679,10 @@
     <Content Include="Views\Settings\GetSettingByID.cshtml" />
     <Content Include="Views\Settings\GetSettingByOwnerIDAndType.cshtml" />
     <Content Include="Views\Album\GetAlbumByID.cshtml" />
+    <Content Include="Views\Settings\GetFirstLatestFriendsActivity.cshtml" />
+    <Content Include="Views\Settings\GetLatestFriendsActivity.cshtml" />
+    <Content Include="Views\Settings\GetFirstLatestProfileActivity.cshtml" />
+    <Content Include="Views\Settings\GetLatestProfileActivity.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

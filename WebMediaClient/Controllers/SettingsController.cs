@@ -154,6 +154,28 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult GetFirstLatestProfileActivity(int userID, string token)
+		{
+			//try
+			//{
+				string url = string.Format("http://localhost:8080/api/Profile/GetLatestProfileActivity?UserID={0}", userID);
+				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
+				activities = activities.OrderByDescending(a => a.DateCreated).Take(10).ToList();
+				var viewModels = new List<ActivityViewModel>();
+				foreach (ActivityModel a in activities)
+				{
+					viewModels.Add(ActivityConverter.FromBasicToVisual(a));
+				}
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				return View(viewModels);
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
+		}
+
 		public ActionResult GetLatestProfileActivity(int userID, string token)
 		{
 			try
@@ -166,7 +188,7 @@ namespace WebMediaClient.Controllers
 				{
 					viewModels.Add(ActivityConverter.FromBasicToVisual(a));
 				}
-				return View(activities);
+				return View(viewModels);
 			}
 			catch
 			{
@@ -174,6 +196,27 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult GetFirstLatestFriendsActivity(int userID, string token)
+		{
+			//try
+			//{
+				string url = string.Format("http://localhost:8080/api/Profile/GetLatestFriendsActivity?UserID={0}", userID);
+				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
+				activities = activities.OrderByDescending(a => a.DateCreated).Take(5).ToList();
+				var viewModels = new List<ActivityViewModel>();
+				foreach (ActivityModel a in activities)
+				{
+					viewModels.Add(ActivityConverter.FromBasicToVisual(a));
+				}
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				return View(viewModels);
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
+		}
 
 		public ActionResult GetLatestFriendsActivity(int userID, string token)
 		{
@@ -187,7 +230,7 @@ namespace WebMediaClient.Controllers
 				{
 					viewModels.Add(ActivityConverter.FromBasicToVisual(a));
 				}
-				return View(activities);
+				return View(viewModels);
 			}
 			catch
 			{
