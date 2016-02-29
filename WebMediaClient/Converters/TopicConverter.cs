@@ -16,6 +16,7 @@ namespace WebMediaClient.Converters
 			{
 				ID = topicModel.ID,
 				Name = topicModel.Name,
+				SectionID = topicModel.SectionID,
 				AuthorID = topicModel.AuthorID,
 				DateCreated = topicModel.DateCreated,
 				DateModified = topicModel.DateModified
@@ -30,6 +31,8 @@ namespace WebMediaClient.Converters
 			{
 				ID = viewModel.ID,
 				Name = viewModel.Name,
+				SectionID = viewModel.SectionID, 
+				AuthorID = viewModel.AuthorID,
 				DateCreated = viewModel.DateCreated,
 				DateModified = viewModel.DateModified
 			};

@@ -419,8 +419,20 @@ namespace Services.Controllers
 
 		public IHttpActionResult GetMessages(int senderID, int receiverID)
 		{
-			List<MessageModel> messages = _nest.Messages.All().Where(m => m.SenderID == senderID && m.ReceiverID == receiverID)
-				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated}).ToList();
+			var messages = _nest.Messages.All().Where(m => (m.SenderID == senderID && m.ReceiverID == receiverID) || (m.SenderID == receiverID && m.ReceiverID == senderID))
+				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionGuid = m.DiscussionGuid })
+				.OrderByDescending(m => m.DateCreated)
+				.ToList();
+
+			return Ok(messages);
+		}
+
+		public IHttpActionResult GetDiscussion(Guid discussionGuid)
+		{
+			var messages = _nest.Messages.All().Where(m => m.DiscussionGuid == discussionGuid)
+				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionGuid = m.DiscussionGuid })
+				.OrderByDescending(m => m.DateCreated)
+				.ToList();
 
 			return Ok(messages);
 		}

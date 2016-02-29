@@ -23,6 +23,29 @@
 		var profileUsername = '@Model.Username';
 		if (currentUsername == profileUsername)
 			$('#add_friend').prop('disabled', true);
+		else {
+			$.ajax
+		({
+			url: '@Url.Action("GetUserByUsername", "User", new { Username = @Model.Username })',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				$('#add_friend').prop('disabled', true);
+			}
+		})
+		}
+	}
+
+	function checkIsFriend() {
+		$.ajax
+		({
+			url: '@Url.Action("GetUserByUsername", "User", new { Username = @Model.Username })',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				$('#add_friend').prop('disabled', true);
+			}
+		})
 	}
 
 	function getFriendID(username) {
@@ -83,6 +106,9 @@
 				</div>
 			}
 		</section>
+	</div>
+	<div class="col-md-8">
+		@Html.ActionLink("Start chat", "GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.UserID }, new { id = "chat_link" })
 	</div>
 	<div class="col-md-8">
 		@Html.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })

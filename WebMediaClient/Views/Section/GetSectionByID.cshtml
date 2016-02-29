@@ -56,12 +56,38 @@
 				url: '@Html.Raw(Url.Action("GetMembership", "Section", new { userID = @ViewBag.User.ID, sectionID = @Model.ID }))',
 				dataType: 'json',
 				type: 'GET',
-				error: function (xhr){
-					if (xhr.status == 404)
-						$('#apply').prop('disabled', true);
+				success: function (data){
+					$('#apply').prop('disabled', true);
 				}
 			})
 		}
+		else
+			getRoot();
+	}
+
+	function getRoot() {
+		$.ajax
+		({
+			url: '@Url.Action("GetRoot", "Section", new { sectionID = @Model.ID})',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				checkMemberOfRoot(data.ID);
+			},
+		})
+	}
+
+	function checkMemberOfRoot(id) {
+		var link = '@Html.Raw(Url.Action("GetMembership", "Section", new { userID = @ViewBag.User.ID, sectionID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data){
+			}
+		})
 	}
 
 	function applyForMember() {
@@ -71,6 +97,29 @@
 			dataType: 'json',
 			type: 'PUT',
 			success: function (data){
+				alert("You are already a member");
+			},
+			error: function(xhr){
+				if (xhr.status == 404)
+				{
+					addMembership();
+				}
+			}
+		})
+	}
+
+	function addMembership() {
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("AddMembership", "Section", new { sectionID = @Model.ID, userID = @ViewBag.User.ID }))',
+			data:
+				{
+					anonymous: false,
+				},
+			dataType: 'json',
+			type: 'POST',
+			success: function(data){
+				$("#apply").prop('disabled', true);
 			}
 		})
 	}

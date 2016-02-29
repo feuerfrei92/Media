@@ -169,6 +169,20 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		public IHttpActionResult GetRoot(int sectionID)
+		{
+			SectionModel section = _nest.Sections.All().Where(s => s.ID == sectionID).Select(BuildSectionModel).FirstOrDefault();
+			int? parentID = section.ParentID;
+			while (parentID != null)
+			{
+				section = _nest.Sections.All().Where(s => s.ID == parentID).Select(BuildSectionModel).FirstOrDefault();
+				parentID = section.ParentID;
+			}
+
+			return Ok(section);
+		}
+
+		[HttpGet]
 		public IHttpActionResult SearchBySectionName(string name)
 		{
 			List<SectionModel> sections = _nest.Sections.All().Where(s => s.Name.Contains(name)).Select(BuildSectionModel).ToList();
@@ -177,7 +191,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
-		public IHttpActionResult AddMembership(int sectionID, int userID)
+		public IHttpActionResult AddMembership(int sectionID, int userID, bool isAnonymous)
 		{
 			var membership = new Membership
 			{
@@ -185,6 +199,7 @@ namespace Services.Controllers
 				UserID = userID,
 				Role = SectionRole.Regular,
 				IsAccepted = false,
+				Anonymous = isAnonymous,
 			};
 
 			_nest.Memberships.Create(membership);
@@ -206,6 +221,29 @@ namespace Services.Controllers
 		{
 			var membership = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.UserID == userID).FirstOrDefault();
 			membership.IsAccepted = true;
+
+			_nest.Memberships.Update(membership);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
+		[HttpPut]
+		public IHttpActionResult ChangeVisibilityOfMembership(int sectionID, int userID)
+		{
+			var membership = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.UserID == userID).FirstOrDefault();
+			if (membership.Anonymous)
+				membership.Anonymous = false;
+			else
+				membership.Anonymous = true;
 
 			_nest.Memberships.Update(membership);
 
@@ -287,6 +325,8 @@ namespace Services.Controllers
 				SectionID = membership.SectionID,
 				Role = membership.Role,
 				SuspendedUntil = membership.SuspendedUntil,
+				IsAccepted = membership.IsAccepted,
+				Anonymous = membership.Anonymous,
 			};
 
 			return Ok(membershipInfo);

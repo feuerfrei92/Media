@@ -19,5 +19,7 @@ namespace Models.DatabaseModels
 		public string Text { get; set; }
 		[Required]
 		public DateTime DateCreated { get; set; }
+		[Required]
+		public Guid DiscussionGuid { get; set; }
 	}
 }

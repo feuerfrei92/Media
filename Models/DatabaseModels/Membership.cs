@@ -20,5 +20,6 @@ namespace Models.DatabaseModels
 		[Required]
 		public SectionRole Role { get; set; }
 		public DateTime? SuspendedUntil { get; set; }
+		public bool Anonymous { get; set; }
 	}
 }

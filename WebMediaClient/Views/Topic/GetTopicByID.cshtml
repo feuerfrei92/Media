@@ -24,6 +24,7 @@
 			dataType: 'json',
 			type: 'PUT',
 			success: function (data) {
+				getRoot();
 			},
 			error: function (xhr) {
 				if (xhr.status == 400) {
@@ -42,6 +43,32 @@
 			type: 'POST',
 			success: function (data) {
 			},
+		})
+	}
+
+	function getRoot()
+	{
+		$.ajax
+		({
+			url: '@Url.Action("GetRoot", "Section", new { sectionID = @Model.SectionID})',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				checkMember(data.ID);
+			},
+		})
+	}
+
+	function checkMember(id) {
+		var link = '@Html.Raw(Url.Action("GetMembership", "Section", new { userID = @ViewBag.User.ID, sectionID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data){
+			}
 		})
 	}
 

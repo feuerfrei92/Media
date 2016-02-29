@@ -1,0 +1,101 @@
+﻿@model List<WebMediaClient.Models.MessageViewModel>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+	<script src="~/signalr/hubs"></script>
+	<script src="~/ckeditor/ckeditor.js"></script>
+	<script type="text/javascript">
+	window.addEventListener("load", function () { setIDs(); }, false);
+
+	function setIDs() {
+		var textAreas = document.getElementsByTagName("textarea");
+		for (i = 0; i < textAreas.length; i++) {
+			var textArea = textAreas[i];
+			if (textArea.id != "message_text") {
+				textArea.setAttribute("id", "textarea" + "_" + i.toString());
+				CKEDITOR.replace("textarea" + "_" + i.toString(), { customConfig: "/Scripts/Myconfig.js", readOnly: true });
+			}
+		}
+		$("#message_number").val(textAreas.length.toString());
+	}
+
+	$(function () {
+		var chat = $.connection.chatHub;
+		chat.client.broadcastMessage() = function (message) {
+			var link = '@Html.Action("GetUserByID", "User", new { ID = @ViewBag.User.ID })';
+			$("#messages_container").append("<div class=&quot;row&quot;><div class=&quot;col-md-4&quot;>" + link + "</div><div class=&quot;col-md-4&quot;><textarea id=&quot;textarea_" + $("message_number").val() + "&quot; class=&quot;form-control&quot; rows=&quot;5&quot; cols=&quot;25&quot;>" + message + "</textarea></div></div>");
+		}
+		$("#message_text").focus();
+		$.connection.hub.start().done(function () {
+			$('#send_message').click(function () {
+				chat.server.send($('#message_text').val());
+				$.ajax
+				({
+					url: '@Html.Raw(Url.Action("CreateMessage", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.ReceiverID}))',
+					data:
+						{
+							text: $('#message_text').val(),
+							datecreated: Date.now(),
+						},
+					dateType: 'json',
+					type: 'POST',
+					success: function (data){
+					}
+				})
+				$('#message_text').val('').focus();
+			});
+		});
+	});
+	</script>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>GetMessages</title>
+</head>
+<body>
+	<div class="row">
+		<div class="col-md-8">
+			<div id="messages_container" class="list-group">
+				@foreach (var item in Model)
+				{
+					<div class="row">
+						<div class="col-md-4">
+							@Html.Action("GetUserByID", "User", new { ID = item.SenderID })
+						</div>
+						<div class="col-md-4">
+							@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })
+						</div>
+					</div>
+				}
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<textarea id="message_text" class="form-control" cols="25" rows="5"></textarea>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<button id="send_message" class="button">Send</button>
+		</div>
+	</div>
+	<input id="message_number" class="hidden" />
+	<script>
+		CKEDITOR.replace("message_text");
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+

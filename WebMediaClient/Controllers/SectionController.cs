@@ -110,6 +110,13 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetRoot(int sectionID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Section/GetRoot?SectionID={0}", sectionID);
+			var section = await HttpClientBuilder<SectionModel>.GetAsync(url, token);
+			return Json(new { ID = section.ID, Name = section.Name, ParentID = section.ParentID }, JsonRequestBehavior.AllowGet);
+		}
+
 		public async Task<ActionResult> SearchBySectionName(string name, string token)
 		{
 			try
@@ -141,6 +148,14 @@ namespace WebMediaClient.Controllers
 		public async Task<ActionResult> AcceptMembership(int sectionID, int userID, string token)
 		{
 			string url = string.Format("http://localhost:8080/api/Section/AcceptMembership?SectionID={0}&UserID={1}", sectionID, userID);
+			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+		}
+
+		[HttpPut]
+		public async Task<ActionResult> ChangeVisibilityOfMembership(int sectionID, int userID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Section/ChangeVisibilityOfMembership?SectionID={0}&UserID={1}", sectionID, userID);
 			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 		}
@@ -187,7 +202,7 @@ namespace WebMediaClient.Controllers
 			var membership = await HttpClientBuilder<MembershipInfo>.GetAsync(url, token);
 			if (membership == null)
 				return HttpNotFound("No membership");
-			else return Json(new { Membership = membership }, JsonRequestBehavior.AllowGet);
+			else return Json(new { ID = membership.ID, SectionID = membership.SectionID, UserID = membership.UserID, Role = membership.Role, SuspendedUntil = membership.SuspendedUntil, IsAccepted = membership.IsAccepted, anonymous = membership.Anonymous }, JsonRequestBehavior.AllowGet);
 		}
     }
 }

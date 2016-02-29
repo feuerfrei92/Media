@@ -23,6 +23,17 @@
 		var profileUsername = '@Model.Username';
 		if (currentUsername == profileUsername)
 			$('#add_friend').prop('disabled', true);
+		else {
+			$.ajax
+		({
+			url: '@Url.Action("GetUserByUsername", "User", new { Username = @Model.Username })',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				$('#add_friend').prop('disabled', true);
+			}
+		})
+		}
 	}
 
 	function getFriendID(username) {

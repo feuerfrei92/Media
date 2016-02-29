@@ -14,5 +14,6 @@ namespace Services.Models
 		public bool IsAccepted { get; set; }
 		public SectionRole Role { get; set; }
 		public DateTime? SuspendedUntil { get; set; }
+		public bool Anonymous { get; set; }
 	}
 }

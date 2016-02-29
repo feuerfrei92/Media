@@ -19,6 +19,7 @@ namespace WebMediaClient.Converters
 				ReceiverID = messageModel.ReceiverID,
 				Text = messageModel.Text,
 				DateCreated = messageModel.DateCreated,
+				DiscussionGuid = messageModel.DiscussionGuid,
 			};
 
 			return viewModel;
@@ -33,6 +34,7 @@ namespace WebMediaClient.Converters
 				ReceiverID = viewModel.ReceiverID,
 				Text = viewModel.Text,
 				DateCreated = viewModel.DateCreated,
+				DiscussionGuid = viewModel.DiscussionGuid,
 			};
 
 			return messageModel;

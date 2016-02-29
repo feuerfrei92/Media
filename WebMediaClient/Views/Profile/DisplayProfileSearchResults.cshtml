@@ -37,25 +37,36 @@
 	}*@
 
 	function addButton(username) {
-			var profileList = document.getElementById("add_friend");
-			var buttonFriend = document.createElement("button");
-			buttonFriend.setAttribute("id", username);
-			buttonFriend.setAttribute("class", "button");
-			buttonFriend.setAttribute("onclick", "getFriendID(\"" + username + "\")");
-			buttonFriend.innerHTML = "Add friend";
-			profileList.appendChild(buttonFriend);
+		var profileList = document.getElementById("add_friend");
+		var buttonFriend = document.createElement("button");
+		buttonFriend.setAttribute("id", username);
+		buttonFriend.setAttribute("class", "button");
+		buttonFriend.setAttribute("onclick", "getFriendID(\"" + username + "\")");
+		buttonFriend.innerHTML = "Add friend";
+		profileList.appendChild(buttonFriend);
 	}
 
-	function compareUsername()
-	{
+	function compareUsername() {
 		var profileList = document.getElementById("add_friend");
-		var currentUsername = '@ViewBag.User.Username';
 		var buttons = document.getElementsByClassName("dialogbutton");
 		for (var i = 0; i < buttons.length; i++)
 		{
 			var item = buttons[i];
-			if (item.id == currentUsername || item.id == null)
+			if (item.id == "@ViewBag.User.Username" || item.id == null)
 				profileList.removeChild(item);
+			else {
+				var link = '@Url.Action("GetUserByUsername", "User", new { Username = "oooo" })';
+				link = link.replace("oooo", item.id);
+				$.ajax
+				({
+					url: link,
+					dataType: 'json',
+					type: 'GET',
+					success: function (data) {
+						profileList.removeChild(item);
+					}
+				})
+			}
 		}
 	}
 

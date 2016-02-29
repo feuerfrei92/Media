@@ -18,7 +18,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Topic, TopicModel>> BuildTopicModel
 		{
-			get { return t => new TopicModel { ID = t.ID, Name = t.Name, AuthorID = t.AuthorID, DateCreated = t.DateCreated, DateModified = t.DateModified }; }
+			get { return t => new TopicModel { ID = t.ID, Name = t.Name, SectionID = t.SectionID, AuthorID = t.AuthorID, DateCreated = t.DateCreated, DateModified = t.DateModified }; }
 		}
 
 		public TopicController()
@@ -62,6 +62,7 @@ namespace Services.Controllers
 			_nest.Topics.Update(existingTopic);
 
 			topic.ID = ID;
+			topic.SectionID = sectionID;
 
 			try
 			{
@@ -105,6 +106,7 @@ namespace Services.Controllers
 			}
 
 			topic.ID = newTopic.ID;
+			topic.SectionID = newTopic.SectionID;
 			topic.AuthorID = newTopic.AuthorID;
 
 			return Ok(topic);

@@ -222,7 +222,7 @@ namespace WebMediaClient.Controllers
 			var friendship = await HttpClientBuilder<FriendshipInfo>.GetAsync(url, token);
 			if (friendship == null)
 				return HttpNotFound("No friendship");
-			else return Json(new { Friendship = friendship }, JsonRequestBehavior.AllowGet);
+			else return Json(new { ID = friendship.ID, UserID_1 = friendship.UserID_1, UserID_2 = friendship.UserID_2, IsAccepted = friendship.IsAccepted }, JsonRequestBehavior.AllowGet);
 		}
 
 		[HttpPost]
@@ -238,12 +238,15 @@ namespace WebMediaClient.Controllers
 		public async Task<ActionResult> GetMessages(int senderID, int receiverID, string token)
 		{
 			string url = string.Format("http://localhost:8080/api/Profile/GetMessages?senderID={0}&receiverID={1}", senderID, receiverID);
-			var message = await HttpClientBuilder<MessageModel>.GetAsync(url, token);
-			var viewModel = MessageConverter.FromBasicToVisual(message);
-			ViewBag.SenderID = senderID;
+			var messages = await HttpClientBuilder<MessageModel>.GetListAsync(url, token);
+			var viewModels = new List<MessageViewModel>();
+			foreach (MessageModel m in messages)
+			{
+				viewModels.Add(MessageConverter.FromBasicToVisual(m));
+			}
 			ViewBag.ReceiverID = receiverID;
 			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
-			return View(viewModel);
+			return View(viewModels);
 		}
     }
 }
