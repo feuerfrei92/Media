@@ -193,6 +193,7 @@ namespace WebMediaClient.Controllers
 			if (TempData["viewModels"] != null)
 				viewModels = (List<ProfileViewModel>)TempData["viewModels"];
 			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+			TempData["viewModels"] = viewModels;
 			return View(viewModels);
 		}
 

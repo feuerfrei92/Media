@@ -18,7 +18,7 @@
 		}
 	}
 
-	@*function getUsername() {
+	@*@*function getUsername() {
 		var token = getToken();
 		$.ajax
 		({
@@ -48,9 +48,8 @@
 
 	function compareUsername() {
 		var profileList = document.getElementById("add_friend");
-		var buttons = document.getElementsByClassName("dialogbutton");
-		for (var i = 0; i < buttons.length; i++)
-		{
+		var buttons = document.getElementsByClassName("button");
+		for (var i = 0; i < buttons.length; i++) {
 			var item = buttons[i];
 			if (item.id == "@ViewBag.User.Username" || item.id == null)
 				profileList.removeChild(item);
@@ -64,10 +63,25 @@
 					type: 'GET',
 					success: function (data) {
 						profileList.removeChild(item);
+						//checkIfFriend(data.ID, item);
 					}
 				})
 			}
 		}
+	}
+
+	function checkIfFriend(id, button) {
+		var link = '@Html.Raw(Url.Action("GetFriendship", "Profile", new { userID = @ViewBag.User.ID, friendID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				button.disabled = true;
+			}
+		})
 	}
 
 	function getFriendID(username) {

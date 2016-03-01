@@ -10,6 +10,7 @@ namespace Services.Models
 	public class CommentModel
 	{
 		public int ID { get; set; }
+		[RegularExpression("^[a-zA-Z0-9]*$")]
 		public string Name { get; set; }
 		[Required]
 		public string Text { get; set; }

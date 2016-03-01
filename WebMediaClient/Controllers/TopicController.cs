@@ -95,6 +95,13 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetTopicByIDRaw(int ID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Topic/GetTopicByID?ID={0}", ID);
+			var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
+			return Json(new { SectionID = topic.SectionID }, JsonRequestBehavior.AllowGet);
+		}
+
 		public ActionResult GetTopicsBySectionID(int sectionID, string token)
 		{
 			//try

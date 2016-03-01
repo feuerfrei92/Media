@@ -10,6 +10,7 @@ namespace WebMediaClient.Models
 	public class CommentViewModel
 	{
 		public int ID { get; set; }
+		[RegularExpression("^[a-zA-Z0-9]*$")]
 		public string Name { get; set; }
 		[Required]
 		public string Text { get; set; }
@@ -23,6 +24,7 @@ namespace WebMediaClient.Models
 
 	public class CommentCriteriaViewModel
 	{
+		[RegularExpression("^[a-zA-Z0-9]*$")]
 		public string Name { get; set; }
 		public int? TopicID { get; set; }
 		public int? AuthorID { get; set; }

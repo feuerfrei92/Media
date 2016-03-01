@@ -11,6 +11,7 @@ namespace Services.Models
 	{
 		public int ID { get; set; }
 		[Required]
+		[RegularExpression("^[a-zA-Z0-9]*$")]
 		public string Name { get; set; }
 		public int OwnerID { get; set; }
 		public bool IsProfile { get; set; }

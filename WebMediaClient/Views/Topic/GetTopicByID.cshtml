@@ -67,7 +67,17 @@
 			url: link,
 			dataType: 'json',
 			type: 'GET',
-			success: function (data){
+			success: function (data) {
+				if(data.Role == "Admin" || data.Role == "Mod")
+				{
+					var div = document.getElementById("delete_button");
+					var button = document.createElement("button");
+					button.id = "del_button";
+					button.class = "button";
+					button.onclick = "deleteTopic()";
+					button.innerHTML = "Delete topic";
+					div.appendChild(button);
+				}
 			}
 		})
 	}
@@ -134,6 +144,11 @@
 <div class="row">
 	<div class="col-md-8">
 		<button class="button" onclick="addComment()">Reply</button>
+	</div>
+</div>
+<div class="row">
+	<div id="delete_button" class="col-md-8">
+
 	</div>
 </div>
 <script>

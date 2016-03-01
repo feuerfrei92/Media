@@ -30,16 +30,18 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				$('#add_friend').prop('disabled', true);
+				checkIsFriend(data.ID);
 			}
 		})
 		}
 	}
 
-	function checkIsFriend() {
+	function checkIsFriend(id) {
+		var link = '@Html.Raw(Url.Action("GetFriendship", "Profile", new { userID = @ViewBag.User.ID, friendID = -1 }))';
+		link = link.replace("-1", id);
 		$.ajax
 		({
-			url: '@Url.Action("GetUserByUsername", "User", new { Username = @Model.Username })',
+			url: link,
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {

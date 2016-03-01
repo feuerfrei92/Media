@@ -3,16 +3,114 @@
 <script type="text/javascript">
 	window.addEventListener("load", function () { setIDs(); }, false);
 
-		function setIDs() {
+	function setIDs() {
 		var textAreas = document.getElementsByTagName("textarea");
-		for (i = 0; i < textAreas.length; i++)
-		{
+		for (i = 0; i < textAreas.length; i++) {
 			var textArea = textAreas[i];
-			if (textArea.id != "comment_text")
-			{
+			if (textArea.id != "comment_text") {
 				textArea.setAttribute("id", "textarea" + "_" + i.toString());
 				CKEDITOR.replace("textarea" + "_" + i.toString(), { customConfig: "/Scripts/Myconfig.js", readOnly: true });
 			}
+		}
+		getTopic();
+	}
+
+	function getTopic() {
+		$.ajax
+		({
+			url: '@Url.Action("GetTopicByIDRaw", "Topic", new { ID = @ViewBag.TopicID})',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				getRoot(data.SectionID);
+			}
+		})
+	}
+
+	function getRoot(id) {
+		var link = '@Url.Action("GetRoot", "Section", new { sectionID = -1 })';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				checkMember(data.ID);
+			},
+		})
+	}
+
+	function checkMember(id) {
+		var link = '@Html.Raw(Url.Action("GetMembership", "Section", new { userID = @ViewBag.User.ID, sectionID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				if (data.Role == "Regular" || data.Role == "Admin" || data.Role == "Mod")
+					updateControls(data.Role, id);
+			}
+		})
+	}
+
+	function updateControls(role, id) {
+		var divs = document.getElementsByClassName("col-md-5");
+		for (i = 0; i < divs.length; i++) {
+			var div = divs[i];
+			var manageNode = document.createElement("li");
+			manageNode.setAttribute("id", "account_options");
+			manageNode.setAttribute("class", "dropdown");
+			var actionLinkElement = document.createElement("label");
+			actionLinkElement.setAttribute("class", "label-default dropdown-toggle");
+			actionLinkElement.setAttribute("data-toggle", "dropdown");
+			var manageElem = "Options";
+			actionLinkElement.innerHTML = manageElem;
+			manageNode.appendChild(actionLinkElement);
+			var dropdownMenu = document.createElement("ul");
+			dropdownMenu.setAttribute("class", "dropdown-menu");
+			if (role == "Regular" || role == "Admin" || role == "Mod") {
+				var getComments = document.createElement("li");
+				var getCommentsLink = document.createElement("a");
+				var getCommentsElem = '@Html.ActionLink("View all comments in this section", "GetCommentsByAuthorIDAndSectionID", "Comment", routeValues: new { authorID = @Model[0].AuthorID, sectionID = -1 }, htmlAttributes: new { id = "get_comments_link" })';
+				getCommentsLink.innerHTML = getCommentsElem;
+				getComments.appendChild(getCommentsLink);
+				dropdownMenu.appendChild(getComments);
+				var getTopics = document.createElement("li");
+				var getTopicsLink = document.createElement("a");
+				var getTopicsElem = '@Html.ActionLink("View all topics in this section", "GetTopicsByAuthorIDAndSectionID", "Topic", routeValues: new { authorID = @Model[0].AuthorID, sectionID = -1 }, htmlAttributes: new { id = "get_topics_link" })';
+				getTopicsLink.innerHTML = getTopicsElem;
+				getTopics.appendChild(getTopicsLink);
+				dropdownMenu.appendChild(getTopics);
+				var getAllTopics = document.createElement("li");
+				var getAllTopicsLink = document.createElement("a");
+				var getAllTopicsElem = '@Html.ActionLink("View all topics", "GetTopicsByAuthorID", "Topic", routeValues: new { authorID = @Model[0].AuthorID }, htmlAttributes: new { id = "get_all_topics_link" })';
+				getAllTopicsLink.innerHTML = getAllTopicsElem;
+				getAllTopics.appendChild(getAllTopicsLink);
+				dropdownMenu.appendChild(getAllTopics);
+			}
+			if (role == "Admin" || role == "Mod") {
+				var suspendUser = document.createElement("li");
+				var suspendUserLink = document.createElement("a");
+				var suspendElem = '@Html.ActionLink("Suspend user", "SuspendUser", "Settings", routeValues: new { userID = @Model[0].AuthorID }, htmlAttributes: new { id = "suspend_user_link" })';
+				suspendUserLink.innerHTML = suspendElem;
+				suspendUser.appendChild(suspendUserLink);
+				dropdownMenu.appendChild(suspendUser);
+			}
+			if (role == "Admin")
+			{
+				var promoteUser = document.createElement("li");
+				var promoteUserLink = document.createElement("a");
+				var promoteElem = '@Html.ActionLink("Change position", "ChangePosition", "Settings", routeValues: new { userID = @Model[0].AuthorID }, htmlAttributes: new { id = "change_position_link" })';
+				promoteUserLink.innerHTML = promoteElem;
+				promoteUser.appendChild(promoteUserLink);
+				dropdownMenu.appendChild(promoteUser);
+			}
+			manageNode.appendChild(actionLinkElement);
+			manageNode.appendChild(dropdownMenu);
+			div.appendChild(manageNode);
 		}
 	}
 </script>
@@ -25,7 +123,7 @@
 			@foreach (var item in Model)
 			{
 				<div class="row">
-					<div class="col-md-4">
+					<div class="col-md-5">
 						@Html.Action("GetUserByID", "User", new { ID = item.AuthorID });
 					</div>
 					<div class="col-md-4">

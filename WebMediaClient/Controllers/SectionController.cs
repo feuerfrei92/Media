@@ -202,7 +202,7 @@ namespace WebMediaClient.Controllers
 			var membership = await HttpClientBuilder<MembershipInfo>.GetAsync(url, token);
 			if (membership == null)
 				return HttpNotFound("No membership");
-			else return Json(new { ID = membership.ID, SectionID = membership.SectionID, UserID = membership.UserID, Role = membership.Role, SuspendedUntil = membership.SuspendedUntil, IsAccepted = membership.IsAccepted, anonymous = membership.Anonymous }, JsonRequestBehavior.AllowGet);
+			else return Json(new { ID = membership.ID, SectionID = membership.SectionID, UserID = membership.UserID, Role = membership.Role.ToString(), SuspendedUntil = membership.SuspendedUntil, IsAccepted = membership.IsAccepted, anonymous = membership.Anonymous }, JsonRequestBehavior.AllowGet);
 		}
     }
 }
