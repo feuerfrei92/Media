@@ -1,0 +1,33 @@
+﻿@model List<WebMediaClient.Models.CommentViewModel>
+
+@{
+    ViewBag.Title = "GetCommentsByAuthorIDAndSectionID";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetCommentsByAuthorIDAndSectionID</h2>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="row">
+					<div class="col-md-5">
+						@Html.Action("GetUserByID", "User", new { ID = item.AuthorID });
+					</div>
+					<div class="col-md-4">
+						@if (item.Name != null)
+						{
+							@Html.TextBoxFor(i => item.Name, new { @class = "form-control" })
+						}
+					</div>
+					<div class="col-md-4">
+						@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+

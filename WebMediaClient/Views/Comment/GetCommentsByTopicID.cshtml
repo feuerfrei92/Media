@@ -58,8 +58,11 @@
 
 	function updateControls(role, id) {
 		var divs = document.getElementsByClassName("col-md-5");
+		var labels = document.getElementsByClassName("label-info");
 		for (i = 0; i < divs.length; i++) {
 			var div = divs[i];
+			var label = labels[i];
+			var userID = label.innerHtml;
 			var manageNode = document.createElement("li");
 			manageNode.setAttribute("id", "account_options");
 			manageNode.setAttribute("class", "dropdown");
@@ -74,19 +77,24 @@
 			if (role == "Regular" || role == "Admin" || role == "Mod") {
 				var getComments = document.createElement("li");
 				var getCommentsLink = document.createElement("a");
-				var getCommentsElem = '@Html.ActionLink("View all comments in this section", "GetCommentsByAuthorIDAndSectionID", "Comment", routeValues: new { authorID = @Model[0].AuthorID, sectionID = -1 }, htmlAttributes: new { id = "get_comments_link" })';
-				getCommentsLink.innerHTML = getCommentsElem;
+				var linkComments = '@Html.ActionLink("View all comments in this section", "GetCommentsByAuthorIDAndSectionID", "Comment", routeValues: new { authorID = -1, sectionID = -2 }, htmlAttributes: new { id = "get_comments_link" })';
+				linkComments = linkComments.replace("-1", userID);
+				linkComments = linkComments.replace("-2", id);
+				getCommentsLink.innerHTML = linkComments;
 				getComments.appendChild(getCommentsLink);
 				dropdownMenu.appendChild(getComments);
 				var getTopics = document.createElement("li");
 				var getTopicsLink = document.createElement("a");
-				var getTopicsElem = '@Html.ActionLink("View all topics in this section", "GetTopicsByAuthorIDAndSectionID", "Topic", routeValues: new { authorID = @Model[0].AuthorID, sectionID = -1 }, htmlAttributes: new { id = "get_topics_link" })';
+				var getTopicsElem = '@Html.ActionLink("View all topics in this section", "GetTopicsByAuthorIDAndSectionID", "Topic", routeValues: new { authorID = -1, sectionID = -2 }, htmlAttributes: new { id = "get_topics_link" })';
+				getTopicsElem = getTopicsElem.replace("-1", userID);
+				getTopicsElem = getTopicsElem.replace("-2", id);
 				getTopicsLink.innerHTML = getTopicsElem;
 				getTopics.appendChild(getTopicsLink);
 				dropdownMenu.appendChild(getTopics);
 				var getAllTopics = document.createElement("li");
 				var getAllTopicsLink = document.createElement("a");
-				var getAllTopicsElem = '@Html.ActionLink("View all topics", "GetTopicsByAuthorID", "Topic", routeValues: new { authorID = @Model[0].AuthorID }, htmlAttributes: new { id = "get_all_topics_link" })';
+				var getAllTopicsElem = '@Html.ActionLink("View all topics", "GetTopicsByAuthorID", "Topic", routeValues: new { authorID = -1 }, htmlAttributes: new { id = "get_all_topics_link" })';
+				getAllTopicsElem = getAllTopicsElem.replace("-1", userID);
 				getAllTopicsLink.innerHTML = getAllTopicsElem;
 				getAllTopics.appendChild(getAllTopicsLink);
 				dropdownMenu.appendChild(getAllTopics);
@@ -94,7 +102,8 @@
 			if (role == "Admin" || role == "Mod") {
 				var suspendUser = document.createElement("li");
 				var suspendUserLink = document.createElement("a");
-				var suspendElem = '@Html.ActionLink("Suspend user", "SuspendUser", "Settings", routeValues: new { userID = @Model[0].AuthorID }, htmlAttributes: new { id = "suspend_user_link" })';
+				var suspendElem = '@Html.ActionLink("Suspend user", "SuspendUser", "Settings", routeValues: new { userID = -1 }, htmlAttributes: new { id = "suspend_user_link" })';
+				suspendElem = suspendElem.replace("-1", userID);
 				suspendUserLink.innerHTML = suspendElem;
 				suspendUser.appendChild(suspendUserLink);
 				dropdownMenu.appendChild(suspendUser);
@@ -103,7 +112,8 @@
 			{
 				var promoteUser = document.createElement("li");
 				var promoteUserLink = document.createElement("a");
-				var promoteElem = '@Html.ActionLink("Change position", "ChangePosition", "Settings", routeValues: new { userID = @Model[0].AuthorID }, htmlAttributes: new { id = "change_position_link" })';
+				var promoteElem = '@Html.ActionLink("Change position", "ChangePosition", "Settings", routeValues: new { userID = -1 }, htmlAttributes: new { id = "change_position_link" })';
+				promoteElem = promoteElem.replace("-1", userID);
 				promoteUserLink.innerHTML = promoteElem;
 				promoteUser.appendChild(promoteUserLink);
 				dropdownMenu.appendChild(promoteUser);
@@ -125,6 +135,7 @@
 				<div class="row">
 					<div class="col-md-5">
 						@Html.Action("GetUserByID", "User", new { ID = item.AuthorID });
+						<label class="label-info" hidden="hidden">@item.AuthorID</label>
 					</div>
 					<div class="col-md-4">
 						@if(item.Name != null)

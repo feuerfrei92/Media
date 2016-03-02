@@ -187,6 +187,14 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		public IHttpActionResult GetTopicsByAuthorIDAndSectionID(int authorID, int sectionID)
+		{
+			List<TopicModel> topics = _nest.Topics.All().Where(t => t.AuthorID == authorID && t.SectionID == sectionID).Select(BuildTopicModel).ToList();
+
+			return Ok(topics);
+		}
+
+		[HttpGet]
 		public IHttpActionResult SearchByTopicName(string name)
 		{
 			List<TopicModel> topics = _nest.Topics.All().Where(t => t.Name.Contains(name)).Select(BuildTopicModel).ToList();

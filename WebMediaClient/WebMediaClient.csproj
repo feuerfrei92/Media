@@ -684,6 +684,8 @@
     <Content Include="Views\Settings\GetFirstLatestProfileActivity.cshtml" />
     <Content Include="Views\Settings\GetLatestProfileActivity.cshtml" />
     <Content Include="Views\Profile\GetMessages.cshtml" />
+    <Content Include="Views\Topic\GetTopicsByAuthorIDAndSectionID.cshtml" />
+    <Content Include="Views\Comment\GetCommentsByAuthorIDAndSectionID.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

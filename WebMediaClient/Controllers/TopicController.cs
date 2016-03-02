@@ -122,6 +122,18 @@ namespace WebMediaClient.Controllers
 			//}
 		}
 
+		public async Task<ActionResult> GetTopicsByAuthorIDAndSectionID(int authorID, int sectionID, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/Topic/GetTopicsByAuthorIDAndSectionID?AuthorID={0}&SectionID={1}", authorID, sectionID);
+			var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+			var viewModels = new List<TopicViewModel>();
+			foreach (TopicModel t in topics)
+			{
+				viewModels.Add(TopicConverter.FromBasicToVisual(t));
+			}
+			return View(viewModels);
+		}
+
 		public ActionResult GetTopicForProfile(int profileID, string token)
 		{
 			//try

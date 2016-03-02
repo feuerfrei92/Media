@@ -131,6 +131,25 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetCommentsByAuthorIDAndSectionID(int authorID, int sectionID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Comment/GetCommentsByAuthorIDAndSectionID?AuthorID={0}&SectionID={1}", authorID, sectionID);
+				var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
+				var viewModels = new List<CommentViewModel>();
+				foreach (CommentModel c in comments)
+				{
+					viewModels.Add(CommentConverter.FromBasicToVisual(c));
+				}
+				return View(viewModels);
+			}
+			catch
+			{
+				return RedirectToAction("Error", "Account");
+			}
+		}
+
 		[HttpGet]
 		public async Task<ActionResult> SearchByTextContent(string content, string token)
 		{

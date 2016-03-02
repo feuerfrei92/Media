@@ -190,6 +190,21 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		public IHttpActionResult GetCommentsByAuthorIDAndSectionID(int authorID, int sectionID)
+		{
+			List<CommentModel> comments = _nest.Comments.All().Where(c => c.AuthorID == authorID).Select(BuildCommentModel).ToList();
+			var sectionComments = new List<CommentModel>();
+			foreach(CommentModel c in comments)
+			{
+				var topic = _nest.Topics.All().Where(t => t.ID == c.TopicID).FirstOrDefault();
+				if (topic.SectionID == sectionID)
+					sectionComments.Add(c);
+			}
+
+			return Ok(sectionComments);
+		}
+
+		[HttpGet]
 		public IHttpActionResult SearchByTextContent(string content)
 		{
 			List<CommentModel> comments = _nest.Comments.All().Where(c => c.Text.Contains(content)).Select(BuildCommentModel).ToList();
