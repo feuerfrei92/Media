@@ -181,5 +181,46 @@ namespace WebMediaClient.Controllers
 				return RedirectToAction("Error", "Account");
 			}
 		}
+
+		public ActionResult GetMembershipsForSection(int sectionID, string token)
+		{
+			//try
+			//{
+				string url = string.Format("http://localhost:8080/api/User/GetMembershipsForSection?SectionID={0}", sectionID);
+				//var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+				var users = Task.Run<List<UserModel>>(() => HttpClientBuilder<UserModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<UserViewModel>();
+				foreach (UserModel u in users)
+				{
+					viewModels.Add(UserConverter.FromBasicToVisual(u));
+				}
+				return View(viewModels);
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
+		}
+
+		public ActionResult GetPendingMembershipsForSection(int sectionID, string token)
+		{
+			//try
+			//{
+			string url = string.Format("http://localhost:8080/api/User/GetPendingMembershipsForSection?SectionID={0}", sectionID);
+			//var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+			var users = Task.Run<List<UserModel>>(() => HttpClientBuilder<UserModel>.GetListAsync(url, token)).Result;
+			var viewModels = new List<UserViewModel>();
+			foreach (UserModel u in users)
+			{
+				viewModels.Add(UserConverter.FromBasicToVisual(u));
+			}
+			ViewBag.SectionID = sectionID;
+			return View(viewModels);
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
+		}
     }
 }

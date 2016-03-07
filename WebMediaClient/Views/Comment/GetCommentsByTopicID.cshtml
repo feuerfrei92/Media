@@ -62,7 +62,7 @@
 		for (i = 0; i < divs.length; i++) {
 			var div = divs[i];
 			var label = labels[i];
-			var userID = label.innerHtml;
+			var userID = parseInt(label.textContent);
 			var manageNode = document.createElement("li");
 			manageNode.setAttribute("id", "account_options");
 			manageNode.setAttribute("class", "dropdown");

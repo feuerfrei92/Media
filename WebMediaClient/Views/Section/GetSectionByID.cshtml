@@ -48,7 +48,7 @@
 	}*@
 
 	function checkMember() {
-		var parentID = @ViewBag.ParentID;
+		var parentID = '@ViewBag.ParentID';
 		if (parentID == null)
 		{
 			$.ajax
@@ -58,6 +58,11 @@
 				type: 'GET',
 				success: function (data){
 					$('#apply').prop('disabled', true);
+					if(data.Role == "Admin")
+					{
+						var link = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
+						$("#pending_members_container").load(link);
+					}
 				}
 			})
 		}
@@ -85,7 +90,8 @@
 			url: link,
 			dataType: 'json',
 			type: 'GET',
-			success: function (data){
+			success: function (data) {
+				$("#apply").prop('disabled', true);
 			}
 		})
 	}
@@ -152,6 +158,10 @@
 	</div>
 </div>
 <div class="row">
+	<div id="pending_members_container" class="col-md-4">
+	</div>
+</div>
+<div class="row">
 	<div class="list-group">
 		<button class="button" onclick="postSection()">Add subsection</button>
 	</div>
@@ -163,7 +173,12 @@
 </div>
 <div class="row">
 	<div class="list-group">
-		<button id="apply" class="button" onclick="applyForMember()">Apply for membership</button>
+		<button id="apply" class="btn btn-default" onclick="applyForMember()">Apply for membership</button>
+	</div>
+</div>
+<div class="row">
+	<div class="list-group">
+		@Html.ActionLink("View members", "GetMembershipsForSection", "User", new { SectionID = @Model.ID }, new { @id = "view_section_members_link" })
 	</div>
 </div>
 	@*<div class="list-group">

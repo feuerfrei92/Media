@@ -686,6 +686,8 @@
     <Content Include="Views\Profile\GetMessages.cshtml" />
     <Content Include="Views\Topic\GetTopicsByAuthorIDAndSectionID.cshtml" />
     <Content Include="Views\Comment\GetCommentsByAuthorIDAndSectionID.cshtml" />
+    <Content Include="Views\User\GetMembershipsForSection.cshtml" />
+    <Content Include="Views\User\GetPendingMembershipsForSection.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

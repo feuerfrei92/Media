@@ -267,5 +267,33 @@ namespace Services.Controllers
 
 			return Ok(visits);
 		}
+
+		[HttpGet]
+		public IHttpActionResult GetMembershipsForSection(int sectionID)
+		{
+			List<Membership> memberships = _nest.Memberships.All().Where(m => m.SectionID == sectionID).ToList();
+			var users = new List<UserModel>();
+			foreach (Membership m in memberships)
+			{
+				UserModel user = _nest.Users.All().Where(u => u.ID == m.UserID).Select(BuildUserModel).FirstOrDefault();
+				users.Add(user);
+			}
+
+			return Ok(users);
+		}
+
+		[HttpGet]
+		public IHttpActionResult GetPendingMembershipsForSection(int sectionID)
+		{
+			List<Membership> memberships = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.IsAccepted == false).ToList();
+			var users = new List<UserModel>();
+			foreach (Membership m in memberships)
+			{
+				UserModel user = _nest.Users.All().Where(u => u.ID == m.UserID).Select(BuildUserModel).FirstOrDefault();
+				users.Add(user);
+			}
+
+			return Ok(users);
+		}
     }
 }

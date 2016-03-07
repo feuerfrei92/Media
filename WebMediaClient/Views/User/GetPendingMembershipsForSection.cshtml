@@ -1,0 +1,49 @@
+﻿@model List<WebMediaClient.Models.UserViewModel>
+
+<script type="text/javascript">
+	function acceptMembership(id) {
+		var link = '@Html.Raw(Url.Action("AcceptMembership", "Section", new { sectionID = @ViewBag.SectionID, userID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) {
+			}
+		})
+	}
+
+	function deleteMembership(id) {
+		var link = '@Html.Raw(Url.Action("DeleteMembership", "Section", new { sectionID = @ViewBag.SectionID, userID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'DELETE',
+			success: function (data) {
+			}
+		})
+	}
+</script>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="list-group-item">
+					@Html.ActionLink(item.Username, "GetProfileByUserID", "Profile", new { userID = item.ID });
+				</div>
+				<div class="col-md-4">
+					<button class="button" onclick="acceptMembership(@Html.Raw(Json.Encode(item.ID)))">Accept</button>
+				</div>
+				<div class="col-md-4">
+					<button class="button" onclick="declineMembership(@Html.Raw(Json.Encode(item.ID)))">Decline</button>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+

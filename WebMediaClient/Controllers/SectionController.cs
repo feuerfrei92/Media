@@ -169,7 +169,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpDelete]
-		public async Task<ActionResult> DeleteMembership(int sectionID, int userID, string token)
+		public ActionResult DeleteMembership(int sectionID, int userID, string token)
 		{
 			string url = string.Format("http://localhost:8080/api/Section/DeleteMembership?SectionID={0}&UserID={1}", sectionID, userID);
 			HttpClientBuilder<HttpResponseMessage>.DeleteAsync(url, token);
