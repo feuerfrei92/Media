@@ -237,5 +237,21 @@ namespace WebMediaClient.Controllers
 				return RedirectToAction("Error", "Account");
 			}
 		}
-    }
+
+		public ActionResult SuspendUser(int sectionID, int? userID = null)
+		{
+			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+			ViewBag.SectionID = sectionID;
+			ViewBag.UserID = userID;
+			return View();
+		}
+
+		public ActionResult ChangePosition(int sectionID, int? userID = null)
+		{
+			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+			ViewBag.SectionID = sectionID;
+			ViewBag.UserID = userID;
+			return View();
+		}
+	}
 }

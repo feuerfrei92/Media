@@ -16,6 +16,7 @@ namespace Models
 		[Required]
 		public string Username { get; set; }
 		public string Name { get; set; }
+		[Range(14, 100)]
 		public int? Age { get; set; }
 		public string Gender { get; set; }
 	}

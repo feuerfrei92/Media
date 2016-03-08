@@ -110,6 +110,20 @@ namespace WebMediaClient.Controllers
 			//}
 		}
 
+		public async Task<ActionResult> GetAlbumsForProfileRaw(int profileID, string token)
+		{
+			//try
+			//{
+			string url = string.Format("http://localhost:8080/api/Album/GetAlbumsForProfile?OwnerID={0}", profileID);
+			var albums = await HttpClientBuilder<AlbumModel>.GetListAsync(url, token);
+			return Json(albums, JsonRequestBehavior.AllowGet);
+			//}
+			//catch
+			//{
+			//	return RedirectToAction("Error", "Account");
+			//}
+		}
+
 		public ActionResult GetAlbumsForInterest(int interestID, string token)
 		{
 			//try

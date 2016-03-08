@@ -283,6 +283,22 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		public IHttpActionResult GetMembershipsForSectionRaw(int sectionID, int getSpecial)
+		{
+			List<Membership> memberships = _nest.Memberships.All().Where(m => m.SectionID == sectionID).ToList();
+			if (getSpecial == 0)
+				memberships = memberships.Where(m => m.Role != SectionRole.Admin && m.Role != SectionRole.Mod).ToList();
+			var users = new List<UserModel>();
+			foreach (Membership m in memberships)
+			{
+				UserModel user = _nest.Users.All().Where(u => u.ID == m.UserID).Select(BuildUserModel).FirstOrDefault();
+				users.Add(user);
+			}
+
+			return Ok(users);
+		}
+
+		[HttpGet]
 		public IHttpActionResult GetPendingMembershipsForSection(int sectionID)
 		{
 			List<Membership> memberships = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.IsAccepted == false).ToList();

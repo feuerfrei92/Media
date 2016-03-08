@@ -1,0 +1,100 @@
+﻿@{
+    ViewBag.Title = "SuspendUser";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>SuspendUser</h2>
+
+<script type="text/javascript">
+	$(function () {
+		var userID = '@ViewBag.UserID';
+		if (userID == null) 
+		{
+			$.getJSON('@Html.Raw(Url.Action("GetMembershipsForSectionRaw", "User", new { sectionID = @ViewBag.SectionID, getSpecial = 0 }))', function (result) {
+				var ddl = $('#user_dropdown');
+				ddl.empty();
+				$(result).each(function () {
+					ddl.append(
+						$('<option/>', {
+							value: this.ID
+						}).html(this.Username)
+					);
+				});
+			});
+		}
+		getRoot();
+	});
+
+	function getRoot() {
+		$.ajax
+		({
+			url: '@Url.Action("GetRoot", "Section", new { SectionID = @ViewBag.SectionID})',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				checkMember(data.ID);
+			},
+		})
+	}
+
+	function checkMember(id) {
+		var link = '@Html.Raw(Url.Action("GetMembership", "Section", new { userID = @ViewBag.User.ID, sectionID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				if (data.Role != "Admin" && data.Role != "Mod") {
+					alert("You aren't allowed to view this page");
+					window.location.href = '@Url.Action("Index", "Home")';
+				}
+			}
+		})
+	}
+
+	function suspendUser() {
+		var userID = '@ViewBag.UserID';
+		if (userID == null) {
+			var selectedValue = $("#user_dropdown").val();
+			userID = parseInt(selectedValue);
+		}
+		var suspendedUntil = $("#date_input").val();
+		var link = '@Html.Raw(Url.Action("UpdateMembership", "Section", new { sectionID = @ViewBag.SectionID, userID = -1, role = "Banned" }))';
+		link = link.replace("-1", userID);
+		$.ajax
+		({
+			url: link,
+			data: { suspendeduntil: suspendedUntil },
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) {
+			}
+		})
+	}
+</script>
+
+<div class="row">
+	<div class="col-md-8">
+		@if(ViewBag.UserID == null)
+		{ 
+			<div class="list-group">
+				<label id="user_label" class="label-default">Select user:</label>
+				<div class="col-md-4">
+					@Html.DropDownList("User", new SelectList(Enumerable.Empty<SelectListItem>()), new { @id = "user_dropdown" })
+				</div>
+			</div>
+		}
+		<div class="list-group">
+			<label id="date_label" class="label-default">Suspended until:</label>
+			<div class="col-md-4">
+				<input id="date_input" class="datepicker" required="required" />
+			</div>
+		</div>
+		<div class="list-group">
+			<button id="submit" class="formbutton" onclick="suspendUser()">Suspend</button>
+		</div>
+	</div>
+</div>
+

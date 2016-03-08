@@ -187,7 +187,7 @@ namespace WebMediaClient.Controllers
 			//try
 			//{
 				string url = string.Format("http://localhost:8080/api/User/GetMembershipsForSection?SectionID={0}", sectionID);
-				//var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+				//var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
 				var users = Task.Run<List<UserModel>>(() => HttpClientBuilder<UserModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<UserViewModel>();
 				foreach (UserModel u in users)
@@ -202,12 +202,19 @@ namespace WebMediaClient.Controllers
 			//}
 		}
 
+		public async Task<ActionResult> GetMembershipsForSectionRaw(int sectionID, int getSpecial, string token)
+		{
+			string url = string.Format("http://localhost:8080/api/User/GetMembershipsForSectionRaw?SectionID={0}&GetSpecial={1}", sectionID, getSpecial);
+			var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+			return Json(users, JsonRequestBehavior.AllowGet);
+		}
+
 		public ActionResult GetPendingMembershipsForSection(int sectionID, string token)
 		{
 			//try
 			//{
 			string url = string.Format("http://localhost:8080/api/User/GetPendingMembershipsForSection?SectionID={0}", sectionID);
-			//var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+			//var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
 			var users = Task.Run<List<UserModel>>(() => HttpClientBuilder<UserModel>.GetListAsync(url, token)).Result;
 			var viewModels = new List<UserViewModel>();
 			foreach (UserModel u in users)

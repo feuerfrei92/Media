@@ -52,8 +52,34 @@
 				tableElement.appendChild(titleElement);
 				tableElement.appendChild(contElement);
 				cont.appendChild(tableElement);
+				setAlbumSettings(data.ID);
 			}
 		})
+	}
+
+	function setAlbumSettings(id) {
+		var link = '@Url.Action("GetAlbumsForProfileRaw", "Album", new { profileID = -1 })';
+		link = link.replace("-1", id);
+		$.getJSON(link, function (result) {
+			$(result).each(function () {
+				var cont = document.getElementById("main_container");
+				var tableElement = document.createElement("dl");
+				tableElement.setAttribute("class", "dl-horizontal");
+				var titleElement = document.createElement("dt");
+				titleElement.innerHTML = "Manage album settings:";
+				var contElement = document.createElement("dd");
+				var linkElement = document.createElement("a");
+				var link = '@Url.Action("GetSettingByOwnerIDAndType", "Settings", new { ownerID = -1, settingType = SettingType.Album.ToString() })';
+				link = link.replace("-1", this.ID);
+				linkElement.href = link;
+				linkElement.innerHTML = "Update " + this.Name;
+				linkElement.id = "update_album " + this.ID.toString();
+				contElement.appendChild(linkElement);
+				tableElement.appendChild(titleElement);
+				tableElement.appendChild(contElement);
+				cont.appendChild(tableElement);
+			});
+		});
 	}
 </script>
 

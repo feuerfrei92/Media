@@ -102,8 +102,9 @@
 			if (role == "Admin" || role == "Mod") {
 				var suspendUser = document.createElement("li");
 				var suspendUserLink = document.createElement("a");
-				var suspendElem = '@Html.ActionLink("Suspend user", "SuspendUser", "Settings", routeValues: new { userID = -1 }, htmlAttributes: new { id = "suspend_user_link" })';
+				var suspendElem = '@Html.ActionLink("Suspend user", "SuspendUser", "Settings", routeValues: new { userID = -1, sectionID = -2 }, htmlAttributes: new { id = "suspend_user_link" })';
 				suspendElem = suspendElem.replace("-1", userID);
+				suspendElem = suspendElem.replace("-2", id);
 				suspendUserLink.innerHTML = suspendElem;
 				suspendUser.appendChild(suspendUserLink);
 				dropdownMenu.appendChild(suspendUser);
@@ -112,8 +113,9 @@
 			{
 				var promoteUser = document.createElement("li");
 				var promoteUserLink = document.createElement("a");
-				var promoteElem = '@Html.ActionLink("Change position", "ChangePosition", "Settings", routeValues: new { userID = -1 }, htmlAttributes: new { id = "change_position_link" })';
+				var promoteElem = '@Html.ActionLink("Change position", "ChangePosition", "Settings", routeValues: new { userID = -1, sectionID = -2 }, htmlAttributes: new { id = "change_position_link" })';
 				promoteElem = promoteElem.replace("-1", userID);
+				promoteElem = promoteElem.replace("-2", id);
 				promoteUserLink.innerHTML = promoteElem;
 				promoteUser.appendChild(promoteUserLink);
 				dropdownMenu.appendChild(promoteUser);

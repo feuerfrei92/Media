@@ -181,6 +181,16 @@
 		@Html.ActionLink("View members", "GetMembershipsForSection", "User", new { SectionID = @Model.ID }, new { @id = "view_section_members_link" })
 	</div>
 </div>
+<div class="row">
+	<div class="list-group">
+		@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })
+	</div>
+</div>
+<div class="row">
+	<div class="list-group">
+		@Html.ActionLink("Change role of an user", "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })
+	</div>
+</div>
 	@*<div class="list-group">
 		<input id="store_id" hidden="hidden" />
 	</div>
