@@ -32,17 +32,24 @@ namespace WebMediaClient.Controllers
                 }
 				return View();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public async Task<ActionResult> GetCurrentUser(string token)
 		{
-			string url = "http://localhost:8080/api/User/GetCurrentUser";
-			var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
-			return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = "http://localhost:8080/api/User/GetCurrentUser";
+				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
+				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
 
 		public ActionResult DeleteUser(int ID, string token)
@@ -53,25 +60,26 @@ namespace WebMediaClient.Controllers
 				HttpClientBuilder<UserModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public ActionResult GetUserByID(int ID, string token)
 		{
-			//try
-			//{
+			try
+			{
 				string url = string.Format("http://localhost:8080/api/User/GetUserByID?ID={0}", ID);
 				//var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 				var user = Task.Run<UserModel>(() => HttpClientBuilder<UserModel>.GetAsync(url, token)).Result;
-                var viewModel = UserConverter.FromBasicToVisual(user);
+				var viewModel = UserConverter.FromBasicToVisual(user);
 				return View(viewModel);
-			//catch
-			//{
-			//	return RedirectToAction("Error", "Account");
-			//}
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public async Task<ActionResult> GetUserByIDRaw(int ID, string token)
@@ -82,9 +90,9 @@ namespace WebMediaClient.Controllers
 				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 
@@ -96,9 +104,9 @@ namespace WebMediaClient.Controllers
 				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 
@@ -116,9 +124,9 @@ namespace WebMediaClient.Controllers
                 }
 				return View();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -131,9 +139,9 @@ namespace WebMediaClient.Controllers
 				var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 
@@ -146,9 +154,9 @@ namespace WebMediaClient.Controllers
 				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 
@@ -161,9 +169,9 @@ namespace WebMediaClient.Controllers
 				var visits = await HttpClientBuilder<HttpResponseMessage>.GetListAsync(url, token);
 				return Json(new { Visits = visits }, JsonRequestBehavior.AllowGet);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 
@@ -176,16 +184,16 @@ namespace WebMediaClient.Controllers
 				var visits = await HttpClientBuilder<HttpResponseMessage>.GetListAsync(url, token);
 				return Json(new { Visits = visits }, JsonRequestBehavior.AllowGet);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 
 		public ActionResult GetMembershipsForSection(int sectionID, string token)
 		{
-			//try
-			//{
+			try
+			{
 				string url = string.Format("http://localhost:8080/api/User/GetMembershipsForSection?SectionID={0}", sectionID);
 				//var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
 				var users = Task.Run<List<UserModel>>(() => HttpClientBuilder<UserModel>.GetListAsync(url, token)).Result;
@@ -195,39 +203,46 @@ namespace WebMediaClient.Controllers
 					viewModels.Add(UserConverter.FromBasicToVisual(u));
 				}
 				return View(viewModels);
-			//}
-			//catch
-			//{
-			//	return RedirectToAction("Error", "Account");
-			//}
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public async Task<ActionResult> GetMembershipsForSectionRaw(int sectionID, int getSpecial, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/User/GetMembershipsForSectionRaw?SectionID={0}&GetSpecial={1}", sectionID, getSpecial);
-			var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
-			return Json(users, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/User/GetMembershipsForSectionRaw?SectionID={0}&GetSpecial={1}", sectionID, getSpecial);
+				var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+				return Json(users, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
 
 		public ActionResult GetPendingMembershipsForSection(int sectionID, string token)
 		{
-			//try
-			//{
-			string url = string.Format("http://localhost:8080/api/User/GetPendingMembershipsForSection?SectionID={0}", sectionID);
-			//var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
-			var users = Task.Run<List<UserModel>>(() => HttpClientBuilder<UserModel>.GetListAsync(url, token)).Result;
-			var viewModels = new List<UserViewModel>();
-			foreach (UserModel u in users)
+			try
 			{
-				viewModels.Add(UserConverter.FromBasicToVisual(u));
+				string url = string.Format("http://localhost:8080/api/User/GetPendingMembershipsForSection?SectionID={0}", sectionID);
+				//var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
+				var users = Task.Run<List<UserModel>>(() => HttpClientBuilder<UserModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<UserViewModel>();
+				foreach (UserModel u in users)
+				{
+					viewModels.Add(UserConverter.FromBasicToVisual(u));
+				}
+				ViewBag.SectionID = sectionID;
+				return View(viewModels);
 			}
-			ViewBag.SectionID = sectionID;
-			return View(viewModels);
-			//}
-			//catch
-			//{
-			//	return RedirectToAction("Error", "Account");
-			//}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
     }
 }

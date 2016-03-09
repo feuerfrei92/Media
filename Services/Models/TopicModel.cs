@@ -18,5 +18,7 @@ namespace Services.Models
 		[Required]
 		public DateTime DateCreated { get; set; }
 		public DateTime? DateModified { get; set; }
+		public bool IsProfileTopic { get; set; }
+		public bool IsInterestTopic { get; set; }
 	}
 }

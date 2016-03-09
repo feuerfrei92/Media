@@ -32,31 +32,45 @@ namespace WebMediaClient.Controllers
                 }
 				return View();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		[HttpPost]
 		public async Task<ActionResult> CreateSection(SectionViewModel sectionModel, string token, int? parentID = null)
 		{
-            string url = string.Format("http://localhost:8080/api/Section/CreateSection?ParentID={0}", parentID);
-            var section = SectionConverter.FromVisualToBasic(sectionModel);
-            var createdSection = await HttpClientBuilder<SectionModel>.PostAsync(section, url, token);
-            var viewModel = SectionConverter.FromBasicToVisual(createdSection);
-			ViewBag.ParentID = parentID;
-            return View(viewModel);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Section/CreateSection?ParentID={0}", parentID);
+				var section = SectionConverter.FromVisualToBasic(sectionModel);
+				var createdSection = await HttpClientBuilder<SectionModel>.PostAsync(section, url, token);
+				var viewModel = SectionConverter.FromBasicToVisual(createdSection);
+				ViewBag.ParentID = parentID;
+				return View(viewModel);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		[HttpPut]
 		public async Task<ActionResult> UpdateSection(int ID, SectionViewModel sectionModel, string token, int? parentID = null)
 		{
-            string url = string.Format("http://localhost:8080/api/Section/CreateSection?ID={0}&ParentID={1}", ID, parentID);
-            var section = SectionConverter.FromVisualToBasic(sectionModel);
-            var updatedSection = await HttpClientBuilder<SectionModel>.PutAsync(section, url, token);
-            var viewModel = SectionConverter.FromBasicToVisual(updatedSection);
-            return View(viewModel);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Section/CreateSection?ID={0}&ParentID={1}", ID, parentID);
+				var section = SectionConverter.FromVisualToBasic(sectionModel);
+				var updatedSection = await HttpClientBuilder<SectionModel>.PutAsync(section, url, token);
+				var viewModel = SectionConverter.FromBasicToVisual(updatedSection);
+				return View(viewModel);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		[HttpDelete]
@@ -68,9 +82,9 @@ namespace WebMediaClient.Controllers
 				HttpClientBuilder<SectionModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -84,9 +98,9 @@ namespace WebMediaClient.Controllers
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModel);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -104,17 +118,24 @@ namespace WebMediaClient.Controllers
 				}
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public async Task<ActionResult> GetRoot(int sectionID, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Section/GetRoot?SectionID={0}", sectionID);
-			var section = await HttpClientBuilder<SectionModel>.GetAsync(url, token);
-			return Json(new { ID = section.ID, Name = section.Name, ParentID = section.ParentID }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Section/GetRoot?SectionID={0}", sectionID);
+				var section = await HttpClientBuilder<SectionModel>.GetAsync(url, token);
+				return Json(new { ID = section.ID, Name = section.Name, ParentID = section.ParentID }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
 
 		public async Task<ActionResult> SearchBySectionName(string name, string token)
@@ -130,50 +151,85 @@ namespace WebMediaClient.Controllers
 				}
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		[HttpPost]
 		public async Task<ActionResult> AddMembership(int sectionID, int userID, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}", sectionID, userID);
-			var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
-			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}", sectionID, userID);
+				var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
 
 		[HttpPut]
 		public async Task<ActionResult> AcceptMembership(int sectionID, int userID, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Section/AcceptMembership?SectionID={0}&UserID={1}", sectionID, userID);
-			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
-			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Section/AcceptMembership?SectionID={0}&UserID={1}", sectionID, userID);
+				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
 
 		[HttpPut]
 		public async Task<ActionResult> ChangeVisibilityOfMembership(int sectionID, int userID, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Section/ChangeVisibilityOfMembership?SectionID={0}&UserID={1}", sectionID, userID);
-			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
-			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Section/ChangeVisibilityOfMembership?SectionID={0}&UserID={1}", sectionID, userID);
+				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
 
 		[HttpPut]
 		public async Task<ActionResult> UpdateMembership(int sectionID, int userID, string role, DateTime? suspension, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}&Role={2}&Suspension={3}", sectionID, userID, role, suspension);
-			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
-			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}&Role={2}&Suspension={3}", sectionID, userID, role, suspension);
+				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
 
 		[HttpDelete]
 		public ActionResult DeleteMembership(int sectionID, int userID, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Section/DeleteMembership?SectionID={0}&UserID={1}", sectionID, userID);
-			HttpClientBuilder<HttpResponseMessage>.DeleteAsync(url, token);
-			return View();
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Section/DeleteMembership?SectionID={0}&UserID={1}", sectionID, userID);
+				HttpClientBuilder<HttpResponseMessage>.DeleteAsync(url, token);
+				return View();
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public ActionResult GetMembershipsForUser(int userID, string token)
@@ -190,19 +246,26 @@ namespace WebMediaClient.Controllers
                 }
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public async Task<ActionResult> GetMembership(int userID, int sectionID, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Section/GetMembership?UserID={0}&SectionID={1}", userID, sectionID);
-			var membership = await HttpClientBuilder<MembershipInfo>.GetAsync(url, token);
-			if (membership == null)
-				return HttpNotFound("No membership");
-			else return Json(new { ID = membership.ID, SectionID = membership.SectionID, UserID = membership.UserID, Role = membership.Role.ToString(), SuspendedUntil = membership.SuspendedUntil, IsAccepted = membership.IsAccepted, anonymous = membership.Anonymous }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Section/GetMembership?UserID={0}&SectionID={1}", userID, sectionID);
+				var membership = await HttpClientBuilder<MembershipInfo>.GetAsync(url, token);
+				if (membership == null)
+					return HttpNotFound("No membership");
+				else return Json(new { ID = membership.ID, SectionID = membership.SectionID, UserID = membership.UserID, Role = membership.Role.ToString(), SuspendedUntil = membership.SuspendedUntil, IsAccepted = membership.IsAccepted, anonymous = membership.Anonymous }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
     }
 }

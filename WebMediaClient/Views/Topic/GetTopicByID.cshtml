@@ -46,8 +46,7 @@
 		})
 	}
 
-	function getRoot()
-	{
+	function getRoot() {
 		$.ajax
 		({
 			url: '@Url.Action("GetRoot", "Section", new { sectionID = @Model.SectionID})',
@@ -77,6 +76,11 @@
 					button.onclick = "deleteTopic()";
 					button.innerHTML = "Delete topic";
 					div.appendChild(button);
+				}
+				if (data.Role == "Admin")
+				{
+					var link = '@Html.ActionLink("Update topic settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Topic.ToString() }, new { id = "topic_setting" })';
+					$("#update_settings").html(link);
 				}
 			}
 		})
@@ -148,8 +152,9 @@
 </div>
 <div class="row">
 	<div id="delete_button" class="col-md-8">
-
 	</div>
+</div>
+<div class="row" id="update_settings">
 </div>
 <script>
 	CKEDITOR.replace("comment_text");

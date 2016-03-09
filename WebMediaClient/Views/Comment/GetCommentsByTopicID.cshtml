@@ -22,7 +22,8 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				getRoot(data.SectionID);
+				if(!data.IsProfileTopic && !data.IsInterestTopic)
+					getRoot(data.SectionID);
 			}
 		})
 	}
@@ -152,6 +153,9 @@
 			}
 		</div>
 	</div>
+</div>
+<div class="row">
+	<label id="ip_text" class="label-default">@ViewBag.IP</label>
 </div>
 
 

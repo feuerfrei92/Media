@@ -49,19 +49,27 @@
 
 	function checkMember() {
 		var parentID = '@ViewBag.ParentID';
-		if (parentID == null)
-		{
+		if (parentID == null) {
 			$.ajax
 			({
 				url: '@Html.Raw(Url.Action("GetMembership", "Section", new { userID = @ViewBag.User.ID, sectionID = @Model.ID }))',
 				dataType: 'json',
 				type: 'GET',
-				success: function (data){
+				success: function (data) {
 					$('#apply').prop('disabled', true);
-					if(data.Role == "Admin")
-					{
-						var link = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
-						$("#pending_members_container").load(link);
+					if (data.Role == "Admin") {
+						var link1 = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
+						var link2 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
+						var link3 = '@Html.ActionLink("Change role of an user", "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })';
+						var link4 = '@Html.ActionLink("Update section settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Section.ToString() }, new { id = "section_setting" })';
+						$("#pending_members_container").load(link1);
+						$("#suspend_user").html(link2);
+						$("#promote_user").html(link3);
+						$("#update_settings").html(link4);
+					}
+					if (data.Role == "Mod") {
+						var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
+						$("#suspend_user").html(link1);
 					}
 				}
 			})
@@ -92,6 +100,20 @@
 			type: 'GET',
 			success: function (data) {
 				$("#apply").prop('disabled', true);
+				if (data.Role == "Admin") {
+					var link1 = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
+					var link2 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
+					var link3 = '@Html.ActionLink("Change role of an user", "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })';
+					var link4 = '@Html.ActionLink("Update section settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Section.ToString() }, new { id = "section_setting" })';
+					$("#pending_members_container").load(link1);
+					$("#suspend_user").html(link2);
+					$("#promote_user").html(link3);
+					$("#update_settings").html(link4);
+				}
+				if (data.Role == "Mod") {
+					var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
+					$("#suspend_user").html(link1);
+				}
 			}
 		})
 	}
@@ -102,12 +124,11 @@
 			url: '@Html.Raw(Url.Action("GetMembership", "Section", new { sectionID = @Model.ID, userID = @ViewBag.User.ID }))',
 			dataType: 'json',
 			type: 'PUT',
-			success: function (data){
+			success: function (data) {
 				alert("You are already a member");
 			},
-			error: function(xhr){
-				if (xhr.status == 404)
-				{
+			error: function (xhr) {
+				if (xhr.status == 404) {
 					addMembership();
 				}
 			}
@@ -124,7 +145,7 @@
 				},
 			dataType: 'json',
 			type: 'POST',
-			success: function(data){
+			success: function (data) {
 				$("#apply").prop('disabled', true);
 			}
 		})
@@ -176,20 +197,13 @@
 		<button id="apply" class="btn btn-default" onclick="applyForMember()">Apply for membership</button>
 	</div>
 </div>
-<div class="row">
-	<div class="list-group">
-		@Html.ActionLink("View members", "GetMembershipsForSection", "User", new { SectionID = @Model.ID }, new { @id = "view_section_members_link" })
-	</div>
+<div class="row" id="view_members">
 </div>
-<div class="row">
-	<div class="list-group">
-		@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })
-	</div>
+<div class="row" id="suspend_user">
 </div>
-<div class="row">
-	<div class="list-group">
-		@Html.ActionLink("Change role of an user", "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })
-	</div>
+<div class="row" id="promote_user">
+</div>
+<div class="row" id="update_settings">
 </div>
 	@*<div class="list-group">
 		<input id="store_id" hidden="hidden" />

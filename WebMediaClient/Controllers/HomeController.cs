@@ -35,26 +35,47 @@ namespace WebMediaClient.Controllers
 		[AllowAnonymous]
 		public async Task<ActionResult> SuccessfulLogin()
 		{
-			string token = TempData["token"].ToString();
-			string url = "http://localhost:8080/api/User/GetCurrentUser";
-			UserModel user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
-			ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", user.Username);
-			ViewBag.Token = token;
-			HttpContext.Session.Add("currentUser", user);
-			return View();
+			try
+			{
+				string token = TempData["token"].ToString();
+				string url = "http://localhost:8080/api/User/GetCurrentUser";
+				UserModel user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
+				ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", user.Username);
+				ViewBag.Token = token;
+				HttpContext.Session.Add("currentUser", user);
+				return View();
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		[AllowAnonymous]
 		public ActionResult LogOff()
 		{
-			HttpContext.Session.Remove("currentUser");
-			return View();
+			try
+			{
+				HttpContext.Session.Remove("currentUser");
+				return View();
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public ActionResult SetUser(UserModel user)
 		{
-			HttpContext.Session.Add("currentUser", user);
-			return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				HttpContext.Session.Add("currentUser", user);
+				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 	}
 }

@@ -24,5 +24,8 @@
 	<div class="col-md-8">
 		@Html.Action("GetTopicForInterest", "Topic", new { interestID = @ViewBag.ID })
 	</div>
+	<div class="row" id="update_settings">
+		@Html.ActionLink("Update interest settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @ViewBag.ID, settingType = SettingType.Interest.ToString() }, new { id = "interest_setting" })
+	</div>
 </div>
 

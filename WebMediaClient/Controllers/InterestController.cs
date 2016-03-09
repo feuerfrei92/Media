@@ -31,9 +31,9 @@ namespace WebMediaClient.Controllers
                 }
 				return View();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -46,21 +46,35 @@ namespace WebMediaClient.Controllers
 		[HttpPost]
 		public async Task<ActionResult> CreateInterest(int userID, InterestViewModel interestModel, string token)
 		{
-            string url = string.Format("http://localhost:8080/api/Interest/CreateInterest?AuthorID={0}", userID);
-            var interest = InterestConverter.FromVisualToBasic(interestModel);
-            var createdInterest = await HttpClientBuilder<InterestModel>.PostAsync(interest, url, token);
-            var viewModel = InterestConverter.FromBasicToVisual(createdInterest);
-			ViewBag.AuthorID = userID;
-            return View(viewModel);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Interest/CreateInterest?AuthorID={0}", userID);
+				var interest = InterestConverter.FromVisualToBasic(interestModel);
+				var createdInterest = await HttpClientBuilder<InterestModel>.PostAsync(interest, url, token);
+				var viewModel = InterestConverter.FromBasicToVisual(createdInterest);
+				ViewBag.AuthorID = userID;
+				return View(viewModel);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public async Task<ActionResult> UpdateInterest(int ID, InterestViewModel interestModel, string token)
 		{
-            string url = string.Format("http://localhost:8080/api/Interest/UpdateInterest?ID={0}", ID);
-            var interest = InterestConverter.FromVisualToBasic(interestModel);
-            var updatedInterest = await HttpClientBuilder<InterestModel>.PostAsync(interest, url, token);
-            var viewModel = InterestConverter.FromBasicToVisual(updatedInterest);
-            return View(viewModel);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Interest/UpdateInterest?ID={0}", ID);
+				var interest = InterestConverter.FromVisualToBasic(interestModel);
+				var updatedInterest = await HttpClientBuilder<InterestModel>.PostAsync(interest, url, token);
+				var viewModel = InterestConverter.FromBasicToVisual(updatedInterest);
+				return View(viewModel);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public ActionResult DeleteInterest(int ID, string token)
@@ -71,9 +85,9 @@ namespace WebMediaClient.Controllers
 				HttpClientBuilder<InterestModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -84,11 +98,12 @@ namespace WebMediaClient.Controllers
 				string url = string.Format("http://localhost:8080/api/Interest/GetInterestByID?ID={0}", ID);
 				var interest = await HttpClientBuilder<InterestModel>.GetAsync(url, token);
                 var viewModel = InterestConverter.FromBasicToVisual(interest);
+				ViewBag.ID = ID;
 				return View(viewModel);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -102,18 +117,24 @@ namespace WebMediaClient.Controllers
 				ViewBag.Name = name;
                 return View(viewModel);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 
 		public async Task<ActionResult> GetInterestByNameRaw(string name, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Interest/GetInterestByName?Name={0}", name);
-			var interest = await HttpClientBuilder<InterestModel>.GetAsync(url, token);
-			return Json(new { ID = interest.ID, Name = interest.Name }, JsonRequestBehavior.AllowGet);
-			
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Interest/GetInterestByName?Name={0}", name);
+				var interest = await HttpClientBuilder<InterestModel>.GetAsync(url, token);
+				return Json(new { ID = interest.ID, Name = interest.Name }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		[HttpGet]
@@ -130,9 +151,9 @@ namespace WebMediaClient.Controllers
                 }
 				return View();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -150,19 +171,26 @@ namespace WebMediaClient.Controllers
                 }
 				return PartialView(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public async Task<ActionResult> GetFollower(int userID, int interestID, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Interest/GetFollower?UserID={0}&InterestID={1}", userID, interestID);
-			var follower = await HttpClientBuilder<FollowerInfo>.GetAsync(url, token);
-			if (follower == null)
-				return HttpNotFound("No follower");
-			else return Json(new { Follower = follower }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Interest/GetFollower?UserID={0}&InterestID={1}", userID, interestID);
+				var follower = await HttpClientBuilder<FollowerInfo>.GetAsync(url, token);
+				if (follower == null)
+					return HttpNotFound("No follower");
+				else return Json(new { Follower = follower }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
     }
 }

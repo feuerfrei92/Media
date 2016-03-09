@@ -32,19 +32,26 @@ namespace WebMediaClient.Controllers
 				}
 				return View();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public async Task<ActionResult> CreateVideo(int userID, VideoViewModel VideoModel, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Video/CreateVideo?UserID={0}", userID);
-			var video = VideoConverter.FromVisualToBasic(VideoModel);
-			var createdVideo = await HttpClientBuilder<VideoModel>.PutAsync(video, url, token);
-			var viewModel = VideoConverter.FromBasicToVisual(createdVideo);
-			return View(viewModel);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Video/CreateVideo?UserID={0}", userID);
+				var video = VideoConverter.FromVisualToBasic(VideoModel);
+				var createdVideo = await HttpClientBuilder<VideoModel>.PutAsync(video, url, token);
+				var viewModel = VideoConverter.FromBasicToVisual(createdVideo);
+				return View(viewModel);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public ActionResult DeleteVideo(int ID, string token)
@@ -55,9 +62,9 @@ namespace WebMediaClient.Controllers
 				HttpClientBuilder<VideoModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -70,9 +77,9 @@ namespace WebMediaClient.Controllers
 				var viewModel = VideoConverter.FromBasicToVisual(video);
 				return View(viewModel);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -89,17 +96,24 @@ namespace WebMediaClient.Controllers
 				}
 				return View();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public async Task<ActionResult> UpdateRating(int videoID, bool like, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Video/UpdateRating?VideoID={0}&Like={1}", videoID, like);
-			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
-			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Video/UpdateRating?VideoID={0}&Like={1}", videoID, like);
+				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
     }
 }

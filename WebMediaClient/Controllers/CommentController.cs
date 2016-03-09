@@ -3,6 +3,7 @@ using Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -104,6 +105,7 @@ namespace WebMediaClient.Controllers
                 }
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				ViewBag.TopicID = topicID;
+				ViewBag.IP = Request.UserHostAddress;
 				return View(viewModels);
 			//}
 			//catch
@@ -135,6 +137,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+				
 				string url = string.Format("http://localhost:8080/api/Comment/GetCommentsByAuthorIDAndSectionID?AuthorID={0}&SectionID={1}", authorID, sectionID);
 				var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
 				var viewModels = new List<CommentViewModel>();

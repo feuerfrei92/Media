@@ -27,20 +27,34 @@ namespace WebMediaClient.Controllers
 		[HttpPost]
 		public ActionResult CreateSetting(int ownerID, SettingViewModel settingModel, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Setting/CreateSetting?OwnerID={0}", ownerID);
-			var setting = SettingConverter.FromVisualToBasic(settingModel);
-			//var createdSetting = await HttpClientBuilder<SettingModel>.PostAsync(setting, url, token);
-			var createdSetting = Task.Run<SettingModel>(() => HttpClientBuilder<SettingModel>.PostAsync(setting, url, token)).Result;
-			var viewModel = SettingConverter.FromBasicToVisual(createdSetting);
-			return View(viewModel);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Setting/CreateSetting?OwnerID={0}", ownerID);
+				var setting = SettingConverter.FromVisualToBasic(settingModel);
+				//var createdSetting = await HttpClientBuilder<SettingModel>.PostAsync(setting, url, token);
+				var createdSetting = Task.Run<SettingModel>(() => HttpClientBuilder<SettingModel>.PostAsync(setting, url, token)).Result;
+				var viewModel = SettingConverter.FromBasicToVisual(createdSetting);
+				return View(viewModel);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		[HttpPut]
 		public async Task<ActionResult> ChangePublicity(int settingID, string publicity, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Setting/ChangePublicity?SettingID={0}&Publicity={1}", settingID, publicity);
-			var response = await HttpClientBuilder<SettingModel>.PutEmptyAsync(url, token);
-			return Json(new { Response = response }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Setting/ChangePublicity?SettingID={0}&Publicity={1}", settingID, publicity);
+				var response = await HttpClientBuilder<SettingModel>.PutEmptyAsync(url, token);
+				return Json(new { Response = response }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
 
 		[HttpDelete]
@@ -52,9 +66,9 @@ namespace WebMediaClient.Controllers
 				HttpClientBuilder<SettingModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -69,9 +83,9 @@ namespace WebMediaClient.Controllers
 				ViewBag.ID = ID;
 				return View(viewModel);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -87,9 +101,9 @@ namespace WebMediaClient.Controllers
 				ViewBag.SettingType = settingType;
 				return View(viewModel);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -108,9 +122,9 @@ namespace WebMediaClient.Controllers
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -128,9 +142,9 @@ namespace WebMediaClient.Controllers
 				}
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -148,16 +162,16 @@ namespace WebMediaClient.Controllers
 				}
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public ActionResult GetFirstLatestProfileActivity(int userID, string token)
 		{
-			//try
-			//{
+			try
+			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetLatestProfileActivity?UserID={0}", userID);
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
@@ -169,11 +183,11 @@ namespace WebMediaClient.Controllers
 				}
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModels);
-			//}
-			//catch
-			//{
-			//	return RedirectToAction("Error", "Account");
-			//}
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public ActionResult GetLatestProfileActivity(int userID, string token)
@@ -190,16 +204,16 @@ namespace WebMediaClient.Controllers
 				}
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public ActionResult GetFirstLatestFriendsActivity(int userID, string token)
 		{
-			//try
-			//{
+			try
+			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetLatestFriendsActivity?UserID={0}", userID);
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
@@ -211,11 +225,11 @@ namespace WebMediaClient.Controllers
 				}
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModels);
-			//}
-			//catch
-			//{
-			//	return RedirectToAction("Error", "Account");
-			//}
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public ActionResult GetLatestFriendsActivity(int userID, string token)
@@ -232,26 +246,40 @@ namespace WebMediaClient.Controllers
 				}
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public ActionResult SuspendUser(int sectionID, int? userID = null)
 		{
-			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
-			ViewBag.SectionID = sectionID;
-			ViewBag.UserID = userID;
-			return View();
+			try
+			{
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				ViewBag.SectionID = sectionID;
+				ViewBag.UserID = userID;
+				return View();
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public ActionResult ChangePosition(int sectionID, int? userID = null)
 		{
-			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
-			ViewBag.SectionID = sectionID;
-			ViewBag.UserID = userID;
-			return View();
+			try
+			{
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				ViewBag.SectionID = sectionID;
+				ViewBag.UserID = userID;
+				return View();
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 	}
 }
