@@ -7,13 +7,163 @@
 
 <h2>@Model.Name</h2>
 
+<script type="text/javascript">
+
+	function getOwner() {
+		var isProfile = '@Model.IsProfile';
+		if (isProfile) {
+			$.ajax
+			({
+				url: '@Url.Action("GetProfileByIDRaw", "Profile", new { ID = @Model.OwnerID })',
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					var username = '@ViewBag.User.Username';
+					if (data.Username == username)
+						$("#upload_photo_link").show();
+					$("#hidden_id").val(data.ID);
+					getProfileOwner(data.Username);
+				}
+			})
+		}
+		else {
+			$.ajax
+			({
+				url: '@Url.Action("GetInterestByIDRaw", "Interest", new { ID = @Model.OwnerID })',
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					$("#hidden_id").val(data.ID);
+					checkIsFollower(data.ID);
+				}
+			})
+		}
+	}
+
+	function checkIsFollower(id) {
+		var link = '@Html.Raw(Url.Action("GetFollower", "Interest", new { userID = @ViewBag.User.ID, internetID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				checkInterestPublicity(true);
+			},
+			error: function (xhr) {
+				if (xhr.status == 404)
+					checkInterestPublicity(false);
+			}
+		})
+	}
+
+	function checkInterestPublicity(isFollower) {
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Album.ToString() }))',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				if (data.Publicity == "Everyone") {
+					var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+					$("#photos").load(link);
+				}
+				if (data.Publicity == "Followers") {
+					if (isFollower) {
+						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+						$("#photos").load(link);
+					}
+				}
+			}
+		})
+	}
+
+	function getProfileOwner(username) {
+		var link = '@Url.Action("GetUserByUsername", "User", new { Username = "oooo" })';
+		link = link.replace("oooo", username);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				checkIsFriend(data.ID);
+			}
+		})
+	}
+
+	function checkIsFriend(id) {
+		var link = '@Html.Raw(Url.Action("GetFriendship", "Profile", new { userID = @ViewBag.User.ID, friendID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				checkProfilePublicity(true, true);
+			},
+			error: function (xhr) {
+				if (xhr.status == 404)
+					checkCommonFriends(id);
+			}
+		})
+	}
+
+	function checkCommonFriends(id) {
+		var link = '@Html.Raw(Url.Action("GetCommonFriends", "Profile", new { userID = @ViewBag.User.ID, targetID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				if (data.Count > 0)
+					checkProfilePublicity(false, true);
+				else
+					checkProfilePublicity(false, false);
+			}
+		})
+	}
+
+	function checkProfilePublicity(isFriend, hasCommonFriends) {
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Album.ToString() }))',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				if (data.Publicity == "Everyone") {
+					var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+					$("#photos").load(link);
+				}
+				if (data.Publicity == "Friends") {
+					if (isFriend) {
+						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+						$("#photos").load(link);
+					}
+				}
+				if (data.Publicity == "FriendsOfFriends") {
+					if (hasCommonFriends) {
+						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+						$("#photos").load(link);
+					}
+				}
+			}
+		})
+	}
+</script>
+
 <div id="photos" class="form-group">
-	@Html.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID });
 </div>
 
 <div class="row">
 	<div class="col-md-8">
-		@Html.ActionLink("Upload photo", "CreatePhoto", "Album", new { userID = @ViewBag.User.ID }, null)
+		@Html.ActionLink("Upload photo", "CreatePhoto", "Album", new { userID = @ViewBag.User.ID }, new { @id = "upload_photo_link", @hidden = "hidden" })
 	</div>
 </div>
+
+<input id="hidden_id" hidden="hidden" />
 

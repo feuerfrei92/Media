@@ -46,6 +46,15 @@
 			type: 'GET',
 			success: function (data) {
 				$('#add_friend').prop('disabled', true);
+				var link1 = '@Html.ActionLink("Start chat", "GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.UserID }, new { id = "chat_link" })';
+				var link2 = '@Url.Action("GetFirstLatestProfileActivity", "Settings", new { userID = @ViewBag.UserID })';
+				$("#start_chat").html(link1);
+				$("#activity").load(link2);
+				checkPublicity(true, true);
+			},
+			error: function (xhr) {
+				if (xhr.status == 404)
+					checkCommonFriends(id);
 			}
 		})
 	}
@@ -79,6 +88,50 @@
 			}
 		})
 	}
+
+	function checkCommonFriends(id) {
+		var link = '@Html.Raw(Url.Action("GetCommonFriends", "Profile", new { userID = @ViewBag.User.ID, targetID = -1 }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				if (data.Count > 0)
+					checkPublicity(false, true);
+				else
+					checkPublicity(false, false);
+			}
+		})
+	}
+
+	function checkPublicity(isFriend, hasCommonFriends) {
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Profile.ToString() }))',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				if (data.Publicity == "Everyone") {
+					var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+					$("#profile_topic").load(link, function () { updateVisit(); });
+				}
+				if (data.Publicity == "Friends") {
+					if (isFriend) {
+						var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+						$("#profile_topic").load(link, function () { updateVisit(); });
+					}
+				}
+				if (data.Publicity == "FriendsOfFriends") {
+					if (hasCommonFriends) {
+						var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+						$("#profile_topic").load(link, function () { updateVisit(); });
+					}
+				}
+			}
+		})
+	}
 </script>
 
 <div class="row">
@@ -109,11 +162,9 @@
 			}
 		</section>
 	</div>
-	<div class="col-md-8">
-		@Html.ActionLink("Start chat", "GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.UserID }, new { id = "chat_link" })
+	<div id="start_chat" class="col-md-8">
 	</div>
-	<div class="col-md-8">
-		@Html.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })
+	<div id="profile_topic" class="col-md-8">
 	</div>
 </div>
 <div class="col-md-8">
@@ -125,8 +176,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-md-8">
-		@Html.Action("GetFirstLatestProfileActivity", "Settings", new { userID = @Model.ID })
+	<div id="activity" class="col-md-8">
 	</div>
 </div>
 

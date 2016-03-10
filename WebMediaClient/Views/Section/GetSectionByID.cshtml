@@ -56,8 +56,13 @@
 				dataType: 'json',
 				type: 'GET',
 				success: function (data) {
-					$('#apply').prop('disabled', true);
+					$("#apply").prop('disabled', true);
+					if (data.Role == "Regular") {
+						$("#topic").prop('disabled', false);
+					}
 					if (data.Role == "Admin") {
+						$("#subsection").prop('disabled', false);
+						$("#topic").prop('disabled', false);
 						var link1 = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
 						var link2 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 						var link3 = '@Html.ActionLink("Change role of an user", "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })';
@@ -68,9 +73,12 @@
 						$("#update_settings").html(link4);
 					}
 					if (data.Role == "Mod") {
+						$("#subsection").prop('disabled', false);
+						$("#topic").prop('disabled', false);
 						var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 						$("#suspend_user").html(link1);
 					}
+					checkPublicity(data.Role);
 				}
 			})
 		}
@@ -100,7 +108,14 @@
 			type: 'GET',
 			success: function (data) {
 				$("#apply").prop('disabled', true);
-				if (data.Role == "Admin") {
+				if (data.Role == "Regular")
+				{
+					$("#topic").prop('disabled', false);
+				}
+				if (data.Role == "Admin")
+				{
+					$("#subsection").prop('disabled', false);
+					$("#topic").prop('disabled', false);
 					var link1 = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
 					var link2 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 					var link3 = '@Html.ActionLink("Change role of an user", "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })';
@@ -110,9 +125,48 @@
 					$("#promote_user").html(link3);
 					$("#update_settings").html(link4);
 				}
-				if (data.Role == "Mod") {
+				if (data.Role == "Mod")
+				{
+					$("#subsection").prop('disabled', false);
+					$("#topic").prop('disabled', false);
 					var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 					$("#suspend_user").html(link1);
+				}
+				checkPublicity(data.Role);
+			}
+		})
+	}
+
+	function checkPublicity(role) {
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Section.ToString() }))',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				if (data.Publicity == "Everyone") {
+					var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+					var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
+					$("#sections_container").load(link1);
+					$("#topics_container").load(link2);
+				}
+				if (data.Publicity == "Registered") {
+					if (role == "Regular" || role == "Mod" || role == "Admin")
+					{
+						var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+						var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
+						$("#sections_container").load(link1);
+						$("#topics_container").load(link2);
+					}
+				}
+				if (data.Publicity == "Admins") {
+					if (role == "Mod" || role == "Admin")
+					{
+						var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+						var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
+						$("#sections_container").load(link1);
+						$("#topics_container").load(link2);
+					}
 				}
 			}
 		})
@@ -170,12 +224,10 @@
 
 <div class="row">
 	<div id="sections_container" class="col-md-4">
-		@Html.Action("GetSectionsByParentID", "Section", new { parentID = @Model.ID })
 	</div>
 </div>
 <div class="row">
 	<div id="topics_container" class="col-md-4">
-		@Html.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })
 	</div>
 </div>
 <div class="row">
@@ -184,12 +236,12 @@
 </div>
 <div class="row">
 	<div class="list-group">
-		<button class="button" onclick="postSection()">Add subsection</button>
+		<button id="subsection" class="btn btn-default" disabled="disabled" onclick="postSection()">Add subsection</button>
 	</div>
 </div>
 <div class="row">
 	<div class="list-group">
-		<button class="button" onclick="postTopic()">Add new topic</button>
+		<button id="topic" class="btn btn-default" disabled="disabled" onclick="postTopic()">Add new topic</button>
 	</div>
 </div>
 <div class="row">

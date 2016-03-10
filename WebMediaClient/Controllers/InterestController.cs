@@ -107,6 +107,20 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetInterestByIDRaw(int ID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Interest/GetInterestByID?ID={0}", ID);
+				var interest = await HttpClientBuilder<InterestModel>.GetAsync(url, token);
+				return Json(new { ID = interest.ID, Name = interest.Name }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
+		}
+
 		public async Task<ActionResult> GetInterestByName(string name, string token)
 		{
 			try

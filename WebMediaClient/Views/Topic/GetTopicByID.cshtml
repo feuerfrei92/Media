@@ -67,6 +67,10 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
+				if (data.Role == "Regular" || data.Role == "Mod" || data.Role == "Admin")
+				{
+					$("#add_comment").prop('disabled', false);
+				}
 				if(data.Role == "Admin" || data.Role == "Mod")
 				{
 					var div = document.getElementById("delete_button");
@@ -79,8 +83,42 @@
 				}
 				if (data.Role == "Admin")
 				{
-					var link = '@Html.ActionLink("Update topic settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Topic.ToString() }, new { id = "topic_setting" })';
-					$("#update_settings").html(link);
+					var link1 = '@Html.ActionLink("Update topic settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Topic.ToString() }, new { id = "topic_setting" })';
+					$("#update_settings").html(link1);
+				}
+				checkPublicity(data.Role);
+			}
+		})
+	}
+
+	function checkPublicity(role)
+	{
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Topic.ToString() }))',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				if (data.Publicity == "Everyone")
+				{
+					var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+					$("#comments").load(link, function () { setIDs(); });
+				}
+				if (data.Publicity == "Registered")
+				{
+					if (role == "Regular" || role == "Mod" || role == "Admin")
+					{
+						var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+						$("#comments").load(link, function () { setIDs(); });
+					}
+				}
+				if (data.Publicity == "Admins")
+				{
+					if (role == "Mod" || role == "Admin")
+					{
+						var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+						$("#comments").load(link, function () { setIDs(); });
+					}
 				}
 			}
 		})
@@ -137,7 +175,6 @@
 <h2>@Model.Name</h2>
 
 <div id="comments" class="form-group">
-	@Html.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID });
 </div>
 
 <div class="row">
@@ -147,7 +184,7 @@
 </div>
 <div class="row">
 	<div class="col-md-8">
-		<button class="button" onclick="addComment()">Reply</button>
+		<button id="add_comment" class="btn btn-default" disabled="disabled" onclick="addComment()">Reply</button>
 	</div>
 </div>
 <div class="row">

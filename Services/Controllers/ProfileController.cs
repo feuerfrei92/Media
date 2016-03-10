@@ -299,6 +299,49 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		public IHttpActionResult GetCommonFriends(int userID, int targetID)
+		{
+			List<Friendship> friendshipsUser = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == true)
+			.ToList();
+			List<Friendship> friendshipsTarget = _nest.Friendships.All().Where(f => (f.UserID_1 == targetID || f.UserID_2 == targetID) && f.IsAccepted == true)
+			.ToList();
+			
+			var profilesUser = new List<ProfileModel>();
+			foreach (Friendship f in friendshipsUser)
+			{
+				if (f.UserID_1 == userID)
+				{
+					ProfileModel profile = _nest.Profiles.All().Where(p => p.UserID == f.UserID_2).Select(BuildProfileModel).FirstOrDefault();
+					profilesUser.Add(profile);
+				}
+				else
+				{
+					ProfileModel profile = _nest.Profiles.All().Where(p => p.UserID == f.UserID_1).Select(BuildProfileModel).FirstOrDefault();
+					profilesUser.Add(profile);
+				}
+			}
+
+			var profilesTarget = new List<ProfileModel>();
+
+			foreach (Friendship f in friendshipsTarget)
+			{
+				if (f.UserID_1 == targetID)
+				{
+					ProfileModel profile = _nest.Profiles.All().Where(p => p.UserID == f.UserID_2).Select(BuildProfileModel).FirstOrDefault();
+					profilesTarget.Add(profile);
+				}
+				else
+				{
+					ProfileModel profile = _nest.Profiles.All().Where(p => p.UserID == f.UserID_1).Select(BuildProfileModel).FirstOrDefault();
+					profilesTarget.Add(profile);
+				}
+			}
+
+			var commonProfiles = profilesUser.Intersect(profilesTarget).ToList();
+			return Ok(commonProfiles);
+		}
+
+		[HttpGet]
 		public IHttpActionResult GetPendingFriends(int userID)
 		{
 			List<Friendship> friendships = _nest.Friendships.All().Where(f => f.UserID_2 == userID && f.IsAccepted == false)

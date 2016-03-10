@@ -107,6 +107,20 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetSettingByOwnerIDAndTypeRaw(int ownerID, string settingType, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Setting/GetSettingByOwnerIDAndType?OwnerID={0}&Type={1}", ownerID, settingType);
+				var setting = await HttpClientBuilder<SettingModel>.GetAsync(url, token);
+				return Json(new { Publicity = setting.Publicity }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
+		}
+
 		public ActionResult GetPendingFriends(int userID, string token)
 		{
 			try

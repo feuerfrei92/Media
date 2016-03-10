@@ -161,6 +161,20 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetProfileByIDRaw(int ID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByID?ID={0}", ID);
+				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
+				return Json(new { ID = profile.ID, Username = profile.Username, Name = profile.Name, Age = profile.Age, Gender = profile.Gender }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
+		}
+
 		public async Task<ActionResult> GetProfileByUserID(int userID, string token)
 		{
 			try
@@ -272,6 +286,20 @@ namespace WebMediaClient.Controllers
 			catch (Exception ex)
 			{
 				return View("Error");
+			}
+		}
+
+		public async Task<ActionResult> GetCommonFriends(int userID, int targetID, string token)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Profile/GetCommonFriends?UserID={0}&TargetID={1}", userID, targetID);
+				var profiles = await HttpClientBuilder<ProfileModel>.GetListAsync(url, token);
+				return Json(new { Count = profiles.Count }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 

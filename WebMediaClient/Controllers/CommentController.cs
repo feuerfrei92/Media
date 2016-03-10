@@ -34,9 +34,9 @@ namespace WebMediaClient.Controllers
 				}
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -44,21 +44,35 @@ namespace WebMediaClient.Controllers
 		[ValidateInput(false)]
 		public async Task<ActionResult> CreateComment(int topicID, int authorID, CommentViewModel commentModel, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Comment/CreateComment?TopicID={0}&AuthorID={1}", topicID, authorID);
-			var comment = CommentConverter.FromVisualToBasic(commentModel);
-			var createdComment = await HttpClientBuilder<CommentModel>.PostAsync(comment, url, token);
-			var viewModel = CommentConverter.FromBasicToVisual(createdComment);
-			return View(viewModel);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Comment/CreateComment?TopicID={0}&AuthorID={1}", topicID, authorID);
+				var comment = CommentConverter.FromVisualToBasic(commentModel);
+				var createdComment = await HttpClientBuilder<CommentModel>.PostAsync(comment, url, token);
+				var viewModel = CommentConverter.FromBasicToVisual(createdComment);
+				return View(viewModel);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		[HttpPut]
 		public async Task<ActionResult> UpdateComment(int ID, int topicID, CommentViewModel commentModel, string token)
 		{
-            string url = string.Format("http://localhost:8080/api/Comment/CreateComment?ID={0}&TopicID={1}", ID, topicID);
-            var comment = CommentConverter.FromVisualToBasic(commentModel);
-            var updatedComment = await HttpClientBuilder<CommentModel>.PutAsync(comment, url, token);
-            var viewModel = CommentConverter.FromBasicToVisual(updatedComment);
-            return View(viewModel);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Comment/CreateComment?ID={0}&TopicID={1}", ID, topicID);
+				var comment = CommentConverter.FromVisualToBasic(commentModel);
+				var updatedComment = await HttpClientBuilder<CommentModel>.PutAsync(comment, url, token);
+				var viewModel = CommentConverter.FromBasicToVisual(updatedComment);
+				return View(viewModel);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		[HttpDelete]
@@ -70,9 +84,9 @@ namespace WebMediaClient.Controllers
 				HttpClientBuilder<CommentModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -85,16 +99,16 @@ namespace WebMediaClient.Controllers
                 var viewModel = CommentConverter.FromBasicToVisual(comment);
 				return View();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public ActionResult GetCommentsByTopicID(int topicID, string token)
 		{
-			//try
-			//{
+			try
+			{
 				string url = string.Format("http://localhost:8080/api/Comment/GetCommentsByTopicID?TopicID={0}", topicID);
 				//var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
 				var comments = Task.Run<List<CommentModel>>(() => HttpClientBuilder<CommentModel>.GetListAsync(url, token)).Result;
@@ -107,11 +121,11 @@ namespace WebMediaClient.Controllers
 				ViewBag.TopicID = topicID;
 				ViewBag.IP = Request.UserHostAddress;
 				return View(viewModels);
-			//}
-			//catch
-			//{
-			//	return RedirectToAction("Error", "Account");
-			//}
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public async Task<ActionResult> GetCommentsByAuthorID(int authorID, string token)
@@ -127,9 +141,9 @@ namespace WebMediaClient.Controllers
                 }
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -149,9 +163,9 @@ namespace WebMediaClient.Controllers
 				}
 				return View(viewModels);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
@@ -169,30 +183,44 @@ namespace WebMediaClient.Controllers
                 }
 				return View();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				return View("Error");
 			}
 		}
 
 		public async Task<ActionResult> SearchCommentsByCriteria(CommentCriteriaViewModel criteria, string token)
 		{
-            string url = "http://localhost:8080/api/Comment/SearchCommentsByCriteria";
-            var commentCriteria = CommentConverter.CriteriaFromVisualToBasic(criteria);
-            var comments = await HttpClientBuilder<CommentCriteria>.GetListAsync<CommentModel>(commentCriteria, url, token);
-            var viewModels = new List<CommentViewModel>();
-            foreach (CommentModel c in comments)
-            {
-                viewModels.Add(CommentConverter.FromBasicToVisual(c));
-            }
-            return View();
+			try
+			{
+				string url = "http://localhost:8080/api/Comment/SearchCommentsByCriteria";
+				var commentCriteria = CommentConverter.CriteriaFromVisualToBasic(criteria);
+				var comments = await HttpClientBuilder<CommentCriteria>.GetListAsync<CommentModel>(commentCriteria, url, token);
+				var viewModels = new List<CommentViewModel>();
+				foreach (CommentModel c in comments)
+				{
+					viewModels.Add(CommentConverter.FromBasicToVisual(c));
+				}
+				return View();
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		public async Task<ActionResult> UpdateRating(int commentID, bool like, string token)
 		{
-			string url = string.Format("http://localhost:8080/api/Comment/UpdateRating?CommentID={0}&Like={1}", commentID, like);
-			var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
-			return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Comment/UpdateRating?CommentID={0}&Like={1}", commentID, like);
+				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
 		}
     }
 }
