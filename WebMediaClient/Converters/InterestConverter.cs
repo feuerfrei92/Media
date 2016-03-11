@@ -16,6 +16,7 @@ namespace WebMediaClient.Converters
 			{
 				ID = interestModel.ID,
 				Name = interestModel.Name,
+				AuthorID = interestModel.AuthorID,
 			};
 
 			return viewModel;
@@ -27,6 +28,7 @@ namespace WebMediaClient.Converters
 			{
 				ID = viewModel.ID,
 				Name = viewModel.Name,
+				AuthorID = viewModel.AuthorID,
 			};
 
 			return interestModel;

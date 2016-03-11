@@ -18,7 +18,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.DatabaseModels.Interest, InterestModel>> BuildInterestModel
 		{
-			get { return i => new InterestModel { ID = i.ID, Name = i.Name }; }
+			get { return i => new InterestModel { ID = i.ID, Name = i.Name, AuthorID = i.AuthorID }; }
 		}
 
 		public InterestController()
@@ -58,6 +58,7 @@ namespace Services.Controllers
 			_nest.Interests.Update(existingInterest);
 
 			interest.ID = ID;
+			interest.AuthorID = existingInterest.AuthorID;
 
 			try
 			{
@@ -127,6 +128,7 @@ namespace Services.Controllers
 			}
 
 			interest.ID = newInterest.ID;
+			interest.AuthorID = newInterest.AuthorID;
 
 			return Ok(interest);
 		}

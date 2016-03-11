@@ -8,6 +8,15 @@
 <h2>@Model.Name</h2>
 
 <script type="text/javascript">
+	window.addEventListener("load", function () { getOwner() }, false);
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
 
 	function getOwner() {
 		var isProfile = '@Model.IsProfile';
@@ -33,6 +42,9 @@
 				dataType: 'json',
 				type: 'GET',
 				success: function (data) {
+					var userID = '@ViewBag.User.ID';
+					if (data.AuthorID == userID)
+						$("#upload_photo_link").show();
 					$("#hidden_id").val(data.ID);
 					checkIsFollower(data.ID);
 				}
@@ -41,7 +53,7 @@
 	}
 
 	function checkIsFollower(id) {
-		var link = '@Html.Raw(Url.Action("GetFollower", "Interest", new { userID = @ViewBag.User.ID, internetID = -1 }))';
+		var link = '@Html.Raw(Url.Action("GetFollower", "Interest", new { userID = @ViewBag.User.ID, interestID = -1 }))';
 		link = link.replace("-1", id);
 		$.ajax
 		({

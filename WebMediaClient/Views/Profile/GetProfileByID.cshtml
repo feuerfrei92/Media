@@ -22,7 +22,11 @@
 		var currentUsername = '@ViewBag.User.Username';
 		var profileUsername = '@Model.Username';
 		if (currentUsername == profileUsername)
+		{
 			$('#add_friend').prop('disabled', true);
+			var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+			$("#profile_topic").load(link, function () { updateVisit(); });
+		}
 		else {
 			$.ajax
 		({

@@ -290,6 +290,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ActivityModel.cs" />
     <Compile Include="Models\AlbumModel.cs" />
+    <Compile Include="Models\CodeModels.cs" />
     <Compile Include="Models\CommentCriteria.cs" />
     <Compile Include="Models\FollowerInfo.cs" />
     <Compile Include="Models\FriendshipInfo.cs" />

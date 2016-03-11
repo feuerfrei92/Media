@@ -13,6 +13,7 @@ using Models;
 using System.Security.Principal;
 using System.Threading;
 using System.Web.UI;
+using System.Net.Http;
 
 namespace WebMediaClient.Controllers
 {
@@ -124,11 +125,26 @@ namespace WebMediaClient.Controllers
         public async Task<ActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
         {
             // Require that the user has already logged in via username/password or external login
-            if (!await SignInManager.HasBeenVerifiedAsync())
-            {
-                return View("Error");
-            }
-            return View(new VerifyCodeViewModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+			//if (!await SignInManager.HasBeenVerifiedAsync())
+			//{
+			//	return View("Error");
+			//}
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Account/VerifyCode?Provider={0}&ReturnUrl={1}&RememberMe={2}", provider, returnUrl, rememberMe);
+				var verifyCodeModel = await HttpClientBuilder<Services.Models.CodeModels.VerifyCodeModel>.GetAsync(url, null);
+				var viewModel = new VerifyCodeViewModel
+				{
+					Provider = verifyCodeModel.Provider,
+					ReturnUrl = verifyCodeModel.ReturnUrl,
+					RememberMe = verifyCodeModel.RememberMe,
+				};
+				return View(viewModel);
+			}
+			catch
+			{
+				return View("Error");
+			}
         }
 
         //
@@ -138,27 +154,45 @@ namespace WebMediaClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> VerifyCode(VerifyCodeViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
+			//if (!ModelState.IsValid)
+			//{
+			//	return View(model);
+			//}
 
             // The following code protects for brute force attacks against the two factor codes. 
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
-            switch (result)
-            {
-                case SignInStatus.Success:
-                    return RedirectToLocal(model.ReturnUrl);
-                case SignInStatus.LockedOut:
-                    return View("Lockout");
-                case SignInStatus.Failure:
-                default:
-                    ModelState.AddModelError("", "Invalid code.");
-                    return View(model);
-            }
+			//var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+			//switch (result)
+			//{
+			//	case SignInStatus.Success:
+			//		return RedirectToLocal(model.ReturnUrl);
+			//	case SignInStatus.LockedOut:
+			//		return View("Lockout");
+			//	case SignInStatus.Failure:
+			//	default:
+			//		ModelState.AddModelError("", "Invalid code.");
+			//		return View(model);
+			//}
+			try
+			{
+				string url = "http://localhost:8080/api/Account/VerifyCode";
+				var verifyCodeModel = new Services.Models.CodeModels.VerifyCodeModel
+				{
+					Code = model.Code,
+					Provider = model.Provider,
+					RememberBrowser = model.RememberBrowser,
+					RememberMe = model.RememberMe,
+					ReturnUrl = model.ReturnUrl,
+				};
+				var response = await HttpClientBuilder<Services.Models.CodeModels.VerifyCodeModel>.PostAsync<HttpResponseMessage>(verifyCodeModel, url, null);
+				return RedirectToAction("Index", "Home");
+			}
+			catch
+			{
+				return View("Error");
+			}
         }
 
         //
@@ -316,14 +350,29 @@ namespace WebMediaClient.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> SendCode(string returnUrl, bool rememberMe)
         {
-            var userId = await SignInManager.GetVerifiedUserIdAsync();
-            if (userId == null)
-            {
-                return View("Error");
-            }
-            var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
-            var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
-            return View(new SendCodeViewModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Account/SendCode?ReturnUrl={0}&RememberMe={1}", returnUrl, rememberMe);
+				var sendCodeModel = await HttpClientBuilder<Services.Models.CodeModels.SendCodeModel>.GetAsync(url, null);
+				var viewModel = new SendCodeViewModel
+				{
+					Providers = sendCodeModel.Providers,
+					ReturnUrl = sendCodeModel.ReturnUrl,
+					RememberMe = sendCodeModel.RememberMe,
+				};
+				//var userId = await SignInManager.GetVerifiedUserIdAsync();
+				//if (userId == null)
+				//{
+				//	return View("Error");
+				//}
+				//var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
+				//var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
+				return View(viewModel);
+			}
+			catch
+			{
+				return View("Error");
+			}
         }
 
         //
@@ -333,17 +382,33 @@ namespace WebMediaClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SendCode(SendCodeViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View();
-            }
+			if (ModelState.IsValid)
+			{
+				string url = "http://localhost:8080/api/Account/SendCode";
+				var sendCodeModel = new Services.Models.CodeModels.SendCodeModel
+				{
+					Providers = model.Providers,
+					RememberMe = model.RememberMe,
+					ReturnUrl = model.ReturnUrl,
+					SelectedProvider = model.SelectedProvider,
+				};
+				var registeredModel = await HttpClientBuilder<Services.Models.CodeModels.SendCodeModel>.PostAsync(sendCodeModel, url, null);
+				var viewModel = new SendCodeViewModel
+				{
+					Providers = registeredModel.Providers,
+					RememberMe = registeredModel.RememberMe,
+					ReturnUrl = registeredModel.ReturnUrl,
+				};
+				return RedirectToAction("VerifyCode", new { Provider = viewModel.SelectedProvider, ReturnUrl = viewModel.ReturnUrl, RememberMe = viewModel.RememberMe });
+			}
 
-            // Generate the token and send it
-            if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
-            {
-                return View("Error");
-            }
-            return RedirectToAction("VerifyCode", new { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+			// Generate the token and send it
+			//if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
+			//{
+			//	return View("Error");
+			//}
+			else
+				return View("Error");
         }
 
         //

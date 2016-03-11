@@ -13,5 +13,6 @@ namespace Services.Models
 		[Required]
 		[RegularExpression("^[a-zA-Z0-9]*$")]
 		public string Name { get; set; }
+		public int AuthorID { get; set; }
 	}
 }

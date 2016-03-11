@@ -7,6 +7,69 @@
 
 <h2>Get interest by name</h2>
 
+<script type="text/javascript">
+	window.addEventListener("load", function () { checkIsOwner() }, false);
+
+	function getToken() {
+		if (Modernizr.localstorage) {
+			var localProfile = window.localStorage;
+			var token = JSON.parse(localProfile.getItem("MediaToken"));
+			return token;
+		}
+	}
+
+	function checkIsOwner() {
+		var userID = '@ViewBag.User.ID';
+		var authorID = @Html.Raw(Json.Encode(Model.AuthorID));
+		if (userID == authorID)
+		{
+			var link1 = '@Url.Action("GetTopicForInterest", "Topic", new { interestID = @Model.ID })';
+			var link2 = '@Html.ActionLink("Update interest settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @ViewBag.ID, settingType = SettingType.Interest.ToString() }, new { id = "interest_setting" })';
+			$("#interest_topic").load(link1, function () { updateVisit(); });
+			$("#update_settings").html(link2);
+		}
+		else
+			checkIsFollower();
+	}
+
+	function checkIsFollower() {
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("GetFollower", "Interest", new { userID = @ViewBag.User.ID, interestID = @Model.ID }))',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				checkInterestPublicity(true);
+			},
+			error: function (xhr) {
+				if (xhr.status == 404)
+					checkInterestPublicity(false);
+			}
+		})
+	}
+
+	function checkInterestPublicity(isFollower) {
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Interest.ToString() }))',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				if (data.Publicity == "Everyone") {
+					var link = '@Url.Action("GetTopicForInterest", "Topic", new { interestID = @Model.ID })';
+					$("#interest_topic").load(link, function () { updateVisit(); });
+				}
+				if (data.Publicity == "Followers") {
+					if (isFollower) {
+						var link = '@Url.Action("GetTopicForInterest", "Topic", new { interestID = @Model.ID })';
+						$("#interest_topic").load(link, function () { updateVisit(); });
+					}
+				}
+			}
+		})
+	}
+</script>
+
 <div class="row">
 	<div class="col-md-8">
 		<section id="profile_form">

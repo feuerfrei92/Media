@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Security.Claims;
@@ -355,6 +356,9 @@ namespace Services.Controllers
 
 			else
 			{
+				string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+				//var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+				//await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 				var userController = new UserController();
 				var ourUser = new UserModel { Username = user.UserName };
 				userController.CreateUser(ourUser);
@@ -406,6 +410,74 @@ namespace Services.Controllers
 
             base.Dispose(disposing);
         }
+
+		[AllowAnonymous]
+		public async Task<IHttpActionResult> SendCode(string returnUrl, bool rememberMe)
+		{
+			var userId = await SignInManager.GetVerifiedUserIdAsync();
+			if (userId == null)
+			{
+				return BadRequest("Unexisting user");
+			}
+			var userFactors = await UserManager.GetValidTwoFactorProvidersAsync(userId);
+			var factorOptions = userFactors.Select(purpose => new System.Web.Mvc.SelectListItem { Text = purpose, Value = purpose }).ToList();
+			return Ok(new Services.Models.CodeModels.SendCodeModel { Providers = factorOptions, ReturnUrl = returnUrl, RememberMe = rememberMe });
+		}
+
+		[HttpPost]
+		[AllowAnonymous]
+		public async Task<IHttpActionResult> SendCode(Services.Models.CodeModels.SendCodeModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			// Generate the token and send it
+			if (!await SignInManager.SendTwoFactorCodeAsync(model.SelectedProvider))
+			{
+				return InternalServerError();
+			}
+			return Ok(new Services.Models.CodeModels.VerifyCodeModel { Provider = model.SelectedProvider, ReturnUrl = model.ReturnUrl, RememberMe = model.RememberMe });
+		}
+
+		[AllowAnonymous]
+		public async Task<IHttpActionResult> VerifyCode(string provider, string returnUrl, bool rememberMe)
+		{
+			// Require that the user has already logged in via username/password or external login
+			if (!await SignInManager.HasBeenVerifiedAsync())
+			{
+				return InternalServerError();
+			}
+			return Ok(new Services.Models.CodeModels.VerifyCodeModel { Provider = provider, ReturnUrl = returnUrl, RememberMe = rememberMe });
+		}
+
+		[HttpPost]
+		[AllowAnonymous]
+		public async Task<IHttpActionResult> VerifyCode(Services.Models.CodeModels.VerifyCodeModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			// The following code protects for brute force attacks against the two factor codes. 
+			// If a user enters incorrect codes for a specified amount of time then the user account 
+			// will be locked out for a specified amount of time. 
+			// You can configure the account lockout settings in IdentityConfig
+			var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
+			switch (result)
+			{
+				case SignInStatus.Success:
+					return Ok();
+				case SignInStatus.LockedOut:
+					return BadRequest("Lockout");
+				case SignInStatus.Failure:
+				default:
+					ModelState.AddModelError("", "Invalid code.");
+					return BadRequest(ModelState);
+			}
+		}
 
         #region Helpers
 

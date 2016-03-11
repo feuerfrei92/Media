@@ -99,6 +99,7 @@ namespace WebMediaClient.Controllers
 				var interest = await HttpClientBuilder<InterestModel>.GetAsync(url, token);
                 var viewModel = InterestConverter.FromBasicToVisual(interest);
 				ViewBag.ID = ID;
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				return View(viewModel);
 			}
 			catch (Exception ex)
@@ -113,7 +114,7 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/Interest/GetInterestByID?ID={0}", ID);
 				var interest = await HttpClientBuilder<InterestModel>.GetAsync(url, token);
-				return Json(new { ID = interest.ID, Name = interest.Name }, JsonRequestBehavior.AllowGet);
+				return Json(new { ID = interest.ID, Name = interest.Name, AuthorID = interest.AuthorID }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{
@@ -129,6 +130,7 @@ namespace WebMediaClient.Controllers
 				var interest = await HttpClientBuilder<InterestModel>.GetAsync(url, token);
                 var viewModel = InterestConverter.FromBasicToVisual(interest);
 				ViewBag.Name = name;
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
                 return View(viewModel);
 			}
 			catch (Exception ex)
@@ -143,7 +145,7 @@ namespace WebMediaClient.Controllers
 			{
 				string url = string.Format("http://localhost:8080/api/Interest/GetInterestByName?Name={0}", name);
 				var interest = await HttpClientBuilder<InterestModel>.GetAsync(url, token);
-				return Json(new { ID = interest.ID, Name = interest.Name }, JsonRequestBehavior.AllowGet);
+				return Json(new { ID = interest.ID, Name = interest.Name, AuthorID = interest.AuthorID }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{
