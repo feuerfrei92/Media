@@ -357,11 +357,8 @@ namespace Services.Controllers
 			else
 			{
 				string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-				//var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-				//await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-				var userController = new UserController();
-				var ourUser = new UserModel { Username = user.UserName };
-				userController.CreateUser(ourUser);
+				var callbackUrl = string.Format("http://localhost:57888/Account/ConfirmEmail?UserId={0}&Code={1}", user.Id, code);
+				await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 			}
 
             return Ok();
@@ -477,6 +474,25 @@ namespace Services.Controllers
 					ModelState.AddModelError("", "Invalid code.");
 					return BadRequest(ModelState);
 			}
+		}
+
+		[AllowAnonymous]
+		public async Task<IHttpActionResult> ConfirmEmail(string userId, string code)
+		{
+			if (userId == null || code == null)
+			{
+				return BadRequest("User ID or code is null");
+			}
+			var result = await UserManager.ConfirmEmailAsync(userId, code);
+			if (result.Succeeded)
+			{
+				var userController = new UserController();
+				var user = UserManager.FindById(userId);
+				var ourUser = new UserModel { Username = user.UserName };
+				userController.CreateUser(ourUser);
+				return Ok();
+			}
+			else return InternalServerError();
 		}
 
         #region Helpers

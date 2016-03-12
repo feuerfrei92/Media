@@ -692,6 +692,7 @@
     <Content Include="Views\User\GetPendingMembershipsForSection.cshtml" />
     <Content Include="Views\Settings\SuspendUser.cshtml" />
     <Content Include="Views\Settings\ChangePosition.cshtml" />
+    <Content Include="Views\Account\ConfirmRegistration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

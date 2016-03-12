@@ -94,7 +94,6 @@ namespace Services.Controllers
                 return BadRequest("No user with the specified ID exists.");
             }
 
-            existingUser.IsActive = !existingUser.IsActive;
             _nest.Users.Update(existingUser);
 
             try
@@ -120,7 +119,6 @@ namespace Services.Controllers
 			var newUser = new User
 			{
 				Username = user.Username,
-                IsActive = true,
 			};
 
 			_nest.Users.Create(newUser);

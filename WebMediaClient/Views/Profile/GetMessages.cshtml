@@ -8,6 +8,10 @@
 
 <html>
 <head>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/bundles/modernizr")
 	<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
 	<script src="~/signalr/hubs"></script>
 	<script src="~/ckeditor/ckeditor.js"></script>
@@ -26,22 +30,23 @@
 		$("#message_number").val(textAreas.length.toString());
 	}
 
-	$(function () {
+	function sendMessage() {
 		var chat = $.connection.chatHub;
-		chat.client.broadcastMessage() = function (message) {
-			var link = '@Html.Action("GetUserByID", "User", new { ID = @ViewBag.User.ID })';
-			$("#messages_container").append("<div class=&quot;row&quot;><div class=&quot;col-md-4&quot;>" + link + "</div><div class=&quot;col-md-4&quot;><textarea id=&quot;textarea_" + $("message_number").val() + "&quot; class=&quot;form-control&quot; rows=&quot;5&quot; cols=&quot;25&quot;>" + message + "</textarea></div></div>");
+		chat.client.broadcastMessage = function (message) {
+			var link = '@Url.Action("GetUserByID", "User", new { ID = @ViewBag.User.ID })';
+			$("#messages_container").html("<div class=&quot;row&quot;><div class=&quot;col-md-4&quot;>" + link + "</div><div class=&quot;col-md-4&quot;><textarea id=&quot;textarea_" + $("message_number").val() + "&quot; class=&quot;form-control&quot; rows=&quot;5&quot; cols=&quot;25&quot;>" + message + "</textarea></div></div>");
 		}
 		$("#message_text").focus();
 		$.connection.hub.start().done(function () {
-			$('#send_message').click(function () {
-				chat.server.send($('#message_text').val());
+			//$('#send_message').click(function () {
+				var text = CKEDITOR.instances.message_text.getData();
+				chat.server.send(text);
 				$.ajax
 				({
 					url: '@Html.Raw(Url.Action("CreateMessage", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.ReceiverID}))',
 					data:
 						{
-							text: $('#message_text').val(),
+							text: text,
 							datecreated: Date.now(),
 						},
 					dateType: 'json',
@@ -51,8 +56,8 @@
 				})
 				$('#message_text').val('').focus();
 			});
-		});
-	});
+		//});
+	}
 	</script>
 
     <meta name="viewport" content="width=device-width" />
@@ -83,7 +88,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8">
-			<button id="send_message" class="button">Send</button>
+			<button id="send_message" class="button" onclick="sendMessage()">Send</button>
 		</div>
 	</div>
 	<input id="message_number" class="hidden" />

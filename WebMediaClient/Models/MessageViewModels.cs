@@ -14,7 +14,6 @@ namespace WebMediaClient.Models
 		public int ReceiverID { get; set; }
 		[Required]
 		public string Text { get; set; }
-		[Required]
 		public DateTime DateCreated { get; set; }
 		public Guid DiscussionGuid { get; set; }
 	}

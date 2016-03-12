@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Services.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +17,8 @@ namespace WebMediaClient
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+			var loggedInUsers = new List<UserModel>();
+			HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
         }
     }
 }

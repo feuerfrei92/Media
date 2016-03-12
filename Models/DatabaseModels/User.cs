@@ -13,6 +13,5 @@ namespace Models
 		public int ID { get; set; }
 		[Required]
 		public string Username { get; set; }
-        public bool IsActive { get; set; }
     }
 }

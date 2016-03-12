@@ -43,6 +43,12 @@ namespace WebMediaClient.Controllers
 				ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", user.Username);
 				ViewBag.Token = token;
 				HttpContext.Session.Add("currentUser", user);
+				if (HttpRuntime.Cache["LoggedInUsers"] != null)
+				{
+					List<UserModel> loggedInUsers = (List<UserModel>)HttpRuntime.Cache["LoggedInUsers"];
+					loggedInUsers.Add(user);
+					HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
+				}
 				return View();
 			}
 			catch (Exception ex)
@@ -56,7 +62,17 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				UserModel user = (UserModel)HttpContext.Session["currentUser"];
 				HttpContext.Session.Remove("currentUser");
+				if (HttpRuntime.Cache["LoggedInUsers"] != null)
+				{
+					List<UserModel> loggedInUsers = (List<UserModel>)HttpRuntime.Cache["LoggedInUsers"];
+					if (loggedInUsers.Exists(u => u.ID == user.ID))
+					{
+						loggedInUsers.Remove(user);
+						HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
+					}
+				}
 				return View();
 			}
 			catch (Exception ex)

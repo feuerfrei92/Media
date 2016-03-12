@@ -14,6 +14,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Web.UI;
 using System.Net.Http;
+using System.Collections.Generic;
 
 namespace WebMediaClient.Controllers
 {
@@ -110,14 +111,6 @@ namespace WebMediaClient.Controllers
 			//		return View(model);
 			//}
         }
-
-		[HttpPost]
-		[AllowAnonymous]
-		public ActionResult LogOff()
-		{
-			HttpContext.Session.Remove("currentUser");
-			return View();
-		}
 
         //
         // GET: /Account/VerifyCode
@@ -232,7 +225,7 @@ namespace WebMediaClient.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(model);
+			return RedirectToAction("ConfirmRegistration");
         }
 
         //
@@ -240,12 +233,17 @@ namespace WebMediaClient.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == null || code == null)
-            {
-                return View("Error");
-            }
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "ConfirmEmail" : "Error");
+			string url = string.Format("http://localhost:8080/api/Account/ConfirmEmail?UserId={0}&Code={1}", userId, code);
+			var response = await HttpClientBuilder<HttpResponseMessage>.GetEmptyAsync(url, null);
+			if (response.StatusCode == System.Net.HttpStatusCode.OK)
+				return View("ConfirmEmail");
+			else return View("Error");
+			//if (userId == null || code == null)
+			//{
+			//	return View("Error");
+			//}
+			//var result = await UserManager.ConfirmEmailAsync(userId, code);
+			//return View(result.Succeeded ? "ConfirmEmail" : "Error");
         }
 
         //
@@ -486,6 +484,12 @@ namespace WebMediaClient.Controllers
         {
             return View();
         }
+
+		[AllowAnonymous]
+		public ActionResult ConfirmRegistration()
+		{
+			return View();
+		}
 
         protected override void Dispose(bool disposing)
         {
