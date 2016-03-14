@@ -4,10 +4,12 @@ using Models.DatabaseModels;
 using Services.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Web.Http;
 
 namespace Services.Controllers
@@ -436,15 +438,26 @@ namespace Services.Controllers
 				return BadRequest(ModelState);
 			}
 
+			var text = message.Text;
+			HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
+			MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(text));
+			doc.Load(ms);
+			doc.DocumentNode.Descendants()
+				.Where(n => n.Name == "script" || n.Name == "object" || n.Name == "embed" || n.Name == "link")
+				.ToList()
+				.ForEach(n => n.Remove());
+			var cleanText = doc.DocumentNode.OuterHtml;
+
 			var newMessage = new Message
 			{
 				SenderID = senderID,
 				ReceiverID = receiverID,
-				Text = message.Text,
-				DateCreated = message.DateCreated,
+				Text = cleanText,
+				DateCreated = DateTime.Now,
 			};
 
 			_nest.Messages.Create(newMessage);
+
 
 			try
 			{

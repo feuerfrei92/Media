@@ -34,6 +34,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAllUsers()
 		{
 			IQueryable<UserModel> users = _nest.Users.All().Select(BuildUserModel);

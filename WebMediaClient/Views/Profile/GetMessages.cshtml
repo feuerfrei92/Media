@@ -34,7 +34,7 @@
 		var chat = $.connection.chatHub;
 		chat.client.broadcastMessage = function (message) {
 			var link = '@Url.Action("GetUserByID", "User", new { ID = @ViewBag.User.ID })';
-			$("#messages_container").html("<div class=&quot;row&quot;><div class=&quot;col-md-4&quot;>" + link + "</div><div class=&quot;col-md-4&quot;><textarea id=&quot;textarea_" + $("message_number").val() + "&quot; class=&quot;form-control&quot; rows=&quot;5&quot; cols=&quot;25&quot;>" + message + "</textarea></div></div>");
+			$("#messages_container").append("<div class=&quot;row&quot;><div class=&quot;col-md-4&quot;>" + link + "</div><div class=&quot;col-md-4&quot;><textarea id=&quot;textarea_" + $("message_number").val() + "&quot; class=&quot;form-control&quot; rows=&quot;5&quot; cols=&quot;25&quot;>" + message + "</textarea></div></div>");
 		}
 		$("#message_text").focus();
 		$.connection.hub.start().done(function () {
@@ -49,7 +49,7 @@
 							text: text,
 							datecreated: Date.now(),
 						},
-					dateType: 'json',
+					dataType: 'json',
 					type: 'POST',
 					success: function (data){
 					}
@@ -70,9 +70,9 @@
 				@foreach (var item in Model)
 				{
 					<div class="row">
-						<div class="col-md-4">
+						@*<div class="col-md-4">
 							@Html.Action("GetUserByID", "User", new { ID = item.SenderID })
-						</div>
+						</div>*@
 						<div class="col-md-4">
 							@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })
 						</div>

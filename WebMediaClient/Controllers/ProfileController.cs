@@ -320,6 +320,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
+		[ValidateInput(false)]
 		public async Task<ActionResult> CreateMessage(int senderID, int receiverID, MessageViewModel messageModel, string token)
 		{
 			try
