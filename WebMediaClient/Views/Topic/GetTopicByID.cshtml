@@ -50,6 +50,7 @@
 		$.ajax
 		({
 			url: '@Url.Action("GetRoot", "Section", new { sectionID = @Model.SectionID})',
+			data: { token: getToken() },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -64,6 +65,7 @@
 		$.ajax
 		({
 			url: link,
+			data: { token: getToken() },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -160,6 +162,7 @@
 				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
 				$("#comments").empty();
 				$('#comments').load(link, function () { setIDs(); });
+				updateVisit();
 			},
 			error: function (xhr) {
 				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';

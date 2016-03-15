@@ -124,6 +124,7 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		[Authorize]
 		public async Task<ActionResult> GetRoot(int sectionID, string token)
 		{
 			try
@@ -173,6 +174,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public async Task<ActionResult> AcceptMembership(int sectionID, int userID, string token)
 		{
 			try

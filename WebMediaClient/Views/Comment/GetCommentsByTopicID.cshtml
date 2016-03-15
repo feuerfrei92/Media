@@ -19,6 +19,7 @@
 		$.ajax
 		({
 			url: '@Url.Action("GetTopicByIDRaw", "Topic", new { ID = @ViewBag.TopicID})',
+			data: { token: getToken() },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -34,6 +35,7 @@
 		$.ajax
 		({
 			url: link,
+			data: { token: getToken() },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -48,6 +50,7 @@
 		$.ajax
 		({
 			url: link,
+			data: { token: getToken() },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -156,6 +159,9 @@
 </div>
 <div class="row">
 	<label id="ip_text" class="label-default">@ViewBag.IP</label>
+</div>
+<div class="row">
+	<label id="count_text" class="label-default">@ViewBag.LoggedUsersCount</label>
 </div>
 
 

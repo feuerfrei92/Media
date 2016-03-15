@@ -10,20 +10,13 @@
 <script type="text/javascript">
 	window.addEventListener("load", function () { getOwner() }, false);
 
-	function getToken() {
-		if (Modernizr.localstorage) {
-			var localProfile = window.localStorage;
-			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			return token;
-		}
-	}
-
 	function getOwner() {
 		var isProfile = '@Model.IsProfile';
 		if (isProfile) {
 			$.ajax
 			({
 				url: '@Url.Action("GetProfileByIDRaw", "Profile", new { ID = @Model.OwnerID })',
+				data: { token: getToken() },
 				dataType: 'json',
 				type: 'GET',
 				success: function (data) {

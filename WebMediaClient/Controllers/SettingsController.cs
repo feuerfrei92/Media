@@ -166,7 +166,7 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
-				string url = string.Format("http://localhost:8080/api/Topic/GetSubscribedTopics?UserID={0}", userID);
+				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsWithNewComments?UserID={0}", userID);
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var topics = Task.Run<List<TopicModel>>(() => HttpClientBuilder<TopicModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<TopicViewModel>();

@@ -238,10 +238,13 @@ namespace Services.Controllers
 			{
 				var topic = _nest.Topics.All().Where(t => t.ID == c.TopicID).Select(BuildTopicModel).FirstOrDefault();
 				var visit = _nest.Visits.All().Where(v => v.TopicID == topic.ID && v.UserID == userID).FirstOrDefault();
-				if (visit.LastVisit.CompareTo(topic.DateModified) < 0)
+				if (topic.DateModified.HasValue)
 				{
-					if (!topics.Exists(t => t.ID == topic.ID))
-						topics.Add(topic);
+					if (visit.LastVisit.CompareTo(topic.DateModified.Value) < 0)
+					{
+						if (!topics.Exists(t => t.ID == topic.ID))
+							topics.Add(topic);
+					}
 				}
 			}
 

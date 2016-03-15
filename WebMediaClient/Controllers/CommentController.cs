@@ -120,6 +120,13 @@ namespace WebMediaClient.Controllers
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				ViewBag.TopicID = topicID;
 				ViewBag.IP = Request.UserHostAddress;
+				if (HttpRuntime.Cache["LoggedInUsers"] != null)
+				{
+					List<UserModel> loggedInUsers = (List<UserModel>)HttpRuntime.Cache["LoggedInUsers"];
+					ViewBag.LoggedUsersCount = loggedInUsers.Count;
+				}
+				else
+					ViewBag.LoggedUsersCount = 0;
 				return View(viewModels);
 			}
 			catch (Exception ex)

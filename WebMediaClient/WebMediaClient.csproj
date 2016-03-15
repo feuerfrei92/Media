@@ -179,7 +179,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="Chat\ChatHub.cs" />
+    <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CommentController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -638,7 +638,6 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Comment\Index.cshtml" />
     <Content Include="Views\Home\SuccessfulLogin.cshtml" />
     <Content Include="Views\Interest\GetInterestsForUser.cshtml" />
     <Content Include="Views\Interest\GetInterestByName.cshtml" />
@@ -672,7 +671,7 @@
     <Content Include="Views\Shared\SearchSection.cshtml" />
     <Content Include="Views\Album\CreatePhoto.cshtml" />
     <Content Include="Views\Album\GetPhotosForAlbum.cshtml" />
-    <Content Include="Views\Section\DisplaySectionSearchResults.cshtml" />
+    <Content Include="Views\Section\SearchBySectionName.cshtml" />
     <Content Include="Views\Section\CreateSection.cshtml" />
     <Content Include="Views\Album\CreateAlbum.cshtml" />
     <Content Include="Views\Album\GetAlbumsForProfile.cshtml" />

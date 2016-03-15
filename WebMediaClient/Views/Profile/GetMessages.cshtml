@@ -30,7 +30,7 @@
 		$("#message_number").val(textAreas.length.toString());
 	}
 
-	function sendMessage() {
+	$(function () {
 		var chat = $.connection.chatHub;
 		chat.client.broadcastMessage = function (message) {
 			var link = '@Url.Action("GetUserByID", "User", new { ID = @ViewBag.User.ID })';
@@ -38,7 +38,7 @@
 		}
 		$("#message_text").focus();
 		$.connection.hub.start().done(function () {
-			//$('#send_message').click(function () {
+			$('#send_message').click(function () {
 				var text = CKEDITOR.instances.message_text.getData();
 				chat.server.send(text);
 				$.ajax
@@ -51,13 +51,13 @@
 						},
 					dataType: 'json',
 					type: 'POST',
-					success: function (data){
+					success: function (data) {
 					}
 				})
 				$('#message_text').val('').focus();
 			});
-		//});
-	}
+		});
+	});
 	</script>
 
     <meta name="viewport" content="width=device-width" />
@@ -88,7 +88,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8">
-			<button id="send_message" class="button" onclick="sendMessage()">Send</button>
+			<button id="send_message" class="button">Send</button>
 		</div>
 	</div>
 	<input id="message_number" class="hidden" />
