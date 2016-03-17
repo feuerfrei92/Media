@@ -33,6 +33,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAllTopics()
 		{
 			IQueryable<TopicModel> topics = _nest.Topics.All().Select(BuildTopicModel);
@@ -40,6 +41,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateTopic(int ID, int sectionID, TopicModel topic)
 		{
 			if(!(ModelState.IsValid))
@@ -79,6 +81,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateTopic(int sectionID, int authorID, TopicModel topic)
 		{
 			if (!(ModelState.IsValid))
@@ -117,6 +120,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeleteTopic(int ID)
 		{
 			if (!(ModelState.IsValid))
@@ -146,6 +150,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetTopicByID(int ID)
 		{
 			TopicModel topic = _nest.Topics.All().Where(t => t.ID == ID).Select(BuildTopicModel).FirstOrDefault();
@@ -159,6 +164,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetTopicsBySectionID(int sectionID)
 		{
 			List<TopicModel> topics = _nest.Topics.All().Where(t => t.SectionID == sectionID && t.IsProfileTopic == false && t.IsInterestTopic == false).Select(BuildTopicModel).ToList();
@@ -167,6 +173,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetTopicForProfile(int profileID)
 		{
 			TopicModel topic = _nest.Topics.All().Where(t => t.SectionID == profileID && t.IsProfileTopic == true).Select(BuildTopicModel).FirstOrDefault();
@@ -175,6 +182,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetTopicForInterest(int interestID)
 		{
 			TopicModel topic = _nest.Topics.All().Where(t => t.SectionID == interestID && t.IsInterestTopic == true).Select(BuildTopicModel).FirstOrDefault();
@@ -183,6 +191,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetTopicsByAuthorID(int authorID)
 		{
 			List<TopicModel> topics = _nest.Topics.All().Where(t => t.AuthorID == authorID).Select(BuildTopicModel).ToList();
@@ -191,6 +200,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetTopicsByAuthorIDAndSectionID(int authorID, int sectionID)
 		{
 			List<TopicModel> topics = _nest.Topics.All().Where(t => t.AuthorID == authorID && t.SectionID == sectionID).Select(BuildTopicModel).ToList();
@@ -199,6 +209,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult SearchByTopicName(string name)
 		{
 			List<TopicModel> topics = _nest.Topics.All().Where(t => t.Name.Contains(name)).Select(BuildTopicModel).ToList();
@@ -207,6 +218,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult SearchByCriteria(TopicCriteria criteria)
 		{
 			List<TopicModel> topics = _nest.Topics.All().Where(t => DoesMatchCriteria(t, criteria)).Select(BuildTopicModel).ToList();
@@ -215,6 +227,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetSubscribedTopics(int userID)
 		{
 			List<Comment> comments = _nest.Comments.All().Where(c => c.AuthorID == userID).ToList();
@@ -230,6 +243,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetTopicsWithNewComments(int userID)
 		{
 			List<Comment> comments = _nest.Comments.All().Where(c => c.AuthorID == userID).ToList();

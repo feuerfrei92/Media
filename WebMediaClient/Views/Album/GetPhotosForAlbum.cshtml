@@ -11,9 +11,9 @@
 					<img src="@imgSrc" height="100" width="100" />
 					@*<img src="@Url.Action("GetPhotoByID", "Photo", new { @item.ID })" height="100" width="100" />*@
 				</div>
-				<div class="col-md-4">
+				@*<div class="col-md-4">
 					@Html.ActionLink("Update photo setting", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @item.ID, settingType = SettingType.Photo.ToString() }, null)
-				</div>
+				</div>*@
 			}
 		</div>
 	</div>

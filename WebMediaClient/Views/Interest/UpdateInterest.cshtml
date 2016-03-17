@@ -10,13 +10,13 @@
 <script type="text/javascript">
 	window.addEventListener("load", function () { loadValues() }, false);
 
-	function getToken() {
-		if (Modernizr.localstorage) {
-			var localProfile = window.localStorage;
-			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			return token;
-		}
-	}
+	//function getToken() {
+	//	if (Modernizr.localstorage) {
+	//		var localProfile = window.localStorage;
+	//		var token = JSON.parse(localProfile.getItem("MediaToken"));
+	//		return token;
+	//	}
+	//}
 
 	@*function getUsername() {
 		var token = getToken();
@@ -66,7 +66,7 @@
 			success: function (data) { }
 		})
 	}
-	</script>
+</script>
 
 	<div class="row">
 		<div class="col-md-8">

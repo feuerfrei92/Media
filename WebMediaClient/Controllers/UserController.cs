@@ -19,11 +19,16 @@ namespace WebMediaClient.Controllers
             return View();
         }
 
-		public async Task<ActionResult> GetAllUsers(string token)
+		public async Task<ActionResult> GetAllUsers()
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/User/GetAllUsers";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var users = await HttpClientBuilder<UserModel>.GetListAsync(url, token);
                 var viewModels = new List<UserViewModel>();
                 foreach (UserModel u in users)
@@ -38,11 +43,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetCurrentUser(string token)
+		public async Task<ActionResult> GetCurrentUser()
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/User/GetCurrentUser";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
 			}
@@ -52,11 +62,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult DeleteUser(int ID, string token)
+		public ActionResult DeleteUser(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/DeleteUser?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				HttpClientBuilder<UserModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
@@ -66,11 +81,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetUserByID(int ID, string token)
+		public ActionResult GetUserByID(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetUserByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 				var user = Task.Run<UserModel>(() => HttpClientBuilder<UserModel>.GetAsync(url, token)).Result;
 				var viewModel = UserConverter.FromBasicToVisual(user);
@@ -82,11 +102,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetUserByIDRaw(int ID, string token)
+		public async Task<ActionResult> GetUserByIDRaw(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetUserByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
 			}
@@ -96,11 +121,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetUserByUsername(string username, string token)
+		public async Task<ActionResult> GetUserByUsername(string username)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetUserByUsername?Username={0}", username);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
 			}
@@ -111,11 +141,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult> SearchUsernameByString(string partialUsername, string token)
+		public async Task<ActionResult> SearchUsernameByString(string partialUsername)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/SearchUsernameByString?PartialUsername={0}", partialUsername);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var users = await HttpClientBuilder<UserModel>.GetListAsync(url, token);
                 var viewModels = new List<UserViewModel>();
                 foreach (UserModel u in users)
@@ -131,11 +166,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateVisit(int userID, int topicID, string token)
+		public async Task<ActionResult> CreateVisit(int userID, int topicID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/CreateVisit?UserID={0}&TopicID={1}", userID, topicID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
@@ -146,12 +186,18 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> UpdateVisit(int userID, int topicID, string token)
+		public async Task<ActionResult> UpdateVisit(int userID, int topicID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/UpdateVisit?UserID={0}&TopicID={1}", userID, topicID);
-				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
+				//var response = Task.Run<HttpResponseMessage>(() => HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token)).Result;
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
@@ -161,11 +207,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult> GetVisitsByUserID(int userID, string token)
+		public async Task<ActionResult> GetVisitsByUserID(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetVisitsByUserID?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var visits = await HttpClientBuilder<HttpResponseMessage>.GetListAsync(url, token);
 				return Json(new { Visits = visits }, JsonRequestBehavior.AllowGet);
 			}
@@ -176,11 +227,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult> GetVisitsByTopicID(int topicID, string token)
+		public async Task<ActionResult> GetVisitsByTopicID(int topicID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetVisitsByTopicID?TopicID={0}", topicID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var visits = await HttpClientBuilder<HttpResponseMessage>.GetListAsync(url, token);
 				return Json(new { Visits = visits }, JsonRequestBehavior.AllowGet);
 			}
@@ -190,11 +246,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetMembershipsForSection(int sectionID, string token)
+		public ActionResult GetMembershipsForSection(int sectionID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetMembershipsForSection?SectionID={0}", sectionID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
 				var users = Task.Run<List<UserModel>>(() => HttpClientBuilder<UserModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<UserViewModel>();
@@ -210,11 +271,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetMembershipsForSectionRaw(int sectionID, int getSpecial, string token)
+		public async Task<ActionResult> GetMembershipsForSectionRaw(int sectionID, int getSpecial)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetMembershipsForSectionRaw?SectionID={0}&GetSpecial={1}", sectionID, getSpecial);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
 				return Json(users, JsonRequestBehavior.AllowGet);
 			}
@@ -224,11 +290,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetPendingMembershipsForSection(int sectionID, string token)
+		public ActionResult GetPendingMembershipsForSection(int sectionID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/User/GetPendingMembershipsForSection?SectionID={0}", sectionID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
 				var users = Task.Run<List<UserModel>>(() => HttpClientBuilder<UserModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<UserViewModel>();

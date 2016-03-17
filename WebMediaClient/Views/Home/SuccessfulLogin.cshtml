@@ -11,7 +11,6 @@
 </head>
 <body>
 	<h2>@ViewBag.Message</h2>
-	<button id="store_token" hidden="hidden" onclick="storeToken(token)"></button>
 	<button id="redirect_home" hidden="hidden" onclick="redirectHome()"></button>
     <div>
     
@@ -19,18 +18,8 @@
 </body>
 </html>
 
-<script>var token = '@ViewBag.Token';</script>
-
 <script type="text/javascript">
-	window.onload = function() { document.getElementById("store_token").click() }
-
-	function storeToken(token) 
-	{
-		var localProfile = window.localStorage;
-		var jsonToken = JSON.stringify(token);
-		localProfile.setItem("MediaToken", jsonToken);
-		document.getElementById("redirect_home").click();
-	}
+	window.onload = function() { document.getElementById("redirect_home").click() }
 
 	function redirectHome() {
 		window.location.href = '@Url.Action("Index", "Home")';

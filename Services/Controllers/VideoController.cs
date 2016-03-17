@@ -32,6 +32,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAllVideos()
 		{
 			IQueryable<VideoModel> videos = _nest.Videos.All().Select(BuildVideoModel);
@@ -39,6 +40,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateVideo(int userID, VideoModel video)
 		{
 			if (!(ModelState.IsValid))
@@ -70,6 +72,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeleteVideo(int ID)
 		{
 			if (!(ModelState.IsValid))
@@ -99,6 +102,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetVideoByID(int ID)
 		{
 			VideoModel video = _nest.Videos.All().Where(v => v.ID == ID).Select(BuildVideoModel).FirstOrDefault();
@@ -112,6 +116,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetVideosForOwner(int ownerID)
 		{
 			List<VideoModel> videos = _nest.Videos.All().Where(v => v.OwnerID == ownerID).Select(BuildVideoModel).ToList();
@@ -120,6 +125,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateRating(int videoID, bool like)
 		{
 			Video video = _nest.Videos.All().Where(v => v.ID == videoID).FirstOrDefault();

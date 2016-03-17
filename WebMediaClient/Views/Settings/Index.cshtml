@@ -1,20 +1,18 @@
 ﻿<script type="text/javascript">
 	window.onload = function () { getUsername(); }
 
-	function getToken() {
-		if (Modernizr.localstorage) {
-			var localProfile = window.localStorage;
-			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			return token;
-		}
-	}
+	//function getToken() {
+	//	if (Modernizr.localstorage) {
+	//		var localProfile = window.localStorage;
+	//		var token = JSON.parse(localProfile.getItem("MediaToken"));
+	//		return token;
+	//	}
+	//}
 
 	function getUsername() {
-		var token = getToken();
 		$.ajax
 		({
 			url: '@Url.Action("GetCurrentUser", "User")',
-			data: { token: token },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -31,10 +29,11 @@
 	}
 
 	function setProfileSettings(username) {
+		var link = '@Url.Action("GetProfileByUsernameRaw", "Profile", new { username = "oooo" })',
+		link = link.replace("oooo", username);
 		$.ajax
 		({
-			url: '@Url.Action("GetProfileByUsernameRaw", "Profile")',
-			data: { username: username },
+			url: link,
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -45,7 +44,7 @@
 				titleElement.innerHTML = "Manage profile settings:";
 				var contElement = document.createElement("dd");
 				var linkElement = document.createElement("a");
-				var link = '@Html.ActionLink("Update", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = -1, settingType = SettingType.Profile.ToString() }, new { id = "profile_setting" })';
+				var link = '@Html.ActionLink("Update", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = -1, settingType = SettingType.Profile.ToString(), token = @HttpContext.Current.Session["token"].ToString() }, new { id = "profile_setting" })';
 				link = link.replace("-1", data.ID);
 				linkElement.innerHTML = link;
 				contElement.appendChild(linkElement);

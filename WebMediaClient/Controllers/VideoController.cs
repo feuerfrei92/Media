@@ -19,11 +19,16 @@ namespace WebMediaClient.Controllers
             return View();
         }
 
-		public async Task<ActionResult> GetAllVideos(string token)
+		public async Task<ActionResult> GetAllVideos()
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/Video/GetAllVideos";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var videos = await HttpClientBuilder<VideoModel>.GetListAsync(url, token);
 				var viewModels = new List<VideoViewModel>();
 				foreach (VideoModel v in videos)
@@ -38,11 +43,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> CreateVideo(int userID, VideoViewModel VideoModel, string token)
+		public async Task<ActionResult> CreateVideo(int userID, VideoViewModel VideoModel)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Video/CreateVideo?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var video = VideoConverter.FromVisualToBasic(VideoModel);
 				var createdVideo = await HttpClientBuilder<VideoModel>.PutAsync(video, url, token);
 				var viewModel = VideoConverter.FromBasicToVisual(createdVideo);
@@ -54,11 +64,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult DeleteVideo(int ID, string token)
+		public ActionResult DeleteVideo(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Video/DeleteVideo?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				HttpClientBuilder<VideoModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
@@ -68,11 +83,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetVideoByID(int ID, string token)
+		public async Task<ActionResult> GetVideoByID(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Video/GetVideoByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var video = await HttpClientBuilder<VideoModel>.GetAsync(url, token);
 				var viewModel = VideoConverter.FromBasicToVisual(video);
 				return View(viewModel);
@@ -83,11 +103,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetVideosForOwner(int userID, string token)
+		public async Task<ActionResult> GetVideosForOwner(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Video/GetVideosForOwner?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var videos = await HttpClientBuilder<VideoModel>.GetListAsync(url, token);
 				var viewModels = new List<VideoViewModel>();
 				foreach (VideoModel v in videos)
@@ -102,11 +127,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> UpdateRating(int videoID, bool like, string token)
+		public async Task<ActionResult> UpdateRating(int videoID, bool like)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Video/UpdateRating?VideoID={0}&Like={1}", videoID, like);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}

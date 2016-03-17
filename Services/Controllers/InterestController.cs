@@ -33,6 +33,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAllInterests()
 		{
 			IQueryable<InterestModel> interests = _nest.Interests.All().Select(BuildInterestModel);
@@ -40,6 +41,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateInterest(int ID, InterestModel interest)
 		{
 			if(!(ModelState.IsValid))
@@ -73,6 +75,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateInterest(int authorID, InterestModel interest)
 		{
 			if (!(ModelState.IsValid))
@@ -134,6 +137,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeleteInterest(int ID)
 		{
 			if (!(ModelState.IsValid))
@@ -163,6 +167,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetInterestByID(int ID)
 		{
 			InterestModel interest = _nest.Interests.All().Where(i => i.ID == ID).Select(BuildInterestModel).FirstOrDefault();
@@ -176,6 +181,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetInterestByName(string name)
 		{
 			InterestModel interest = _nest.Interests.All().Where(i => i.Name == name).Select(BuildInterestModel).FirstOrDefault();
@@ -189,6 +195,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult SearchInterestNameByString(string partialName)
 		{
 			List<InterestModel> interests = _nest.Interests.All().Where(i => i.Name.Contains(partialName)).Select(BuildInterestModel).ToList();
@@ -197,6 +204,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetInterestsForUser(int userID)
 		{
 			List<Follower> followers = _nest.Followers.All().Where(f => f.UserID == userID).ToList();
@@ -210,6 +218,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetFollower(int userID, int interestID)
 		{
 			Follower follower = _nest.Followers.All().Where(f => f.UserID == userID && f.InterestID == interestID).FirstOrDefault();

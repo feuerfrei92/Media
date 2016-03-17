@@ -27,7 +27,7 @@
 	function getRoot() {
 		$.ajax
 		({
-			url: '@Url.Action("GetRoot", "Section", new { SectionID = @ViewBag.SectionID})',
+			url: '@Url.Action("GetRoot", "Section", new { SectionID = @ViewBag.SectionID })',
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -73,8 +73,6 @@
 		})
 	}
 </script>
-
-
 
 <div class="row">
 	<div class="col-md-8">

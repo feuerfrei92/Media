@@ -33,6 +33,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAllSections()
 		{
 			IQueryable<SectionModel> sections = _nest.Sections.All().Select(BuildSectionModel);
@@ -40,6 +41,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateSection(int ID, SectionModel section, int? parentID = null)
 		{
 			if(!(ModelState.IsValid))
@@ -75,6 +77,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateSection(SectionModel section, int? parentID = null)
 		{
 			if (!(ModelState.IsValid))
@@ -114,6 +117,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeleteSection(int ID)
 		{
 			if (!(ModelState.IsValid))
@@ -143,6 +147,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetSectionByID(int ID)
 		{
 			SectionModel section = _nest.Sections.All().Where(s => s.ID == ID).Select(BuildSectionModel).FirstOrDefault();
@@ -156,6 +161,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetSectionsByParentID(int parentID)
 		{
 			List<SectionModel> sections = _nest.Sections.All().Where(s => s.ParentSectionID == parentID).Select(BuildSectionModel).ToList();
@@ -169,6 +175,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetRoot(int sectionID)
 		{
 			SectionModel section = _nest.Sections.All().Where(s => s.ID == sectionID).Select(BuildSectionModel).FirstOrDefault();
@@ -183,6 +190,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult SearchBySectionName(string name)
 		{
 			List<SectionModel> sections = _nest.Sections.All().Where(s => s.Name.Contains(name)).Select(BuildSectionModel).ToList();
@@ -191,6 +199,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult AddMembership(int sectionID, int userID, bool isAnonymous)
 		{
 			var membership = new Membership
@@ -217,6 +226,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult AcceptMembership(int sectionID, int userID)
 		{
 			var membership = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.UserID == userID).FirstOrDefault();
@@ -237,6 +247,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult ChangeVisibilityOfMembership(int sectionID, int userID)
 		{
 			var membership = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.UserID == userID).FirstOrDefault();
@@ -260,6 +271,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateMembership(int sectionID, int userID, string role, DateTime? suspension = null)
 		{
 			var membership = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.UserID == userID).FirstOrDefault();
@@ -281,6 +293,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeleteMembership(int sectionID, int userID)
 		{
 			var membership = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.UserID == userID).FirstOrDefault();
@@ -300,6 +313,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetMembershipsForUser(int userID)
 		{
 			List<Membership> memberships = _nest.Memberships.All().Where(m => m.UserID == userID).ToList();
@@ -314,6 +328,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetMembership(int userID, int sectionID)
 		{
 			Membership membership = _nest.Memberships.All().Where(m => m.UserID == userID && m.SectionID == sectionID).FirstOrDefault();

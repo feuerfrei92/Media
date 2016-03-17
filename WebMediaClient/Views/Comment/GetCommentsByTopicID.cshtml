@@ -1,4 +1,7 @@
-﻿@model List<WebMediaClient.Models.CommentViewModel>
+﻿@*@model List<WebMediaClient.Models.CommentViewModel>*@
+@model PagedList.IPagedList<WebMediaClient.Models.CommentViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
 	window.addEventListener("load", function () { setIDs(); }, false);
@@ -19,11 +22,10 @@
 		$.ajax
 		({
 			url: '@Url.Action("GetTopicByIDRaw", "Topic", new { ID = @ViewBag.TopicID})',
-			data: { token: getToken() },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				if(!data.IsProfileTopic && !data.IsInterestTopic)
+				if (!data.IsProfileTopic && !data.IsInterestTopic)
 					getRoot(data.SectionID);
 			}
 		})
@@ -35,7 +37,6 @@
 		$.ajax
 		({
 			url: link,
-			data: { token: getToken() },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -50,7 +51,6 @@
 		$.ajax
 		({
 			url: link,
-			data: { token: getToken() },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -113,8 +113,7 @@
 				suspendUser.appendChild(suspendUserLink);
 				dropdownMenu.appendChild(suspendUser);
 			}
-			if (role == "Admin")
-			{
+			if (role == "Admin") {
 				var promoteUser = document.createElement("li");
 				var promoteUserLink = document.createElement("a");
 				var promoteElem = '@Html.ActionLink("Change position", "ChangePosition", "Settings", routeValues: new { userID = -1, sectionID = -2 }, htmlAttributes: new { id = "change_position_link" })';
@@ -162,6 +161,12 @@
 </div>
 <div class="row">
 	<label id="count_text" class="label-default">@ViewBag.LoggedUsersCount</label>
+</div>
+<div class="row">
+	Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+	@Html.PagedListPager(Model, page => Url.Action("GetCommentsByTopicID", 
+	new { page, topicID = @ViewBag.TopicID }))
 </div>
 
 

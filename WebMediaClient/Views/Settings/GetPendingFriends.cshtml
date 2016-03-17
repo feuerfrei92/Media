@@ -3,13 +3,13 @@
 <script type="text/javascript">
 	//window.addEventListener("load", function () { getUsername() }, false);
 
-	function getToken() {
-		if (Modernizr.localstorage) {
-			var localProfile = window.localStorage;
-			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			return token;
-		}
-	}
+	//function getToken() {
+	//	if (Modernizr.localstorage) {
+	//		var localProfile = window.localStorage;
+	//		var token = JSON.parse(localProfile.getItem("MediaToken"));
+	//		return token;
+	//	}
+	//}
 
 	@*function getUsername() {
 		var token = getToken();
@@ -56,6 +56,7 @@
 		$.ajax
 		({
 			url: link,
+			dataType: 'json',
 			type: 'PUT',
 			success: function (data) {
 

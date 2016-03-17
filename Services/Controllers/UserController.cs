@@ -42,6 +42,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetCurrentUser()
 		{
 			UserModel currentUser = _nest.Users.All().Where(u => u.Username == User.Identity.Name).Select(BuildUserModel).FirstOrDefault();
@@ -49,6 +50,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateUser(int ID, UserModel user)
 		{
 			if(!(ModelState.IsValid))
@@ -81,6 +83,7 @@ namespace Services.Controllers
 		}
 
         [HttpPut]
+		[Authorize]
         public IHttpActionResult ChangeActivity(int ID)
         {
             if (!(ModelState.IsValid))
@@ -110,6 +113,7 @@ namespace Services.Controllers
         }
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateUser(UserModel user)
 		{
 			if (!(ModelState.IsValid))
@@ -139,6 +143,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeleteUser(int ID)
 		{
 			if (!(ModelState.IsValid))
@@ -168,6 +173,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetUserByID(int ID)
 		{
 			UserModel user = _nest.Users.All().Where(u => u.ID == ID).Select(BuildUserModel).FirstOrDefault();
@@ -181,6 +187,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetUserByUsername(string username)
 		{
 			UserModel user = _nest.Users.All().Where(u => u.Username == username).Select(BuildUserModel).FirstOrDefault();
@@ -194,6 +201,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult SearchUsernameByString(string partialUsername)
 		{
 			List<UserModel> users = _nest.Users.All().Where(u => u.Username.Contains(partialUsername)).Select(BuildUserModel).ToList();
@@ -202,6 +210,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateVisit(int userID, int topicID)
 		{
 			var newVisit = new Visit
@@ -226,6 +235,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateVisit(int userID, int topicID)
 		{
 			Visit visit = _nest.Visits.All().Where(v => v.UserID == userID && v.TopicID == topicID).FirstOrDefault();
@@ -252,6 +262,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetVisitsByUserID(int userID)
 		{
 			List<Visit> visits = _nest.Visits.All().Where(v => v.UserID == userID).ToList();
@@ -260,6 +271,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetVisitsByTopicID(int topicID)
 		{
 			List<Visit> visits = _nest.Visits.All().Where(v => v.TopicID == topicID).ToList();
@@ -268,6 +280,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetMembershipsForSection(int sectionID)
 		{
 			List<Membership> memberships = _nest.Memberships.All().Where(m => m.SectionID == sectionID).ToList();
@@ -282,6 +295,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetMembershipsForSectionRaw(int sectionID, int getSpecial)
 		{
 			List<Membership> memberships = _nest.Memberships.All().Where(m => m.SectionID == sectionID).ToList();
@@ -298,6 +312,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetPendingMembershipsForSection(int sectionID)
 		{
 			List<Membership> memberships = _nest.Memberships.All().Where(m => m.SectionID == sectionID && m.IsAccepted == false).ToList();

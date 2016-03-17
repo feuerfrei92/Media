@@ -20,11 +20,16 @@ namespace WebMediaClient.Controllers
             return View();
         }
 
-		public async Task<ActionResult> GetAllProfiles(string token)
+		public async Task<ActionResult> GetAllProfiles()
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/Profile/GetAllProfiles";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var profiles = await HttpClientBuilder<ProfileModel>.GetListAsync(url, token);
                 var viewModels = new List<ProfileViewModel>();
                 foreach (ProfileModel p in profiles)
@@ -50,7 +55,7 @@ namespace WebMediaClient.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public async Task<ActionResult> CreateProfile(int userID, ProfileViewModel profileModel, string token)
+		public async Task<ActionResult> CreateProfile(int userID, ProfileViewModel profileModel)
 		{
 			try
 			{
@@ -58,6 +63,11 @@ namespace WebMediaClient.Controllers
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				string url = string.Format("http://localhost:8080/api/Profile/CreateProfile?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var profile = ProfileConverter.FromVisualToBasic(profileModel);
 				var createdProfile = await HttpClientBuilder<ProfileModel>.PostAsync(profile, url, token);
 				var viewModel = ProfileConverter.FromBasicToVisual(createdProfile);
@@ -71,7 +81,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> AddFriend(int userID, int friendID, string token)
+		public async Task<ActionResult> AddFriend(int userID, int friendID)
 		{
 			try
 			{
@@ -79,6 +89,11 @@ namespace WebMediaClient.Controllers
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				string url = string.Format("http://localhost:8080/api/Profile/AddFriend?UserID={0}&FriendID={1}", userID, friendID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
@@ -89,7 +104,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> AcceptFriendship(int userID, int friendID, string token)
+		public async Task<ActionResult> AcceptFriendship(int userID, int friendID)
 		{
 			try
 			{
@@ -97,6 +112,11 @@ namespace WebMediaClient.Controllers
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				string url = string.Format("http://localhost:8080/api/Profile/AcceptFriendship?UserID={0}&FriendID={1}", userID, friendID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
@@ -113,11 +133,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> UpdateProfile(int ID, ProfileViewModel profileModel, string token)
+		public async Task<ActionResult> UpdateProfile(int ID, ProfileViewModel profileModel)
 		{
             try
             {
                 string url = string.Format("http://localhost:8080/api/Profile/UpdateProfile?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
                 var profile = ProfileConverter.FromVisualToBasic(profileModel);
                 var updatedProfile = await HttpClientBuilder<ProfileModel>.PutAsync(profile, url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(updatedProfile);
@@ -130,11 +155,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult DeleteProfile(int ID, string token)
+		public ActionResult DeleteProfile(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/DeleteProfile?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				HttpClientBuilder<ProfileModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
@@ -144,11 +174,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetProfileByID(int ID, string token)
+		public async Task<ActionResult> GetProfileByID(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(profile);
 				ViewBag.ID = ID;
@@ -161,11 +196,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetProfileByIDRaw(int ID, string token)
+		public async Task<ActionResult> GetProfileByIDRaw(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
 				return Json(new { ID = profile.ID, Username = profile.Username, Name = profile.Name, Age = profile.Age, Gender = profile.Gender }, JsonRequestBehavior.AllowGet);
 			}
@@ -175,11 +215,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetProfileByUserID(int userID, string token)
+		public async Task<ActionResult> GetProfileByUserID(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByUserID?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(profile);
 				ViewBag.UserID = userID;
@@ -192,11 +237,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetProfileByUsernameRaw(string username, string token)
+		public async Task<ActionResult> GetProfileByUsernameRaw(string username)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByUsername?Username={0}", username);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
 				return Json(new { ID = profile.ID, Username = profile.Username, Name = profile.Name, Age = profile.Age, Gender = profile.Gender }, JsonRequestBehavior.AllowGet);
 			}
@@ -206,7 +256,7 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetProfileByUsername(string username, string token)
+		public async Task<ActionResult> GetProfileByUsername(string username)
 		{
 			try
 			{
@@ -214,6 +264,11 @@ namespace WebMediaClient.Controllers
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByUsername?Username={0}", username);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
                 var viewModel = ProfileConverter.FromBasicToVisual(profile);
 				ViewBag.Username = username;
@@ -225,17 +280,22 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult SearchProfilesByCriteria(string token)
+		public ActionResult SearchProfilesByCriteria()
 		{
 			return View();
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> SearchProfilesByCriteria(ProfileCriteriaViewModel criteria, string token)
+		public async Task<ActionResult> SearchProfilesByCriteria(ProfileCriteriaViewModel criteria)
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/Profile/SearchProfilesByCriteria";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var profileCriteria = ProfileConverter.CriteriaFromVisualToBasic(criteria);
 				var profiles = await HttpClientBuilder<ProfileCriteria>.GetListAsync<ProfileModel>(profileCriteria, url, token);
 				var viewModels = new List<ProfileViewModel>();
@@ -269,11 +329,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetAllFriends(int userID, string token)
+		public ActionResult GetAllFriends(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetAllFriends?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var profiles = await HttpClientBuilder<ProfileModel>.GetListAsync(url, token);
 				var profiles = Task.Run<List<ProfileModel>>(() => HttpClientBuilder<ProfileModel>.GetListAsync(url, token)).Result;
                 var viewModels = new List<ProfileViewModel>();
@@ -289,11 +354,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetCommonFriends(int userID, int targetID, string token)
+		public async Task<ActionResult> GetCommonFriends(int userID, int targetID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetCommonFriends?UserID={0}&TargetID={1}", userID, targetID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var profiles = await HttpClientBuilder<ProfileModel>.GetListAsync(url, token);
 				return Json(new { Count = profiles.Count }, JsonRequestBehavior.AllowGet);
 			}
@@ -303,11 +373,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetFriendship(int userID, int friendID, string token)
+		public async Task<ActionResult> GetFriendship(int userID, int friendID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetFriendship?UserID={0}&FriendID={1}", userID, friendID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var friendship = await HttpClientBuilder<FriendshipInfo>.GetAsync(url, token);
 				if (friendship == null)
 					return HttpNotFound("No friendship");
@@ -321,11 +396,16 @@ namespace WebMediaClient.Controllers
 
 		[HttpPost]
 		[ValidateInput(false)]
-		public async Task<ActionResult> CreateMessage(int senderID, int receiverID, MessageViewModel messageModel, string token)
+		public async Task<ActionResult> CreateMessage(int senderID, int receiverID, MessageViewModel messageModel)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/CreateMessage?SenderID={0}&ReceiverID={1}", senderID, receiverID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var message = MessageConverter.FromVisualToBasic(messageModel);
 				var createdMessage = await HttpClientBuilder<MessageModel>.PostAsync(message, url, token);
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
@@ -337,11 +417,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetMessages(int senderID, int receiverID, string token)
+		public async Task<ActionResult> GetMessages(int senderID, int receiverID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetMessages?senderID={0}&receiverID={1}", senderID, receiverID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var messages = await HttpClientBuilder<MessageModel>.GetListAsync(url, token);
 				var viewModels = new List<MessageViewModel>();
 				foreach (MessageModel m in messages)

@@ -18,6 +18,8 @@ using Services.Models;
 using Services.Providers;
 using Services.Results;
 using Models;
+using System.Data.Entity;
+using Data;
 
 namespace Services.Controllers
 {
@@ -490,6 +492,7 @@ namespace Services.Controllers
 				var user = UserManager.FindById(userId);
 				var ourUser = new UserModel { Username = user.UserName };
 				userController.CreateUser(ourUser);
+				await UserManager.AddToRoleAsync(userId, "Regular");
 				return Ok();
 			}
 			else return InternalServerError();

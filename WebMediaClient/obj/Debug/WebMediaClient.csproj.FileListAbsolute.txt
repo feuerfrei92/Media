@@ -544,3 +544,7 @@ D:\Projects\Media\WebMediaClient\bin\Microsoft.AspNet.SignalR.Core.dll
 D:\Projects\Media\WebMediaClient\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
 D:\Projects\Media\WebMediaClient\bin\Microsoft.AspNet.SignalR.Core.xml
 D:\Projects\Media\WebMediaClient\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
+D:\Projects\Media\WebMediaClient\bin\PagedList.dll
+D:\Projects\Media\WebMediaClient\bin\PagedList.Mvc.dll
+D:\Projects\Media\WebMediaClient\bin\PagedList.xml
+D:\Projects\Media\WebMediaClient\bin\PagedList.Mvc.xml

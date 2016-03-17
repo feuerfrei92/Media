@@ -10,13 +10,13 @@
 <script type="text/javascript">
 	window.addEventListener("load", function () { compareUsername() }, false);
 
-	function getToken() {
-		if (Modernizr.localstorage) {
-			var localProfile = window.localStorage;
-			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			return token;
-		}
-	}
+	//function getToken() {
+	//	if (Modernizr.localstorage) {
+	//		var localProfile = window.localStorage;
+	//		var token = JSON.parse(localProfile.getItem("MediaToken"));
+	//		return token;
+	//	}
+	//}
 
 	function compareUsername() {
 		var currentUsername = '@ViewBag.User.Username';
@@ -27,16 +27,17 @@
 			var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
 			$("#profile_topic").load(link, function () { updateVisit(); });
 		}
-		else {
+		else
+		{
 			$.ajax
-		({
-			url: '@Url.Action("GetUserByUsername", "User", new { Username = @Model.Username })',
-			dataType: 'json',
-			type: 'GET',
-			success: function (data) {
-				checkIsFriend(data.ID);
-			}
-		})
+			({
+				url: '@Url.Action("GetUserByUsername", "User", new { Username = @Model.Username })',
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					checkIsFriend(data.ID);
+				}
+			})
 		}
 	}
 
@@ -80,6 +81,7 @@
 		$.ajax
 		({
 			url: link,
+			dataType: 'json',
 			type: 'POST',
 			success: function (data) {
 				//var button = document.getElementById('button' + text2);

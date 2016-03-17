@@ -43,7 +43,7 @@
 				chat.server.send(text);
 				$.ajax
 				({
-					url: '@Html.Raw(Url.Action("CreateMessage", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.ReceiverID}))',
+					url: '@Html.Raw(Url.Action("CreateMessage", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.ReceiverID }))',
 					data:
 						{
 							text: text,
@@ -54,7 +54,7 @@
 					success: function (data) {
 					}
 				})
-				$('#message_text').val('').focus();
+				CKEDITOR.instances.message_text.setData('');
 			});
 		});
 	});
@@ -71,7 +71,7 @@
 				{
 					<div class="row">
 						@*<div class="col-md-4">
-							@Html.Action("GetUserByID", "User", new { ID = item.SenderID })
+							@Html.Action("GetUserByID", "User", new { ID = item.SenderID, Token = @HttpContext.Current.Session["token"].ToString() })
 						</div>*@
 						<div class="col-md-4">
 							@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })

@@ -19,11 +19,16 @@ namespace WebMediaClient.Controllers
             return View();
         }
 
-		public async Task<ActionResult> GetAllSections(string token)
+		public async Task<ActionResult> GetAllSections()
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/Section/GetAllSections";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
                 var viewModels = new List<SectionViewModel>();
                 foreach (SectionModel s in sections)
@@ -39,11 +44,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateSection(SectionViewModel sectionModel, string token, int? parentID = null)
+		public async Task<ActionResult> CreateSection(SectionViewModel sectionModel, int? parentID = null)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/CreateSection?ParentID={0}", parentID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var section = SectionConverter.FromVisualToBasic(sectionModel);
 				var createdSection = await HttpClientBuilder<SectionModel>.PostAsync(section, url, token);
 				var viewModel = SectionConverter.FromBasicToVisual(createdSection);
@@ -57,11 +67,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> UpdateSection(int ID, SectionViewModel sectionModel, string token, int? parentID = null)
+		public async Task<ActionResult> UpdateSection(int ID, SectionViewModel sectionModel, int? parentID = null)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/CreateSection?ID={0}&ParentID={1}", ID, parentID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var section = SectionConverter.FromVisualToBasic(sectionModel);
 				var updatedSection = await HttpClientBuilder<SectionModel>.PutAsync(section, url, token);
 				var viewModel = SectionConverter.FromBasicToVisual(updatedSection);
@@ -74,11 +89,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpDelete]
-		public ActionResult DeleteSection(int ID, string token)
+		public ActionResult DeleteSection(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/DeleteSection?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				HttpClientBuilder<SectionModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
@@ -88,11 +108,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetSectionByID(int ID, string token)
+		public async Task<ActionResult> GetSectionByID(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/GetSectionByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var section = await HttpClientBuilder<SectionModel>.GetAsync(url, token);
                 var viewModel = SectionConverter.FromBasicToVisual(section);
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
@@ -104,11 +129,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetSectionsByParentID(int parentID, string token)
+		public ActionResult GetSectionsByParentID(int parentID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/GetSectionsByParentID?ParentID={0}", parentID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
 				var sections = Task.Run<List<SectionModel>>(() => HttpClientBuilder<SectionModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<SectionViewModel>();
@@ -125,11 +155,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[Authorize]
-		public async Task<ActionResult> GetRoot(int sectionID, string token)
+		public async Task<ActionResult> GetRoot(int sectionID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/GetRoot?SectionID={0}", sectionID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var section = await HttpClientBuilder<SectionModel>.GetAsync(url, token);
 				return Json(new { ID = section.ID, Name = section.Name, ParentID = section.ParentID }, JsonRequestBehavior.AllowGet);
 			}
@@ -139,11 +174,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> SearchBySectionName(string name, string token)
+		public async Task<ActionResult> SearchBySectionName(string name)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/SearchBySectionName?Name={0}", name);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
 				var viewModels = new List<SectionViewModel>();
 				foreach (SectionModel s in sections)
@@ -159,11 +199,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> AddMembership(int sectionID, int userID, string token)
+		public async Task<ActionResult> AddMembership(int sectionID, int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}", sectionID, userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
@@ -175,11 +220,16 @@ namespace WebMediaClient.Controllers
 
 		[HttpPut]
 		[Authorize]
-		public async Task<ActionResult> AcceptMembership(int sectionID, int userID, string token)
+		public async Task<ActionResult> AcceptMembership(int sectionID, int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/AcceptMembership?SectionID={0}&UserID={1}", sectionID, userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
@@ -190,11 +240,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> ChangeVisibilityOfMembership(int sectionID, int userID, string token)
+		public async Task<ActionResult> ChangeVisibilityOfMembership(int sectionID, int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/ChangeVisibilityOfMembership?SectionID={0}&UserID={1}", sectionID, userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
@@ -205,11 +260,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> UpdateMembership(int sectionID, int userID, string role, DateTime? suspension, string token)
+		public async Task<ActionResult> UpdateMembership(int sectionID, int userID, string role, DateTime? suspension)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}&Role={2}&Suspension={3}", sectionID, userID, role, suspension);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
@@ -220,11 +280,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpDelete]
-		public ActionResult DeleteMembership(int sectionID, int userID, string token)
+		public ActionResult DeleteMembership(int sectionID, int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/DeleteMembership?SectionID={0}&UserID={1}", sectionID, userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				HttpClientBuilder<HttpResponseMessage>.DeleteAsync(url, token);
 				return View();
 			}
@@ -234,11 +299,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetMembershipsForUser(int userID, string token)
+		public ActionResult GetMembershipsForUser(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/GetMembershipsForUser?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var sections = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
 				var sections = Task.Run<List<SectionModel>>(() => HttpClientBuilder<SectionModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<SectionViewModel>();
@@ -254,11 +324,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetMembership(int userID, int sectionID, string token)
+		public async Task<ActionResult> GetMembership(int userID, int sectionID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Section/GetMembership?UserID={0}&SectionID={1}", userID, sectionID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var membership = await HttpClientBuilder<MembershipInfo>.GetAsync(url, token);
 				if (membership == null)
 					return HttpNotFound("No membership");

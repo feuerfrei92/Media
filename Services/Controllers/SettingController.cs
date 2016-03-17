@@ -33,6 +33,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult ChangePublicity(int settingID, string publicity)
 		{
 			Setting setting = _nest.Settings.All().Where(s => s.ID == settingID).FirstOrDefault();
@@ -59,6 +60,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateSetting(int ownerID, SettingModel setting)
 		{
 			if (!(ModelState.IsValid))
@@ -91,6 +93,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeleteSetting(int ID)
 		{
 			Setting existingSetting = _nest.Settings.All().Where(s => s.ID == ID).FirstOrDefault();
@@ -115,6 +118,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetSettingByID(int ID)
 		{
 			SettingModel setting = _nest.Settings.All().Where(s => s.ID == ID).Select(BuildSettingModel).FirstOrDefault();
@@ -128,6 +132,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetSettingByOwnerIDAndType(int ownerID, string type)
 		{
 			SettingModel setting = _nest.Settings.All().Where(s => s.OwnerID == ownerID && s.OwnerType == type).Select(BuildSettingModel).FirstOrDefault();

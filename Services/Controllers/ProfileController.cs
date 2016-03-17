@@ -36,6 +36,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAllProfiles()
 		{
 			IQueryable<ProfileModel> profiles = _nest.Profiles.All().Select(BuildProfileModel);
@@ -43,6 +44,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateProfile(int ID, ProfileModel profile)
 		{
 			if(!(ModelState.IsValid))
@@ -78,6 +80,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateProfile(int userID, ProfileModel profile)
 		{
 			if (!(ModelState.IsValid))
@@ -141,6 +144,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult AddFriend(int userID, int friendID)
 		{
 			var newFriendship = new Friendship
@@ -165,6 +169,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult AcceptFriendship(int userID, int friendID)
 		{
 			Friendship friendship = _nest.Friendships.All().Where(f => f.UserID_1 == friendID && f.UserID_2 == userID).FirstOrDefault();
@@ -188,6 +193,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeleteProfile(int ID)
 		{
 			if (!(ModelState.IsValid))
@@ -217,6 +223,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetProfileByID(int ID)
 		{
 			ProfileModel profile = _nest.Profiles.All().Where(p => p.ID == ID).Select(BuildProfileModel).FirstOrDefault();
@@ -230,6 +237,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetProfileByUserID(int userID)
 		{
 			ProfileModel profile = _nest.Profiles.All().Where(p => p.UserID == userID).Select(BuildProfileModel).FirstOrDefault();
@@ -243,6 +251,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetProfileByUsername(string username)
 		{
 			try
@@ -279,6 +288,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAllFriends(int userID)
 		{
 			List<Friendship> friendships = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == true)
@@ -301,6 +311,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetCommonFriends(int userID, int targetID)
 		{
 			List<Friendship> friendshipsUser = _nest.Friendships.All().Where(f => (f.UserID_1 == userID || f.UserID_2 == userID) && f.IsAccepted == true)
@@ -344,6 +355,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetPendingFriends(int userID)
 		{
 			List<Friendship> friendships = _nest.Friendships.All().Where(f => f.UserID_2 == userID && f.IsAccepted == false)
@@ -358,6 +370,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetFriendship(int userID, int friendID)
 		{
 			Friendship friendship = _nest.Friendships.All().Where(f => (f.UserID_1 == userID && f.UserID_2 == friendID) || (f.UserID_1 == friendID && f.UserID_2 == userID)).FirstOrDefault();
@@ -374,6 +387,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetLatestProfileActivity(int userID)
 		{
 			var activities = new List<ActivityModel>();
@@ -389,6 +403,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetLatestFriendsActivity(int userID)
 		{
 			try
@@ -431,6 +446,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateMessage(int senderID, int receiverID, MessageModel message)
 		{
 			if (!(ModelState.IsValid))
@@ -473,6 +489,8 @@ namespace Services.Controllers
 			return Ok(message);
 		}
 
+		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetMessages(int senderID, int receiverID)
 		{
 			var messages = _nest.Messages.All().Where(m => (m.SenderID == senderID && m.ReceiverID == receiverID) || (m.SenderID == receiverID && m.ReceiverID == senderID))
@@ -483,6 +501,8 @@ namespace Services.Controllers
 			return Ok(messages);
 		}
 
+		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetDiscussion(Guid discussionGuid)
 		{
 			var messages = _nest.Messages.All().Where(m => m.DiscussionGuid == discussionGuid)

@@ -37,11 +37,10 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
-				string token = TempData["token"].ToString();
+				string token = HttpContext.Session["token"].ToString();
 				string url = "http://localhost:8080/api/User/GetCurrentUser";
 				UserModel user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 				ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", user.Username);
-				ViewBag.Token = token;
 				HttpContext.Session.Add("currentUser", user);
 				if (HttpRuntime.Cache["LoggedInUsers"] != null)
 				{
@@ -64,6 +63,7 @@ namespace WebMediaClient.Controllers
 			{
 				UserModel user = (UserModel)HttpContext.Session["currentUser"];
 				HttpContext.Session.Remove("currentUser");
+				HttpContext.Session.Remove("token");
 				if (HttpRuntime.Cache["LoggedInUsers"] != null)
 				{
 					List<UserModel> loggedInUsers = (List<UserModel>)HttpRuntime.Cache["LoggedInUsers"];
@@ -81,11 +81,12 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult SetUser(UserModel user)
+		public ActionResult SetUser(UserModel user, string token)
 		{
 			try
 			{
 				HttpContext.Session.Add("currentUser", user);
+				HttpContext.Session.Add("token", token);
 				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)

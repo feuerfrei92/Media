@@ -10,13 +10,13 @@
 <script type="text/javascript">
 	window.addEventListener("load", function () { checkIsOwner() }, false);
 
-	function getToken() {
-		if (Modernizr.localstorage) {
-			var localProfile = window.localStorage;
-			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			return token;
-		}
-	}
+	//function getToken() {
+	//	if (Modernizr.localstorage) {
+	//		var localProfile = window.localStorage;
+	//		var token = JSON.parse(localProfile.getItem("MediaToken"));
+	//		return token;
+	//	}
+	//}
 
 	function checkIsOwner() {
 		var userID = '@ViewBag.User.ID';

@@ -1,4 +1,5 @@
-﻿using Services.Models;
+﻿using PagedList;
+using Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,18 +19,23 @@ namespace WebMediaClient.Controllers
             return View();
         }
 
-		public async Task<ActionResult> GetAllTopics(string token)
+		public async Task<ActionResult> GetAllTopics()
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/Topic/GetAllTopics";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
                 var viewModels = new List<TopicViewModel>();
                 foreach (TopicModel t in topics)
                 {
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
-				return View();
+				return View(viewModels.ToPagedList(1, 20));
 			}
 			catch (Exception ex)
 			{
@@ -45,11 +51,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateTopic(int sectionID, int authorID, TopicViewModel topicModel, string token)
+		public async Task<ActionResult> CreateTopic(int sectionID, int authorID, TopicViewModel topicModel)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/CreateTopic?SectionID={0}&AuthorID={1}", sectionID, authorID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var topic = TopicConverter.FromVisualToBasic(topicModel);
 				var createdTopic = await HttpClientBuilder<TopicModel>.PostAsync(topic, url, token);
 				var viewModel = TopicConverter.FromBasicToVisual(createdTopic);
@@ -62,9 +73,14 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> UpdateTopic(int ID, int sectionID, TopicViewModel topicModel, string token)
+		public async Task<ActionResult> UpdateTopic(int ID, int sectionID, TopicViewModel topicModel)
 		{
             string url = string.Format("http://localhost:8080/api/Topic/CreateTopic?ID={0}&SectionID={1}", ID, sectionID);
+			string token = "";
+			if (HttpContext.Session["token"] != null)
+				token = HttpContext.Session["token"].ToString();
+			else
+				token = null;
             var topic = TopicConverter.FromVisualToBasic(topicModel);
             var updatedTopic = await HttpClientBuilder<TopicModel>.PostAsync(topic, url, token);
             var viewModel = TopicConverter.FromBasicToVisual(updatedTopic);
@@ -72,11 +88,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpDelete]
-		public ActionResult DeleteTopic(int ID, string token)
+		public ActionResult DeleteTopic(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/DeleteTopic?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				HttpClientBuilder<TopicModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
@@ -86,11 +107,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetTopicByID(int ID, string token)
+		public async Task<ActionResult> GetTopicByID(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
                 var viewModel = TopicConverter.FromBasicToVisual(topic);
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
@@ -102,11 +128,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetTopicByIDRaw(int ID, string token)
+		public async Task<ActionResult> GetTopicByIDRaw(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
 				return Json(new { SectionID = topic.SectionID, IsProfileTopic = topic.IsProfileTopic, IsInterestTopic = topic.IsInterestTopic }, JsonRequestBehavior.AllowGet);
 			}
@@ -116,11 +147,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetTopicsBySectionID(int sectionID, string token)
+		public ActionResult GetTopicsBySectionID(int sectionID, int? page = null)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsBySectionID?SectionID={0}", sectionID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var topics = Task.Run<List<TopicModel>>(() => HttpClientBuilder<TopicModel>.GetListAsync(url, token)).Result;
                 var viewModels = new List<TopicViewModel>();
@@ -128,7 +164,11 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
-                return View(viewModels);
+
+				if (page == null)
+					return View(viewModels.ToPagedList(1, 20));
+				else
+					return View(viewModels.ToPagedList(page.Value, 20));
 			}
 			catch (Exception ex)
 			{
@@ -136,18 +176,27 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetTopicsByAuthorIDAndSectionID(int authorID, int sectionID, string token)
+		public async Task<ActionResult> GetTopicsByAuthorIDAndSectionID(int authorID, int sectionID, int? page = null)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsByAuthorIDAndSectionID?AuthorID={0}&SectionID={1}", authorID, sectionID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var viewModels = new List<TopicViewModel>();
 				foreach (TopicModel t in topics)
 				{
 					viewModels.Add(TopicConverter.FromBasicToVisual(t));
 				}
-				return View(viewModels);
+
+				if (page == null)
+					return View(viewModels.ToPagedList(1, 20));
+				else
+					return View(viewModels.ToPagedList(page.Value, 20));
 			}
 			catch (Exception ex)
 			{
@@ -155,11 +204,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetTopicForProfile(int profileID, string token)
+		public ActionResult GetTopicForProfile(int profileID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicForProfile?ProfileID={0}", profileID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
 				var topic = Task.Run<TopicModel>(() => HttpClientBuilder<TopicModel>.GetAsync(url, token)).Result;
 				var viewModel = TopicConverter.FromBasicToVisual(topic);
@@ -172,11 +226,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetTopicForInterest(int interestID, string token)
+		public ActionResult GetTopicForInterest(int interestID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicForInterest?InterestID={0}", interestID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
 				var topic = Task.Run<TopicModel>(() => HttpClientBuilder<TopicModel>.GetAsync(url, token)).Result;
 				var viewModel = TopicConverter.FromBasicToVisual(topic);
@@ -189,18 +248,27 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetTopicsByAuthorID(int authorID, string token)
+		public async Task<ActionResult> GetTopicsByAuthorID(int authorID, int? page = null)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicByAuthorID?AuthorID={0}", authorID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
                 var viewModels = new List<TopicViewModel>();
                 foreach (TopicModel t in topics)
                 {
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
-				return View(viewModels);
+
+				if (page == null)
+					return View(viewModels.ToPagedList(1, 20));
+				else
+					return View(viewModels.ToPagedList(page.Value, 20));
 			}
 			catch (Exception ex)
 			{
@@ -208,18 +276,27 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> SearchByTopicName(string name, string token)
+		public async Task<ActionResult> SearchByTopicName(string name, int? page = null)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/SearchByTopicName?Name={0}", name);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var viewModels = new List<TopicViewModel>();
 				foreach (TopicModel t in topics)
 				{
 					viewModels.Add(TopicConverter.FromBasicToVisual(t));
 				}
-				return View(viewModels);
+
+				if (page == null)
+					return View(viewModels.ToPagedList(1, 20));
+				else
+					return View(viewModels.ToPagedList(page.Value, 20));
 			}
 			catch (Exception ex)
 			{
@@ -227,11 +304,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> SearchTopicsByCriteria(TopicCriteriaViewModel criteria, string token)
+		public async Task<ActionResult> SearchTopicsByCriteria(TopicCriteriaViewModel criteria)
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/Topic/SearchTopicsByCriteria";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var topicCriteria = TopicConverter.CriteriaFromVisualToBasic(criteria);
 				var topics = await HttpClientBuilder<TopicCriteria>.GetListAsync<TopicModel>(topicCriteria, url, token);
 				var viewModels = new List<TopicViewModel>();

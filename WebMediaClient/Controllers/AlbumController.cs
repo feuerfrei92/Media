@@ -23,11 +23,16 @@ namespace WebMediaClient.Controllers
             return View();
         }
 
-		public async Task<ActionResult> GetAllAlbums(string token)
+		public async Task<ActionResult> GetAllAlbums()
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/Album/GetAllAlbums";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var albums = await HttpClientBuilder<AlbumModel>.GetListAsync(url, token);
 				var viewModels = new List<AlbumViewModel>();
 				foreach (AlbumModel a in albums)
@@ -42,7 +47,7 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult CreateAlbum(int ownerID, bool isProfile, string token)
+		public ActionResult CreateAlbum(int ownerID, bool isProfile)
 		{
 			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 			ViewBag.IsProfile = isProfile;
@@ -50,7 +55,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateAlbum(int ownerID, bool isProfile, AlbumViewModel albumModel, string token)
+		public async Task<ActionResult> CreateAlbum(int ownerID, bool isProfile, AlbumViewModel albumModel)
 		{
 			try
 			{
@@ -58,6 +63,11 @@ namespace WebMediaClient.Controllers
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				string url = string.Format("http://localhost:8080/api/Album/CreateAlbum?UserID={0}", ownerID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var album = AlbumConverter.FromVisualToBasic(albumModel);
 				var createdAlbum = await HttpClientBuilder<AlbumModel>.PostAsync(album, url, token);
 				var viewModel = AlbumConverter.FromBasicToVisual(createdAlbum);
@@ -71,11 +81,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult DeleteAlbum(int ID, string token)
+		public ActionResult DeleteAlbum(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Album/DeleteAlbum?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				HttpClientBuilder<PhotoModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
@@ -85,11 +100,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetAlbumByID(int ID, string token)
+		public async Task<ActionResult> GetAlbumByID(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Album/GetAlbumByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var album = await HttpClientBuilder<AlbumModel>.GetAsync(url, token);
 				var viewModel = AlbumConverter.FromBasicToVisual(album);
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
@@ -101,11 +121,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetAlbumsForProfile(int profileID, string token)
+		public ActionResult GetAlbumsForProfile(int profileID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Album/GetAlbumsForProfile?OwnerID={0}", profileID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var albums = await HttpClientBuilder<AlbumModel>.GetListAsync(url, token);
 				var albums = Task.Run<List<AlbumModel>>(() => HttpClientBuilder<AlbumModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<AlbumViewModel>();
@@ -121,11 +146,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetAlbumsForProfileRaw(int profileID, string token)
+		public async Task<ActionResult> GetAlbumsForProfileRaw(int profileID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Album/GetAlbumsForProfile?OwnerID={0}", profileID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var albums = await HttpClientBuilder<AlbumModel>.GetListAsync(url, token);
 				return Json(albums, JsonRequestBehavior.AllowGet);
 			}
@@ -135,11 +165,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetAlbumsForInterest(int interestID, string token)
+		public ActionResult GetAlbumsForInterest(int interestID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Album/GetAlbumsForInterest?OwnerID={0}", interestID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var albums = await HttpClientBuilder<AlbumModel>.GetListAsync(url, token);
 				var albums = Task.Run<List<AlbumModel>>(() => HttpClientBuilder<AlbumModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<AlbumViewModel>();
@@ -155,11 +190,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> UpdateAlbumRating(int albumID, bool like, string token)
+		public async Task<ActionResult> UpdateAlbumRating(int albumID, bool like)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Album/UpdateAlbumRating?AlbumID={0}&Like={1}", albumID, like);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}
@@ -169,11 +209,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetAllPhotos(string token)
+		public async Task<ActionResult> GetAllPhotos()
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/Album/GetAllPhotos";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var photos = await HttpClientBuilder<PhotoModel>.GetListAsync(url, token);
 				var viewModels = new List<PhotoOutViewModel>();
 				foreach (PhotoModel p in photos)
@@ -188,14 +233,14 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult CreatePhoto(int userID, string token)
+		public ActionResult CreatePhoto(int userID)
 		{
 			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 			return View();
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreatePhoto(int userID, PhotoInViewModel photoModel, HttpPostedFileBase file, string token)
+		public async Task<ActionResult> CreatePhoto(int userID, PhotoInViewModel photoModel, HttpPostedFileBase file)
 		{
 			if (file != null && file.ContentLength > 0)
 			{
@@ -203,6 +248,11 @@ namespace WebMediaClient.Controllers
 				photoModel.Content = image;
 				photoModel.DateCreated = DateTime.Now;
 				string url = string.Format("http://localhost:8080/api/Album/CreatePhoto?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var photo = PhotoConverter.FromVisualToBasicIn(photoModel);
 				var createdPhoto = await HttpClientBuilder<PhotoModel>.PostAsync(photo, url, token);
 				var viewModel = PhotoConverter.FromBasicToVisualIn(createdPhoto);
@@ -212,11 +262,16 @@ namespace WebMediaClient.Controllers
 			else throw new ArgumentNullException(file.FileName);
 		}
 
-		public ActionResult DeletePhoto(int ID, string token)
+		public ActionResult DeletePhoto(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Album/DeletePhoto?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				HttpClientBuilder<PhotoModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
@@ -226,11 +281,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetPhotoByID(int ID, string token)
+		public async Task<ActionResult> GetPhotoByID(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Album/GetPhotoByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var photo = await HttpClientBuilder<PhotoModel>.GetAsync(url, token);
 				return File(photo.Content, "image/jpeg");
 			}
@@ -240,11 +300,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetPhotosForAlbum(int albumID, string token)
+		public ActionResult GetPhotosForAlbum(int albumID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Album/GetPhotosForAlbum?AlbumID={0}", albumID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var photos = await HttpClientBuilder<PhotoModel>.GetListAsync(url, token);
 				var photos = Task.Run<List<PhotoModel>>(() => HttpClientBuilder<PhotoModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<PhotoOutViewModel>();
@@ -260,11 +325,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> UpdateRating(int photoID, bool like, string token)
+		public async Task<ActionResult> UpdateRating(int photoID, bool like)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Album/UpdateRating?PhotoID={0}&Like={1}", photoID, like);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}

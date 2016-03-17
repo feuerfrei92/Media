@@ -8,30 +8,31 @@
 <script type="text/javascript">
 	window.addEventListener("load", function () { updateVisit() }, false);
 
-	function getToken() {
-		if (Modernizr.localstorage) {
-			var localProfile = window.localStorage;
-			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			return token;
-		}
-	}
+	//function getToken() {
+	//	if (Modernizr.localstorage) {
+	//		var localProfile = window.localStorage;
+	//		var token = JSON.parse(localProfile.getItem("MediaToken"));
+	//		return token;
+	//	}
+	//}
 
 	function updateVisit() {
 		$.ajax
 		({
 			url: '@Html.Raw(@Url.Action("UpdateVisit", "User", new { userID = @ViewBag.User.ID, topicID = @Model.ID }))',
 			data: { lastvisit: Date.now() },
-			dataType: 'json',
+			dataType: 'text',
 			type: 'PUT',
-			success: function (data) {
-				getRoot();
-			},
-			error: function (xhr) {
-				if (xhr.status == 400) {
-					createVisit();
-				}
-			},
-		})
+			//success: function (response) {
+			//	getRoot();
+			//},
+			//error: function (xhr) {
+			//	getRoot();
+			//	if (xhr.status == 400) {
+			//		createVisit();
+			//	}
+			//},
+		}).always(function () { getRoot(); })
 	}
 
 	function createVisit() {
@@ -42,6 +43,7 @@
 			dataType: 'json',
 			type: 'POST',
 			success: function (data) {
+				getRoot();
 			},
 		})
 	}
@@ -50,7 +52,6 @@
 		$.ajax
 		({
 			url: '@Url.Action("GetRoot", "Section", new { sectionID = @Model.SectionID})',
-			data: { token: getToken() },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -65,7 +66,6 @@
 		$.ajax
 		({
 			url: link,
-			data: { token: getToken() },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {

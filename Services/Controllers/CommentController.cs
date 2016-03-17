@@ -44,6 +44,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateComment(int ID, int topicID, CommentModel comment)
 		{
 			if(!(ModelState.IsValid))
@@ -81,6 +82,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateComment(int topicID, int authorID, CommentModel comment)
 		{
 			if (!(ModelState.IsValid))
@@ -132,6 +134,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeleteComment(int ID)
 		{
 			if (!(ModelState.IsValid))
@@ -161,6 +164,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetCommentByID(int ID)
 		{
 			CommentModel comment = _nest.Comments.All().Where(c => c.ID == ID).Select(BuildCommentModel).FirstOrDefault();
@@ -174,6 +178,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetCommentsByTopicID(int topicID)
 		{
 			List<CommentModel> comments = _nest.Comments.All().Where(c => c.TopicID == topicID).Select(BuildCommentModel).ToList();
@@ -182,6 +187,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetCommentsByAuthorID(int authorID)
 		{
 			List<CommentModel> comments = _nest.Comments.All().Where(c => c.AuthorID == authorID).Select(BuildCommentModel).ToList();
@@ -190,6 +196,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetCommentsByAuthorIDAndSectionID(int authorID, int sectionID)
 		{
 			List<CommentModel> comments = _nest.Comments.All().Where(c => c.AuthorID == authorID).Select(BuildCommentModel).ToList();
@@ -205,6 +212,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult SearchByTextContent(string content)
 		{
 			List<CommentModel> comments = _nest.Comments.All().Where(c => c.Text.Contains(content)).Select(BuildCommentModel).ToList();
@@ -213,6 +221,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult SearchByCriteria(CommentCriteria criteria)
 		{
 			List<CommentModel> comments = _nest.Comments.All().Where(c => DoesMatchCriteria(c, criteria)).Select(BuildCommentModel).ToList();
@@ -221,6 +230,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateRating(int commentID, bool like)
 		{
 			Comment comment = _nest.Comments.All().Where(c => c.ID == commentID).FirstOrDefault();

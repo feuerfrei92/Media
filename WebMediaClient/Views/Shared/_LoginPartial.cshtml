@@ -1,14 +1,12 @@
 ﻿<script type="text/javascript">
-	window.addEventListener("load", function () { getToken() }, false);
-	window.addEventListener("load", function() { $('.dropdown-toggle').dropdown(); }, false) ;
+	window.addEventListener("load", function () { $('.dropdown-toggle').dropdown(); }, false);
 
-	function getToken() {
+	@*function getToken() {
 		if (Modernizr.localstorage) {
 			var localProfile = window.localStorage;
 			var token = JSON.parse(localProfile.getItem("MediaToken"));
 			var user = '@HttpContext.Current.Session["currentUser"]';
-			if (token != null && user == null)
-			{
+			if (token != null && user == null) {
 				$.ajax
 				({
 					url: '@Url.Action("GetCurrentUser", "User")',
@@ -16,45 +14,18 @@
 					dataType: 'json',
 					type: 'GET',
 					success: function (data) {
-						setUser(data.ID, data.Username);
+						setUser(data.ID, data.Username, token);
 					}
 				})
 			}
 		}
 	}
 
-	function setUser(id, username)
-	{
+	function setUser(id, username, token) {
 		$.ajax
 		({
 			url: '@Url.Action("SetUser", "Home")',
-			data: { id: id, username: username},
-			dataType: 'json',
-			type: 'GET',
-			success: function (data) {
-				var actionsList = document.getElementById("actions_list");
-				var manageNode = document.createElement("li");
-				manageNode.setAttribute("id", "manage_profile");
-				manageNode.setAttribute("class", "dropdown");
-				var actionLinkElement = document.createElement("label");
-				actionLinkElement.setAttribute("class", "label-default dropdown-toggle");
-				actionLinkElement.setAttribute("data-toggle", "dropdown");
-				var manageElem = "Hello, " + data.Username;
-				actionLinkElement.innerHTML = manageElem;
-				manageNode.appendChild(actionLinkElement);
-				actionsList.appendChild(manageNode);
-				populateDropdownMenu();
-				populateLogOffNode();
-			}
-		})
-	}
-
-	@*function showUsername() {
-		var token = getToken();
-		$.ajax
-		({
-			url: '@Url.Action("GetCurrentUser", "User")',
-			data: { token: token },
+			data: { id: id, username: username, token: token },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -75,7 +46,7 @@
 		})
 	}*@
 
-	function populateDropdownMenu() {
+	@*function populateDropdownMenu() {
 		var manageNode = document.getElementById("manage_profile");
 		var dropdownMenu = document.createElement("ul");
 		dropdownMenu.setAttribute("class", "dropdown-menu");
@@ -94,8 +65,7 @@
 		manageNode.appendChild(dropdownMenu);
 	}
 
-	function populateLogOffNode()
-	{
+	function populateLogOffNode() {
 		var actionsList = document.getElementById("actions_list");
 		var logoffNode = document.createElement("li");
 		var labelElement = document.createElement("a");
@@ -109,7 +79,7 @@
 		registerLink.parentNode.removeChild(registerLink);
 		var loginLink = document.getElementById("loginLink");
 		loginLink.parentNode.removeChild(loginLink);
-	}
+	}*@
 </script>
 	<ul id="actions_list" class="nav navbar-nav navbar-right">
 		@if((Services.Models.UserModel)HttpContext.Current.Session["currentUser"] == null)

@@ -25,11 +25,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult CreateSetting(int ownerID, SettingViewModel settingModel, string token)
+		public ActionResult CreateSetting(int ownerID, SettingViewModel settingModel)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Setting/CreateSetting?OwnerID={0}", ownerID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var setting = SettingConverter.FromVisualToBasic(settingModel);
 				//var createdSetting = await HttpClientBuilder<SettingModel>.PostAsync(setting, url, token);
 				var createdSetting = Task.Run<SettingModel>(() => HttpClientBuilder<SettingModel>.PostAsync(setting, url, token)).Result;
@@ -43,11 +48,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> ChangePublicity(int settingID, string publicity, string token)
+		public async Task<ActionResult> ChangePublicity(int settingID, string publicity)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Setting/ChangePublicity?SettingID={0}&Publicity={1}", settingID, publicity);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<SettingModel>.PutEmptyAsync(url, token);
 				return Json(new { Response = response }, JsonRequestBehavior.AllowGet);
 			}
@@ -58,11 +68,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpDelete]
-		public ActionResult DeleteSetting(int ID, string token)
+		public ActionResult DeleteSetting(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Setting/DeleteSetting?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				HttpClientBuilder<SettingModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
@@ -72,11 +87,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetSettingByID(int ID, string token)
+		public async Task<ActionResult> GetSettingByID(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Setting/GetSettingByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var setting = await HttpClientBuilder<SettingModel>.GetAsync(url, token);
 				var viewModel = SettingConverter.FromBasicToVisual(setting);
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
@@ -89,11 +109,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetSettingByOwnerIDAndType(int ownerID, string settingType, string token)
+		public async Task<ActionResult> GetSettingByOwnerIDAndType(int ownerID, string settingType)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Setting/GetSettingByOwnerIDAndType?OwnerID={0}&Type={1}", ownerID, settingType);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var setting = await HttpClientBuilder<SettingModel>.GetAsync(url, token);
 				var viewModel = SettingConverter.FromBasicToVisual(setting);
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
@@ -107,11 +132,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetSettingByOwnerIDAndTypeRaw(int ownerID, string settingType, string token)
+		public async Task<ActionResult> GetSettingByOwnerIDAndTypeRaw(int ownerID, string settingType)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Setting/GetSettingByOwnerIDAndType?OwnerID={0}&Type={1}", ownerID, settingType);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var setting = await HttpClientBuilder<SettingModel>.GetAsync(url, token);
 				return Json(new { Publicity = setting.Publicity }, JsonRequestBehavior.AllowGet);
 			}
@@ -121,11 +151,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetPendingFriends(int userID, string token)
+		public ActionResult GetPendingFriends(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetPendingFriends?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var profiles = await HttpClientBuilder<ProfileModel>.GetListAsync(url, token);
 				var profiles = Task.Run<List<ProfileModel>>(() => HttpClientBuilder<ProfileModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<ProfileViewModel>();
@@ -142,11 +177,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetSubscribedTopics(int userID, string token)
+		public ActionResult GetSubscribedTopics(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetSubscribedTopics?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var topics = Task.Run<List<TopicModel>>(() => HttpClientBuilder<TopicModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<TopicViewModel>();
@@ -162,11 +202,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetTopicsWithNewComments(int userID, string token)
+		public ActionResult GetTopicsWithNewComments(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsWithNewComments?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var topics = Task.Run<List<TopicModel>>(() => HttpClientBuilder<TopicModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<TopicViewModel>();
@@ -182,11 +227,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetFirstLatestProfileActivity(int userID, string token)
+		public ActionResult GetFirstLatestProfileActivity(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetLatestProfileActivity?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
 				activities = activities.OrderByDescending(a => a.DateCreated).Take(10).ToList();
@@ -204,11 +254,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetLatestProfileActivity(int userID, string token)
+		public ActionResult GetLatestProfileActivity(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetLatestProfileActivity?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<ActivityViewModel>();
@@ -224,11 +279,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetFirstLatestFriendsActivity(int userID, string token)
+		public ActionResult GetFirstLatestFriendsActivity(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetLatestFriendsActivity?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
 				activities = activities.OrderByDescending(a => a.DateCreated).Take(5).ToList();
@@ -246,11 +306,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetLatestFriendsActivity(int userID, string token)
+		public ActionResult GetLatestFriendsActivity(int userID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Profile/GetLatestFriendsActivity?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
 				var activities = Task.Run<List<ActivityModel>>(() => HttpClientBuilder<ActivityModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<ActivityViewModel>();

@@ -1,4 +1,4 @@
-﻿using RTE;
+﻿using PagedList;
 using Services.Models;
 using System;
 using System.Collections.Generic;
@@ -21,18 +21,23 @@ namespace WebMediaClient.Controllers
             return View();
         }
 
-		public async Task<ActionResult> GetAllComments(string token)
+		public async Task<ActionResult> GetAllComments()
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/Comment/GetAllComments";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
 				var viewModels = new List<CommentViewModel>();
 				foreach (CommentModel c in comments)
 				{
 					viewModels.Add(CommentConverter.FromBasicToVisual(c));
 				}
-				return View(viewModels);
+				return View(viewModels.ToPagedList(1, 15));
 			}
 			catch (Exception ex)
 			{
@@ -42,11 +47,16 @@ namespace WebMediaClient.Controllers
 
 		[HttpPost]
 		[ValidateInput(false)]
-		public async Task<ActionResult> CreateComment(int topicID, int authorID, CommentViewModel commentModel, string token)
+		public async Task<ActionResult> CreateComment(int topicID, int authorID, CommentViewModel commentModel)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Comment/CreateComment?TopicID={0}&AuthorID={1}", topicID, authorID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var comment = CommentConverter.FromVisualToBasic(commentModel);
 				var createdComment = await HttpClientBuilder<CommentModel>.PostAsync(comment, url, token);
 				var viewModel = CommentConverter.FromBasicToVisual(createdComment);
@@ -59,11 +69,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> UpdateComment(int ID, int topicID, CommentViewModel commentModel, string token)
+		public async Task<ActionResult> UpdateComment(int ID, int topicID, CommentViewModel commentModel)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Comment/CreateComment?ID={0}&TopicID={1}", ID, topicID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var comment = CommentConverter.FromVisualToBasic(commentModel);
 				var updatedComment = await HttpClientBuilder<CommentModel>.PutAsync(comment, url, token);
 				var viewModel = CommentConverter.FromBasicToVisual(updatedComment);
@@ -76,11 +91,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpDelete]
-		public ActionResult DeleteComment(int ID, string token)
+		public ActionResult DeleteComment(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Comment/DeleteComment?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				HttpClientBuilder<CommentModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
@@ -90,11 +110,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetCommentByID(int ID, string token)
+		public async Task<ActionResult> GetCommentByID(int ID)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Comment/GetCommentByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var comment = await HttpClientBuilder<CommentModel>.GetAsync(url, token);
                 var viewModel = CommentConverter.FromBasicToVisual(comment);
 				return View();
@@ -105,11 +130,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetCommentsByTopicID(int topicID, string token)
+		public ActionResult GetCommentsByTopicID(int topicID, int? page = null)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Comment/GetCommentsByTopicID?TopicID={0}", topicID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				//var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
 				var comments = Task.Run<List<CommentModel>>(() => HttpClientBuilder<CommentModel>.GetListAsync(url, token)).Result;
                 var viewModels = new List<CommentViewModel>();
@@ -127,7 +157,11 @@ namespace WebMediaClient.Controllers
 				}
 				else
 					ViewBag.LoggedUsersCount = 0;
-				return View(viewModels);
+
+				if (page == null)
+					return View(viewModels.ToPagedList(1, 5));
+				else
+					return View(viewModels.ToPagedList(page.Value, 5));
 			}
 			catch (Exception ex)
 			{
@@ -135,18 +169,27 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetCommentsByAuthorID(int authorID, string token)
+		public async Task<ActionResult> GetCommentsByAuthorID(int authorID, int? page = null)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Comment/GetCommentsByAuthorID?AuthorID={0}", authorID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
                 var viewModels = new List<CommentViewModel>();
                 foreach (CommentModel c in comments)
                 {
                     viewModels.Add(CommentConverter.FromBasicToVisual(c));
                 }
-				return View(viewModels);
+
+				if (page == null)
+					return View(viewModels.ToPagedList(1, 15));
+				else
+					return View(viewModels.ToPagedList(page.Value, 15));
 			}
 			catch (Exception ex)
 			{
@@ -154,7 +197,7 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetCommentsByAuthorIDAndSectionID(int authorID, int sectionID, string token)
+		public async Task<ActionResult> GetCommentsByAuthorIDAndSectionID(int authorID, int sectionID, int? page = null)
 		{
 			try
 			{
@@ -162,13 +205,22 @@ namespace WebMediaClient.Controllers
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 				
 				string url = string.Format("http://localhost:8080/api/Comment/GetCommentsByAuthorIDAndSectionID?AuthorID={0}&SectionID={1}", authorID, sectionID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
 				var viewModels = new List<CommentViewModel>();
 				foreach (CommentModel c in comments)
 				{
 					viewModels.Add(CommentConverter.FromBasicToVisual(c));
 				}
-				return View(viewModels);
+
+				if (page == null)
+					return View(viewModels.ToPagedList(1, 15));
+				else
+					return View(viewModels.ToPagedList(page.Value, 15));
 			}
 			catch (Exception ex)
 			{
@@ -177,11 +229,16 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpGet]
-		public async Task<ActionResult> SearchByTextContent(string content, string token)
+		public async Task<ActionResult> SearchByTextContent(string content)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Comment/SearchByTextContent?Content={0}", content);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
                 var viewModels = new List<CommentViewModel>();
                 foreach (CommentModel c in comments)
@@ -196,11 +253,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> SearchCommentsByCriteria(CommentCriteriaViewModel criteria, string token)
+		public async Task<ActionResult> SearchCommentsByCriteria(CommentCriteriaViewModel criteria)
 		{
 			try
 			{
 				string url = "http://localhost:8080/api/Comment/SearchCommentsByCriteria";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var commentCriteria = CommentConverter.CriteriaFromVisualToBasic(criteria);
 				var comments = await HttpClientBuilder<CommentCriteria>.GetListAsync<CommentModel>(commentCriteria, url, token);
 				var viewModels = new List<CommentViewModel>();
@@ -216,11 +278,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> UpdateRating(int commentID, bool like, string token)
+		public async Task<ActionResult> UpdateRating(int commentID, bool like)
 		{
 			try
 			{
 				string url = string.Format("http://localhost:8080/api/Comment/UpdateRating?CommentID={0}&Like={1}", commentID, like);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
 				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}

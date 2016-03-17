@@ -8,7 +8,7 @@
 <script type="text/javascript">
 	$(function () {
 		var userID = '@ViewBag.UserID';
-		if (userID == null) 
+		if (userID == null)
 		{
 			$.getJSON('@Html.Raw(Url.Action("GetMembershipsForSectionRaw", "User", new { sectionID = @ViewBag.SectionID, getSpecial = 0 }))', function (result) {
 				var ddl = $('#user_dropdown');
@@ -28,7 +28,7 @@
 	function getRoot() {
 		$.ajax
 		({
-			url: '@Url.Action("GetRoot", "Section", new { SectionID = @ViewBag.SectionID})',
+			url: '@Url.Action("GetRoot", "Section", new { SectionID = @ViewBag.SectionID })',
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {

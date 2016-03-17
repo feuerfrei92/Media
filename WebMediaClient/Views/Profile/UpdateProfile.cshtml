@@ -10,13 +10,13 @@
 <script type="text/javascript">
 	window.addEventListener("load", function () { loadValues() }, false);
 
-	function getToken() {
-		if (Modernizr.localstorage) {
-			var localProfile = window.localStorage;
-			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			return token;
-		}
-	}
+	//function getToken() {
+	//	if (Modernizr.localstorage) {
+	//		var localProfile = window.localStorage;
+	//		var token = JSON.parse(localProfile.getItem("MediaToken"));
+	//		return token;
+	//	}
+	//}
 
 	@*function getUsername() {
 		var token = getToken();
@@ -36,10 +36,11 @@
 
 	function loadValues() {
 		var username = '@ViewBag.User.Username';
+		var link = '@Url.Action("GetProfileByUsernameRaw", "Profile", new { username = "oooo" })';
+		link = link.replace("oooo", username);
 		$.ajax
 		({
-			url: '@Url.Action("GetProfileByUsernameRaw", "Profile")',
-			data: { username: username },
+			url: link,
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {

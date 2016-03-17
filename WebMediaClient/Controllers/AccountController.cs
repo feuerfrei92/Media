@@ -84,7 +84,7 @@ namespace WebMediaClient.Controllers
 				var token = await HttpClientBuilder<LoginViewModel>.LoginAsync<TokenInfo>(model, url);
 				token.Issued = DateTime.Now;
 				token.Expired = token.Issued.AddMinutes(30);
-				TempData["token"] = token.Access_Token;
+				HttpContext.Session.Add("token", token.Access_Token);
 
 				return RedirectToAction("SuccessfulLogin", "Home");
 			}

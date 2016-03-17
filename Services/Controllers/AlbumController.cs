@@ -38,6 +38,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAllAlbums()
 		{
 			IQueryable<AlbumModel> albums = _nest.Albums.All().Select(BuildAlbumModel);
@@ -45,6 +46,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAllPhotos()
 		{
 			IQueryable<PhotoModel> photos = _nest.Photos.All().Select(BuildPhotoModel);
@@ -52,6 +54,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreateAlbum(int ownerID, AlbumModel album)
 		{
 			if (!(ModelState.IsValid))
@@ -116,6 +119,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeleteAlbum(int ID)
 		{
 			if (!(ModelState.IsValid))
@@ -145,6 +149,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAlbumByID(int ID)
 		{
 			AlbumModel album = _nest.Albums.All().Where(a => a.ID == ID).Select(BuildAlbumModel).FirstOrDefault();
@@ -166,6 +171,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetAlbumsForInterest(int ownerID)
 		{
 			List<AlbumModel> albums = _nest.Albums.All().Where(a => a.OwnerID == ownerID && a.IsInterest == true).Select(BuildAlbumModel).ToList();
@@ -174,6 +180,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdateAlbumRating(int albumID, bool like)
 		{
 			Album album = _nest.Albums.All().Where(a => a.ID == albumID).FirstOrDefault();
@@ -198,6 +205,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
+		[Authorize]
 		public IHttpActionResult CreatePhoto(int albumID, PhotoModel photo)
 		{
 			if (!(ModelState.IsValid))
@@ -229,6 +237,7 @@ namespace Services.Controllers
 		}
 
 		[HttpDelete]
+		[Authorize]
 		public IHttpActionResult DeletePhoto(int ID)
 		{
 			if (!(ModelState.IsValid))
@@ -258,6 +267,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetPhotoByID(int ID)
 		{
 			PhotoModel photo = _nest.Photos.All().Where(p => p.ID == ID).Select(BuildPhotoModel).FirstOrDefault();
@@ -271,6 +281,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetPhotosForAlbum(int albumID)
 		{
 			List<PhotoModel> photos = _nest.Photos.All().Where(p => p.AlbumID == albumID).Select(BuildPhotoModel).ToList();
@@ -279,6 +290,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdatePhotoRating(int photoID, bool like)
 		{
 			Photo photo = _nest.Photos.All().Where(p => p.ID == photoID).FirstOrDefault();
