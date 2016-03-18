@@ -8,6 +8,7 @@ using Data;
 using Models;
 using System.Security.Claims;
 using Microsoft.Owin.Security;
+using System.Web.Mail;
 
 namespace Services
 {
@@ -15,18 +16,65 @@ namespace Services
 
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
-		public class EmailService : IIdentityMessageService
+		public class MyEmailService : IIdentityMessageService
 		{
 			public Task SendAsync(IdentityMessage message)
 			{
 				// Plug in your email service here to send an email.
-				return Task.FromResult(0);
+				//return Task.FromResult(0);
+				try
+				{
+					//var email = new MailMessage(new MailAddress("kolega_kz@abv.bg"),
+					//							new MailAddress(message.Destination))
+					//							{
+					//								Subject = message.Subject,
+					//								Body = message.Body,
+					//								IsBodyHtml = true
+					//							};
+
+
+					//using (var client = new SmtpMail("smtp.abv.bg"))
+					//{
+					//	client.EnableSsl = true;
+					//	client.Port = 465;
+					//	client.UseDefaultCredentials = false;
+					//	client.Credentials = new System.Net.NetworkCredential("kolega_kz", "17168934713");
+					//	client.DeliveryMethod = SmtpDeliveryMethod.Network;
+
+					//	await client.SendMailAsync(email);
+					//}
+
+					var email = new MailMessage();
+					email.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpserver", "smtp.abv.bg");
+					email.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpserverport", "465");
+					email.Fields.Add("http://schemas.microsoft.com/cdo/configuration/sendusing", "2");
+					email.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpauthenticate", "1");
+					email.Fields.Add("http://schemas.microsoft.com/cdo/configuration/sendusername", "kolega_kz@abv.bg");
+					email.Fields.Add("http://schemas.microsoft.com/cdo/configuration/sendpassword", "17168934713");
+					email.Fields.Add("http://schemas.microsoft.com/cdo/configuration/smtpusessl", "true");
+
+					email.From = "kolega_kz@abv.bg";
+					email.To = message.Destination;
+					email.Subject = message.Subject;
+					email.Body = message.Body;
+					email.BodyFormat = MailFormat.Html;
+
+					SmtpMail.SmtpServer = "smtp.abv.bg";
+					SmtpMail.Send(email);
+
+					return Task.FromResult(0);
+				}
+				catch
+				{
+					throw;
+				}
 			}
 		}
 
         public ApplicationUserManager(IUserStore<ApplicationUser> store)
             : base(store)
         {
+			this.EmailService = new MyEmailService();
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)

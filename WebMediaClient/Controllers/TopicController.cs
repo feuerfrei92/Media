@@ -3,6 +3,7 @@ using Services.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -45,6 +46,9 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult CreateTopic(int sectionID, int authorID)
 		{
+			if (Request.UrlReferrer == null)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 			ViewBag.SectionID = sectionID;
 			ViewBag.AuthorID = authorID;
 			return View();
@@ -55,6 +59,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Topic/CreateTopic?SectionID={0}&AuthorID={1}", sectionID, authorID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -75,16 +82,26 @@ namespace WebMediaClient.Controllers
 		[HttpPut]
 		public async Task<ActionResult> UpdateTopic(int ID, int sectionID, TopicViewModel topicModel)
 		{
-            string url = string.Format("http://localhost:8080/api/Topic/CreateTopic?ID={0}&SectionID={1}", ID, sectionID);
-			string token = "";
-			if (HttpContext.Session["token"] != null)
-				token = HttpContext.Session["token"].ToString();
-			else
-				token = null;
-            var topic = TopicConverter.FromVisualToBasic(topicModel);
-            var updatedTopic = await HttpClientBuilder<TopicModel>.PostAsync(topic, url, token);
-            var viewModel = TopicConverter.FromBasicToVisual(updatedTopic);
-            return View(viewModel);
+			try
+			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				string url = string.Format("http://localhost:8080/api/Topic/CreateTopic?ID={0}&SectionID={1}", ID, sectionID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var topic = TopicConverter.FromVisualToBasic(topicModel);
+				var updatedTopic = await HttpClientBuilder<TopicModel>.PostAsync(topic, url, token);
+				var viewModel = TopicConverter.FromBasicToVisual(updatedTopic);
+				return View(viewModel);
+			}
+			catch (Exception ex)
+			{
+				return View("Error");
+			}
 		}
 
 		[HttpDelete]
@@ -92,6 +109,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Topic/DeleteTopic?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -132,6 +152,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicByID?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -208,6 +231,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicForProfile?ProfileID={0}", profileID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -230,6 +256,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicForInterest?InterestID={0}", interestID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)

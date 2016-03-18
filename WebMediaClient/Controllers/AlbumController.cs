@@ -49,6 +49,15 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult CreateAlbum(int ownerID, bool isProfile)
 		{
+			if (((UserModel)HttpContext.Session["currentUser"]).ID != ownerID && isProfile)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+			if (!isProfile)
+			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+			}
+
 			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 			ViewBag.IsProfile = isProfile;
 			return View();
@@ -61,6 +70,12 @@ namespace WebMediaClient.Controllers
 			{
 				if (((UserModel)HttpContext.Session["currentUser"]).ID != ownerID && isProfile)
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				if(!isProfile)
+				{
+					if(Request.UrlReferrer == null)
+						return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+				}
 
 				string url = string.Format("http://localhost:8080/api/Album/CreateAlbum?UserID={0}", ownerID);
 				string token = "";
@@ -85,6 +100,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Album/DeleteAlbum?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -150,6 +168,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Album/GetAlbumsForProfile?OwnerID={0}", profileID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -194,6 +215,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Album/UpdateAlbumRating?AlbumID={0}&Like={1}", albumID, like);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -235,6 +259,9 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult CreatePhoto(int userID)
 		{
+			if (Request.UrlReferrer == null)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 			return View();
 		}
@@ -242,6 +269,9 @@ namespace WebMediaClient.Controllers
 		[HttpPost]
 		public async Task<ActionResult> CreatePhoto(int userID, PhotoInViewModel photoModel, HttpPostedFileBase file)
 		{
+			if (Request.UrlReferrer == null)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 			if (file != null && file.ContentLength > 0)
 			{
 				Image image = Image.FromStream(file.InputStream, true, true);
@@ -266,6 +296,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Album/DeletePhoto?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -329,6 +362,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Album/UpdateRating?PhotoID={0}&Like={1}", photoID, like);
 				string token = "";
 				if (HttpContext.Session["token"] != null)

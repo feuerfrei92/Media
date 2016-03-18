@@ -21,18 +21,18 @@
 		({
 			url: '@Html.Raw(@Url.Action("UpdateVisit", "User", new { userID = @ViewBag.User.ID, topicID = @Model.ID }))',
 			data: { lastvisit: Date.now() },
-			dataType: 'text',
+			dataType: 'json',
 			type: 'PUT',
-			//success: function (response) {
-			//	getRoot();
-			//},
-			//error: function (xhr) {
-			//	getRoot();
-			//	if (xhr.status == 400) {
-			//		createVisit();
-			//	}
-			//},
-		}).always(function () { getRoot(); })
+			success: function (data) {
+				getRoot();
+			},
+			error: function (xhr) {
+				getRoot();
+				if (xhr.status == 400) {
+					createVisit();
+				}
+			}
+		})
 	}
 
 	function createVisit() {

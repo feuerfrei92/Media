@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -37,6 +38,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string token = HttpContext.Session["token"].ToString();
 				string url = "http://localhost:8080/api/User/GetCurrentUser";
 				UserModel user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
@@ -85,6 +89,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				HttpContext.Session.Add("currentUser", user);
 				HttpContext.Session.Add("token", token);
 				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);

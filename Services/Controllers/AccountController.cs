@@ -347,23 +347,31 @@ namespace Services.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
-
-            IdentityResult result = await UserManager.CreateAsync(user, model.Password);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
-
-			else
+			try
 			{
-				string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-				var callbackUrl = string.Format("http://localhost:57888/Account/ConfirmEmail?UserId={0}&Code={1}", user.Id, code);
-				await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-			}
+				var user = new ApplicationUser() { UserName = model.Email, Email = model.Email };
 
-            return Ok();
+				IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+
+				if (!result.Succeeded)
+				{
+					return GetErrorResult(result);
+				}
+
+				else
+				{
+					string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+					code = System.Web.HttpUtility.UrlEncode(code);
+					var callbackUrl = string.Format("http://localhost:57888/Account/ConfirmEmail?UserId={0}&Code={1}", user.Id, code);
+					await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+				}
+
+				return Ok();
+			}
+			catch
+			{
+				throw;
+			}
         }
 
         // POST api/Account/RegisterExternal
@@ -478,6 +486,7 @@ namespace Services.Controllers
 			}
 		}
 
+		[HttpPost]
 		[AllowAnonymous]
 		public async Task<IHttpActionResult> ConfirmEmail(string userId, string code)
 		{

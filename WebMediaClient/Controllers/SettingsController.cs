@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -20,6 +21,9 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult CreateSetting(int ownerID)
 		{
+			if (Request.UrlReferrer == null)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 			ViewBag.OwnerID = ownerID;
 			return View();
 		}
@@ -29,6 +33,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Setting/CreateSetting?OwnerID={0}", ownerID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -52,6 +59,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Setting/ChangePublicity?SettingID={0}&Publicity={1}", settingID, publicity);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -72,6 +82,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Setting/DeleteSetting?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -91,6 +104,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Setting/GetSettingByID?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -113,6 +129,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Setting/GetSettingByOwnerIDAndType?OwnerID={0}&Type={1}", ownerID, settingType);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -136,6 +155,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Setting/GetSettingByOwnerIDAndType?OwnerID={0}&Type={1}", ownerID, settingType);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -155,6 +177,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Profile/GetPendingFriends?UserID={0}", userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -181,6 +206,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Topic/GetSubscribedTopics?UserID={0}", userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -206,6 +234,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsWithNewComments?UserID={0}", userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -283,6 +314,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Profile/GetLatestFriendsActivity?UserID={0}", userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -310,6 +344,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Profile/GetLatestFriendsActivity?UserID={0}", userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -331,10 +368,14 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		[HttpPut]
 		public ActionResult SuspendUser(int sectionID, int? userID = null)
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				ViewBag.SectionID = sectionID;
 				ViewBag.UserID = userID;
@@ -346,10 +387,14 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		[HttpPut]
 		public ActionResult ChangePosition(int sectionID, int? userID = null)
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				ViewBag.SectionID = sectionID;
 				ViewBag.UserID = userID;

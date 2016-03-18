@@ -46,6 +46,9 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult CreateProfile(int userID)
 		{
+			if (Request.UrlReferrer == null)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 			if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
 				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
@@ -59,6 +62,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
@@ -85,6 +91,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
@@ -108,6 +117,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
@@ -128,6 +140,9 @@ namespace WebMediaClient.Controllers
 
 		public ActionResult UpdateProfile()
 		{
+			if (Request.UrlReferrer == null)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 			return View();
 		}
@@ -137,6 +152,12 @@ namespace WebMediaClient.Controllers
 		{
             try
             {
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				if (((UserModel)HttpContext.Session["currentUser"]).Username != profileModel.Username)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
                 string url = string.Format("http://localhost:8080/api/Profile/UpdateProfile?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -159,6 +180,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Profile/DeleteProfile?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -200,6 +224,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByID?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -241,6 +268,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Profile/GetProfileByUsername?Username={0}", username);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -358,6 +388,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Profile/GetCommonFriends?UserID={0}&TargetID={1}", userID, targetID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -377,6 +410,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Profile/GetFriendship?UserID={0}&FriendID={1}", userID, friendID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -400,6 +436,12 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != senderID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Profile/CreateMessage?SenderID={0}&ReceiverID={1}", senderID, receiverID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -421,6 +463,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Profile/GetMessages?senderID={0}&receiverID={1}", senderID, receiverID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)

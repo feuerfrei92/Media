@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -71,6 +72,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/CreateSection?ID={0}&ParentID={1}", ID, parentID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -93,6 +97,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/DeleteSection?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -154,11 +161,13 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		[Authorize]
 		public async Task<ActionResult> GetRoot(int sectionID)
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/GetRoot?SectionID={0}", sectionID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -203,6 +212,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}", sectionID, userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -224,6 +236,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/AcceptMembership?SectionID={0}&UserID={1}", sectionID, userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -244,6 +259,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/ChangeVisibilityOfMembership?SectionID={0}&UserID={1}", sectionID, userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -264,6 +282,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}&Role={2}&Suspension={3}", sectionID, userID, role, suspension);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -284,6 +305,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/DeleteMembership?SectionID={0}&UserID={1}", sectionID, userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -303,6 +327,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/GetMembershipsForUser?UserID={0}", userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)

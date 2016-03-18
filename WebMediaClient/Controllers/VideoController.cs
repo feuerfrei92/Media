@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
@@ -47,6 +48,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Video/CreateVideo?UserID={0}", userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -68,6 +72,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Video/DeleteVideo?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -131,6 +138,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Video/UpdateRating?VideoID={0}&Like={1}", videoID, like);
 				string token = "";
 				if (HttpContext.Session["token"] != null)

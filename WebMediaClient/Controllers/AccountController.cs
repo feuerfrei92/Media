@@ -231,13 +231,20 @@ namespace WebMediaClient.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
+		[ValidateInput(false)]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-			string url = string.Format("http://localhost:8080/api/Account/ConfirmEmail?UserId={0}&Code={1}", userId, code);
-			var response = await HttpClientBuilder<HttpResponseMessage>.GetEmptyAsync(url, null);
-			if (response.StatusCode == System.Net.HttpStatusCode.OK)
-				return View("ConfirmEmail");
-			else return View("Error");
+			try 
+			{ 
+				string url = string.Format("http://localhost:8080/api/Account/ConfirmEmail?UserId={0}&Code={1}", userId, code);
+				var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, null);
+				//if(response.StatusCode == System.Net.HttpStatusCode.OK)
+					return View("ConfirmEmail");
+			}
+			catch
+			{ 
+				return View("Error");
+			}
 			//if (userId == null || code == null)
 			//{
 			//	return View("Error");
