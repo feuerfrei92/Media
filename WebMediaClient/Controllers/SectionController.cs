@@ -355,6 +355,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/GetMembership?UserID={0}&SectionID={1}", userID, sectionID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
