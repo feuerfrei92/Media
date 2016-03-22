@@ -16,6 +16,7 @@ namespace WebMediaClient.Converters
 			{
 				ID = userModel.ID,
 				Username = userModel.Username,
+				IsAdmin = userModel.IsAdmin,
 			};
 
 			return viewModel;
@@ -27,6 +28,7 @@ namespace WebMediaClient.Converters
 			{
 				ID = viewModel.ID,
 				Username = viewModel.Username,
+				IsAdmin = viewModel.IsAdmin,
 			};
 
 			return userModel;

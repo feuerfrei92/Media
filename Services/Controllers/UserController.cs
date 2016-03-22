@@ -19,7 +19,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.User, UserModel>> BuildUserModel
 		{
-			get { return u => new UserModel { ID = u.ID, Username = u.Username }; }
+			get { return u => new UserModel { ID = u.ID, Username = u.Username, IsAdmin = u.IsAdmin }; }
 		}
 
 		public UserController()
@@ -69,6 +69,7 @@ namespace Services.Controllers
 			_nest.Users.Update(existingUser);
 
 			user.ID = ID;
+			user.IsAdmin = existingUser.IsAdmin;
 
 			try
 			{
@@ -114,7 +115,7 @@ namespace Services.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public IHttpActionResult CreateUser(UserModel user)
+		public IHttpActionResult CreateUser(UserModel user, bool isAdmin)
 		{
 			if (!(ModelState.IsValid))
 			{
@@ -124,6 +125,7 @@ namespace Services.Controllers
 			var newUser = new User
 			{
 				Username = user.Username,
+				IsAdmin = isAdmin,
 			};
 
 			_nest.Users.Create(newUser);
@@ -138,6 +140,7 @@ namespace Services.Controllers
 			}
 
 			user.ID = newUser.ID;
+			user.IsAdmin = newUser.IsAdmin;
 
 			return Ok(user);
 		}

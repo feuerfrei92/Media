@@ -54,13 +54,79 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				if (data.Role == "Regular" || data.Role == "Admin" || data.Role == "Mod")
-					updateControls(data.Role, id);
+				//if (data.Role == "Regular" || data.Role == "Admin" || data.Role == "Mod")
+				//	updateControls(data.Role, id);
+				var divs = document.getElementsByClassName("col-md-5");
+				var labels = document.getElementsByClassName("label-info");
+				for (i = 0; i < divs.length; i++) {
+					var div = divs[i];
+					var label = labels[i];
+					var userID = parseInt(label.textContent);
+					var manageNode = document.createElement("li");
+					manageNode.setAttribute("id", "account_options");
+					manageNode.setAttribute("class", "dropdown");
+					var actionLinkElement = document.createElement("label");
+					actionLinkElement.setAttribute("class", "label-default dropdown-toggle");
+					actionLinkElement.setAttribute("data-toggle", "dropdown");
+					var manageElem = "Options";
+					actionLinkElement.innerHTML = manageElem;
+					manageNode.appendChild(actionLinkElement);
+					var dropdownMenu = document.createElement("ul");
+					dropdownMenu.setAttribute("class", "dropdown-menu");
+					if (data.role == "Regular" || data.role == "Admin" || data.role == "Mod") {
+						var getComments = document.createElement("li");
+						var getCommentsLink = document.createElement("a");
+						var linkComments = '@Html.ActionLink("View all comments in this section", "GetCommentsByAuthorIDAndSectionID", "Comment", routeValues: new { authorID = -1, sectionID = -2 }, htmlAttributes: new { id = "get_comments_link" })';
+						linkComments = linkComments.replace("-1", userID);
+						linkComments = linkComments.replace("-2", id);
+						getCommentsLink.innerHTML = linkComments;
+						getComments.appendChild(getCommentsLink);
+						dropdownMenu.appendChild(getComments);
+						var getTopics = document.createElement("li");
+						var getTopicsLink = document.createElement("a");
+						var getTopicsElem = '@Html.ActionLink("View all topics in this section", "GetTopicsByAuthorIDAndSectionID", "Topic", routeValues: new { authorID = -1, sectionID = -2 }, htmlAttributes: new { id = "get_topics_link" })';
+						getTopicsElem = getTopicsElem.replace("-1", userID);
+						getTopicsElem = getTopicsElem.replace("-2", id);
+						getTopicsLink.innerHTML = getTopicsElem;
+						getTopics.appendChild(getTopicsLink);
+						dropdownMenu.appendChild(getTopics);
+						var getAllTopics = document.createElement("li");
+						var getAllTopicsLink = document.createElement("a");
+						var getAllTopicsElem = '@Html.ActionLink("View all topics", "GetTopicsByAuthorID", "Topic", routeValues: new { authorID = -1 }, htmlAttributes: new { id = "get_all_topics_link" })';
+						getAllTopicsElem = getAllTopicsElem.replace("-1", userID);
+						getAllTopicsLink.innerHTML = getAllTopicsElem;
+						getAllTopics.appendChild(getAllTopicsLink);
+						dropdownMenu.appendChild(getAllTopics);
+					}
+					if (data.role == "Admin" || data.role == "Mod") {
+						var suspendUser = document.createElement("li");
+						var suspendUserLink = document.createElement("a");
+						var suspendElem = '@Html.ActionLink("Suspend user", "SuspendUser", "Settings", routeValues: new { userID = -1, sectionID = -2 }, htmlAttributes: new { id = "suspend_user_link" })';
+						suspendElem = suspendElem.replace("-1", userID);
+						suspendElem = suspendElem.replace("-2", id);
+						suspendUserLink.innerHTML = suspendElem;
+						suspendUser.appendChild(suspendUserLink);
+						dropdownMenu.appendChild(suspendUser);
+					}
+					if (data.role == "Admin") {
+						var promoteUser = document.createElement("li");
+						var promoteUserLink = document.createElement("a");
+						var promoteElem = '@Html.ActionLink("Change position", "ChangePosition", "Settings", routeValues: new { userID = -1, sectionID = -2 }, htmlAttributes: new { id = "change_position_link" })';
+						promoteElem = promoteElem.replace("-1", userID);
+						promoteElem = promoteElem.replace("-2", id);
+						promoteUserLink.innerHTML = promoteElem;
+						promoteUser.appendChild(promoteUserLink);
+						dropdownMenu.appendChild(promoteUser);
+					}
+					manageNode.appendChild(actionLinkElement);
+					manageNode.appendChild(dropdownMenu);
+					div.appendChild(manageNode);
+				}
 			}
 		})
 	}
 
-	function updateControls(role, id) {
+	@*function updateControls(role, id) {
 		var divs = document.getElementsByClassName("col-md-5");
 		var labels = document.getElementsByClassName("label-info");
 		for (i = 0; i < divs.length; i++) {
@@ -127,7 +193,7 @@
 			manageNode.appendChild(dropdownMenu);
 			div.appendChild(manageNode);
 		}
-	}
+	}*@
 </script>
 
 <script src="~/ckeditor/ckeditor.js"></script>
@@ -166,7 +232,7 @@
 	Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
 	@Html.PagedListPager(Model, page => Url.Action("GetCommentsByTopicID", 
-	new { page, topicID = @ViewBag.TopicID }))
+	new { topicID = @ViewBag.TopicID, page }))
 </div>
 
 

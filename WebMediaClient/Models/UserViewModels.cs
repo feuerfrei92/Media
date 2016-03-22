@@ -13,5 +13,6 @@ namespace WebMediaClient.Models
 		[Required]
 		[RegularExpression("^[a-zA-Z0-9_-]*$")]
 		public string Username { get; set; }
+		public bool IsAdmin { get; set; }
 	}
 }

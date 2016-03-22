@@ -39,16 +39,41 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				checkInterestPublicity(true);
+				$.ajax
+				({
+					url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Interest.ToString() }))',
+					dataType: 'json',
+					type: 'GET',
+					success: function (result) {
+						var link = '@Url.Action("GetTopicForInterest", "Topic", new { interestID = @Model.ID })';
+						$("#interest_topic").load(link, function () { updateVisit(); });
+					}
+				})
+				//checkInterestPublicity(true);
 			},
 			error: function (xhr) {
 				if (xhr.status == 404)
-					checkInterestPublicity(false);
+				{
+					$.ajax
+					({
+						url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Interest.ToString() }))',
+						dataType: 'json',
+						type: 'GET',
+						success: function (result) {
+							if (result.Publicity == "Everyone")
+							{
+								var link = '@Url.Action("GetTopicForInterest", "Topic", new { interestID = @Model.ID })';
+								$("#interest_topic").load(link, function () { updateVisit(); });
+							}
+						}
+					})
+				}
+				//checkInterestPublicity(false);
 			}
 		})
 	}
 
-	function checkInterestPublicity(isFollower) {
+	@*function checkInterestPublicity(isFollower) {
 		$.ajax
 		({
 			url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Interest.ToString() }))',
@@ -67,7 +92,7 @@
 				}
 			}
 		})
-	}
+	}*@
 </script>
 
 <div class="row">

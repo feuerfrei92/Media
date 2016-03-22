@@ -40,6 +40,8 @@
 		$.connection.hub.start().done(function () {
 			$('#send_message').click(function () {
 				var text = CKEDITOR.instances.message_text.getData();
+				text = text.replace(new RegExp('&lt;', 'g'), '<');
+				text = text.replace(new RegExp('&gt;', 'g'), '>');
 				chat.server.send(text);
 				$.ajax
 				({

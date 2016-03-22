@@ -6,6 +6,8 @@
 <h2>ChangePosition</h2>
 
 <script type="text/javascript">
+	window.addEventListener("load", function () { getRoot() }, false);
+
 	$(function () {
 		var userID = '@ViewBag.UserID';
 		if (userID == null) {

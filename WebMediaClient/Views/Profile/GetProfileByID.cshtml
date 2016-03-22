@@ -51,7 +51,8 @@
 			type: 'GET',
 			success: function (data) {
 				$('#add_friend').prop('disabled', true);
-				checkPublicity(true, true);
+				var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+				$("#profile_topic").load(link, function () { updateVisit(); });
 			},
 			error: function(xhr){
 				if(xhr.status == 404)
@@ -101,41 +102,69 @@
 			type: 'GET',
 			success: function (data) {
 				if (data.Count > 0)
-					checkPublicity(false, true);
-				else
-					checkPublicity(false, false);
+				{
+					$.ajax
+					({
+						url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Profile.ToString() }))',
+						dataType: 'json',
+						type: 'GET',
+						success: function (result) {
+							if (result.Publicity == "Everyone" || result.Publicity == "FriendsOfFriends") {
+								link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+								$("#profile_topic").load(link, function () { updateVisit(); });
+							}
+						}
+					})
+				}
+					//checkPublicity(false, true);
+				else {
+					$.ajax
+					({
+						url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Profile.ToString() }))',
+						dataType: 'json',
+						type: 'GET',
+						success: function (result) {
+							if (result.Publicity == "Everyone")
+							{
+								 link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+								$("#profile_topic").load(link, function () { updateVisit(); });
+							}
+						}
+					})
+					//checkPublicity(false, false);
+				}
 			}
 		})
 	}
 
-	function checkPublicity(isFriend, hasCommonFriends) {
+	@*function checkPublicity(isFriend, hasCommonFriends) {
 		$.ajax
 		({
 			url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Profile.ToString() }))',
-			dataType: 'json',
-			type: 'GET',
-			success: function (data) {
-				if(data.Publicity == "Everyone")
-				{
-					var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
-					$("#profile_topic").load(link, function () { updateVisit(); });
-				}
-				if (data.Publicity == "Friends") {
-					if (isFriend)
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					if(data.Publicity == "Everyone")
 					{
 						var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
 						$("#profile_topic").load(link, function () { updateVisit(); });
 					}
-				}
-				if (data.Publicity == "FriendsOfFriends") {
-					if (hasCommonFriends) {
-						var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
-						$("#profile_topic").load(link, function () { updateVisit(); });
+					if (data.Publicity == "Friends") {
+						if (isFriend)
+						{
+							var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+							$("#profile_topic").load(link, function () { updateVisit(); });
+						}
+					}
+					if (data.Publicity == "FriendsOfFriends") {
+						if (hasCommonFriends) {
+							var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+							$("#profile_topic").load(link, function () { updateVisit(); });
+						}
 					}
 				}
-			}
-		})
-	}
+			})
+		}*@
 </script>
 
 <div class="row">

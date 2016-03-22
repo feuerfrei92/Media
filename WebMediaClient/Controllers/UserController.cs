@@ -58,7 +58,7 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
-				return Json(new { ID = user.ID, Username = user.Username }, JsonRequestBehavior.AllowGet);
+				return Json(new { ID = user.ID, Username = user.Username, IsAdmin = user.IsAdmin }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{

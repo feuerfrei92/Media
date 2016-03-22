@@ -78,7 +78,42 @@
 						var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 						$("#suspend_user").html(link1);
 					}
-					checkPublicity(data.Role);
+
+					$.ajax
+					({
+						url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Section.ToString() }))',
+						dataType: 'json',
+						type: 'GET',
+						success: function (result) {
+							if (result.Publicity == "Everyone")
+							{
+								var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+								var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
+								$("#sections_container").load(link1);
+								$("#topics_container").load(link2);
+							}
+							if (result.Publicity == "Registered")
+							{
+								if (data.role == "Regular" || data.role == "Mod" || data.role == "Admin")
+								{
+									var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+									var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
+									$("#sections_container").load(link1);
+									$("#topics_container").load(link2);
+								}
+							}
+							if (result.Publicity == "Admins")
+							{
+								if (data.role == "Mod" || data.role == "Admin")
+								{
+									var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+									var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
+									$("#sections_container").load(link1);
+									$("#topics_container").load(link2);
+								}
+							}
+						}
+					})
 				}
 			})
 		}
@@ -132,17 +167,45 @@
 					var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 					$("#suspend_user").html(link1);
 				}
-				checkPublicity(data.Role);
+				//checkPublicity(data.Role);
+				$.ajax
+					({
+						url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Section.ToString() }))',
+						dataType: 'json',
+						type: 'GET',
+						success: function (result) {
+							if (result.Publicity == "Everyone") {
+								var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+								var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
+								$("#sections_container").load(link1);
+								$("#topics_container").load(link2);
+							}
+							if (result.Publicity == "Registered") {
+								if (data.role == "Regular" || data.role == "Mod" || data.role == "Admin") {
+									var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+									var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
+									$("#sections_container").load(link1);
+									$("#topics_container").load(link2);
+								}
+							}
+							if (result.Publicity == "Admins") {
+								if (data.role == "Mod" || data.role == "Admin") {
+									var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+									var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
+									$("#sections_container").load(link1);
+									$("#topics_container").load(link2);
+								}
+							}
+						}
+					})
 			}
 		})
 	}
 
-	function checkPublicity(role) {
-		var token = '@HttpContext.Current.Session["token"].ToString()';
+	@*function checkPublicity(role) {
 		$.ajax
 		({
 			url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Section.ToString() }))',
-			data: { token: token },
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
@@ -172,7 +235,7 @@
 				}
 			}
 		})
-	}
+	}*@
 
 	function applyForMember() {
 		$.ajax

@@ -361,7 +361,7 @@ namespace Services.Controllers
 				else
 				{
 					string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-					code = System.Web.HttpUtility.UrlEncode(code);
+					code = HttpUtility.UrlEncode(code);
 					var callbackUrl = string.Format("http://localhost:57888/Account/ConfirmEmail?UserId={0}&Code={1}", user.Id, code);
 					await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 				}
@@ -494,13 +494,15 @@ namespace Services.Controllers
 			{
 				return BadRequest("User ID or code is null");
 			}
+			code = HttpUtility.UrlDecode(code);
 			var result = await UserManager.ConfirmEmailAsync(userId, code);
 			if (result.Succeeded)
 			{
 				var userController = new UserController();
 				var user = UserManager.FindById(userId);
+				bool isAdmin = UserManager.IsInRole(userId, "Admin");
 				var ourUser = new UserModel { Username = user.UserName };
-				userController.CreateUser(ourUser);
+				userController.CreateUser(ourUser, isAdmin);
 				await UserManager.AddToRoleAsync(userId, "Regular");
 				return Ok();
 			}

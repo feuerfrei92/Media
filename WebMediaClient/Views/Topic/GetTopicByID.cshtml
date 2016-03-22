@@ -88,12 +88,41 @@
 					var link1 = '@Html.ActionLink("Update topic settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Topic.ToString() }, new { id = "topic_setting" })';
 					$("#update_settings").html(link1);
 				}
-				checkPublicity(data.Role);
+				
+				$.ajax
+				({
+					url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Topic.ToString() }))',
+					dataType: 'json',
+					type: 'GET',
+					success: function (result) {
+						if (result.Publicity == "Everyone")
+						{
+							var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+							$("#comments").load(link, function () { setIDs(); });
+						}
+						if (result.Publicity == "Registered")
+						{
+							if (data.role == "Regular" || data.role == "Mod" || data.role == "Admin")
+							{
+								var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+								$("#comments").load(link, function () { setIDs(); });
+							}	
+						}
+						if (result.Publicity == "Admins")
+						{
+							if (data.role == "Mod" || data.role == "Admin")
+							{
+								var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+								$("#comments").load(link, function () { setIDs(); });
+							}
+						}
+					}
+				})
 			}
 		})
 	}
 
-	function checkPublicity(role)
+	@*function checkPublicity(role)
 	{
 		$.ajax
 		({
@@ -124,7 +153,7 @@
 				}
 			}
 		})
-	}
+	}*@
 
 	@*function getUsername() {
 		var token = getToken();
@@ -147,6 +176,8 @@
 		//var hiddenID = document.getElementById("store_id");
 		//var id = hiddenID.value;
 		var text = CKEDITOR.instances.comment_text.getData();
+		text = text.replace(new RegExp('&lt;', 'g'), '<');
+		text = text.replace(new RegExp('&gt;', 'g'), '>');
 		var link = '@Html.Raw(@Url.Action("CreateComment", "Comment", new { topicID = @Model.ID, authorID = @ViewBag.User.ID }))';
 		//link = link.replace("-1", id);
 		$.ajax
