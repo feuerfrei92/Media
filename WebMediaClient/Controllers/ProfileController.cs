@@ -463,9 +463,6 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
-				if (!Request.IsAjaxRequest())
-					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
-
 				string url = string.Format("http://localhost:8080/api/Profile/GetMessages?senderID={0}&receiverID={1}", senderID, receiverID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)

@@ -36,6 +36,7 @@
 			var link = '@Url.Action("GetUserByID", "User", new { ID = @ViewBag.User.ID })';
 			$("#messages_container").append("<div class=&quot;row&quot;><div class=&quot;col-md-4&quot;>" + link + "</div><div class=&quot;col-md-4&quot;><textarea id=&quot;textarea_" + $("message_number").val() + "&quot; class=&quot;form-control&quot; rows=&quot;5&quot; cols=&quot;25&quot;>" + message + "</textarea></div></div>");
 		}
+		setIDs();
 		$("#message_text").focus();
 		$.connection.hub.start().done(function () {
 			$('#send_message').click(function () {

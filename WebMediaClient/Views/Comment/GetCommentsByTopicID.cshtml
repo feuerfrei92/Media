@@ -18,6 +18,45 @@
 		getTopic();
 	}
 
+	function replaceTexts()
+	{
+		var textAreas = document.getElementsByTagName("textarea");
+		for (i = 0; i < textAreas.length; i++) {
+			var textArea = textAreas[i];
+			if (textArea.id != "comment_text") {
+				textArea.setAttribute("id", "textarea" + "_" + i.toString());
+				CKEDITOR.replace("textarea" + "_" + i.toString(), { customConfig: "/Scripts/Myconfig.js", readOnly: true });
+			}
+		}
+
+		var divs5 = document.getElementsByClassName("col-md-5");
+		var divs3 = document.getElementsByClassName("col-md-3");
+		var labels = document.getElementsByClassName("label-info");
+		var primaries = document.getElementsByClassName("label-primary");
+		for (i = 0; i < divs5.length; i++) {
+			var div5 = divs5[i];
+			var div3 = divs3[i];
+			var label = labels[i];
+			var primary = primaries[i];
+			var userID = parseInt(label.textContent);
+			var commentID = parseInt(primary.textContent);
+			var manageNode = document.createElement("li");
+			manageNode.setAttribute("id", "account_options");
+			manageNode.setAttribute("class", "dropdown");
+			var actionLinkElement = document.createElement("label");
+			actionLinkElement.setAttribute("class", "label-default dropdown-toggle");
+			actionLinkElement.setAttribute("data-toggle", "dropdown");
+			var manageElem = "Options";
+			actionLinkElement.innerHTML = manageElem;
+			manageNode.appendChild(actionLinkElement);
+			var dropdownMenu = document.createElement("ul");
+			dropdownMenu.setAttribute("class", "dropdown-menu");
+			manageNode.appendChild(actionLinkElement);
+			manageNode.appendChild(dropdownMenu);
+			div5.appendChild(manageNode);
+		}
+	}
+
 	function getTopic() {
 		$.ajax
 		({
@@ -56,12 +95,17 @@
 			success: function (data) {
 				//if (data.Role == "Regular" || data.Role == "Admin" || data.Role == "Mod")
 				//	updateControls(data.Role, id);
-				var divs = document.getElementsByClassName("col-md-5");
+				var divs5 = document.getElementsByClassName("col-md-5");
+				var divs3 = document.getElementsByClassName("col-md-3");
 				var labels = document.getElementsByClassName("label-info");
-				for (i = 0; i < divs.length; i++) {
-					var div = divs[i];
+				var primaries = document.getElementsByClassName("label-primary");
+				for (i = 0; i < divs5.length; i++) {
+					var div5 = divs5[i];
+					var div3 = divs3[i];
 					var label = labels[i];
+					var primary = primaries[i];
 					var userID = parseInt(label.textContent);
+					var commentID = parseInt(primary.textContent);
 					var manageNode = document.createElement("li");
 					manageNode.setAttribute("id", "account_options");
 					manageNode.setAttribute("class", "dropdown");
@@ -73,7 +117,20 @@
 					manageNode.appendChild(actionLinkElement);
 					var dropdownMenu = document.createElement("ul");
 					dropdownMenu.setAttribute("class", "dropdown-menu");
-					if (data.role == "Regular" || data.role == "Admin" || data.role == "Mod") {
+					if (data.Role == "Regular" || data.Role == "Admin" || data.Role == "Mod") {
+						if(data.Role == "Regular")
+						{
+							var currentID = '@ViewBag.User.ID';
+							if(userID == currentID)
+							{
+								var buttonEdit = document.createElement("button");
+								var topicID = '@ViewBag.TopicID';
+								buttonEdit.setAttribute("class", "btn btn-default");
+								buttonEdit.setAttribute("onclick", function () { updateComment(commentID, topicID) });
+								buttonEdit.innerHTML = "Edit";
+								div3.appendChild(buttonEdit);
+							}
+						}
 						var getComments = document.createElement("li");
 						var getCommentsLink = document.createElement("a");
 						var linkComments = '@Html.ActionLink("View all comments in this section", "GetCommentsByAuthorIDAndSectionID", "Comment", routeValues: new { authorID = -1, sectionID = -2 }, htmlAttributes: new { id = "get_comments_link" })';
@@ -98,7 +155,7 @@
 						getAllTopics.appendChild(getAllTopicsLink);
 						dropdownMenu.appendChild(getAllTopics);
 					}
-					if (data.role == "Admin" || data.role == "Mod") {
+					if (data.Role == "Admin" || data.Role == "Mod") {
 						var suspendUser = document.createElement("li");
 						var suspendUserLink = document.createElement("a");
 						var suspendElem = '@Html.ActionLink("Suspend user", "SuspendUser", "Settings", routeValues: new { userID = -1, sectionID = -2 }, htmlAttributes: new { id = "suspend_user_link" })';
@@ -107,8 +164,13 @@
 						suspendUserLink.innerHTML = suspendElem;
 						suspendUser.appendChild(suspendUserLink);
 						dropdownMenu.appendChild(suspendUser);
+						var buttonEdit = document.createElement("button");
+						var topicID = '@ViewBag.TopicID';
+						buttonEdit.setAttribute("class", "btn btn-default");
+						buttonEdit.setAttribute("onclick", function () { updateComment(commentID, topicID) });
+						div3.appendChild(buttonEdit);
 					}
-					if (data.role == "Admin") {
+					if (data.Role == "Admin") {
 						var promoteUser = document.createElement("li");
 						var promoteUserLink = document.createElement("a");
 						var promoteElem = '@Html.ActionLink("Change position", "ChangePosition", "Settings", routeValues: new { userID = -1, sectionID = -2 }, htmlAttributes: new { id = "change_position_link" })';
@@ -120,10 +182,15 @@
 					}
 					manageNode.appendChild(actionLinkElement);
 					manageNode.appendChild(dropdownMenu);
-					div.appendChild(manageNode);
+					div5.appendChild(manageNode);
 				}
 			}
 		})
+	}
+
+	function updateComment(id, topicID, name, text)
+	{
+
 	}
 
 	@*function updateControls(role, id) {
@@ -206,16 +273,21 @@
 				<div class="row">
 					<div class="col-md-5">
 						@Html.Action("GetUserByID", "User", new { ID = item.AuthorID });
+						<label class="label-primary" hidden="hidden">@item.ID</label>
 						<label class="label-info" hidden="hidden">@item.AuthorID</label>
 					</div>
 					<div class="col-md-4">
 						@if(item.Name != null)
 						{
-							@Html.TextBoxFor(i => item.Name, new { @class = "form-control" })
+							@Html.TextBoxFor(i => item.Name, new { @class = "form-control input-lg" })
 						}
 					</div>
 					<div class="col-md-4">
 						@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
 					</div>
 				</div>
 			}
@@ -231,8 +303,8 @@
 <div class="row">
 	Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-	@Html.PagedListPager(Model, page => Url.Action("GetCommentsByTopicID", 
-	new { topicID = @ViewBag.TopicID, page }))
+	@Html.PagedListPager(Model, page => Url.Action("GetCommentsByTopicID",
+	new { topicID = @ViewBag.TopicID, page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "comments", OnSuccess = "replaceTexts" }))
 </div>
 
 

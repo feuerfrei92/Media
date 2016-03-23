@@ -187,6 +187,7 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
+				ViewBag.SectionID = sectionID;
 
 				if (page == null)
 					return View(viewModels.ToPagedList(1, 20));
@@ -215,6 +216,8 @@ namespace WebMediaClient.Controllers
 				{
 					viewModels.Add(TopicConverter.FromBasicToVisual(t));
 				}
+				ViewBag.AuthorID = authorID;
+				ViewBag.SectionID = sectionID;
 
 				if (page == null)
 					return View(viewModels.ToPagedList(1, 20));
@@ -293,6 +296,7 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
+				ViewBag.AuthorID = authorID;
 
 				if (page == null)
 					return View(viewModels.ToPagedList(1, 20));

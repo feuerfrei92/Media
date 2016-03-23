@@ -25,7 +25,7 @@
 		{
 			$('#add_friend').prop('disabled', true);
 			var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
-			$("#profile_topic").load(link, function () { updateVisit(); });
+			$("#profile_topic").load(link, function () { updateVisit(); setIDs(); });
 		}
 		else
 		{
@@ -52,7 +52,7 @@
 			success: function (data) {
 				$('#add_friend').prop('disabled', true);
 				var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
-				$("#profile_topic").load(link, function () { updateVisit(); });
+				$("#profile_topic").load(link, function () { updateVisit(); setIDs(); });
 			},
 			error: function(xhr){
 				if(xhr.status == 404)

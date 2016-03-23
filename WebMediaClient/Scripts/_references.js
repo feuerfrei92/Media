@@ -243,3 +243,4 @@
 /// <reference path="../ckeditor/plugins/youtube/lang/vi.js" />
 /// <reference path="../ckeditor/plugins/youtube/lang/zh.js" />
 /// <reference path="jquery.signalr-2.2.0.min.js" />
+/// <reference path="jquery.unobtrusive-ajax.min.js" />

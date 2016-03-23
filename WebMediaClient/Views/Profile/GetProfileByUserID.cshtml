@@ -116,7 +116,7 @@
 						success: function (result) {
 							if (result.Publicity == "Everyone" || result.Publicity == "FriendsOfFriends") {
 								link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
-								$("#profile_topic").load(link, function () { updateVisit(); });
+								$("#profile_topic").load(link, function () { updateVisit(); setIDs(); });
 							}
 						}
 					})

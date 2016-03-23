@@ -1,4 +1,5 @@
-﻿@model List<WebMediaClient.Models.TopicViewModel>
+﻿@model PagedList.IPagedList<WebMediaClient.Models.TopicViewModel>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "GetTopicsByAuthorIDAndSectionID";
@@ -19,4 +20,9 @@
 		</div>
 	</div>
 </div>
+<div class="row">
+	Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
+	@Html.PagedListPager(Model, page => Url.Action("GetCommentsByTopicID",
+	new { authorID = @ViewBag.AuthorID, sectionID = @ViewBag.SectionID, page }))
+</div>

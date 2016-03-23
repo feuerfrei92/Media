@@ -1,4 +1,5 @@
-﻿@model List<WebMediaClient.Models.CommentViewModel>
+﻿@model PagedList.IPagedList<WebMediaClient.Models.CommentViewModel>
+@using PagedList.Mvc;
 
 @{
     ViewBag.Title = "GetCommentsByAuthorIDAndSectionID";
@@ -50,5 +51,11 @@
 			}
 		</div>
 	</div>
+</div>
+<div class="row">
+	Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+	@Html.PagedListPager(Model, page => Url.Action("GetCommentsByAuthorIDAndSectionID",
+	new { authorID = @ViewBag.AuthorID, sectionID = @ViewBag.SectionID, page }))
 </div>
 
