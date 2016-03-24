@@ -190,7 +190,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
-		[Authorize]
+		//[Authorize]
 		public IHttpActionResult SearchBySectionName(string name)
 		{
 			List<SectionModel> sections = _nest.Sections.All().Where(s => s.Name.Contains(name)).Select(BuildSectionModel).ToList();

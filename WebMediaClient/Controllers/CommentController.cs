@@ -71,6 +71,13 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult UpdateComment(int ID, int topicID)
+		{
+			ViewBag.ID = ID;
+			ViewBag.TopicID = topicID;
+			return View();
+		}
+
 		[HttpPut]
 		public async Task<ActionResult> UpdateComment(int ID, int topicID, CommentViewModel commentModel)
 		{
@@ -88,7 +95,7 @@ namespace WebMediaClient.Controllers
 				var comment = CommentConverter.FromVisualToBasic(commentModel);
 				var updatedComment = await HttpClientBuilder<CommentModel>.PutAsync(comment, url, token);
 				var viewModel = CommentConverter.FromBasicToVisual(updatedComment);
-				return View(viewModel);
+				return Redirect(Request.UrlReferrer.ToString());
 			}
 			catch (Exception ex)
 			{
@@ -130,12 +137,11 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var comment = await HttpClientBuilder<CommentModel>.GetAsync(url, token);
-                var viewModel = CommentConverter.FromBasicToVisual(comment);
-				return View();
+				return Json(new { ID = comment.ID, Name = comment.Name, Text = comment.Text, DateCreated = comment.DateCreated, AuthorID = comment.AuthorID, TopicID = comment.TopicID }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 
@@ -225,11 +231,13 @@ namespace WebMediaClient.Controllers
 				{
 					viewModels.Add(CommentConverter.FromBasicToVisual(c));
 				}
+				ViewBag.AuthorID = authorID;
+				ViewBag.SectionID = sectionID;
 
 				if (page == null)
-					return View(viewModels.ToPagedList(1, 15));
+					return View(viewModels.ToPagedList(1, 5));
 				else
-					return View(viewModels.ToPagedList(page.Value, 15));
+					return View(viewModels.ToPagedList(page.Value, 5));
 			}
 			catch (Exception ex)
 			{

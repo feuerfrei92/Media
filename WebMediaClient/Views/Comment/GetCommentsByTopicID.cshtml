@@ -1,5 +1,4 @@
-﻿@*@model List<WebMediaClient.Models.CommentViewModel>*@
-@model PagedList.IPagedList<WebMediaClient.Models.CommentViewModel>
+﻿@model PagedList.IPagedList<WebMediaClient.Models.CommentViewModel>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
@@ -126,7 +125,7 @@
 								var buttonEdit = document.createElement("button");
 								var topicID = '@ViewBag.TopicID';
 								buttonEdit.setAttribute("class", "btn btn-default");
-								buttonEdit.setAttribute("onclick", function () { updateComment(commentID, topicID) });
+								buttonEdit.setAttribute("onclick", "updateComment(\"" + commentID + "\", \"" + topicID + "\", \"" + userID + "\")");
 								buttonEdit.innerHTML = "Edit";
 								div3.appendChild(buttonEdit);
 							}
@@ -167,7 +166,7 @@
 						var buttonEdit = document.createElement("button");
 						var topicID = '@ViewBag.TopicID';
 						buttonEdit.setAttribute("class", "btn btn-default");
-						buttonEdit.setAttribute("onclick", function () { updateComment(commentID, topicID) });
+						buttonEdit.setAttribute("onclick", "updateComment(\"" + commentID + "\", \"" + topicID + "\", \"" + userID + "\")");
 						div3.appendChild(buttonEdit);
 					}
 					if (data.Role == "Admin") {
@@ -188,9 +187,18 @@
 		})
 	}
 
-	function updateComment(id, topicID, name, text)
+	function updateComment(id, topicID, userID)
 	{
-
+		var currentUserID = '@ViewBag.User.ID';
+		if (userID != currentUserID)
+			alert("Don't even try it!");
+		else
+		{
+			var link = '@Html.Raw(Url.Action("UpdateComment", "Comment", new { ID = -1, TopicID = -2 }))';
+			link = link.replace("-1", id);
+			link = link.replace("-2", topicID);
+			window.location.href = link;
+		}
 	}
 
 	@*function updateControls(role, id) {
@@ -303,8 +311,10 @@
 <div class="row">
 	Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-	@Html.PagedListPager(Model, page => Url.Action("GetCommentsByTopicID",
-	new { topicID = @ViewBag.TopicID, page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "comments", OnSuccess = "replaceTexts" }))
+	@*@Html.PagedListPager(Model, page => Url.Action("GetCommentsByTopicID",
+	new { topicID = @ViewBag.TopicID, page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "comments", OnSuccess = "replaceTexts" }))*@
+	@Html.PagedListPager(Model, page => Url.Action("GetTopicByID", "Topic",
+	new { ID = @ViewBag.TopicID, page }))
 </div>
 
 

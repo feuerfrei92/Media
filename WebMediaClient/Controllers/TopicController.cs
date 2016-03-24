@@ -127,7 +127,7 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetTopicByID(int ID)
+		public async Task<ActionResult> GetTopicByID(int ID, int? page = null)
 		{
 			try
 			{
@@ -140,6 +140,7 @@ namespace WebMediaClient.Controllers
 				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
                 var viewModel = TopicConverter.FromBasicToVisual(topic);
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				ViewBag.Page = page;
 				return View(viewModel);
 			}
 			catch (Exception ex)

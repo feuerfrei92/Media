@@ -1,2 +1,73 @@
 ﻿@model WebMediaClient.Models.CommentViewModel
 
+@{
+    ViewBag.Title = "UpdateComment";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>UpdateComment</h2>
+
+<script type="text/javascript">
+	window.addEventListener("load", function () { loadValues() }, false);
+
+	function loadValues() {
+		var link = '@Url.Action("GetCommentByID", "Comment", new { ID = @ViewBag.ID })';
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				var nameText = document.getElementById("name_text");
+				nameText.value = data.Name;
+				CKEDITOR.instances.comment_text.setData(data.Text);
+			}
+		})
+	}
+
+	function updateComment() {
+		var nameText = document.getElementById("name_text");
+		var name = nameText.value;
+		var commentText = CKEDITOR.instances.comment_text.getData();
+		var link = '@Html.Raw(Url.Action("UpdateComment", "Comment", new { ID = @ViewBag.ID, TopicID = @ViewBag.TopicID }))';
+		$.ajax
+		({
+			url: link,
+			data:
+			{
+				name: name,
+				text: commentText,
+				datecreated: Date.now()
+			},
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) { }
+		})
+	}
+</script>
+
+<script src="~/ckeditor/ckeditor.js"></script>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			<div class="col-md-4">
+				<input id="name_text" class="input-group-lg" required="required" />
+			</div>
+		</div>
+		<div class="list-group">
+			<div class="col-md-4">
+				<textarea id="comment_text" class="form-control" rows="5" cols="25" />
+			</div>
+		</div>
+		<div class="list-group">
+			<button id="submit" class="formbutton" onclick="updateComment()">Edit comment</button>
+		</div>
+	</div>
+</div>
+<script>
+	CKEDITOR.replace("comment_text");
+</script>
+
+
+

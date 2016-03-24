@@ -44,13 +44,21 @@ namespace WebMediaClient.Controllers
 				string token = HttpContext.Session["token"].ToString();
 				string url = "http://localhost:8080/api/User/GetCurrentUser";
 				UserModel user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
-				ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", user.Username);
-				HttpContext.Session.Add("currentUser", user);
-				if (HttpRuntime.Cache["LoggedInUsers"] != null)
+				if (user != null)
 				{
-					List<UserModel> loggedInUsers = (List<UserModel>)HttpRuntime.Cache["LoggedInUsers"];
-					loggedInUsers.Add(user);
-					HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
+					ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", user.Username);
+					HttpContext.Session.Add("currentUser", user);
+					if (HttpRuntime.Cache["LoggedInUsers"] != null)
+					{
+						List<UserModel> loggedInUsers = (List<UserModel>)HttpRuntime.Cache["LoggedInUsers"];
+						loggedInUsers.Add(user);
+						HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
+					}
+				}
+				else
+				{
+					ViewBag.Message = "Unvalidated user _|_";
+					HttpContext.Session.Remove("token");
 				}
 				return View();
 			}

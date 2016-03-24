@@ -216,7 +216,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "GetProfileByID");
+				return View("Error", info);
 			}
 		}
 

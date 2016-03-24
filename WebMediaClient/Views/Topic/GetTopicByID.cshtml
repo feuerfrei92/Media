@@ -97,14 +97,14 @@
 					success: function (result) {
 						if (result.Publicity == "Everyone")
 						{
-							var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+							var link = '@Html.Raw(Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page }))';
 							$("#comments").load(link, function () { setIDs(); });
 						}
 						if (result.Publicity == "Registered")
 						{
 							if (data.role == "Regular" || data.role == "Mod" || data.role == "Admin")
 							{
-								var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+								var link = '@Html.Raw(Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page }))';
 								$("#comments").load(link, function () { setIDs(); });
 							}	
 						}
@@ -112,7 +112,7 @@
 						{
 							if (data.role == "Mod" || data.role == "Admin")
 							{
-								var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+								var link = '@Html.Raw(Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page }))';
 								$("#comments").load(link, function () { setIDs(); });
 							}
 						}

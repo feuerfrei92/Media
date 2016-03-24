@@ -47,41 +47,48 @@
 	}
 
 	function compareUsername() {
-		var profileList = document.getElementById("add_friend");
-		var buttons = document.getElementsByClassName("button");
-		for (var i = 0; i < buttons.length; i++) {
-			var item = buttons[i];
-			if (item.id == "@ViewBag.User.Username" || item.id == null)
-				profileList.removeChild(item);
-			else {
-				var link = '@Url.Action("GetUserByUsername", "User", new { Username = "oooo" })';
-				link = link.replace("oooo", item.id);
-				$.ajax
-				({
-					url: link,
-					dataType: 'json',
-					type: 'GET',
-					success: function (data) {
-						profileList.removeChild(item);
-						//checkIfFriend(data.ID, item);
-					}
-				})
+		var user = '@Html.Raw(Json.Encode(ViewBag.User))';
+		if (user != null) {
+			var profileList = document.getElementById("add_friend");
+			var buttons = document.getElementsByClassName("button");
+			for (var i = 0; i < buttons.length; i++) {
+				var item = buttons[i];
+				if (item.id == user.Username || item.id == null)
+					profileList.removeChild(item);
+				else {
+					var link = '@Url.Action("GetUserByUsername", "User", new { Username = "oooo" })';
+					link = link.replace("oooo", item.id);
+					$.ajax
+					({
+						url: link,
+						dataType: 'json',
+						type: 'GET',
+						success: function (data) {
+							//profileList.removeChild(item);
+							checkIfFriend(data.ID, item);
+						}
+					})
+				}
 			}
 		}
 	}
 
 	function checkIfFriend(id, button) {
-		var link = '@Html.Raw(Url.Action("GetFriendship", "Profile", new { userID = @ViewBag.User.ID, friendID = -1 }))';
-		link = link.replace("-1", id);
-		$.ajax
-		({
-			url: link,
-			dataType: 'json',
-			type: 'GET',
-			success: function (data) {
-				button.disabled = true;
-			}
-		})
+		var user = '@Html.Raw(Json.Encode(ViewBag.User))';
+		if (user != null) {
+			var link = '@Html.Raw(Url.Action("GetFriendship", "Profile", new { userID = -1, friendID = -2 }))';
+			link = link.replace("-1", user.ID);
+			link = link.replace("-2", id);
+			$.ajax
+			({
+				url: link,
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					button.disabled = true;
+				}
+			})
+		}
 	}
 
 	function getFriendID(username) {
@@ -100,19 +107,24 @@
 	}
 
 	function addFriend(id) {
-		var link = '@Html.Raw(@Url.Action("AddFriend", "Profile", new { UserID = @ViewBag.User.ID, FriendID = -1 }))';
-		link = link.replace("-1", id);
-		$.ajax
-		({
-			url: link,
-			dataType: 'json',
-			type: 'POST',
-			success: function (data) {
-				//var button = document.getElementById('button' + text2);
-				//if(data.Response == "OK")
-				//	button.value = "Request sent";
-			}
-		})
+		var user = '@Html.Raw(Json.Encode(ViewBag.User))';
+		if (user != null)
+		{
+			var link = '@Html.Raw(@Url.Action("AddFriend", "Profile", new { UserID = -1, FriendID = -2 }))';
+			link = link.replace("-1", user.ID);
+			link = link.replace("-2", id);
+			$.ajax
+			({
+				url: link,
+				dataType: 'json',
+				type: 'POST',
+				success: function (data) {
+					//var button = document.getElementById('button' + text2);
+					//if(data.Response == "OK")
+					//	button.value = "Request sent";
+				}
+			})
+		}
 	}
 </script>
 
@@ -127,7 +139,9 @@
 					<div class="col-md-8">
 						<div class="list-group-item">
 							<script type="text/javascript">
-								addButton(@Html.Raw(Json.Encode(item.Username)));
+								var user = '@ViewBag.User';
+								if(user != null)
+									addButton(@Html.Raw(Json.Encode(item.Username)));
 							</script>
 						</div>
 					</div>
