@@ -40,7 +40,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Video", "GetAllVideos");
+				return View("Error", info);
 			}
 		}
 
@@ -64,7 +65,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Video", "CreateVideo");
+				return View("Error", info);
 			}
 		}
 
@@ -86,7 +88,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Video", "DeleteVideo");
+				return View("Error", info);
 			}
 		}
 
@@ -106,7 +109,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Video", "GetVideoByID");
+				return View("Error", info);
 			}
 		}
 
@@ -130,7 +134,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Video", "GetVideosForOwner");
+				return View("Error", info);
 			}
 		}
 

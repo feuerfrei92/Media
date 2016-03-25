@@ -704,10 +704,12 @@
     <Content Include="Views\Settings\ChangePosition.cshtml" />
     <Content Include="Views\Account\ConfirmRegistration.cshtml" />
     <Content Include="Views\Comment\UpdateComment.cshtml" />
+    <Content Include="Views\Video\CreateVideo.cshtml" />
+    <Content Include="Views\Video\GetVideoByID.cshtml" />
+    <Content Include="Views\Video\GetVideosForOwner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Video\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

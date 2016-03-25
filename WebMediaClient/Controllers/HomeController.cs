@@ -64,7 +64,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Home", "SuccessfulLogin");
+				return View("Error", info);
 			}
 		}
 
@@ -89,7 +90,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Home", "LogOff");
+				return View("Error", info);
 			}
 		}
 
@@ -106,7 +108,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Home", "SetUser");
+				return View("Error", info);
 			}
 		}
 	}

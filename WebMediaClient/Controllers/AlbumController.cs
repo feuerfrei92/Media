@@ -41,9 +41,10 @@ namespace WebMediaClient.Controllers
 				}
 				return View();
 			}
-			catch
+			catch (Exception ex)
 			{
-				return RedirectToAction("Error", "Account");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "GetAllAlbums");
+				return View("Error", info);
 			}
 		}
 
@@ -92,7 +93,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "CreateAlbum");
+				return View("Error", info);
 			}
 		}
 
@@ -114,7 +116,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "DeleteAlbum");
+				return View("Error", info);
 			}
 		}
 
@@ -135,7 +138,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "GetAlbumByID");
+				return View("Error", info);
 			}
 		}
 
@@ -160,7 +164,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "GetAlbumsForProfile");
+				return View("Error", info);
 			}
 		}
 
@@ -207,7 +212,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "GetAlbumsForInterest");
+				return View("Error", info);
 			}
 		}
 
@@ -253,7 +259,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "GetAllPhotos");
+				return View("Error", info);
 			}
 		}
 
@@ -310,7 +317,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "DeletePhoto");
+				return View("Error", info);
 			}
 		}
 
@@ -329,7 +337,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "GetPhotoByID");
+				return View("Error", info);
 			}
 		}
 
@@ -354,7 +363,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "GetPhotosForAlbum");
+				return View("Error", info);
 			}
 		}
 

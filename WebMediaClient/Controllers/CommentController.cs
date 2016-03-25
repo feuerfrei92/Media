@@ -41,7 +41,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "GetAllComments");
+				return View("Error", info);
 			}
 		}
 
@@ -67,7 +68,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "CreateComment");
+				return View("Error", info);
 			}
 		}
 
@@ -99,7 +101,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "UpdateComment");
+				return View("Error", info);
 			}
 		}
 
@@ -122,7 +125,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "DeleteComment");
+				return View("Error", info);
 			}
 		}
 
@@ -180,7 +184,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "GetCommentsByTopicID");
+				return View("Error", info);
 			}
 		}
 
@@ -208,7 +213,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "GetCommentsByAuthorID");
+				return View("Error", info);
 			}
 		}
 
@@ -241,7 +247,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "GetCommentsByAuthorIDAndSectionID");
+				return View("Error", info);
 			}
 		}
 
@@ -266,7 +273,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "SearchByTextContent");
+				return View("Error", info);
 			}
 		}
 
@@ -291,7 +299,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "SearchCommentsByCriteria");
+				return View("Error", info);
 			}
 		}
 

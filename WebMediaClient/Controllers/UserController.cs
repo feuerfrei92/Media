@@ -40,7 +40,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "User", "GetAllUsers");
+				return View("Error", info);
 			}
 		}
 
@@ -85,7 +86,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "User", "DeleteUser");
+				return View("Error", info);
 			}
 		}
 
@@ -106,7 +108,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "User", "GetUserByID");
+				return View("Error", info);
 			}
 		}
 
@@ -175,7 +178,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "User", "SearchUsernameByString");
+				return View("Error", info);
 			}
 		}
 
@@ -293,7 +297,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "User", "GetMembershipsForSection");
+				return View("Error", info);
 			}
 		}
 
@@ -344,7 +349,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+				HandleErrorInfo info = new HandleErrorInfo(ex, "User", "GetPendingMembershipsForSection");
+				return View("Error", info);
 			}
 		}
     }

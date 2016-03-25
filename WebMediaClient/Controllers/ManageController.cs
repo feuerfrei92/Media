@@ -7,6 +7,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WebMediaClient.Models;
+using Services.Models;
+using System.Net.Http;
 
 namespace WebMediaClient.Controllers
 {
@@ -229,18 +231,43 @@ namespace WebMediaClient.Controllers
             {
                 return View(model);
             }
-            var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-            if (result.Succeeded)
-            {
-                var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-                if (user != null)
-                {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                }
-                return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
-            }
-            AddErrors(result);
-            return View(model);
+
+			try
+			{
+				string url = "http://localhost:8080/api/Account/ChangePassword";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var passwordModel = new ChangePasswordBindingModel
+				{
+					OldPassword = model.OldPassword,
+					NewPassword = model.NewPassword,
+					ConfirmPassword = model.ConfirmPassword,
+				};
+				var response = await HttpClientBuilder<ChangePasswordBindingModel>.PostAsync<HttpResponseMessage>(passwordModel, url, token);
+				if (response.IsSuccessStatusCode)
+					return RedirectToAction("Index", "Home");
+				else
+					return View(model);
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Manage", "ChangePassword");
+				return View("Error", info);
+			}
+			//var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
+			//if (result.Succeeded)
+			//{
+			//	var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+			//	if (user != null)
+			//	{
+			//		await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+			//	}
+			//	return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
+			//}
+			//AddErrors(result);
         }
 
         //

@@ -40,7 +40,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "GetAllProfiles");
+				return View("Error", info);
 			}
 		}
 
@@ -82,7 +83,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "CreateProfile");
+				return View("Error", info);
 			}
 		}
 
@@ -172,7 +174,8 @@ namespace WebMediaClient.Controllers
             }
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "UpdateProfile");
+				return View("Error", info);
 			}
 		}
 
@@ -194,7 +197,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "DeleteProfile");
+				return View("Error", info);
 			}
 		}
 
@@ -261,7 +265,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "GetProfileByUserID");
+				return View("Error", info);
 			}
 		}
 
@@ -307,7 +312,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "GetProfileByUsername");
+				return View("Error", info);
 			}
 		}
 
@@ -339,7 +345,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "SearchProfilesByCriteria");
+				return View("Error", info);
 			}
 		}
 
@@ -356,7 +363,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "DisplayProfileSearchResults");
+				return View("Error", info);
 			}
 		}
 
@@ -381,7 +389,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "GetAllFriends");
+				return View("Error", info);
 			}
 		}
 
@@ -482,7 +491,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "GetMessages");
+				return View("Error", info);
 			}
 		}
     }

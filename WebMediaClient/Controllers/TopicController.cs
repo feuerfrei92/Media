@@ -36,11 +36,12 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(TopicConverter.FromBasicToVisual(t));
                 }
-				return View(viewModels.ToPagedList(1, 20));
+				return View(viewModels);
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetAllTopics");
+				return View("Error", info);
 			}
 		}
 
@@ -75,7 +76,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "CreateTopic");
+				return View("Error", info);
 			}
 		}
 
@@ -100,7 +102,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "UpdateTopic");
+				return View("Error", info);
 			}
 		}
 
@@ -123,7 +126,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "DeleteTopic");
+				return View("Error", info);
 			}
 		}
 
@@ -145,7 +149,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetTopicByID");
+				return View("Error", info);
 			}
 		}
 
@@ -197,7 +202,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetTopicsBySectionID");
+				return View("Error", info);
 			}
 		}
 
@@ -227,7 +233,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetTopicsBySectionIDAndAuthorID");
+				return View("Error", info);
 			}
 		}
 
@@ -252,7 +259,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetTopicForProfile");
+				return View("Error", info);
 			}
 		}
 
@@ -277,7 +285,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetTopicForInterest");
+				return View("Error", info);
 			}
 		}
 
@@ -306,7 +315,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetTopicsByAuthorID");
+				return View("Error", info);
 			}
 		}
 
@@ -334,7 +344,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "SearchByTopicName");
+				return View("Error", info);
 			}
 		}
 
@@ -359,7 +370,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "SearchTopicsByCriteria");
+				return View("Error", info);
 			}
 		}
     }

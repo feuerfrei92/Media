@@ -135,6 +135,7 @@ namespace Services.Controllers
 
         // POST api/Account/ChangePassword
 		[Route("ChangePassword")]
+		[Authorize]
         public async Task<IHttpActionResult> ChangePassword(ChangePasswordBindingModel model)
         {
             if (!ModelState.IsValid)
@@ -152,6 +153,66 @@ namespace Services.Controllers
 
             return Ok();
         }
+
+		[HttpPost]
+		public async Task<IHttpActionResult> ForgotPassword(ForgotPasswordBindingModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			try
+			{
+				var user = await UserManager.FindByEmailAsync(model.Email);
+				if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+				{
+					return Ok();
+				}
+				else
+				{
+					string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+					code = HttpUtility.UrlEncode(code);
+					var callbackUrl = string.Format("http://localhost:57888/Account/ResetPassword?UserId={0}&Code={1}", user.Id, code);	
+					await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+					return Ok();
+				}
+			}
+			catch
+			{
+				throw;
+			}
+
+		}
+
+		[HttpPost]
+		public async Task<IHttpActionResult> ResetPassword(ResetPasswordBindingModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				return BadRequest(ModelState);
+			}
+
+			try
+			{
+				var user = await UserManager.FindByEmailAsync(model.Email);
+				if (user == null)
+				{
+					// Don't reveal that the user does not exist
+					return Ok();
+				}
+				var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+				if (result.Succeeded)
+				{
+					return Ok();
+				}
+				else throw new Exception(string.Join("; ", result.Errors));
+			}
+			catch
+			{
+				throw;
+			}
+		}
 
         // POST api/Account/SetPassword
 		[Route("SetPassword")]

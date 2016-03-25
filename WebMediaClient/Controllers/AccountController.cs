@@ -134,9 +134,10 @@ namespace WebMediaClient.Controllers
 				};
 				return View(viewModel);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Account", "VerifyCode");
+				return View("Error", info);
 			}
         }
 
@@ -182,9 +183,10 @@ namespace WebMediaClient.Controllers
 				var response = await HttpClientBuilder<Services.Models.CodeModels.VerifyCodeModel>.PostAsync<HttpResponseMessage>(verifyCodeModel, url, null);
 				return RedirectToAction("Index", "Home");
 			}
-			catch
+			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Account", "VerifyCode");
+				return View("Error", info);
 			}
         }
 
@@ -205,27 +207,24 @@ namespace WebMediaClient.Controllers
         {
             if (ModelState.IsValid)
             {
-				string url = "http://localhost:8080/api/Account/Register";
-				var registeredModel = await HttpClientBuilder<RegisterViewModel>.PostAsync(model, url, null);
-				//var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-				//var result = await UserManager.CreateAsync(user, model.Password);
-				//if (result.Succeeded)
-				//{
-				//	await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-				//	// For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-				//	// Send an email with this link
-				//	// string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-				//	// var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-				//	// await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-				//	return RedirectToAction("Index", "Home");
-				//}
-				//AddErrors(result);
+				try
+				{
+					string url = "http://localhost:8080/api/Account/Register";
+					var registeredModel = await HttpClientBuilder<RegisterViewModel>.PostAsync(model, url, null);
+					return RedirectToAction("ConfirmRegistration");
+				}
+				catch (Exception ex)
+				{
+					HandleErrorInfo info = new HandleErrorInfo(ex, "Account", "Register");
+					return View("Error", info);
+				}
             }
-
-            // If we got this far, something failed, redisplay form
-			return RedirectToAction("ConfirmRegistration");
+			else
+			{
+				ModelState.AddModelError("", "Registration failed. Please check your email and password.");
+				return View(model);
+			}
+			
         }
 
         //
@@ -241,9 +240,10 @@ namespace WebMediaClient.Controllers
 				//if(response.StatusCode == System.Net.HttpStatusCode.OK)
 					return View("ConfirmEmail");
 			}
-			catch
-			{ 
-				return View("Error");
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Account", "VerifyCode");
+				return View("Error", info);
 			}
 			//if (userId == null || code == null)
 			//{
@@ -268,25 +268,49 @@ namespace WebMediaClient.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
-                    // Don't reveal that the user does not exist or is not confirmed
-                    return View("ForgotPasswordConfirmation");
-                }
+			if (ModelState.IsValid)
+			{
+				try
+				{
+					//var user = await UserManager.FindByNameAsync(model.Email);
+					//if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
+					//{
+					// Don't reveal that the user does not exist or is not confirmed
+					string url = "http://localhost:8080/api/Account/ForgotPassword";
+					var passwordModel = new Services.Models.ForgotPasswordBindingModel
+					{
+						Email = model.Email
+					};
+					var response = await HttpClientBuilder<Services.Models.ForgotPasswordBindingModel>.PostAsync<HttpResponseMessage>(passwordModel, url, null);
 
-                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-                // Send an email with this link
-                // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
-                // await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                // return RedirectToAction("ForgotPasswordConfirmation", "Account");
-            }
+					if (response.IsSuccessStatusCode)
+						return View("ForgotPasswordConfirmation");
+					else
+					{
+						ModelState.AddModelError("", response.StatusCode.ToString());
+						return View(model);
+					}
+				}
+				catch (Exception ex)
+				{
+					HandleErrorInfo info = new HandleErrorInfo(ex, "Account", "ForgotPassword");
+					return View("Error", info);
+				}
 
-            // If we got this far, something failed, redisplay form
-            return View(model);
+				//}
+
+				// For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+				// Send an email with this link
+				// string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
+				// var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
+				// await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
+				// return RedirectToAction("ForgotPasswordConfirmation", "Account");
+			}
+			else
+			{
+				ModelState.AddModelError("", "Email doesn't exist or is incomplete.");
+				return View(model);
+			}
         }
 
         //
@@ -300,9 +324,9 @@ namespace WebMediaClient.Controllers
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword(string userId, string code)
         {
-            return code == null ? View("Error") : View();
+            return userId == null || code == null ? View("Error") : View();
         }
 
         //
@@ -314,21 +338,47 @@ namespace WebMediaClient.Controllers
         {
             if (!ModelState.IsValid)
             {
+				ModelState.AddModelError("", "Invalid email or password");
                 return View(model);
             }
-            var user = await UserManager.FindByNameAsync(model.Email);
-            if (user == null)
-            {
-                // Don't reveal that the user does not exist
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
-            if (result.Succeeded)
-            {
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
-            AddErrors(result);
-            return View();
+
+			try
+			{
+				string url = "http://localhost:8080/api/Account/ResetPassword";
+				var passwordModel = new Services.Models.ResetPasswordBindingModel
+				{
+					Email = model.Email,
+					Password = model.Password,
+					ConfirmPassword = model.ConfirmPassword,
+					Code = model.Code,
+				};
+				var response = await HttpClientBuilder<Services.Models.ResetPasswordBindingModel>.PostAsync<HttpResponseMessage>(passwordModel, url, null);
+
+				if (response.IsSuccessStatusCode)
+					return RedirectToAction("ResetPasswordConfirmation", "Account");
+				else
+				{
+					ModelState.AddModelError("", response.StatusCode.ToString());
+					return View(model);
+				}
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Account", "ResetPassword");
+				return View("Error", info);
+			}
+			////var user = await UserManager.FindByNameAsync(model.Email);
+			////if (user == null)
+			////{
+			////	// Don't reveal that the user does not exist
+			////	return RedirectToAction("ResetPasswordConfirmation", "Account");
+			////}
+			////var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
+			////if (result.Succeeded)
+			////{
+			////	return RedirectToAction("ResetPasswordConfirmation", "Account");
+			////}
+			////AddErrors(result);
         }
 
         //
@@ -374,9 +424,10 @@ namespace WebMediaClient.Controllers
 				//var factorOptions = userFactors.Select(purpose => new SelectListItem { Text = purpose, Value = purpose }).ToList();
 				return View(viewModel);
 			}
-			catch
+			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Account", "SendCode");
+				return View("Error", info);
 			}
         }
 

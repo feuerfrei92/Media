@@ -47,7 +47,7 @@
 	}
 
 	function compareUsername() {
-		var user = '@Html.Raw(Json.Encode(ViewBag.User))';
+		var user = @Html.Raw(Json.Encode(ViewBag.User));
 		if (user != null) {
 			var profileList = document.getElementById("add_friend");
 			var buttons = document.getElementsByClassName("button");
@@ -74,7 +74,7 @@
 	}
 
 	function checkIfFriend(id, button) {
-		var user = '@Html.Raw(Json.Encode(ViewBag.User))';
+		var user = @Html.Raw(Json.Encode(ViewBag.User));
 		if (user != null) {
 			var link = '@Html.Raw(Url.Action("GetFriendship", "Profile", new { userID = -1, friendID = -2 }))';
 			link = link.replace("-1", user.ID);
@@ -107,7 +107,7 @@
 	}
 
 	function addFriend(id) {
-		var user = '@Html.Raw(Json.Encode(ViewBag.User))';
+		var user = @Html.Raw(Json.Encode(ViewBag.User));
 		if (user != null)
 		{
 			var link = '@Html.Raw(@Url.Action("AddFriend", "Profile", new { UserID = -1, FriendID = -2 }))';
@@ -139,7 +139,7 @@
 					<div class="col-md-8">
 						<div class="list-group-item">
 							<script type="text/javascript">
-								var user = '@ViewBag.User';
+								var user = @Html.Raw(Json.Encode(ViewBag.User));
 								if(user != null)
 									addButton(@Html.Raw(Json.Encode(item.Username)));
 							</script>

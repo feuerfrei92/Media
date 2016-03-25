@@ -50,7 +50,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "CreateSetting");
+				return View("Error", info);
 			}
 		}
 
@@ -96,7 +97,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "DeleteSetting");
+				return View("Error", info);
 			}
 		}
 
@@ -121,7 +123,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetSettingByID");
+				return View("Error", info);
 			}
 		}
 
@@ -147,7 +150,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetSettingByOwnerIDAndType");
+				return View("Error", info);
 			}
 		}
 
@@ -198,7 +202,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetPendingFriends");
+				return View("Error", info);
 			}
 		}
 
@@ -226,7 +231,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetSubscribedTopics");
+				return View("Error", info);
 			}
 		}
 
@@ -254,7 +260,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetTopicsWithNewComments");
+				return View("Error", info);
 			}
 		}
 
@@ -281,7 +288,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetFirstLatestProfileActivity");
+				return View("Error", info);
 			}
 		}
 
@@ -306,7 +314,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetLatestProfileActivity");
+				return View("Error", info);
 			}
 		}
 
@@ -336,7 +345,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetFirstLatestFriendsActivity");
+				return View("Error", info);
 			}
 		}
 
@@ -364,7 +374,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetLatestFriendsActivity");
+				return View("Error", info);
 			}
 		}
 
@@ -383,7 +394,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "SuspendUser");
+				return View("Error", info);
 			}
 		}
 
@@ -402,7 +414,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "ChangePosition");
+				return View("Error", info);
 			}
 		}
 	}

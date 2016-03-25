@@ -40,7 +40,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Section", "GetAllSections");
+				return View("Error", info);
 			}
 		}
 
@@ -63,7 +64,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Section", "CreateSection");
+				return View("Error", info);
 			}
 		}
 
@@ -88,7 +90,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Section", "UpdateSection");
+				return View("Error", info);
 			}
 		}
 
@@ -111,7 +114,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Section", "DeleteSection");
+				return View("Error", info);
 			}
 		}
 
@@ -132,7 +136,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Section", "GetSectionByID");
+				return View("Error", info);
 			}
 		}
 
@@ -157,7 +162,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Section", "GetSectionsByParentID");
+				return View("Error", info);
 			}
 		}
 
@@ -203,7 +209,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Section", "SearchBySectionName");
+				return View("Error", info);
 			}
 		}
 
@@ -347,7 +354,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Section", "GetMembershipsForUser");
+				return View("Error", info);
 			}
 		}
 

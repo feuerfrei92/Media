@@ -39,7 +39,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Interest", "GetAllInterests");
+				return View("Error", info);
 			}
 		}
 
@@ -68,7 +69,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Interest", "CreateInterest");
+				return View("Error", info);
 			}
 		}
 
@@ -92,7 +94,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Interest", "UpdateInterest");
+				return View("Error", info);
 			}
 		}
 
@@ -114,7 +117,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Interest", "DeleteInterest");
+				return View("Error", info);
 			}
 		}
 
@@ -136,7 +140,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Interest", "GetInterestByID");
+				return View("Error", info);
 			}
 		}
 
@@ -158,7 +163,7 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 
@@ -180,7 +185,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Interest", "GetInterestByName");
+				return View("Error", info);
 			}
 		}
 
@@ -202,7 +208,7 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 
@@ -227,7 +233,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Interest", "SearchInterestNameByString");
+				return View("Error", info);
 			}
 		}
 
@@ -252,7 +259,8 @@ namespace WebMediaClient.Controllers
 			}
 			catch (Exception ex)
 			{
-				return View("Error");
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Interest", "GetInterestsForUser");
+				return View("Error", info);
 			}
 		}
 
