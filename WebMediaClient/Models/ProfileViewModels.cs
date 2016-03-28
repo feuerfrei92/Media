@@ -20,6 +20,7 @@ namespace WebMediaClient.Models
 		[Range(14, 100)]
 		public int? Age { get; set; }
 		public Gender Gender { get; set; }
+		public int? PictureID { get; set; }
 	}
 
 	public class ProfileCriteriaViewModel

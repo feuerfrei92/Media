@@ -7,3 +7,32 @@
 
 <h2>CreateVideo</h2>
 
+<script type="text/javascript">
+	$(document).ready(function() {
+		$.validator.addMethod('accept', function () { return true; });
+
+		$('#upload_form').validate({
+			submitHandler: function () {
+			}
+		});
+	})
+</script>
+
+<div class="row">
+	<div class="col-md-8">
+		@using (Html.BeginForm("CreateVideo", "Video", new { userID = @ViewBag.User.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data", id = "upload_form" }))
+		{
+			<div class="form-group">
+				<label class="col-md-2 control-label">Select video file:</label>
+				<div class="col-md-10">
+					<input type="file" name="file" accept="video/*" />
+				</div>
+			</div>
+			<div class="form-group">
+				<div class="col-md-offset-2 col-md-10">
+					<input type="submit" value="OK" class="btn btn-default" />
+				</div>
+			</div>
+		}
+	</div>
+</div>

@@ -55,6 +55,8 @@ namespace Services.Controllers
 				DateCreated = DateTime.Now
 			};
 
+			System.IO.File.Create(video.Location, 1000, System.IO.FileOptions.Asynchronous);
+
 			_nest.Videos.Create(newVideo);
 
 			try

@@ -548,3 +548,8 @@ D:\Projects\Media\WebMediaClient\bin\PagedList.dll
 D:\Projects\Media\WebMediaClient\bin\PagedList.Mvc.dll
 D:\Projects\Media\WebMediaClient\bin\PagedList.xml
 D:\Projects\Media\WebMediaClient\bin\PagedList.Mvc.xml
+D:\Projects\Media\WebMediaClient\bin\Microsoft.Web.Helpers.dll
+D:\Projects\Media\WebMediaClient\bin\WebMatrix.Data.dll
+D:\Projects\Media\WebMediaClient\bin\WebMatrix.WebData.dll
+D:\Projects\Media\WebMediaClient\bin\WebMatrix.Data.xml
+D:\Projects\Media\WebMediaClient\bin\WebMatrix.WebData.xml

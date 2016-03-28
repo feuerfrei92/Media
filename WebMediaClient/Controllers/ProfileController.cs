@@ -239,7 +239,7 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
-				return Json(new { ID = profile.ID, Username = profile.Username, Name = profile.Name, Age = profile.Age, Gender = profile.Gender }, JsonRequestBehavior.AllowGet);
+				return Json(new { ID = profile.ID, Username = profile.Username, Name = profile.Name, Age = profile.Age, Gender = profile.Gender, PictureID = profile.PictureID }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{
@@ -284,7 +284,7 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var profile = await HttpClientBuilder<ProfileModel>.GetAsync(url, token);
-				return Json(new { ID = profile.ID, Username = profile.Username, Name = profile.Name, Age = profile.Age, Gender = profile.Gender }, JsonRequestBehavior.AllowGet);
+				return Json(new { ID = profile.ID, Username = profile.Username, Name = profile.Name, Age = profile.Age, Gender = profile.Gender, PictureID = profile.PictureID }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{

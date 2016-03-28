@@ -20,8 +20,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Profile, ProfileModel>> BuildProfileModel
 		{
-			get { return p => new ProfileModel { ID = p.ID, Username = p.Username, Name = p.Name, Age = p.Age, }; }
-												//Gender = p.Gender }; }
+			get { return p => new ProfileModel { ID = p.ID, Username = p.Username, Name = p.Name, Age = p.Age, PictureID = p.PictureID }; }
 		}
 
 		public ProfileController()
@@ -62,6 +61,7 @@ namespace Services.Controllers
 			existingProfile.Name = profile.Name;
 			existingProfile.Age = profile.Age;
 			existingProfile.Gender = profile.Gender.ToString();
+			existingProfile.PictureID = profile.PictureID;
 
 			_nest.Profiles.Update(existingProfile);
 
@@ -95,6 +95,7 @@ namespace Services.Controllers
 				Name = profile.Name,
 				Age = profile.Age,
 				Gender = profile.Gender.ToString(),
+				PictureID = profile.PictureID,
 			};
 
 			_nest.Profiles.Create(newProfile);
@@ -139,6 +140,7 @@ namespace Services.Controllers
 			}
 
 			profile.ID = newProfile.ID;
+			profile.PictureID = newProfile.PictureID;
 
 			return Ok(profile);
 		}
@@ -223,7 +225,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
-		[Authorize]
+		//[Authorize]
 		public IHttpActionResult GetProfileByID(int ID)
 		{
 			ProfileModel profile = _nest.Profiles.All().Where(p => p.ID == ID).Select(BuildProfileModel).FirstOrDefault();
@@ -540,7 +542,7 @@ namespace Services.Controllers
 				activities.Add(new ActivityModel { ActionID = c.TopicID, Author = user, Action = "comment", DateCreated = c.DateCreated });
 			}
 			List<int> albumsIDs = _nest.Albums.All().Where(a => a.OwnerID == user.ID).Select(a => a.ID).ToList();
-			List<PhotoModel> photos = _nest.Photos.All().Select(p => new PhotoModel { ID = p.ID, AlbumID = p.AlbumID, Content = p.Content, DateCreated = p.DateCreated, Rating = p.Rating }).ToList();
+			List<PhotoModel> photos = _nest.Photos.All().Select(p => new PhotoModel { ID = p.ID, AlbumID = p.AlbumID, Location = p.Location, DateCreated = p.DateCreated, Rating = p.Rating }).ToList();
 			photos = photos.Where(p => albumsIDs.Exists(a => a == p.AlbumID)).OrderByDescending(p => p.DateCreated).Take(100).ToList();
 			foreach (PhotoModel p in photos)
 			{

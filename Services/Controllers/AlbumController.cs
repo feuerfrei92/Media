@@ -23,7 +23,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.DatabaseModels.Photo, PhotoModel>> BuildPhotoModel
 		{
-			get { return p => new PhotoModel { ID = p.ID, Content = p.Content, DateCreated = p.DateCreated, AlbumID = p.AlbumID }; }
+			get { return p => new PhotoModel { ID = p.ID, Location = p.Location, DateCreated = p.DateCreated, AlbumID = p.AlbumID }; }
 		}
 
 		public AlbumController()
@@ -206,16 +206,32 @@ namespace Services.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public IHttpActionResult CreatePhoto(int albumID, PhotoModel photo)
+		public IHttpActionResult CreatePhoto(int userID, int albumID, PhotoModel photo)
 		{
 			if (!(ModelState.IsValid))
 			{
 				return BadRequest(ModelState);
 			}
 
+			Album album = _nest.Albums.All().Where(a => a.ID == albumID).FirstOrDefault();
+			if (album == null)
+				return BadRequest();
+			if (album.IsProfile)
+			{
+				Profile profile = _nest.Profiles.All().Where(p => p.UserID == userID && p.ID == album.OwnerID).FirstOrDefault();
+				if (profile == null)
+					return BadRequest();
+			}
+			else
+			{
+				Interest interest = _nest.Interests.All().Where(i => i.AuthorID == userID && i.ID == album.OwnerID).FirstOrDefault();
+				if (interest == null)
+					return BadRequest();
+			}
+
 			var newPhoto = new Photo
 			{
-				Content = photo.Content,
+				Location = photo.Location,
 				AlbumID = albumID,
 				DateCreated = DateTime.Now
 			};

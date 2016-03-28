@@ -45,23 +45,48 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> CreateVideo(int userID, VideoViewModel VideoModel)
+		public ActionResult CreateVideo(int userID)
+		{
+			if (Request.UrlReferrer == null)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+			if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+			return View();
+		}
+
+		[HttpPost]
+		public async Task<ActionResult> CreateVideo(int userID, VideoViewModel videoModel, HttpPostedFileBase file)
 		{
 			try
 			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
-				string url = string.Format("http://localhost:8080/api/Video/CreateVideo?UserID={0}", userID);
-				string token = "";
-				if (HttpContext.Session["token"] != null)
-					token = HttpContext.Session["token"].ToString();
-				else
-					token = null;
-				var video = VideoConverter.FromVisualToBasic(VideoModel);
-				var createdVideo = await HttpClientBuilder<VideoModel>.PutAsync(video, url, token);
-				var viewModel = VideoConverter.FromBasicToVisual(createdVideo);
-				return View(viewModel);
+				if (file != null && file.ContentLength > 0)
+				{
+					string guid = Guid.NewGuid().ToString() + ".mp4";
+					file.SaveAs(Server.MapPath(@"\UploadedFiles\Videos\ContentID=" + guid));
+					videoModel.Location = @"\UploadedFiles\Videos\ContentID=" + guid;
+					videoModel.DateCreated = DateTime.Now;
+					string url = string.Format("http://localhost:8080/api/Video/CreateVideo?UserID={0}", userID);
+					string token = "";
+					if (HttpContext.Session["token"] != null)
+						token = HttpContext.Session["token"].ToString();
+					else
+						token = null;
+					var video = VideoConverter.FromVisualToBasic(videoModel);
+					var createdVideo = await HttpClientBuilder<VideoModel>.PutAsync(video, url, token);
+					var viewModel = VideoConverter.FromBasicToVisual(createdVideo);
+					ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+					return View(viewModel);
+				}
+				else throw new ArgumentNullException(file.FileName);
 			}
 			catch (Exception ex)
 			{

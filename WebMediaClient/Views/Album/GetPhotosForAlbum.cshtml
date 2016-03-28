@@ -1,15 +1,15 @@
-﻿@model List<WebMediaClient.Models.PhotoOutViewModel>
+﻿@model List<WebMediaClient.Models.PhotoViewModel>
 
 <div class="row">
 	<div class="col-md-8">
 		<div class="list-group">
 			@foreach (var item in Model)
 			{
-				var base64 = Convert.ToBase64String(item.Content);
-				var imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
+				//var base64 = Convert.ToBase64String(item.Content);
+				//var imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
 				<div class="list-group-item">
-					<img src="@imgSrc" height="100" width="100" />
-					@*<img src="@Url.Action("GetPhotoByID", "Photo", new { @item.ID })" height="100" width="100" />*@
+					@*<img src="@imgSrc" height="100" width="100" />*@
+					<img src="@item.Location" height="100" width="100" />
 				</div>
 				@*<div class="col-md-4">
 					@Html.ActionLink("Update photo setting", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @item.ID, settingType = SettingType.Photo.ToString() }, null)

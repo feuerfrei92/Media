@@ -13,14 +13,12 @@ namespace WebMediaClient.Converters
 {
 	public class PhotoConverter
 	{
-		public static PhotoInViewModel FromBasicToVisualIn(PhotoModel photoModel)
+		public static PhotoViewModel FromBasicToVisual(PhotoModel photoModel)
 		{
-			var content = byteArrayToImage(photoModel.Content);
-
-			var viewModel = new PhotoInViewModel
+			var viewModel = new PhotoViewModel
 			{
 				ID = photoModel.ID,
-				Content = content,
+				Location = photoModel.Location,
 				AlbumID = photoModel.AlbumID,
 				DateCreated = photoModel.DateCreated,
 				Rating = photoModel.Rating
@@ -29,42 +27,12 @@ namespace WebMediaClient.Converters
 			return viewModel;
 		}
 
-		public static PhotoModel FromVisualToBasicIn(PhotoInViewModel viewModel)
-		{
-			var content = imageToByteArray(viewModel.Content);
-
-			var PhotoModel = new PhotoModel
-			{
-				ID = viewModel.ID,
-				Content = content,
-				AlbumID = viewModel.AlbumID,
-				DateCreated = viewModel.DateCreated,
-				Rating = viewModel.Rating
-			};
-
-			return PhotoModel;
-		}
-
-		public static PhotoOutViewModel FromBasicToVisualOut(PhotoModel photoModel)
-		{
-			var viewModel = new PhotoOutViewModel
-			{
-				ID = photoModel.ID,
-				Content = photoModel.Content,
-				AlbumID = photoModel.AlbumID,
-				DateCreated = photoModel.DateCreated,
-				Rating = photoModel.Rating
-			};
-
-			return viewModel;
-		}
-
-		public static PhotoModel FromVisualToBasicOut(PhotoOutViewModel viewModel)
+		public static PhotoModel FromVisualToBasic(PhotoViewModel viewModel)
 		{
 			var PhotoModel = new PhotoModel
 			{
 				ID = viewModel.ID,
-				Content = viewModel.Content,
+				Location = viewModel.Location,
 				AlbumID = viewModel.AlbumID,
 				DateCreated = viewModel.DateCreated,
 				Rating = viewModel.Rating

@@ -19,6 +19,7 @@ namespace WebMediaClient.Converters
 				Gender = profileModel.Gender,
 				Name = profileModel.Name,
 				Username = profileModel.Username,
+				PictureID = profileModel.PictureID,
 			};
 
 			return viewModel;
@@ -33,6 +34,7 @@ namespace WebMediaClient.Converters
 				Gender = viewModel.Gender,
 				Name = viewModel.Name,
 				Username = viewModel.Username,
+				PictureID = viewModel.PictureID,
 			};
 
 			return profileModel;

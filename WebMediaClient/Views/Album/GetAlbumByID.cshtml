@@ -165,7 +165,7 @@
 
 <div class="row">
 	<div class="col-md-8">
-		@Html.ActionLink("Upload photo", "CreatePhoto", "Album", new { userID = @ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() }, new { @id = "upload_photo_link", @hidden = "hidden" })
+		@Html.ActionLink("Upload photo", "CreatePhoto", "Album", new { userID = @ViewBag.User.ID, albumID = @ViewBag.ID }, new { @id = "upload_photo_link" })
 	</div>
 </div>
 

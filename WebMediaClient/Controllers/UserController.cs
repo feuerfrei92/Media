@@ -91,7 +91,7 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetUserByID(int ID)
+		public ActionResult GetUserByID(int ID, bool anonymous = false)
 		{
 			try
 			{
@@ -104,6 +104,7 @@ namespace WebMediaClient.Controllers
 				//var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
 				var user = Task.Run<UserModel>(() => HttpClientBuilder<UserModel>.GetAsync(url, token)).Result;
 				var viewModel = UserConverter.FromBasicToVisual(user);
+				ViewBag.Anonymous = anonymous;
 				return View(viewModel);
 			}
 			catch (Exception ex)

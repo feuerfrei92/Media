@@ -92,6 +92,7 @@
 			var user = (Services.Models.UserModel)HttpContext.Current.Session["currentUser"];
 			<li class="dropdown"><label class="label-default dropdown-toggle" data-toggle="dropdown">@user.Username<span class="caret" /></label>
 				<ul class="dropdown-menu">
+					<li>@Html.ActionLink("View profile", "GetProfileByUserID", "Profile", routeValues: new { userID = @user.ID }, htmlAttributes: new { id = "view_profile_link" })</li>
 					<li>@Html.ActionLink("Update profile", "UpdateProfile", "Profile", routeValues: null, htmlAttributes: new { id = "update_profile_link" })</li>
 					<li>@Html.ActionLink("Update settings", "Index", "Settings", routeValues: null, htmlAttributes: new { id = "setting_link" })</li>
 				</ul>
