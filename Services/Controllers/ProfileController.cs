@@ -20,7 +20,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Profile, ProfileModel>> BuildProfileModel
 		{
-			get { return p => new ProfileModel { ID = p.ID, Username = p.Username, Name = p.Name, Age = p.Age, PictureID = p.PictureID }; }
+			get { return p => new ProfileModel { ID = p.ID, UserID = p.UserID, Username = p.Username, Name = p.Name, Age = p.Age, PictureID = p.PictureID }; }
 		}
 
 		public ProfileController()
@@ -140,6 +140,7 @@ namespace Services.Controllers
 			}
 
 			profile.ID = newProfile.ID;
+			profile.UserID = userID;
 			profile.PictureID = newProfile.PictureID;
 
 			return Ok(profile);

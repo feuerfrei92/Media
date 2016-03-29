@@ -70,8 +70,7 @@ namespace WebMediaClient.Controllers
 
 				if (file != null && file.ContentLength > 0)
 				{
-					string guid = Guid.NewGuid().ToString() + ".mp4";
-					file.SaveAs(Server.MapPath(@"\UploadedFiles\Videos\ContentID=" + guid));
+					string guid = Guid.NewGuid().ToString() + ".swf";
 					videoModel.Location = @"\UploadedFiles\Videos\ContentID=" + guid;
 					videoModel.DateCreated = DateTime.Now;
 					string url = string.Format("http://localhost:8080/api/Video/CreateVideo?UserID={0}", userID);
@@ -81,8 +80,9 @@ namespace WebMediaClient.Controllers
 					else
 						token = null;
 					var video = VideoConverter.FromVisualToBasic(videoModel);
-					var createdVideo = await HttpClientBuilder<VideoModel>.PutAsync(video, url, token);
+					var createdVideo = await HttpClientBuilder<VideoModel>.PostAsync(video, url, token);
 					var viewModel = VideoConverter.FromBasicToVisual(createdVideo);
+					file.SaveAs(Server.MapPath(@"\UploadedFiles\Videos\ContentID=" + guid));
 					ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 					return View(viewModel);
 				}
@@ -155,7 +155,9 @@ namespace WebMediaClient.Controllers
 				{
 					viewModels.Add(VideoConverter.FromBasicToVisual(v));
 				}
-				return View();
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				ViewBag.UserID = userID;
+				return View(viewModels);
 			}
 			catch (Exception ex)
 			{

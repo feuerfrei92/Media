@@ -91,21 +91,36 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult GetUserByID(int ID, bool anonymous = false)
+		public ActionResult GetAuthorInfo(int userID, bool anonymous = false)
 		{
 			try
 			{
-				string url = string.Format("http://localhost:8080/api/User/GetUserByID?ID={0}", ID);
-				string token = "";
-				if (HttpContext.Session["token"] != null)
-					token = HttpContext.Session["token"].ToString();
+				if (!anonymous)
+				{
+					string url = string.Format("http://localhost:8080/api/Profile/GetProfileByUserID?UserID={0}", userID);
+					string token = "";
+					if (HttpContext.Session["token"] != null)
+						token = HttpContext.Session["token"].ToString();
+					else
+						token = null;
+					//var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
+					var profile = Task.Run<ProfileModel>(() => HttpClientBuilder<ProfileModel>.GetAsync(url, token)).Result;
+					var viewModel = ProfileConverter.FromBasicToVisual(profile);
+					return View(viewModel);
+				}
 				else
-					token = null;
-				//var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
-				var user = Task.Run<UserModel>(() => HttpClientBuilder<UserModel>.GetAsync(url, token)).Result;
-				var viewModel = UserConverter.FromBasicToVisual(user);
-				ViewBag.Anonymous = anonymous;
-				return View(viewModel);
+				{
+					string url = string.Format("http://localhost:8080/api/User/GetUserByID?ID={0}", userID);
+					string token = "";
+					if (HttpContext.Session["token"] != null)
+						token = HttpContext.Session["token"].ToString();
+					else
+						token = null;
+					//var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
+					var user = Task.Run<UserModel>(() => HttpClientBuilder<UserModel>.GetAsync(url, token)).Result;
+					var viewModel = UserConverter.FromBasicToVisual(user);
+					return View("GetUserByID", viewModel);
+				}
 			}
 			catch (Exception ex)
 			{

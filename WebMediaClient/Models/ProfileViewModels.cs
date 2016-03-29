@@ -12,6 +12,7 @@ namespace WebMediaClient.Models
 	public class ProfileViewModel
 	{
 		public int ID { get; set; }
+		public int UserID { get; set; }
 		[Required]
 		[RegularExpression("^[a-zA-Z0-9_-]*$")]
 		public string Username { get; set; }

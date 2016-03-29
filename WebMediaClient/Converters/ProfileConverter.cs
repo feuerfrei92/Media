@@ -15,6 +15,7 @@ namespace WebMediaClient.Converters
 			var viewModel = new ProfileViewModel
 			{
 				ID = profileModel.ID,
+				UserID = profileModel.UserID,
 				Age = profileModel.Age,
 				Gender = profileModel.Gender,
 				Name = profileModel.Name,
@@ -30,6 +31,7 @@ namespace WebMediaClient.Converters
 			var profileModel = new ProfileModel
 			{
 				ID = viewModel.ID,
+				UserID = viewModel.UserID,
 				Age = viewModel.Age,
 				Gender = viewModel.Gender,
 				Name = viewModel.Name,

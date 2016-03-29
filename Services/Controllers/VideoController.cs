@@ -48,29 +48,34 @@ namespace Services.Controllers
 				return BadRequest(ModelState);
 			}
 
-			var newVideo = new Video
-			{
-				Location = video.Location,
-				OwnerID = userID,
-				DateCreated = DateTime.Now
-			};
-
-			System.IO.File.Create(video.Location, 1000, System.IO.FileOptions.Asynchronous);
-
-			_nest.Videos.Create(newVideo);
-
 			try
 			{
-				_nest.SaveChanges();
+				var newVideo = new Video
+				{
+					Location = video.Location,
+					OwnerID = userID,
+					DateCreated = DateTime.Now
+				};
+
+				_nest.Videos.Create(newVideo);
+
+				try
+				{
+					_nest.SaveChanges();
+				}
+				catch
+				{
+					throw;
+				}
+
+				video.ID = newVideo.ID;
+
+				return Ok(video);
 			}
 			catch
 			{
 				throw;
 			}
-
-			video.ID = newVideo.ID;
-
-			return Ok(video);
 		}
 
 		[HttpDelete]
@@ -119,9 +124,9 @@ namespace Services.Controllers
 
 		[HttpGet]
 		[Authorize]
-		public IHttpActionResult GetVideosForOwner(int ownerID)
+		public IHttpActionResult GetVideosForOwner(int userID)
 		{
-			List<VideoModel> videos = _nest.Videos.All().Where(v => v.OwnerID == ownerID).Select(BuildVideoModel).ToList();
+			List<VideoModel> videos = _nest.Videos.All().Where(v => v.OwnerID == userID).Select(BuildVideoModel).ToList();
 
 			return Ok(videos);
 		}

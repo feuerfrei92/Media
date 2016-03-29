@@ -14,18 +14,26 @@
 			{
 				<div class="list-group-item">
 					@Video.Flash(item.Location,
-								"400",
-								"500",
-								false,
-								false,
-								false,
-								"blue",
-								"high",
-								"exactfit",
-								"transparent")
+									   "400",
+									   "500",
+									   false,
+									   false,
+									   true,
+									   "blue",
+									   "high",
+									   "exactfit",
+										"window")
 				</div>
 			}
 		</div>
 	</div>
 </div>
+@if(@ViewBag.User.ID == @ViewBag.UserID)
+{
+	<div class="row">
+		<div class="col-md-8">
+			@Html.ActionLink("Upload video", "CreateVideo", "Video", new { userID = @ViewBag.User.ID }, new { @id = "add_video_link" })
+		</div>
+	</div>
+}
 

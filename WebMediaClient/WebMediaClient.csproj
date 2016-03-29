@@ -719,6 +719,7 @@
     <Content Include="Views\Video\CreateVideo.cshtml" />
     <Content Include="Views\Video\GetVideoByID.cshtml" />
     <Content Include="Views\Video\GetVideosForOwner.cshtml" />
+    <Content Include="Views\User\GetAuthorInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

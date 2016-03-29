@@ -290,7 +290,6 @@ namespace WebMediaClient.Controllers
 			if (file != null && file.ContentLength > 0)
 			{
 				string guid = Guid.NewGuid().ToString() + ".jpg";
-				file.SaveAs(Server.MapPath(@"\UploadedFiles\Photos\ContentID=" + guid));
 				photoModel.Location = @"\UploadedFiles\Photos\ContentID=" + guid;
 				photoModel.DateCreated = DateTime.Now;
 				string url = string.Format("http://localhost:8080/api/Album/CreatePhoto?UserID={0}&AlbumID={1}", userID, albumID);
@@ -302,6 +301,7 @@ namespace WebMediaClient.Controllers
 				var photo = PhotoConverter.FromVisualToBasic(photoModel);
 				var createdPhoto = await HttpClientBuilder<PhotoModel>.PostAsync(photo, url, token);
 				var viewModel = PhotoConverter.FromBasicToVisual(createdPhoto);
+				file.SaveAs(Server.MapPath(@"\UploadedFiles\Photos\ContentID=" + guid));
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				ViewBag.ID = albumID;
 				return View(viewModel);

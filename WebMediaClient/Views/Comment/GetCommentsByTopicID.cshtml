@@ -280,7 +280,7 @@
 			{
 				<div class="row">
 					<div class="col-md-5">
-						@Html.Action("GetUserByID", "User", new { ID = item.AuthorID });
+						@Html.Action("GetAuthorInfo", "User", new { userID = @item.AuthorID });
 						<label class="label-primary" hidden="hidden">@item.ID</label>
 						<label class="label-info" hidden="hidden">@item.AuthorID</label>
 					</div>

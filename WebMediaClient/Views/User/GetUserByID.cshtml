@@ -1,34 +1,8 @@
 ﻿@model WebMediaClient.Models.UserViewModel
 
-<script type="text/javascript">
-
-	$(document).ready(function () { getProfilePhoto() });
-
-	function getProfilePhoto()
-	{
-		@*var anonymous = @Json.Encode(ViewBag.Anonymous);
-		if (!anonymous)
-		{*@
-			$.ajax
-			({
-				url: '@Url.Action("GetProfileByUsernameRaw", "Profile", new { username = @Model.Username })',
-				dataType: 'json',
-				type: 'GET',
-				success: function (data) {
-					var id = data.PictureID;
-					var link = '@Url.Action("GetPhotoByID", "Album", new { ID = -1 })';
-					link = link.replace("-1", id);
-					$("#profile_pic").attr("src", link);
-				}
-			})
-		//}
-	}
-</script>
-
 <div class="row">
-	<img src="" id="profile_pic" height="100" width="100" />
 	<div class="col-md-8">
-		@Html.ActionLink(@Model.Username, "GetProfileByUserID", "Profile", new { userID = @Model.ID }, null);
+		@Model.Username
 	</div>
 </div>
 

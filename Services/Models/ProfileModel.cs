@@ -10,6 +10,7 @@ namespace Services.Models
 	public class ProfileModel
 	{
 		public int ID { get; set; }
+		public int UserID { get; set; }
 		[Required]
 		[RegularExpression("^[a-zA-Z0-9_-]*$")]
 		public string Username { get; set; }

@@ -211,6 +211,11 @@
 	</div>
 </div>
 <div class="row">
+	<div class="col-md-8">
+		@Html.ActionLink("See uploaded videos", "GetVideosForOwner", "Video", new { userID = @ViewBag.UserID }, new { id = "get_videos_link" })
+	</div>
+</div>
+<div class="row">
 	<div id="activity" class="col-md-8">
 	</div>
 </div>

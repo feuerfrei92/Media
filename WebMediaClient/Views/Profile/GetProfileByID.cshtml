@@ -21,14 +21,14 @@
 	function compareUsername() {
 		var currentUsername = '@ViewBag.User.Username';
 		var profileUsername = '@Model.Username';
-		if (currentUsername == profileUsername)
-		{
+		if (currentUsername == profileUsername) {
 			$('#add_friend').prop('disabled', true);
-			var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
-			$("#profile_topic").load(link, function () { updateVisit(); setIDs(); });
+			var link1 = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+			var link2 = '@Url.Action("GetFirstLatestProfileActivity", "Settings", new { userID = @Model.UserID })';
+			$("#profile_topic").load(link1, function () { updateVisit(); });
+			$("#activity").load(link2);
 		}
-		else
-		{
+		else {
 			$.ajax
 			({
 				url: '@Url.Action("GetUserByUsername", "User", new { Username = @Model.Username })',
@@ -51,11 +51,15 @@
 			type: 'GET',
 			success: function (data) {
 				$('#add_friend').prop('disabled', true);
-				var link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
-				$("#profile_topic").load(link, function () { updateVisit(); setIDs(); });
+				var link1 = '@Html.ActionLink("Start chat", "GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @Model.UserID }, new { id = "chat_link" })';
+				var link2 = '@Url.Action("GetFirstLatestProfileActivity", "Settings", new { userID = @Model.UserID })';
+				var link3 = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+				$("#start_chat").html(link1);
+				$("#activity").load(link2);
+				$("#profile_topic").load(link3, function () { updateVisit(); });
 			},
-			error: function(xhr){
-				if(xhr.status == 404)
+			error: function (xhr) {
+				if (xhr.status == 404)
 					checkCommonFriends(id);
 			}
 		})
@@ -101,8 +105,7 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				if (data.Count > 0)
-				{
+				if (data.Count > 0) {
 					$.ajax
 					({
 						url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Profile.ToString() }))',
@@ -124,9 +127,8 @@
 						dataType: 'json',
 						type: 'GET',
 						success: function (result) {
-							if (result.Publicity == "Everyone")
-							{
-								 link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+							if (result.Publicity == "Everyone") {
+								link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
 								$("#profile_topic").load(link, function () { updateVisit(); });
 							}
 						}
@@ -195,6 +197,8 @@
 			}
 		</section>
 	</div>
+	<div id="start_chat" class="col-md-8">
+	</div>
 	<div id="profile_topic" class="col-md-8">
 	</div>
 	<div class="col-md-8">
@@ -204,6 +208,15 @@
 <div class="row">
 	<div class="col-md-8">
 		@Html.Action("GetAlbumsForProfile", "Album", new { profileID = @ViewBag.ID })
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-8">
+		@Html.ActionLink("See uploaded videos", "GetVideosForOwner", "Video", new { userID = @Model.UserID }, new { id = "get_videos_link" })
+	</div>
+</div>
+<div class="row">
+	<div id="activity" class="col-md-8">
 	</div>
 </div>
 
