@@ -171,7 +171,7 @@ namespace WebMediaClient.Controllers
 				ViewBag.IP = Request.UserHostAddress;
 				if (HttpRuntime.Cache["LoggedInUsers"] != null)
 				{
-					List<UserModel> loggedInUsers = (List<UserModel>)HttpRuntime.Cache["LoggedInUsers"];
+					List<ChatUser> loggedInUsers = (List<ChatUser>)HttpRuntime.Cache["LoggedInUsers"];
 					ViewBag.LoggedUsersCount = loggedInUsers.Count;
 				}
 				else

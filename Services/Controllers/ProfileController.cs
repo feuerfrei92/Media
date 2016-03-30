@@ -473,6 +473,7 @@ namespace Services.Controllers
 				ReceiverID = receiverID,
 				Text = cleanText,
 				DateCreated = DateTime.Now,
+				DiscussionGuid = message.DiscussionGuid,
 			};
 
 			_nest.Messages.Create(newMessage);

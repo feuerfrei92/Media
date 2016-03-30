@@ -7,6 +7,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using WebMediaClient.Models;
 
 namespace WebMediaClient.Controllers
 {
@@ -50,8 +51,12 @@ namespace WebMediaClient.Controllers
 					HttpContext.Session.Add("currentUser", user);
 					if (HttpRuntime.Cache["LoggedInUsers"] != null)
 					{
-						List<UserModel> loggedInUsers = (List<UserModel>)HttpRuntime.Cache["LoggedInUsers"];
-						loggedInUsers.Add(user);
+						List<ChatUser> loggedInUsers = (List<ChatUser>)HttpRuntime.Cache["LoggedInUsers"];
+						var chatUser = new ChatUser
+						{
+							ID = user.ID,
+							Username = user.Username,
+						};
 						HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
 					}
 				}
@@ -79,10 +84,11 @@ namespace WebMediaClient.Controllers
 				HttpContext.Session.Remove("token");
 				if (HttpRuntime.Cache["LoggedInUsers"] != null)
 				{
-					List<UserModel> loggedInUsers = (List<UserModel>)HttpRuntime.Cache["LoggedInUsers"];
-					if (loggedInUsers.Exists(u => u.ID == user.ID))
+					List<ChatUser> loggedInUsers = (List<ChatUser>)HttpRuntime.Cache["LoggedInUsers"];
+					var chatUser = loggedInUsers.Where(c => c.ID == user.ID).FirstOrDefault();
+					if (chatUser != null)
 					{
-						loggedInUsers.Remove(user);
+						loggedInUsers.Remove(chatUser);
 						HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
 					}
 				}

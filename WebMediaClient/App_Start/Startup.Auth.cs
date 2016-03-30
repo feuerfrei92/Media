@@ -8,6 +8,8 @@ using Owin;
 using WebMediaClient.Models;
 using Data;
 using Models;
+using Microsoft.AspNet.SignalR;
+using System.Web;
 
 namespace WebMediaClient
 {
