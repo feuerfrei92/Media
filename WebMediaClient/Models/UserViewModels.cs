@@ -20,6 +20,5 @@ namespace WebMediaClient.Models
 	{
 		public int ID { get; set; }
 		public string Username { get; set; }
-		public string ConnectionID { get; set; }
 	}
 }

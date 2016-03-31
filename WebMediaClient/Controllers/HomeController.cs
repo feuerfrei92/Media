@@ -59,10 +59,12 @@ namespace WebMediaClient.Controllers
 						};
 						HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
 					}
+					ViewBag.UserID = user.ID;
 				}
 				else
 				{
 					ViewBag.Message = "Unvalidated user _|_";
+					ViewBag.UserID = -1;
 					HttpContext.Session.Remove("token");
 				}
 				return View();

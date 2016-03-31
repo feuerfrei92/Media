@@ -1,23 +1,16 @@
 ﻿<script type="text/javascript">
 	window.addEventListener("load", function () { $('.dropdown-toggle').dropdown(); }, false);
+	window.addEventListener("load", function () { addToChat(); }, false);
 
-	@*function getToken() {
-		if (Modernizr.localstorage) {
-			var localProfile = window.localStorage;
-			var token = JSON.parse(localProfile.getItem("MediaToken"));
-			var user = '@HttpContext.Current.Session["currentUser"]';
-			if (token != null && user == null) {
-				$.ajax
-				({
-					url: '@Url.Action("GetCurrentUser", "User")',
-					data: { token: token },
-					dataType: 'json',
-					type: 'GET',
-					success: function (data) {
-						setUser(data.ID, data.Username, token);
-					}
-				})
-			}
+	function addToChat() {
+		var user = @Html.Raw(Json.Encode(@HttpContext.Current.Session["currentUser"]));
+		if (user != null) {
+			var userID = user.ID;
+			$.connection.hub.qs = { 'id': userID.toString() };
+			var chat = $.connection.chatHub;
+			chat.client.lol = function () { };
+			$.connection.hub.start();
+			redirectHome();
 		}
 	}
 
@@ -44,7 +37,7 @@
 				populateLogOffNode();
 			}
 		})
-	}*@
+	}
 
 	@*function populateDropdownMenu() {
 		var manageNode = document.getElementById("manage_profile");

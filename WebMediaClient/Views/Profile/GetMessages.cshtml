@@ -31,21 +31,23 @@
 	}
 
 	$(function () {
-		var username = '@ViewBag.User.Username';
-		$.connection.chatHub.qs = { 'receiverUsername': username };
+		var userID = '@ViewBag.User.ID';
+		$.connection.hub.qs = { 'id': userID.toString() };
 		var chat = $.connection.chatHub;
 		chat.client.broadcastMessage = function (message) {
+			if ('@Html.Raw(Request.Url)' != 'http://localhost:8090' + '@Html.Raw(Url.Action("GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.ReceiverID }))')
+				window.location.href = '@Html.Raw(Url.Action("GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.ReceiverID }))'
 			var link = '@Url.Action("GetUserByID", "User", new { ID = @ViewBag.User.ID })';
 			$("#messages_container").append("<div class=&quot;row&quot;><div class=&quot;col-md-4&quot;>" + link + "</div><div class=&quot;col-md-4&quot;><textarea id=&quot;textarea_" + $("message_number").val() + "&quot; class=&quot;form-control&quot; rows=&quot;5&quot; cols=&quot;25&quot;>" + message + "</textarea></div></div>");
 		}
-		setIDs();
 		$("#message_text").focus();
 		$.connection.hub.start().done(function () {
 			$('#send_message').click(function () {
 				var text = CKEDITOR.instances.message_text.getData();
 				text = text.replace(new RegExp('&lt;', 'g'), '<');
 				text = text.replace(new RegExp('&gt;', 'g'), '>');
-				chat.server.send(text);
+				var receiverID = '@ViewBag.ReceiverID';
+				chat.server.send(receiverID.toString(), text);
 				$.ajax
 				({
 					url: '@Html.Raw(Url.Action("CreateMessage", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.ReceiverID }))',
@@ -63,7 +65,7 @@
 			});
 		});
 	});
-	</script>
+</script>
 
     <meta name="viewport" content="width=device-width" />
     <title>GetMessages</title>
