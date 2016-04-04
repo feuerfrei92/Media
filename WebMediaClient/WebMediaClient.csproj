@@ -199,6 +199,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="ChatUser.cs" />
     <Compile Include="Connections\ConnectionProvider.cs" />
     <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Controllers\AccountController.cs" />
@@ -721,6 +722,8 @@
     <Content Include="Views\Video\GetVideoByID.cshtml" />
     <Content Include="Views\Video\GetVideosForOwner.cshtml" />
     <Content Include="Views\User\GetAuthorInfo.cshtml" />
+    <Content Include="Views\Profile\ChatRoom.cshtml" />
+    <Content Include="Views\Profile\GetChatMessages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

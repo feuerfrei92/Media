@@ -1,0 +1,127 @@
+﻿@model List<WebMediaClient.Models.ProfileViewModel>
+
+@{
+	ViewBag.Title = "ChatRoom";
+	Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/bundles/modernizr")
+	<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+	<script src="~/signalr/hubs"></script>
+	@*<script src="~/ckeditor/ckeditor.js"></script>*@
+	<script type="text/javascript">
+		$(function () {
+			var chat = $.connection.chatHub;
+			chat.client.joined = function (userID) {
+				var label = document.getElementById(userID);
+				if (label != null) {
+					label.style.color = "green";
+					label.innerHTML = "online";
+				}
+			}
+			chat.client.left = function (userID) {
+				var label = document.getElementById(userID);
+				if (label != null) {
+					label.style.color = "red";
+					label.innerHTML = "offline";
+				}
+			}
+			chat.client.onlineStatus = function (users) {
+				$(users).each(function (index, id) {
+					var label = document.getElementById(id);
+					if (label != null) {
+						label.style.color = "green";
+						label.innerHTML = "online";
+					}
+				})
+			}
+			chat.client.broadcastMessage = function (message, sourceID, uniqueName) {
+				if ($("div[uniquename=" + uniqueName + "]").length == 0) {
+					var link = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { senderID = ViewBag.User.ID, receiverID = -1 }))';
+					link = link.replace("-1", sourceID);
+					var chatWindow = $("#chat_window").clone(true);
+					chatWindow.attr("uniquename", uniqueName);
+					chatWindow.load(link);
+					chatWindow.append("<textarea class=&quot;form-control message_text&quot; cols=&quot;25&quot; rows=&quot;5&quot;></textarea>");
+					chatWindow.append("<button class=&quot;button send_message&quot;>Send</button>");
+					chatWindow.append("<label class=&quot;hidden&quot;>" + sourceID + "</label>");
+					$("#chat_container").append(chatWindow);
+					var textareas = $(".message_text").length;
+					$(".message_text").last().attr("id", "textarea_" + textareas.toString());
+					//CKEDITOR.replace("textarea_" + textareas.toString());
+				}
+				else
+					$("div[uniquename=" + uniqueName + "]").find(".message_text").first().before(message);
+			}
+			$.connection.hub.start(function () {
+				chat.server.getAllOnlineUsers();
+
+				$(".send_message").click(function () {
+					var userID = '@ViewBag.User.ID';
+					var parentDiv = $(this).parent();
+					var text = parentDiv.find(".message_text").first().val();
+					text = text.replace(new RegExp('&lt;', 'g'), '<');
+					text = text.replace(new RegExp('&gt;', 'g'), '>');
+					var receiverID = parseInt(parentDiv.find(".hidden").first().val());
+					chat.server.send(receiverID.toString(), userID.toString, text);
+					var link = '@Html.Raw(Url.Action("CreateMessage", "Profile", new { senderID = @ViewBag.User.ID, receiverID = -1 }))';
+					link = link.replace("-1", receiverID);
+					$.ajax
+						({
+							url: link,
+							data:
+							{
+								text: text,
+								datecreated: Date.now(),
+							},
+							dataType: 'json',
+							type: 'POST',
+							success: function (data) {
+							}
+						})
+					parentDiv.find(".message_text").first().val('');
+				});
+			});
+		})
+
+	function openChatWindow(id) {
+			var link = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { senderID = ViewBag.User.ID, receiverID = -1 }))';
+			link = link.replace("-1", id);
+			var chatWindow = $("#chat_window").clone(true);
+			chatWindow.append("<div class=col-md-5></div>");
+			chatWindow.append("<br />")
+			chatWindow.append("<textarea class=message_text cols=25 rows=5></textarea>");
+			chatWindow.append("<button class=send_message>Send</button>");
+			chatWindow.append("<label class=hidden>" + id + "</label>");
+			$("#chat_container").append(chatWindow);
+			var textareas = $(".message_text").length;
+			$(".message_text").last().attr("id", "textarea_" + textareas.toString());
+			$(".col-md-5").last().load(link);
+			//CKEDITOR.replace("textarea_" + textareas.toString());
+		}
+	</script>
+	<title>Chat room</title>
+</head>
+<body>
+	<div class="row">
+		<div class="col-md-8">
+			@foreach (var item in Model)
+			{
+				<label class="label-default" onclick="@("openChatWindow(" + @Html.Raw(Json.Encode(item.UserID)) + ")")">@item.Username</label>
+				<label id="@item.ID.ToString()" class="label-default-small" style="color: red">offline</label>
+			}
+		</div>
+		<div id="chat_container" class="col-md-8">
+			<div id="chat_window">
+			</div>
+		</div>
+	</div>
+</body>
+</html>

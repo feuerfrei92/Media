@@ -15,10 +15,4 @@ namespace WebMediaClient.Models
 		public string Username { get; set; }
 		public bool IsAdmin { get; set; }
 	}
-
-	public class ChatUser
-	{
-		public int ID { get; set; }
-		public string Username { get; set; }
-	}
 }

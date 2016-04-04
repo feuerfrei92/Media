@@ -306,9 +306,6 @@
 	<label id="ip_text" class="label-default">@ViewBag.IP</label>
 </div>
 <div class="row">
-	<label id="count_text" class="label-default">@ViewBag.LoggedUsersCount</label>
-</div>
-<div class="row">
 	Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
 	@*@Html.PagedListPager(Model, page => Url.Action("GetCommentsByTopicID",

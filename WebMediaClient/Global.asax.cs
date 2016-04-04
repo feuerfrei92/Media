@@ -18,8 +18,6 @@ namespace WebMediaClient
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-			var loggedInUsers = new List<ChatUser>();
-			HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
         }
     }
 }

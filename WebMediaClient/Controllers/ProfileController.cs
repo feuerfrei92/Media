@@ -495,5 +495,62 @@ namespace WebMediaClient.Controllers
 				return View("Error", info);
 			}
 		}
+
+		public ActionResult GetChatMessages(int senderID, int receiverID)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Profile/GetMessages?senderID={0}&receiverID={1}", senderID, receiverID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var messages = Task.Run<List<MessageModel>>(() => HttpClientBuilder<MessageModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<MessageViewModel>();
+				foreach (MessageModel m in messages)
+				{
+					viewModels.Add(MessageConverter.FromBasicToVisual(m));
+				}
+				ViewBag.ReceiverID = receiverID;
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				return View(viewModels);
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "GetMessages");
+				return View("Error", info);
+			}
+		}
+
+		public async Task<ActionResult> ChatRoom(int userID)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/User/GetUserByID?ID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
+				ChatUser.AddOnlineUser(user, "", HttpContext.Request.Cookies["ASP.NET_SessionId"].Value);
+				url = string.Format("http://localhost:8080/api/Profile/GetAllFriends?UserID={0}", userID);
+				//var profiles = await HttpClientBuilder<ProfileModel>.GetListAsync(url, token);
+				var profiles = Task.Run<List<ProfileModel>>(() => HttpClientBuilder<ProfileModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<ProfileViewModel>();
+				foreach (ProfileModel p in profiles)
+				{
+					viewModels.Add(ProfileConverter.FromBasicToVisual(p));
+				}
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				return View(viewModels);
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "ChatRoom");
+				return View("Error", info);
+			}
+		}
     }
 }

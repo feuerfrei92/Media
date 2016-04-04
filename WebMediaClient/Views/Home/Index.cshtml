@@ -106,6 +106,12 @@
 			Html.RenderAction("GetFirstLatestFriendsActivity", "Settings", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
+	<div id="chat_container" class="col-md-4">
+		@if (ViewBag.User != null)
+		{
+			<a href="@Url.Action("ChatRoom", "Profile", new { userID = ViewBag.User.ID })">Join chat room</a>
+		}
+	</div>
 </div>
 	@*<div class="list-group">
 		<input id="store_id" hidden="hidden" />

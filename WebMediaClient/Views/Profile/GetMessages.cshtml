@@ -35,8 +35,6 @@
 		$.connection.hub.qs = { 'id': userID.toString() };
 		var chat = $.connection.chatHub;
 		chat.client.broadcastMessage = function (message) {
-			if ('@Html.Raw(Request.Url)' != 'http://localhost:8090' + '@Html.Raw(Url.Action("GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.ReceiverID }))')
-				window.location.href = '@Html.Raw(Url.Action("GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.ReceiverID }))'
 			var link = '@Url.Action("GetUserByID", "User", new { ID = @ViewBag.User.ID })';
 			$("#messages_container").append("<div class=&quot;row&quot;><div class=&quot;col-md-4&quot;>" + link + "</div><div class=&quot;col-md-4&quot;><textarea id=&quot;textarea_" + $("message_number").val() + "&quot; class=&quot;form-control&quot; rows=&quot;5&quot; cols=&quot;25&quot;>" + message + "</textarea></div></div>");
 		}
@@ -81,7 +79,7 @@
 							@Html.Action("GetUserByID", "User", new { ID = item.SenderID, Token = @HttpContext.Current.Session["token"].ToString() })
 						</div>*@
 						<div class="col-md-4">
-							@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })
+							@item.Text
 						</div>
 					</div>
 				}

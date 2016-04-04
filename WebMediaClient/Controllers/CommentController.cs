@@ -169,13 +169,6 @@ namespace WebMediaClient.Controllers
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				ViewBag.TopicID = topicID;
 				ViewBag.IP = Request.UserHostAddress;
-				if (HttpRuntime.Cache["LoggedInUsers"] != null)
-				{
-					List<ChatUser> loggedInUsers = (List<ChatUser>)HttpRuntime.Cache["LoggedInUsers"];
-					ViewBag.LoggedUsersCount = loggedInUsers.Count;
-				}
-				else
-					ViewBag.LoggedUsersCount = 0;
 
 				if (page == null)
 					return View(viewModels.ToPagedList(1, 5));

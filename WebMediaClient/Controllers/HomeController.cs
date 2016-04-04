@@ -49,17 +49,6 @@ namespace WebMediaClient.Controllers
 				{
 					ViewBag.Message = string.Format("Welcome, {0}. Redirecting you to home page...", user.Username);
 					HttpContext.Session.Add("currentUser", user);
-					if (HttpRuntime.Cache["LoggedInUsers"] != null)
-					{
-						List<ChatUser> loggedInUsers = (List<ChatUser>)HttpRuntime.Cache["LoggedInUsers"];
-						var chatUser = new ChatUser
-						{
-							ID = user.ID,
-							Username = user.Username,
-						};
-						HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
-					}
-					ViewBag.UserID = user.ID;
 				}
 				else
 				{
@@ -84,16 +73,6 @@ namespace WebMediaClient.Controllers
 				UserModel user = (UserModel)HttpContext.Session["currentUser"];
 				HttpContext.Session.Remove("currentUser");
 				HttpContext.Session.Remove("token");
-				if (HttpRuntime.Cache["LoggedInUsers"] != null)
-				{
-					List<ChatUser> loggedInUsers = (List<ChatUser>)HttpRuntime.Cache["LoggedInUsers"];
-					var chatUser = loggedInUsers.Where(c => c.ID == user.ID).FirstOrDefault();
-					if (chatUser != null)
-					{
-						loggedInUsers.Remove(chatUser);
-						HttpRuntime.Cache["LoggedInUsers"] = loggedInUsers;
-					}
-				}
 				return View();
 			}
 			catch (Exception ex)

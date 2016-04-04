@@ -12,47 +12,73 @@ namespace WebMediaClient.Chat
 {
 	public class ChatHub : Hub
 	{
-		private readonly static ConnectionProvider _connections = 
-            new ConnectionProvider();
+		//private readonly static ConnectionProvider _connections = 
+		//	new ConnectionProvider();
 
-		public void Send(string userID, string message)
-        {
-			Clients.Caller.broadcastMessage(message);
-		    
-			foreach (var connectionId in _connections.GetConnections(userID))
-            {
-                Clients.Client(connectionId).broadcastMessage(message);
-            }
-        }
+		public void Send(string userID, string sourceID, string message)
+		{
+			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.User.ID.ToString() == userID).SingleOrDefault();
+			string connectionID = chatUser.ConnectionID;
+			string uniqueName = (Context.ConnectionId.GetHashCode() ^ connectionID.GetHashCode()).ToString();
+			Clients.Caller.broadcastMessage(message, sourceID, uniqueName);
 
-        public override Task OnConnected()
-        {
-			string username = Context.QueryString["id"];
 
-			_connections.Add(username, Context.ConnectionId);
+			//foreach (var connectionId in _connections.GetConnections(userID))
+			//{
+			//	Clients.Client(connectionId).broadcastMessage(message);
+			//}
+		}
 
-            return base.OnConnected();
-        }
+		public override Task OnConnected()
+		{
+			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.SessionID == HttpContext.Current.Request.Cookies["ASP.NET_SessionId"].Value).SingleOrDefault();
+			//ChatUser.RemoveOnlineUser("", chatUser.User.ID);
+			chatUser.ConnectionID = Context.ConnectionId;
+			//ChatUser.AddOnlineUser(chatUser.User, chatUser.ConnectionID, chatUser.SessionID);
+			return Clients.All.joined(chatUser.User.ID.ToString());
+		}
 
-        public override Task OnDisconnected(bool stopCalled)
-        {
-			string username = Context.QueryString["id"];
+		public override Task OnDisconnected(bool stopCalled)
+		{
+			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.SessionID == HttpContext.Current.Request.Cookies["ASP.NET_SessionId"].Value).SingleOrDefault();
+			ChatUser.RemoveOnlineUser("", chatUser.User.ID);
+			return Clients.All.left(chatUser.User.ID.ToString());
+		}
 
-			_connections.Remove(username, Context.ConnectionId);
+		public void GetAllOnlineUsers()
+		{
+			Clients.Caller.onlineStatus(ChatUser.onlineUsers.Select(c => c.User.ID.ToString()).ToList());
+		}
 
-            return base.OnDisconnected(stopCalled);
-        }
+		//	public override Task OnConnected()
+		//	{
+		//		string username = Context.QueryString["id"];
 
-        public override Task OnReconnected()
-        {
-            string username = Context.QueryString["id"];
+		//		_connections.Add(username, Context.ConnectionId);
 
-            if (!_connections.GetConnections(username).Contains(Context.ConnectionId))
-            {
-                _connections.Add(username, Context.ConnectionId);
-            }
+		//		return base.OnConnected();
+		//	}
 
-            return base.OnReconnected();
-        }
-    }
+		//	public override Task OnDisconnected(bool stopCalled)
+		//	{
+		//		string username = Context.QueryString["id"];
+
+		//		_connections.Remove(username, Context.ConnectionId);
+
+		//		return base.OnDisconnected(stopCalled);
+		//	}
+
+		//	public override Task OnReconnected()
+		//	{
+		//		string username = Context.QueryString["id"];
+
+		//		if (!_connections.GetConnections(username).Contains(Context.ConnectionId))
+		//		{
+		//			_connections.Add(username, Context.ConnectionId);
+		//		}
+
+		//		return base.OnReconnected();
+		//	}
+		//}
+	}
 }
