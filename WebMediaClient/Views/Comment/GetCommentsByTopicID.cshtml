@@ -3,58 +3,7 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
-	window.addEventListener("load", function () { setIDs(); }, false);
-
-	function setIDs() {
-		var textAreas = document.getElementsByTagName("textarea");
-		for (i = 0; i < textAreas.length; i++) {
-			var textArea = textAreas[i];
-			if (textArea.id != "comment_text") {
-				textArea.setAttribute("id", "textarea" + "_" + i.toString());
-				CKEDITOR.replace("textarea" + "_" + i.toString(), { customConfig: "/Scripts/Myconfig.js", readOnly: true });
-			}
-		}
-		getTopic();
-	}
-
-	function replaceTexts()
-	{
-		var textAreas = document.getElementsByTagName("textarea");
-		for (i = 0; i < textAreas.length; i++) {
-			var textArea = textAreas[i];
-			if (textArea.id != "comment_text") {
-				textArea.setAttribute("id", "textarea" + "_" + i.toString());
-				CKEDITOR.replace("textarea" + "_" + i.toString(), { customConfig: "/Scripts/Myconfig.js", readOnly: true });
-			}
-		}
-
-		var divs5 = document.getElementsByClassName("col-md-5");
-		var divs3 = document.getElementsByClassName("col-md-3");
-		var labels = document.getElementsByClassName("label-info");
-		var primaries = document.getElementsByClassName("label-primary");
-		for (i = 0; i < divs5.length; i++) {
-			var div5 = divs5[i];
-			var div3 = divs3[i];
-			var label = labels[i];
-			var primary = primaries[i];
-			var userID = parseInt(label.textContent);
-			var commentID = parseInt(primary.textContent);
-			var manageNode = document.createElement("li");
-			manageNode.setAttribute("id", "account_options");
-			manageNode.setAttribute("class", "dropdown");
-			var actionLinkElement = document.createElement("label");
-			actionLinkElement.setAttribute("class", "label-default dropdown-toggle");
-			actionLinkElement.setAttribute("data-toggle", "dropdown");
-			var manageElem = "Options";
-			actionLinkElement.innerHTML = manageElem;
-			manageNode.appendChild(actionLinkElement);
-			var dropdownMenu = document.createElement("ul");
-			dropdownMenu.setAttribute("class", "dropdown-menu");
-			manageNode.appendChild(actionLinkElement);
-			manageNode.appendChild(dropdownMenu);
-			div5.appendChild(manageNode);
-		}
-	}
+	window.addEventListener("load", function () { getTopic(); }, false);
 
 	function getTopic() {
 		$.ajax
@@ -291,7 +240,8 @@
 						}
 					</div>
 					<div class="col-md-4">
-						@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })
+						@Html.Raw(item.Text)
+						@*@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })*@
 					</div>
 				</div>
 				<div class="row">

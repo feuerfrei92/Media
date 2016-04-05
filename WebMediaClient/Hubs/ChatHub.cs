@@ -15,12 +15,17 @@ namespace WebMediaClient.Chat
 		//private readonly static ConnectionProvider _connections = 
 		//	new ConnectionProvider();
 
-		public void Send(string userID, string sourceID, string message)
+		public void Send(string senderID, string receiverID, string message)
 		{
-			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.User.ID.ToString() == userID).SingleOrDefault();
-			string connectionID = chatUser.ConnectionID;
-			string uniqueName = (Context.ConnectionId.GetHashCode() ^ connectionID.GetHashCode()).ToString();
-			Clients.Caller.broadcastMessage(message, sourceID, uniqueName);
+			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.User.ID.ToString() == receiverID).FirstOrDefault();
+			if (chatUser != null)
+			{
+				string connectionID = chatUser.ConnectionID;
+				Clients.Caller.broadcastMessage(message, senderID, receiverID, senderID);
+				Clients.Client(connectionID).broadcastMessage(message, receiverID, senderID, senderID);
+			}
+			else
+				Clients.Caller.broadcastMessage(message, senderID, receiverID, senderID);
 
 
 			//foreach (var connectionId in _connections.GetConnections(userID))
@@ -31,7 +36,7 @@ namespace WebMediaClient.Chat
 
 		public override Task OnConnected()
 		{
-			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.SessionID == HttpContext.Current.Request.Cookies["ASP.NET_SessionId"].Value).SingleOrDefault();
+			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.SessionID == HttpContext.Current.Request.Cookies["ASP.NET_SessionId"].Value).FirstOrDefault();
 			//ChatUser.RemoveOnlineUser("", chatUser.User.ID);
 			chatUser.ConnectionID = Context.ConnectionId;
 			//ChatUser.AddOnlineUser(chatUser.User, chatUser.ConnectionID, chatUser.SessionID);
@@ -40,7 +45,7 @@ namespace WebMediaClient.Chat
 
 		public override Task OnDisconnected(bool stopCalled)
 		{
-			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.SessionID == HttpContext.Current.Request.Cookies["ASP.NET_SessionId"].Value).SingleOrDefault();
+			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.SessionID == HttpContext.Current.Request.Cookies["ASP.NET_SessionId"].Value).FirstOrDefault();
 			ChatUser.RemoveOnlineUser("", chatUser.User.ID);
 			return Clients.All.left(chatUser.User.ID.ToString());
 		}

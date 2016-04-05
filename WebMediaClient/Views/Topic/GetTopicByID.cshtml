@@ -98,14 +98,14 @@
 						if (result.Publicity == "Everyone")
 						{
 							var link = '@Html.Raw(Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page }))';
-							$("#comments").load(link, function () { setIDs(); });
+							$("#comments").load(link);
 						}
 						if (result.Publicity == "Registered")
 						{
 							if (data.role == "Regular" || data.role == "Mod" || data.role == "Admin")
 							{
 								var link = '@Html.Raw(Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page }))';
-								$("#comments").load(link, function () { setIDs(); });
+								$("#comments").load(link);
 							}	
 						}
 						if (result.Publicity == "Admins")
@@ -113,7 +113,7 @@
 							if (data.role == "Mod" || data.role == "Admin")
 							{
 								var link = '@Html.Raw(Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page }))';
-								$("#comments").load(link, function () { setIDs(); });
+								$("#comments").load(link);
 							}
 						}
 					}
