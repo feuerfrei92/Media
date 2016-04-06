@@ -1,4 +1,5 @@
 ﻿using Data;
+using Models;
 using Models.DatabaseModels;
 using Services.Models;
 using System;
@@ -58,6 +59,37 @@ namespace Services.Controllers
 				};
 
 				_nest.Videos.Create(newVideo);
+
+				var newTopic = new Topic
+				{
+					Name = string.Concat(video.DateCreated.ToLongDateString(), video.DateCreated.ToLongTimeString()),
+					SectionID = video.ID,
+					AuthorID = video.OwnerID,
+					DateCreated = DateTime.Now,
+					IsProfileTopic = false,
+					IsInterestTopic = false,
+					TopicType = "Video",
+				};
+
+				_nest.Topics.Create(newTopic);
+
+				var newSetting = new Setting
+				{
+					OwnerID = video.ID,
+					OwnerType = "Video",
+					Publicity = "Everyone",
+				};
+
+				_nest.Settings.Create(newSetting);
+
+				var newTopicSetting = new Setting
+				{
+					OwnerID = newTopic.ID,
+					OwnerType = "Topic",
+					Publicity = "Everyone",
+				};
+
+				_nest.Settings.Create(newTopicSetting);
 
 				try
 				{

@@ -23,7 +23,7 @@
 		var profileUsername = '@Model.Username';
 		if (currentUsername == profileUsername) {
 			$('#add_friend').prop('disabled', true);
-			var link1 = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+			var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Profile" }))';
 			var link2 = '@Url.Action("GetFirstLatestProfileActivity", "Settings", new { userID = @Model.UserID })';
 			$("#profile_topic").load(link1, function () { updateVisit(); });
 			$("#activity").load(link2);
@@ -53,7 +53,7 @@
 				$('#add_friend').prop('disabled', true);
 				var link1 = '@Html.ActionLink("Start chat", "GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @Model.UserID }, new { id = "chat_link" })';
 				var link2 = '@Url.Action("GetFirstLatestProfileActivity", "Settings", new { userID = @Model.UserID })';
-				var link3 = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+				var link3 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Profile" }))';
 				$("#start_chat").html(link1);
 				$("#activity").load(link2);
 				$("#profile_topic").load(link3, function () { updateVisit(); });
@@ -113,7 +113,7 @@
 						type: 'GET',
 						success: function (result) {
 							if (result.Publicity == "Everyone" || result.Publicity == "FriendsOfFriends") {
-								link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+								link = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Profile" }))';
 								$("#profile_topic").load(link, function () { updateVisit(); });
 							}
 						}
@@ -128,7 +128,7 @@
 						type: 'GET',
 						success: function (result) {
 							if (result.Publicity == "Everyone") {
-								link = '@Url.Action("GetTopicForProfile", "Topic", new { profileID = @Model.ID })';
+								link = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Profile" }))';
 								$("#profile_topic").load(link, function () { updateVisit(); });
 							}
 						}

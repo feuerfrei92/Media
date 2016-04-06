@@ -1,0 +1,25 @@
+﻿@model List<WebMediaClient.Models.MessageViewModel>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="row">
+					<div class="col-md-5">
+						@Html.Action("GetAuthorInfo", "User", new { userID = @item.SenderID })
+					</div>
+					<div class="col-md-4">
+						@Html.Raw(item.Text)
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-3">
+		<a href="@Url.Action("ChatRoom", "Profile", new { userID = ViewBag.User.ID })">Join chat room</a>
+	</div>
+</div>
+

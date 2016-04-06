@@ -108,6 +108,7 @@ namespace Services.Controllers
 				DateCreated = DateTime.Now,
 				IsProfileTopic = true,
 				IsInterestTopic = false,
+				TopicType = "Profile",
 			};
 
 			_nest.Topics.Create(newTopic);
@@ -474,6 +475,7 @@ namespace Services.Controllers
 				Text = cleanText,
 				DateCreated = DateTime.Now,
 				DiscussionGuid = message.DiscussionGuid,
+				IsRead = false,
 			};
 
 			_nest.Messages.Create(newMessage);
@@ -499,7 +501,19 @@ namespace Services.Controllers
 		{
 			var messages = _nest.Messages.All().Where(m => (m.SenderID == senderID && m.ReceiverID == receiverID) || (m.SenderID == receiverID && m.ReceiverID == senderID))
 				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionGuid = m.DiscussionGuid })
-				.OrderByDescending(m => m.DateCreated)
+				.OrderBy(m => m.DateCreated)
+				.ToList();
+
+			return Ok(messages);
+		}
+
+		[HttpGet]
+		[Authorize]
+		public IHttpActionResult GetUnreadMessages(int receiverID)
+		{
+			var messages = _nest.Messages.All().Where(m => m.ReceiverID == receiverID && !m.IsRead )
+				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionGuid = m.DiscussionGuid })
+				.OrderBy(m => m.DateCreated)
 				.ToList();
 
 			return Ok(messages);
@@ -511,10 +525,32 @@ namespace Services.Controllers
 		{
 			var messages = _nest.Messages.All().Where(m => m.DiscussionGuid == discussionGuid)
 				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionGuid = m.DiscussionGuid })
-				.OrderByDescending(m => m.DateCreated)
+				.OrderBy(m => m.DateCreated)
 				.ToList();
 
 			return Ok(messages);
+		}
+
+		[HttpPut]
+		[Authorize]
+		public IHttpActionResult ReadMessages(int senderID, int receiverID)
+		{
+			try
+			{
+				var messages = _nest.Messages.All().Where(m => m.SenderID == senderID && m.ReceiverID == receiverID && !m.IsRead).ToList();
+				foreach (Message m in messages)
+				{
+					m.IsRead = true;
+					_nest.Messages.Update(m);
+				}
+				_nest.SaveChanges();
+
+				return Ok();
+			}
+			catch
+			{
+				throw;
+			}
 		}
 
 		private bool DoesMatchCriteria(ProfileModel profile, ProfileCriteria criteria)

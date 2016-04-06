@@ -22,6 +22,7 @@ namespace WebMediaClient.Converters
 				DateModified = topicModel.DateModified,
 				IsProfileTopic = topicModel.IsProfileTopic,
 				IsInterestTopic = topicModel.IsInterestTopic,
+				TopicType = topicModel.TopicType,
 			};
 
 			return viewModel;
@@ -39,6 +40,7 @@ namespace WebMediaClient.Converters
 				DateModified = viewModel.DateModified,
 				IsProfileTopic = viewModel.IsProfileTopic,
 				IsInterestTopic = viewModel.IsInterestTopic,
+				TopicType = viewModel.TopicType,
 			};
 
 			return topicModel;

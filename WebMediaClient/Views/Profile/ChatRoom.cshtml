@@ -69,6 +69,39 @@
 				});
 			}
 		}
+
+		chat.client.broadcastGroupMessage = function (message, senderID, groupName) {
+			if ($("div[groupname=" + groupName + "]").length == 0) {
+				var link = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { discussionGuid = "oooo" }))';
+				link = link.replace("oooo", groupName);
+				var chatWindow = $("#chat_window").clone(true);
+				chatWindow.attr("groupname", groupName);
+				chatWindow.append("<div class=div_messages></div>");
+				chatWindow.append("<textarea class=group_message_text cols=25 rows=5></textarea><button class=send_group_message>Send</button><button class=add_member>Add member</button>");
+				$("#chat_container").append(chatWindow);
+				var textareas = $(".message_text").length;
+				$(".message_text").last().attr("id", "textarea_" + textareas.toString());
+				$(".div_messages").last().load(link);
+			}
+		}
+
+		chat.client.openWindow = function (groupName) {
+			var link = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { discussionGuid = "oooo" }))';
+			link = link.replace("oooo", groupName);
+			var chatWindow = $("#chat_window").clone(true);
+			chatWindow.attr("groupname", groupName);
+			chatWindow.append("<div class=div_messages></div>");
+			chatWindow.append("<textarea class=group_message_text cols=25 rows=5></textarea><button class=send_group_message>Send</button><button class=add_member>Add member</button>");
+			$("#chat_container").append(chatWindow);
+			var textareas = $(".message_text").length;
+			$(".message_text").last().attr("id", "textarea_" + textareas.toString());
+			$(".div_messages").last().load(link);
+		}
+
+		chat.client.showWarning = function (alertMessage) {
+			alert(alertMessage);
+		}
+
 		$.connection.hub.start(function () {
 			chat.server.getAllOnlineUsers();
 
@@ -97,6 +130,33 @@
 					})
 				$(parentDiv).find(".message_text").first().val('');
 			});
+
+			$(document).on("click", ".add_member", function () {
+				window.open('@Url.Action("PickFriends", "Profile", new { userID = ViewBag.User.ID })');
+				var memberID = $("#add_members_div").find(".hidden").first().text();
+				var parentDiv = $(this).parent();
+				var groupName = $(parentDiv).attr("groupname");
+				chat.server.addGroupMember(memberID, groupName);
+			})
+
+			$(document).on("mouseover", ".message_text", function () {
+				var parentDiv = $(this).parent();
+				var senderID = parseInt($(parentDiv).find(".hidden").first().text());
+				var link = '@Html.Raw(Url.Action("ReadMessages", "Profile", new { senderID = -1, receiverID = ViewBag.User.ID }))';
+				link = link.replace("-1", senderID);
+				$.ajax
+				({
+					url: link,
+					dataType: 'json',
+					type: 'PUT',
+					success: function (data) {
+					}
+				})
+			});
+
+			$("#create_group").click(function () {
+				chat.server.CreateGroup();
+			});
 		});
 	})
 
@@ -114,7 +174,7 @@
 		$(".div_messages").last().load(link);
 		//CKEDITOR.replace("textarea_" + textareas.toString());
 	}
-	</script>
+</script>
 	<title>Chat room</title>
 </head>
 <body>
@@ -129,6 +189,13 @@
 		<div id="chat_container" class="col-md-8">
 			<div id="chat_window">
 			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-8">
+			<button id="create_group" class="btn btn-default">Create group chat</button>
+		</div>
+		<div class="add_members_div" hidden="hidden">
 		</div>
 	</div>
 </body>

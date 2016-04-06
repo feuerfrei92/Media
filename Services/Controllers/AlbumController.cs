@@ -82,6 +82,7 @@ namespace Services.Controllers
 				DateCreated = DateTime.Now,
 				IsProfileTopic = false,
 				IsInterestTopic = false,
+				TopicType = "Album",
 			};
 
 			_nest.Topics.Create(newTopic);
@@ -237,6 +238,37 @@ namespace Services.Controllers
 			};
 
 			_nest.Photos.Create(newPhoto);
+
+			var newTopic = new Topic
+			{
+				Name = string.Concat(album.Name, "_", album.Name),
+				SectionID = photo.ID,
+				AuthorID = album.OwnerID,
+				DateCreated = DateTime.Now,
+				IsProfileTopic = false,
+				IsInterestTopic = false,
+				TopicType = "Photo",
+			};
+
+			_nest.Topics.Create(newTopic);
+
+			var newSetting = new Setting
+			{
+				OwnerID = photo.ID,
+				OwnerType = "Photo",
+				Publicity = "Everyone",
+			};
+
+			_nest.Settings.Create(newSetting);
+
+			var newTopicSetting = new Setting
+			{
+				OwnerID = newTopic.ID,
+				OwnerType = "Topic",
+				Publicity = "Everyone",
+			};
+
+			_nest.Settings.Create(newTopicSetting);
 
 			try
 			{

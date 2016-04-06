@@ -97,6 +97,7 @@ namespace Services.Controllers
 				DateCreated = DateTime.Now,
 				IsProfileTopic = false,
 				IsInterestTopic = false,
+				TopicType = "Section",
 			};
 
 			_nest.Topics.Create(newTopic);
@@ -115,6 +116,7 @@ namespace Services.Controllers
 			topic.AuthorID = newTopic.AuthorID;
 			topic.IsProfileTopic = newTopic.IsProfileTopic;
 			topic.IsInterestTopic = newTopic.IsInterestTopic;
+			topic.TopicType = newTopic.TopicType;
 
 			return Ok(topic);
 		}
@@ -148,7 +150,6 @@ namespace Services.Controllers
 
 			return Ok();
 		}
-
 		[HttpGet]
 		[Authorize]
 		public IHttpActionResult GetTopicByID(int ID)
@@ -165,36 +166,35 @@ namespace Services.Controllers
 
 		[HttpGet]
 		[Authorize]
+		public IHttpActionResult GetTopicByOwnerAndType(int ownerID, string topicType)
+		{
+			if (topicType != "Section" || topicType != "Profile" || topicType != "Interest" || topicType != "Album" || topicType != "Video" || topicType != "Photo")
+				throw new Exception("Invalid topic type");
+
+			TopicModel topic = _nest.Topics.All().Where(t => t.SectionID == ownerID && t.TopicType == topicType).Select(BuildTopicModel).FirstOrDefault();
+
+			if (topic == null)
+			{
+				return BadRequest("No topic with the specified ID exists.");
+			}
+
+			return Ok(topic);
+		}
+
+		[HttpGet]
+		[Authorize]
 		public IHttpActionResult GetTopicsBySectionID(int sectionID)
 		{
-			List<TopicModel> topics = _nest.Topics.All().Where(t => t.SectionID == sectionID && t.IsProfileTopic == false && t.IsInterestTopic == false).Select(BuildTopicModel).ToList();
+			List<TopicModel> topics = _nest.Topics.All().Where(t => t.SectionID == sectionID && t.TopicType == "Section").Select(BuildTopicModel).ToList();
 
 			return Ok(topics);
 		}
 
 		[HttpGet]
 		[Authorize]
-		public IHttpActionResult GetTopicForProfile(int profileID)
-		{
-			TopicModel topic = _nest.Topics.All().Where(t => t.SectionID == profileID && t.IsProfileTopic == true).Select(BuildTopicModel).FirstOrDefault();
-
-			return Ok(topic);
-		}
-
-		[HttpGet]
-		[Authorize]
-		public IHttpActionResult GetTopicForInterest(int interestID)
-		{
-			TopicModel topic = _nest.Topics.All().Where(t => t.SectionID == interestID && t.IsInterestTopic == true).Select(BuildTopicModel).FirstOrDefault();
-
-			return Ok(topic);
-		}
-
-		[HttpGet]
-		[Authorize]
 		public IHttpActionResult GetTopicsByAuthorID(int authorID)
 		{
-			List<TopicModel> topics = _nest.Topics.All().Where(t => t.AuthorID == authorID).Select(BuildTopicModel).ToList();
+			List<TopicModel> topics = _nest.Topics.All().Where(t => t.AuthorID == authorID && t.TopicType == "Section").Select(BuildTopicModel).ToList();
 
 			return Ok(topics);
 		}
@@ -203,7 +203,7 @@ namespace Services.Controllers
 		[Authorize]
 		public IHttpActionResult GetTopicsByAuthorIDAndSectionID(int authorID, int sectionID)
 		{
-			List<TopicModel> topics = _nest.Topics.All().Where(t => t.AuthorID == authorID && t.SectionID == sectionID).Select(BuildTopicModel).ToList();
+			List<TopicModel> topics = _nest.Topics.All().Where(t => t.AuthorID == authorID && t.SectionID == sectionID && t.TopicType == "Section").Select(BuildTopicModel).ToList();
 
 			return Ok(topics);
 		}
@@ -212,7 +212,7 @@ namespace Services.Controllers
 		[Authorize]
 		public IHttpActionResult SearchByTopicName(string name)
 		{
-			List<TopicModel> topics = _nest.Topics.All().Where(t => t.Name.Contains(name)).Select(BuildTopicModel).ToList();
+			List<TopicModel> topics = _nest.Topics.All().Where(t => t.Name.Contains(name) && t.TopicType == "Section").Select(BuildTopicModel).ToList();
 
 			return Ok(topics);
 		}

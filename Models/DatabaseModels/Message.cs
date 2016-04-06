@@ -13,7 +13,6 @@ namespace Models.DatabaseModels
 		public int ID { get; set; }
 		[Required]
 		public int SenderID { get; set; }
-		[Required]
 		public int ReceiverID { get; set; }
 		[Required]
 		public string Text { get; set; }
@@ -21,5 +20,6 @@ namespace Models.DatabaseModels
 		public DateTime DateCreated { get; set; }
 		[Required]
 		public Guid DiscussionGuid { get; set; }
+		public bool IsRead { get; set; }
 	}
 }

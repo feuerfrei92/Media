@@ -416,6 +416,41 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult PickFriends(int userID)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Profile/GetAllFriends?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				//var profiles = await HttpClientBuilder<ProfileModel>.GetListAsync(url, token);
+				var profiles = Task.Run<List<ProfileModel>>(() => HttpClientBuilder<ProfileModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<ProfileViewModel>();
+				foreach (ProfileModel p in profiles)
+				{
+					viewModels.Add(ProfileConverter.FromBasicToVisual(p));
+				}
+				IEnumerable<SelectListItem> membersList =
+					from vm in viewModels
+					select new SelectListItem
+					{
+						Value = vm.ID.ToString(),
+						Text = vm.Name,
+					};
+
+				ViewBag.Friends = membersList.ToList();
+				return View();
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "PickFriends");
+				return View("Error", info);
+			}
+		}
+
 		public async Task<ActionResult> GetCommonFriends(int userID, int targetID)
 		{
 			try
@@ -515,6 +550,58 @@ namespace WebMediaClient.Controllers
 			{
 				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "GetMessages");
 				return View("Error", info);
+			}
+		}
+
+		public async Task<ActionResult> GetUnreadMessages(int receiverID)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Profile/GetUnreadMessages?receiverID={0}", receiverID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var messages = await HttpClientBuilder<MessageModel>.GetListAsync(url, token);
+				var viewModels = new List<MessageViewModel>();
+				foreach (MessageModel m in messages)
+				{
+					viewModels.Add(MessageConverter.FromBasicToVisual(m));
+				}
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				return View(viewModels);
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "GetUnreadMessages");
+				return View("Error", info);
+			}
+		}
+
+		[HttpPut]
+		public async Task<ActionResult> ReadMessages(int senderID, int receiverID)
+		{
+			try
+			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != senderID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				string url = string.Format("http://localhost:8080/api/Profile/CreateMessage?SenderID={0}&ReceiverID={1}", senderID, receiverID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 

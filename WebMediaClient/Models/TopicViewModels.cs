@@ -19,6 +19,7 @@ namespace WebMediaClient.Models
 		public DateTime? DateModified { get; set; }
 		public bool IsProfileTopic { get; set; }
 		public bool IsInterestTopic { get; set; }
+		public string TopicType { get; set; }
 	}
 
 	public class TopicCriteriaViewModel

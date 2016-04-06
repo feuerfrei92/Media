@@ -99,6 +99,7 @@ namespace Services.Controllers
 				DateCreated = DateTime.Now,
 				IsProfileTopic = false,
 				IsInterestTopic = true,
+				TopicType = "Interest",
 			};
 
 			_nest.Topics.Create(newTopic);

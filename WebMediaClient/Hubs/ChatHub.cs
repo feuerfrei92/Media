@@ -12,9 +12,6 @@ namespace WebMediaClient.Chat
 {
 	public class ChatHub : Hub
 	{
-		//private readonly static ConnectionProvider _connections = 
-		//	new ConnectionProvider();
-
 		public void Send(string senderID, string receiverID, string message)
 		{
 			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.User.ID.ToString() == receiverID).FirstOrDefault();
@@ -26,20 +23,17 @@ namespace WebMediaClient.Chat
 			}
 			else
 				Clients.Caller.broadcastMessage(message, senderID, receiverID, senderID);
+		}
 
-
-			//foreach (var connectionId in _connections.GetConnections(userID))
-			//{
-			//	Clients.Client(connectionId).broadcastMessage(message);
-			//}
+		public void SendToGroup(string senderID, string groupName, string message)
+		{
+			Clients.Group(groupName).broadcastGroupMessage(message, senderID, groupName);
 		}
 
 		public override Task OnConnected()
 		{
 			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.SessionID == HttpContext.Current.Request.Cookies["ASP.NET_SessionId"].Value).FirstOrDefault();
-			//ChatUser.RemoveOnlineUser("", chatUser.User.ID);
 			chatUser.ConnectionID = Context.ConnectionId;
-			//ChatUser.AddOnlineUser(chatUser.User, chatUser.ConnectionID, chatUser.SessionID);
 			return Clients.All.joined(chatUser.User.ID.ToString());
 		}
 
@@ -55,35 +49,27 @@ namespace WebMediaClient.Chat
 			Clients.Caller.onlineStatus(ChatUser.onlineUsers.Select(c => c.User.ID.ToString()).ToList());
 		}
 
-		//	public override Task OnConnected()
-		//	{
-		//		string username = Context.QueryString["id"];
+		public void CreateGroup()
+		{
+			string groupName = Guid.NewGuid().ToString();
+			Groups.Add(Context.ConnectionId, groupName);
+			Clients.Group(groupName).openWindow(groupName);
+		}
 
-		//		_connections.Add(username, Context.ConnectionId);
-
-		//		return base.OnConnected();
-		//	}
-
-		//	public override Task OnDisconnected(bool stopCalled)
-		//	{
-		//		string username = Context.QueryString["id"];
-
-		//		_connections.Remove(username, Context.ConnectionId);
-
-		//		return base.OnDisconnected(stopCalled);
-		//	}
-
-		//	public override Task OnReconnected()
-		//	{
-		//		string username = Context.QueryString["id"];
-
-		//		if (!_connections.GetConnections(username).Contains(Context.ConnectionId))
-		//		{
-		//			_connections.Add(username, Context.ConnectionId);
-		//		}
-
-		//		return base.OnReconnected();
-		//	}
-		//}
+		public void AddGroupMember(string memberID, string groupName)
+		{
+			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.User.ID.ToString() == memberID).FirstOrDefault();
+			if (chatUser != null)
+			{
+				string connectionID = chatUser.ConnectionID;
+				Groups.Add(connectionID, groupName);
+				Clients.Client(connectionID).openWindow(groupName);
+			}
+			else
+			{
+				string alertMessage = "You can only add online users";
+				Clients.Caller.showWarning(alertMessage);
+			}
+		}
 	}
 }

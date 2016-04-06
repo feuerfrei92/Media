@@ -1,0 +1,25 @@
+﻿<script type="text/javascript">
+	function selectMembers() {
+		if (window.opener != null && !window.opener.closed) {
+			var label = window.opener.document.createElement("label");
+			label.class = "hidden";
+			label.innerHTML = $("#listbox_members").val();
+			window.opener.document.getElementById("add_members_div").appendChild(label);
+		}
+		window.close();
+	}
+</script>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@Html.ListBox("Select members", (List<SelectListItem>)ViewBag.Friends, new { @id = "listbox_members"})
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-8">
+		<button id="ok_button" class="btn btn-default" onclick="selectMembers()">OK</button>
+	</div>
+</div>
+

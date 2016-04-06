@@ -176,6 +176,29 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetTopicByOwnerAndType(int ownerID, string topicType, int? page = null)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Topic/GetTopicByOwnerAndType?OwnerID={0}&TopicType={1}", ownerID, topicType);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
+				var viewModel = TopicConverter.FromBasicToVisual(topic);
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				ViewBag.Page = page;
+				return View(viewModel);
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetTopicByID");
+				return View("Error", info);
+			}
+		}
+
 		public ActionResult GetTopicsBySectionID(int sectionID, int? page = null)
 		{
 			try
@@ -234,58 +257,6 @@ namespace WebMediaClient.Controllers
 			catch (Exception ex)
 			{
 				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetTopicsBySectionIDAndAuthorID");
-				return View("Error", info);
-			}
-		}
-
-		public ActionResult GetTopicForProfile(int profileID)
-		{
-			try
-			{
-				if (Request.UrlReferrer == null)
-					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
-
-				string url = string.Format("http://localhost:8080/api/Topic/GetTopicForProfile?ProfileID={0}", profileID);
-				string token = "";
-				if (HttpContext.Session["token"] != null)
-					token = HttpContext.Session["token"].ToString();
-				else
-					token = null;
-				//var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
-				var topic = Task.Run<TopicModel>(() => HttpClientBuilder<TopicModel>.GetAsync(url, token)).Result;
-				var viewModel = TopicConverter.FromBasicToVisual(topic);
-				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
-				return View(viewModel);
-			}
-			catch (Exception ex)
-			{
-				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetTopicForProfile");
-				return View("Error", info);
-			}
-		}
-
-		public ActionResult GetTopicForInterest(int interestID)
-		{
-			try
-			{
-				if (Request.UrlReferrer == null)
-					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
-
-				string url = string.Format("http://localhost:8080/api/Topic/GetTopicForInterest?InterestID={0}", interestID);
-				string token = "";
-				if (HttpContext.Session["token"] != null)
-					token = HttpContext.Session["token"].ToString();
-				else
-					token = null;
-				//var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
-				var topic = Task.Run<TopicModel>(() => HttpClientBuilder<TopicModel>.GetAsync(url, token)).Result;
-				var viewModel = TopicConverter.FromBasicToVisual(topic);
-				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
-				return View(viewModel);
-			}
-			catch (Exception ex)
-			{
-				HandleErrorInfo info = new HandleErrorInfo(ex, "Topic", "GetTopicForInterest");
 				return View("Error", info);
 			}
 		}

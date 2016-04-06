@@ -24,5 +24,7 @@ namespace Models
 		public bool IsProfileTopic { get; set; }
 		[Required]
 		public bool IsInterestTopic { get; set; }
+		[Required]
+		public string TopicType { get; set; }
 	}
 }
