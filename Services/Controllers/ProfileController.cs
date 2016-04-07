@@ -122,15 +122,6 @@ namespace Services.Controllers
 
 			_nest.Settings.Create(newSetting);
 
-			var newTopicSetting = new Setting
-			{
-				OwnerID = newTopic.ID,
-				OwnerType = "Topic",
-				Publicity = "Everyone",
-			};
-
-			_nest.Settings.Create(newTopicSetting);
-
 			try
 			{
 				_nest.SaveChanges();
@@ -474,7 +465,7 @@ namespace Services.Controllers
 				ReceiverID = receiverID,
 				Text = cleanText,
 				DateCreated = DateTime.Now,
-				DiscussionGuid = message.DiscussionGuid,
+				DiscussionID = message.DiscussionID,
 				IsRead = false,
 			};
 
@@ -500,7 +491,7 @@ namespace Services.Controllers
 		public IHttpActionResult GetMessages(int senderID, int receiverID)
 		{
 			var messages = _nest.Messages.All().Where(m => (m.SenderID == senderID && m.ReceiverID == receiverID) || (m.SenderID == receiverID && m.ReceiverID == senderID))
-				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionGuid = m.DiscussionGuid })
+				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionID = m.DiscussionID })
 				.OrderBy(m => m.DateCreated)
 				.ToList();
 
@@ -512,7 +503,7 @@ namespace Services.Controllers
 		public IHttpActionResult GetUnreadMessages(int receiverID)
 		{
 			var messages = _nest.Messages.All().Where(m => m.ReceiverID == receiverID && !m.IsRead )
-				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionGuid = m.DiscussionGuid })
+				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionID = m.DiscussionID })
 				.OrderBy(m => m.DateCreated)
 				.ToList();
 
@@ -521,10 +512,10 @@ namespace Services.Controllers
 
 		[HttpGet]
 		[Authorize]
-		public IHttpActionResult GetDiscussion(Guid discussionGuid)
+		public IHttpActionResult GetDiscussion(int discussionID)
 		{
-			var messages = _nest.Messages.All().Where(m => m.DiscussionGuid == discussionGuid)
-				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionGuid = m.DiscussionGuid })
+			var messages = _nest.Messages.All().Where(m => m.DiscussionID == discussionID)
+				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionID = m.DiscussionID })
 				.OrderBy(m => m.DateCreated)
 				.ToList();
 
@@ -551,6 +542,84 @@ namespace Services.Controllers
 			{
 				throw;
 			}
+		}
+
+		[HttpPost]
+		[Authorize]
+		public IHttpActionResult CreateGroup(string discussionGuid)
+		{
+			Guid guid = Guid.Parse(discussionGuid);
+
+			var newDiscussion = new Discussion
+			{
+				DiscussionGuid = guid,
+			};
+
+			_nest.Discussions.Create(newDiscussion);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
+		[HttpDelete]
+		[Authorize]
+		public IHttpActionResult DeleteGroup(int ID)
+		{
+			Discussion discussion = _nest.Discussions.All().Where(d => d.ID == ID).FirstOrDefault();
+
+			if (discussion == null)
+			{
+				return BadRequest("No such group exists.");
+			}
+
+			_nest.Discussions.Delete(discussion);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
+		[HttpGet]
+		[Authorize]
+		public IHttpActionResult GetGroupByID(int ID)
+		{
+			var group = _nest.Discussions.All().Where(d => d.ID == ID).Select(d => new DiscussionModel { ID = d.ID, DiscussionGuid = d.DiscussionGuid }).FirstOrDefault();
+
+			if (group == null)
+			{
+				return BadRequest("No group with the specified guid exists.");
+			}
+
+			return Ok(group);
+		}
+
+		[HttpGet]
+		[Authorize]
+		public IHttpActionResult GetProfilesForGroup(int groupID)
+		{
+			var discussionists = _nest.Discussionists.All().Where(d => d.DiscussionID == groupID).ToList();
+			List<ProfileModel> profiles = new List<ProfileModel>();
+			foreach (Discussionist dis in discussionists)
+			{
+				var profile = _nest.Profiles.All().Where(p => p.UserID == dis.UserID).Select(BuildProfileModel).FirstOrDefault();
+				profiles.Add(profile);
+			}
+			return Ok(profiles);
 		}
 
 		private bool DoesMatchCriteria(ProfileModel profile, ProfileCriteria criteria)

@@ -5,16 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WebMediaClient.Models
+namespace Services.Models
 {
-	public class MessageViewModel
+	public class DiscussionistInfo
 	{
-		public int ID { get; set; }
-		public int SenderID { get; set; }
-		public int ReceiverID { get; set; }
 		[Required]
-		public string Text { get; set; }
-		public DateTime DateCreated { get; set; }
+		public int ID { get; set; }
+		[Required]
 		public int DiscussionID { get; set; }
+		[Required]
+		public int UserID { get; set; }
 	}
 }

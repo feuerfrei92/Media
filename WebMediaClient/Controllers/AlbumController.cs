@@ -144,6 +144,25 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetAlbumByIDRaw(int ID)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Album/GetAlbumByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var album = await HttpClientBuilder<AlbumModel>.GetAsync(url, token);
+				return Json(new { ID = album.ID, Name = album.Name, OwnerID = album.OwnerID }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
+		}
+
 		public ActionResult GetAlbumsForProfile(int profileID)
 		{
 			try
@@ -365,6 +384,25 @@ namespace WebMediaClient.Controllers
 			{
 				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "GetPhotoByID");
 				return View("Error", info);
+			}
+		}
+
+		public async Task<ActionResult> GetPhotoByIDRaw(int ID)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Album/GetPhotoByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var photo = await HttpClientBuilder<PhotoModel>.GetAsync(url, token);
+				return Json(new { ID = photo.ID, OwnerID = photo.AlbumID }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 

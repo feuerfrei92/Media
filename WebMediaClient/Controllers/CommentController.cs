@@ -182,6 +182,41 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult GetCommentsByTopicWithOwnerAndType(int topicID, int ownerID, string topicType, int? page = null)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Comment/GetCommentsByTopicID?TopicID={0}", topicID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				//var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
+				var comments = Task.Run<List<CommentModel>>(() => HttpClientBuilder<CommentModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<CommentViewModel>();
+				foreach (CommentModel c in comments)
+				{
+					viewModels.Add(CommentConverter.FromBasicToVisual(c));
+				}
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				ViewBag.TopicID = topicID;
+				ViewBag.OwnerID = ownerID;
+				ViewBag.TopicType = topicType;
+				ViewBag.IP = Request.UserHostAddress;
+
+				if (page == null)
+					return View(viewModels.ToPagedList(1, 5));
+				else
+					return View(viewModels.ToPagedList(page.Value, 5));
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "GetCommentsByTopicID");
+				return View("Error", info);
+			}
+		}
+
 		public async Task<ActionResult> GetCommentsByAuthorID(int authorID, int? page = null)
 		{
 			try

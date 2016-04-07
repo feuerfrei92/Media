@@ -1,0 +1,155 @@
+﻿@model PagedList.IPagedList<WebMediaClient.Models.CommentViewModel>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript">
+	window.addEventListener("load", function () { getTopic(); }, false);
+
+	function getTopic() {
+		$.ajax
+		({
+			url: '@Url.Action("GetTopicByIDRaw", "Topic", new { ID = @ViewBag.TopicID})',
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				addUpdates(data.AuthorID);
+			}
+		})
+	}
+
+	function addUpdates(id) {
+		var currentID = '@ViewBag.User.ID';
+		var divs3 = document.getElementsByClassName("col-md-3");
+		var divs2 = document.getElementsByClassName("delete_buttons");
+		var labels = document.getElementsByClassName("label-info");
+		var primaries = document.getElementsByClassName("label-primary");
+		for (i = 0; i < divs3.length; i++) {
+			var div3 = divs3[i];
+			var div2 = divs2[i];
+			var label = labels[i];
+			var primary = primaries[i];
+			var userID = parseInt(label.textContent);
+			var commentID = parseInt(primary.textContent);
+			if (currentID == id) {
+				var buttonEdit = document.createElement("button");
+				var topicID = '@ViewBag.TopicID';
+				buttonEdit.setAttribute("class", "btn btn-default");
+				buttonEdit.setAttribute("onclick", "updateComment(\"" + commentID + "\", \"" + topicID + "\", \"" + id + "\")");
+				buttonEdit.innerHTML = "Edit";
+				div3.appendChild(buttonEdit);
+				var buttonDelete = document.createElement("button");
+				buttonEdit.setAttribute("class", "btn btn-default");
+				buttonEdit.setAttribute("onclick", "deleteComment(\"" + commentID + "\", \"" + buttonDelete + "\")");
+				buttonEdit.innerHTML = "Edit";
+				div2.appendChild(buttonEdit);
+			}
+			else {
+				if (currentID == userID) {
+					var buttonEdit = document.createElement("button");
+					var topicID = '@ViewBag.TopicID';
+					buttonEdit.setAttribute("class", "btn btn-default");
+					buttonEdit.setAttribute("onclick", "updateComment(\"" + commentID + "\", \"" + topicID + "\", \"" + userID + "\")");
+					buttonEdit.innerHTML = "Edit";
+					div3.appendChild(buttonEdit);
+				}
+			}
+		}
+	}
+
+	function quoteComment(id) {
+		var link = '@Url.Action("GetCommentByID", "Comment", new { ID = -1 })';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				CKEDITOR.instances.comment_text.setData(data.Text);
+			},
+		})
+	}
+
+	function updateComment(id, topicID, userID) {
+		var currentUserID = '@ViewBag.User.ID';
+		if (userID != currentUserID)
+			alert("Don't even try it!");
+		else {
+			var link = '@Html.Raw(Url.Action("UpdateComment", "Comment", new { ID = -1, TopicID = -2 }))';
+			link = link.replace("-1", id);
+			link = link.replace("-2", topicID);
+			window.location.href = link;
+		}
+	}
+
+	function deleteComment(id, elem) {
+		if (elem != null)
+		{
+			alert("Invalid action!");
+		}
+		else
+		{
+			var link = '@Url.Action("DeleteComment", "Comment", new { ID = -1 })';
+			link = link.replace("-1", id);
+			$.ajax
+			({
+				url: link,
+				dataType: 'json',
+				type: 'DELETE',
+				success: function (data) {
+					alert("Successfully deleted");
+				},
+			})
+		}
+	}
+</script>
+
+<script src="~/ckeditor/ckeditor.js"></script>
+
+<div class="row">
+	<div class="col-md-8">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="row">
+					<div class="col-md-5">
+						@Html.Action("GetAuthorInfo", "User", new { userID = @item.AuthorID });
+						<label class="label-primary" hidden="hidden">@item.ID</label>
+						<label class="label-info" hidden="hidden">@item.AuthorID</label>
+					</div>
+					<div class="col-md-4">
+						@if (item.Name != null)
+						{
+							@Html.TextBoxFor(i => item.Name, new { @class = "form-control input-lg" })
+						}
+					</div>
+					<div class="col-md-4">
+						@Html.Raw(item.Text)
+						@*@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })*@
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-2">
+						<button class="btn btn-group" onclick="@("quoteComment(" + @Html.Raw(Json.Encode(item.ID)) + ")")">Quote</button>
+					</div>
+					<div class="col-md-3">
+					</div>
+					<div class="delete_buttons">
+					</div>
+				</div>
+			}
+		</div>
+	</div>
+</div>
+<div class="row">
+	<label id="ip_text" class="label-default">@ViewBag.IP</label>
+</div>
+<div class="row">
+	Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+	@*@Html.PagedListPager(Model, page => Url.Action("GetCommentsByTopicID",
+		new { topicID = @ViewBag.TopicID, page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "comments", OnSuccess = "replaceTexts" }))*@
+	@Html.PagedListPager(Model, page => Url.Action("GetTopicByOwnerAndType", "Topic",
+	new { OwnerID = @ViewBag.OwnerID, TopicType = @ViewBag.TopicType , page }))
+</div>
+

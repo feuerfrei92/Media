@@ -26,6 +26,8 @@ namespace Data
 		IRepository<Album> Albums { get; }
 		IRepository<Setting> Settings { get; }
 		IRepository<Message> Messages { get; }
+		IRepository<Discussion> Discussions { get; }
+		IRepository<Discussionist> Discussionists { get; }
 		void SaveChanges();
 	}
 }

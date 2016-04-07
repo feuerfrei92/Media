@@ -34,6 +34,8 @@ namespace Data
 		public virtual IDbSet<Album> Albums { get; set; }
 		public virtual IDbSet<Setting> Settings { get; set; }
 		public virtual IDbSet<Message> Messages { get; set; }
+		public virtual IDbSet<Discussion> Discussions { get; set; }
+		public virtual IDbSet<Discussionist> Discussionists { get; set; }
 
 		public new void SaveChanges()
 		{

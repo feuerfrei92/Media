@@ -10,6 +10,7 @@ namespace Models.DatabaseModels
 	public class Message
 	{
 		[Required]
+		[Key]
 		public int ID { get; set; }
 		[Required]
 		public int SenderID { get; set; }
@@ -18,8 +19,7 @@ namespace Models.DatabaseModels
 		public string Text { get; set; }
 		[Required]
 		public DateTime DateCreated { get; set; }
-		[Required]
-		public Guid DiscussionGuid { get; set; }
+		public int DiscussionID { get; set; }
 		public bool IsRead { get; set; }
 	}
 }

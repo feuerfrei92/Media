@@ -1,2 +1,183 @@
 ﻿@model WebMediaClient.Models.TopicViewModel
 
+<script type="text/javascript">
+	window.addEventListener("load", function () { updateVisit() }, false);
+
+	function updateVisit() {
+		$.ajax
+		({
+			url: '@Html.Raw(@Url.Action("UpdateVisit", "User", new { userID = @ViewBag.User.ID, topicID = @Model.ID }))',
+			data: { lastvisit: Date.now() },
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) {
+				getRoot();
+			},
+			error: function (xhr) {
+				getRoot();
+				if (xhr.status == 400) {
+					createVisit();
+				}
+			}
+		})
+	}
+
+	function createVisit() {
+		$.ajax
+		({
+			url: '@Html.Raw(@Url.Action("CreateVisit", "User", new { userID = @ViewBag.User.ID, topicID = @Model.ID }))',
+			data: { lastvisit: Date.now() },
+			dataType: 'json',
+			type: 'POST',
+			success: function (data) {
+				getRoot();
+			},
+		})
+	}
+
+	function addComment() {
+		//var hiddenID = document.getElementById("store_id");
+		//var id = hiddenID.value;
+		var text = CKEDITOR.instances.comment_text.getData();
+		text = text.replace(new RegExp('&lt;', 'g'), '<');
+		text = text.replace(new RegExp('&gt;', 'g'), '>');
+		var link = '@Html.Raw(@Url.Action("CreateComment", "Comment", new { topicID = @Model.ID, authorID = @ViewBag.User.ID }))';
+		//link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			data:
+				{
+					text: text,
+					datecreated: Date.now(),
+				},
+			type: 'POST',
+			success: function (data) {
+				var link = '@Html.Raw(Url.Action("GetCommentsByTopicWithOwnerAndType", "Comment", new { topicID = @Model.ID, ownerID = @Model.SectionID, topicType = @Model.TopicType }))';
+				$("#comments").empty();
+				$('#comments').load(link, function () { setIDs(); });
+				updateVisit();
+			},
+			error: function (xhr) {
+				var link = '@Html.Raw(Url.Action("GetCommentsByTopicWithOwnerAndType", "Comment", new { topicID = @Model.ID, ownerID = @Model.SectionID, topicType = @Model.TopicType }))';
+				$("#comments").empty();
+				$('#comments').load(link, function () { setIDs(); });
+			}
+		})
+	}
+	@*function getOwner() {
+		var topicType = '@Model.TopicType';
+		switch (topicType) {
+			case "Profile":
+				$.ajax
+			({
+				url: '@Url.Action("GetProfileByIDRaw", "Profile", new { ID = @Model.SectionID })',
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					var username = '@ViewBag.User.Username';
+					if (data.Username == username) {
+
+					}
+					$("#hidden_id").val(data.ID);
+					getProfileOwner(data.Username);
+				}
+			})
+			case "Interest":
+				$.ajax
+			({
+				url: '@Url.Action("GetInterestByIDRaw", "Interest", new { ID = @Model.SectionID })',
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					var userID = '@ViewBag.User.ID';
+					if (data.AuthorID == userID) {
+
+					}
+					$("#hidden_id").val(data.ID);
+					checkIsFollower(data.ID);
+				}
+			})
+			case "Album":
+				$.ajax
+			({
+				url: '@Url.Action("GetAlbumByIDRaw", "Album", new { ID = @Model.SectionID })',
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					var userID = '@ViewBag.User.ID';
+					if (data.OwnerID == userID) {
+
+					}
+					$("#hidden_id").val(data.ID);
+					getAlbumOwner(data.OwnerID);
+				}
+			})
+			case "Photo":
+				$.ajax
+			({
+				url: '@Url.Action("GetPhotoByIDRaw", "Album", new { ID = @Model.SectionID })',
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					var link = '@Url.Action("GetAlbumByIDRaw", "Album", new { ID = -1 })';
+					link = link.replace("-1", data.OwnerID);
+					$.ajax
+					({
+						url: link,
+						dataType: 'json',
+						type: 'GET',
+						success: function (result) {
+							var userID = '@ViewBag.User.ID';
+							if (result.OwnerID == userID) {
+
+							}
+							$("#hidden_id").val(result.ID);
+							getAlbumOwner(result.OwnerID);
+						}
+					});
+				}
+			})
+			case "Video":
+				$.ajax
+			({
+				url: '@Url.Action("GetVideoByIDRaw", "Video", new { ID = @Model.SectionID })',
+				dataType: 'json',
+				type: 'GET',
+				success: function (data) {
+					var userID = '@ViewBag.User.ID';
+					if (data.OwnerID == userID) {
+
+					}
+					$("#hidden_id").val(data.ID);
+					getVideoOwner(data.OwnerID);
+				}
+			})
+			default:
+				alert("Invalid type of topic");
+		}
+	}*@
+</script>
+
+<script src="~/ckeditor/ckeditor.js"></script>
+
+<h2>@Model.Name</h2>
+
+<div id="comments" class="form-group">
+	@Html.Action("GetCommentsByTopicWithOwnerAndType", "Comment", new { topicID = Model.ID, page = ViewBag.Page })
+</div>
+
+<div class="row">
+	<div class="col-md-8">
+		<textarea id="comment_text" class="form-control" cols="25" rows="5"></textarea>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-8">
+		<button id="add_comment" class="btn btn-default" onclick="addComment()">Reply</button>
+	</div>
+</div>
+<script>
+	CKEDITOR.replace("comment_text");
+</script>
+

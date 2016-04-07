@@ -101,6 +101,16 @@ namespace Data
 			get { return GetRepository<Message>();  }
 		}
 
+		public IRepository<Discussion> Discussions
+		{
+			get { return GetRepository<Discussion>();  }
+		}
+
+		public IRepository<Discussionist> Discussionists
+		{
+			get { return GetRepository<Discussionist>();  }
+		}
+
 		public void SaveChanges()
 		{
 			_context.SaveChanges();

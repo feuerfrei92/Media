@@ -96,15 +96,6 @@ namespace Services.Controllers
 
 			_nest.Settings.Create(newSetting);
 
-			var newTopicSetting = new Setting
-			{
-				OwnerID = newTopic.ID,
-				OwnerType = "Topic",
-				Publicity = "Everyone",
-			};
-
-			_nest.Settings.Create(newTopicSetting);
-
 			try
 			{
 				_nest.SaveChanges();
@@ -260,15 +251,6 @@ namespace Services.Controllers
 			};
 
 			_nest.Settings.Create(newSetting);
-
-			var newTopicSetting = new Setting
-			{
-				OwnerID = newTopic.ID,
-				OwnerType = "Topic",
-				Publicity = "Everyone",
-			};
-
-			_nest.Settings.Create(newTopicSetting);
 
 			try
 			{

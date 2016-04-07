@@ -16,6 +16,6 @@ namespace Services.Models
 		public string Text { get; set; }
 		[Required]
 		public DateTime DateCreated { get; set; }
-		public Guid DiscussionGuid { get; set; }
+		public int DiscussionID { get; set; }
 	}
 }

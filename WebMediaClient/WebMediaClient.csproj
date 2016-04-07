@@ -725,6 +725,7 @@
     <Content Include="Views\Profile\GetUnreadMessages.cshtml" />
     <Content Include="Views\Profile\PickFriends.cshtml" />
     <Content Include="Views\Topic\GetTopicByOwnerAndType.cshtml" />
+    <Content Include="Views\Comment\GetCommentsByTopicWithOwnerAndType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

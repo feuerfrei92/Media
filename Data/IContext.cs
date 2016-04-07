@@ -27,6 +27,8 @@ namespace Data
 		IDbSet<Album> Albums { get; set; }
 		IDbSet<Setting> Settings { get; set; }
 		IDbSet<Message> Messages { get; set; }
+		IDbSet<Discussion> Discussions { get; set; }
+		IDbSet<Discussionist> Discussionists { get; set; }
 		void SaveChanges();
 		DbSet<TEntity> Set<TEntity>() where TEntity : class;
 		DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : class;

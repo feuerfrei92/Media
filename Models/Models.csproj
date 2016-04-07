@@ -58,8 +58,10 @@
   <ItemGroup>
     <Compile Include="DatabaseModels\Album.cs" />
     <Compile Include="DatabaseModels\ApplicationUser.cs" />
+    <Compile Include="DatabaseModels\Discussionist.cs" />
     <Compile Include="DatabaseModels\Follower.cs" />
     <Compile Include="DatabaseModels\Friendship.cs" />
+    <Compile Include="DatabaseModels\Discussion.cs" />
     <Compile Include="DatabaseModels\Interest.cs" />
     <Compile Include="DatabaseModels\Membership.cs" />
     <Compile Include="DatabaseModels\Message.cs" />

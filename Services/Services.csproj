@@ -294,10 +294,12 @@
     <Compile Include="Models\AlbumModel.cs" />
     <Compile Include="Models\CodeModels.cs" />
     <Compile Include="Models\CommentCriteria.cs" />
+    <Compile Include="Models\DiscussionistInfo.cs" />
     <Compile Include="Models\FollowerInfo.cs" />
     <Compile Include="Models\FriendshipInfo.cs" />
     <Compile Include="Models\GenderCriterion.cs" />
     <Compile Include="Models\CommentModel.cs" />
+    <Compile Include="Models\DiscussionModel.cs" />
     <Compile Include="Models\InterestModel.cs" />
     <Compile Include="Models\MembershipInfo.cs" />
     <Compile Include="Models\MessageModel.cs" />

@@ -139,6 +139,25 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetVideoByIDRaw(int ID)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Video/GetVideoByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var video = await HttpClientBuilder<VideoModel>.GetAsync(url, token);
+				return Json(new { ID = video.ID, OwnerID = video.OwnerID }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
+		}
+
 		public async Task<ActionResult> GetVideosForOwner(int userID)
 		{
 			try

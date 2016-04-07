@@ -149,11 +149,6 @@ namespace Services.Controllers
 		[Authorize]
 		public IHttpActionResult DeleteUser(int ID)
 		{
-			if (!(ModelState.IsValid))
-			{
-				return BadRequest(ModelState);
-			}
-
 			User existingUser = _nest.Users.All().Where(u => u.ID == ID).FirstOrDefault();
 
 			if (existingUser == null)
@@ -327,6 +322,69 @@ namespace Services.Controllers
 			}
 
 			return Ok(users);
+		}
+
+		[HttpPost]
+		[Authorize]
+		public IHttpActionResult AddUserToGroup(int userID, int groupID)
+		{
+			var newDiscussionist = new Discussionist
+			{
+				DiscussionID = groupID,
+				UserID = userID,
+			};
+
+			_nest.Discussionists.Create(newDiscussionist);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
+		[HttpDelete]
+		[Authorize]
+		public IHttpActionResult RemoveUserFromGroup(int userID, int groupID)
+		{
+			Discussionist discussionist = _nest.Discussionists.All().Where(d => d.UserID == userID && d.DiscussionID == groupID).FirstOrDefault();
+
+			if (discussionist == null)
+			{
+				return BadRequest("No such member exists.");
+			}
+
+			_nest.Discussionists.Delete(discussionist);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
+		[HttpGet]
+		[Authorize]
+		public IHttpActionResult GetGroupsForUser(int userID)
+		{
+			var discussionists = _nest.Discussionists.All().Where(d => d.UserID == userID).ToList();
+			List<DiscussionModel> discussions = new List<DiscussionModel>();
+			foreach (Discussionist dis in discussionists)
+			{
+				var group = _nest.Discussions.All().Where(d => d.ID == dis.DiscussionID).Select(d => new DiscussionModel { ID = d.ID, DiscussionGuid = d.DiscussionGuid }).FirstOrDefault();
+				discussions.Add(group);
+			}
+			return Ok(discussions);
 		}
     }
 }

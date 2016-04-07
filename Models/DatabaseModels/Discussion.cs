@@ -7,16 +7,12 @@ using System.Threading.Tasks;
 
 namespace Models.DatabaseModels
 {
-	public class Setting
+	public class Discussion
 	{
 		[Required]
 		[Key]
 		public int ID { get; set; }
 		[Required]
-		public int OwnerID { get; set; }
-		[Required]
-		public string OwnerType { get; set; }
-		[Required]
-		public string Publicity { get; set; }
+		public Guid DiscussionGuid { get; set; }
 	}
 }

@@ -45,11 +45,13 @@
 				//	updateControls(data.Role, id);
 				var divs5 = document.getElementsByClassName("col-md-5");
 				var divs3 = document.getElementsByClassName("col-md-3");
+				var divs2 = document.getElementsByClassName("delete_buttons");
 				var labels = document.getElementsByClassName("label-info");
 				var primaries = document.getElementsByClassName("label-primary");
 				for (i = 0; i < divs5.length; i++) {
 					var div5 = divs5[i];
 					var div3 = divs3[i];
+					var div2 = divs2[i];
 					var label = labels[i];
 					var primary = primaries[i];
 					var userID = parseInt(label.textContent);
@@ -66,11 +68,9 @@
 					var dropdownMenu = document.createElement("ul");
 					dropdownMenu.setAttribute("class", "dropdown-menu");
 					if (data.Role == "Regular" || data.Role == "Admin" || data.Role == "Mod") {
-						if(data.Role == "Regular")
-						{
+						if (data.Role == "Regular") {
 							var currentID = '@ViewBag.User.ID';
-							if(userID == currentID)
-							{
+							if (userID == currentID) {
 								var buttonEdit = document.createElement("button");
 								var topicID = '@ViewBag.TopicID';
 								buttonEdit.setAttribute("class", "btn btn-default");
@@ -117,6 +117,11 @@
 						buttonEdit.setAttribute("class", "btn btn-default");
 						buttonEdit.setAttribute("onclick", "updateComment(\"" + commentID + "\", \"" + topicID + "\", \"" + userID + "\")");
 						div3.appendChild(buttonEdit);
+						var buttonDelete = document.createElement("button");
+						buttonEdit.setAttribute("class", "btn btn-default");
+						buttonEdit.setAttribute("onclick", "deleteComment(\"" + commentID + "\", \"" + buttonDelete + "\")");
+						buttonEdit.innerHTML = "Edit";
+						div2.appendChild(buttonEdit);
 					}
 					if (data.Role == "Admin") {
 						var promoteUser = document.createElement("li");
@@ -136,8 +141,7 @@
 		})
 	}
 
-	function updateComment(id, topicID, userID)
-	{
+	function updateComment(id, topicID, userID) {
 		var currentUserID = '@ViewBag.User.ID';
 		if (userID != currentUserID)
 			alert("Don't even try it!");
@@ -147,6 +151,40 @@
 			link = link.replace("-1", id);
 			link = link.replace("-2", topicID);
 			window.location.href = link;
+		}
+	}
+
+	function quoteComment(id)
+	{
+		var link = '@Url.Action("GetCommentByID", "Comment", new { ID = -1 })';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'GET',
+			success: function (data) {
+				CKEDITOR.instances.comment_text.setData(data.Text);
+			},
+		})
+	}
+
+	function deleteComment(id, elem) {
+		if (elem != null) {
+			alert("Invalid action!");
+		}
+		else {
+			var link = '@Url.Action("DeleteComment", "Comment", new { ID = -1 })';
+			link = link.replace("-1", id);
+			$.ajax
+			({
+				url: link,
+				dataType: 'json',
+				type: 'DELETE',
+				success: function (data) {
+					alert("Successfully deleted");
+				},
+			})
 		}
 	}
 
@@ -245,7 +283,12 @@
 					</div>
 				</div>
 				<div class="row">
+					<div class="col-md-2">
+						<button class="btn btn-group" onclick="@("quoteComment(" + @Html.Raw(Json.Encode(item.ID)) + ")")">Quote</button>
+					</div>
 					<div class="col-md-3">
+					</div>
+					<div class="delete_buttons">
 					</div>
 				</div>
 			}

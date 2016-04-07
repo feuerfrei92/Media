@@ -632,6 +632,25 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetGroupByID(int ID)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Profile/GetGroupByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var group = await HttpClientBuilder<DiscussionModel>.GetAsync(url, token);
+				return Json(new { ID = group.ID, DiscussionGuid = group.DiscussionGuid }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
+		}
+
 		public async Task<ActionResult> ChatRoom(int userID)
 		{
 			try
