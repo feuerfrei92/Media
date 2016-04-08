@@ -49,11 +49,20 @@ namespace WebMediaClient.Chat
 			Clients.Caller.onlineStatus(ChatUser.onlineUsers.Select(c => c.User.ID.ToString()).ToList());
 		}
 
-		public void CreateGroup()
+		public void CreateGroup(string discussionGuid = null)
 		{
-			string groupName = Guid.NewGuid().ToString();
-			Groups.Add(Context.ConnectionId, groupName);
-			Clients.Group(groupName).openWindow(groupName);
+			string groupName = null;
+			if (string.IsNullOrEmpty(discussionGuid))
+			{
+				groupName = Guid.NewGuid().ToString();
+				Groups.Add(Context.ConnectionId, groupName);
+				Clients.Group(groupName).openWindow(groupName);
+			}
+			else
+			{
+				Groups.Add(discussionGuid, groupName);
+				Clients.Group(discussionGuid).openWindow(discussionGuid);
+			}
 		}
 
 		public void AddGroupMember(string memberID, string groupName)

@@ -571,9 +571,10 @@ namespace Services.Controllers
 
 		[HttpDelete]
 		[Authorize]
-		public IHttpActionResult DeleteGroup(int ID)
+		public IHttpActionResult DeleteGroup(string discussionGuid)
 		{
-			Discussion discussion = _nest.Discussions.All().Where(d => d.ID == ID).FirstOrDefault();
+			Guid guid = Guid.Parse(discussionGuid);
+			Discussion discussion = _nest.Discussions.All().Where(d => d.DiscussionGuid == guid).FirstOrDefault();
 
 			if (discussion == null)
 			{
@@ -596,9 +597,10 @@ namespace Services.Controllers
 
 		[HttpGet]
 		[Authorize]
-		public IHttpActionResult GetGroupByID(int ID)
+		public IHttpActionResult GetGroupByDiscussionGuid(string discussionGuid)
 		{
-			var group = _nest.Discussions.All().Where(d => d.ID == ID).Select(d => new DiscussionModel { ID = d.ID, DiscussionGuid = d.DiscussionGuid }).FirstOrDefault();
+			Guid guid = Guid.Parse(discussionGuid);
+			var group = _nest.Discussions.All().Where(d => d.DiscussionGuid == guid).Select(d => new DiscussionModel { ID = d.ID, DiscussionGuid = d.DiscussionGuid }).FirstOrDefault();
 
 			if (group == null)
 			{

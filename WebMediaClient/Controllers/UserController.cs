@@ -369,5 +369,70 @@ namespace WebMediaClient.Controllers
 				return View("Error", info);
 			}
 		}
+
+		[HttpPost]
+		public async Task<ActionResult> AddUserToGroup(int userID, int groupID)
+		{
+			try
+			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				string url = string.Format("http://localhost:8080/api/User/AddUserToGroup?UserID={0}&GroupID={1}", userID, groupID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
+		}
+
+		[HttpDelete]
+		public ActionResult RemoveUserFromGroup(int userID, int groupID)
+		{
+			try
+			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				string url = string.Format("http://localhost:8080/api/User/RemoveUserFromGroup?UserID={0}&GroupID={1}", userID, groupID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				HttpClientBuilder<HttpResponseMessage>.DeleteAsync(url, token);
+				return Json(new { Response = System.Net.HttpStatusCode.OK }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
+		}
+
+		public ActionResult GetGroupsForUser(int userID)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/User/GetGroupsForUser?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var groups = Task.Run<List<DiscussionModel>>(() => HttpClientBuilder<DiscussionModel>.GetListAsync(url, token)).Result;
+				return Json(new { Groups = groups }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+			}
+		}
     }
 }
