@@ -37,7 +37,8 @@
 	}*@
 
 	function addButton(username) {
-		var profileList = document.getElementById("add_friend");
+		var divID = "div_" + username;
+		var profileList = document.getElementById(divID);
 		var buttonFriend = document.createElement("button");
 		buttonFriend.setAttribute("id", username);
 		buttonFriend.setAttribute("class", "button");
@@ -49,12 +50,13 @@
 	function compareUsername() {
 		var user = @Html.Raw(Json.Encode(ViewBag.User));
 		if (user != null) {
-			var profileList = document.getElementById("add_friend");
 			var buttons = document.getElementsByClassName("button");
+			var profileList = document.getElementsByClassName("add_friend");
 			for (var i = 0; i < buttons.length; i++) {
 				var item = buttons[i];
+				var profile = profileList[i];
 				if (item.id == user.Username || item.id == null)
-					profileList.removeChild(item);
+					$(item).prop('disabled', true);
 				else {
 					var link = '@Url.Action("GetUserByUsername", "User", new { Username = "oooo" })';
 					link = link.replace("oooo", item.id);
@@ -85,7 +87,7 @@
 				dataType: 'json',
 				type: 'GET',
 				success: function (data) {
-					button.disabled = true;
+					$(button).prop('disabled', true);
 				}
 			})
 		}
@@ -130,14 +132,14 @@
 
 	<div class="row">
 		<div class="col-md-8">
-			<div id ="add_friend" class="list-group">
+			<div class="list-group">
 				@foreach (var item in Model)
 				{
 					<div class="list-group-item">
 						@Html.ActionLink(item.Username, "GetProfileByID", "Profile", new { ID = item.ID }, null);
 					</div>
 					<div class="col-md-8">
-						<div class="list-group-item">
+						<div id="@string.Format("div_{0}", item.Username)" class="add_friend">
 							<script type="text/javascript">
 								var user = @Html.Raw(Json.Encode(ViewBag.User));
 								if(user != null)

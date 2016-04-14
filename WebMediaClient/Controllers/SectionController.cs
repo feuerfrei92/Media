@@ -46,10 +46,13 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateSection(SectionViewModel sectionModel, int? parentID = null)
+		public async Task<ActionResult> CreateSection(SectionViewModel sectionModel, int authorID, int? parentID = null)
 		{
 			try
 			{
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != authorID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Section/CreateSection?ParentID={0}", parentID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)

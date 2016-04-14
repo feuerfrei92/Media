@@ -56,11 +56,12 @@
 				dataType: 'json',
 				type: 'GET',
 				success: function (data) {
-					$("#apply").prop('disabled', true);
 					if (data.Role == "Regular") {
+						$("#apply").prop('disabled', true);
 						$("#topic").prop('disabled', false);
 					}
 					if (data.Role == "Admin") {
+						$("#apply").prop('disabled', true);
 						$("#subsection").prop('disabled', false);
 						$("#topic").prop('disabled', false);
 						var link1 = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
@@ -73,6 +74,7 @@
 						$("#update_settings").html(link4);
 					}
 					if (data.Role == "Mod") {
+						$("#apply").prop('disabled', true);
 						$("#subsection").prop('disabled', false);
 						$("#topic").prop('disabled', false);
 						var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
@@ -142,13 +144,14 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				$("#apply").prop('disabled', true);
 				if (data.Role == "Regular")
 				{
+					$("#apply").prop('disabled', true);
 					$("#topic").prop('disabled', false);
 				}
 				if (data.Role == "Admin")
 				{
+					$("#apply").prop('disabled', true);
 					$("#subsection").prop('disabled', false);
 					$("#topic").prop('disabled', false);
 					var link1 = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
@@ -162,6 +165,7 @@
 				}
 				if (data.Role == "Mod")
 				{
+					$("#apply").prop('disabled', true);
 					$("#subsection").prop('disabled', false);
 					$("#topic").prop('disabled', false);
 					var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
@@ -279,7 +283,7 @@
 	}
 
 	function postSection() {
-		var link = '@Html.Raw(@Url.Action("CreateSection", "Section", new { parentID = @Model.ID }))';
+		var link = '@Html.Raw(@Url.Action("CreateSection", "Section", new { authorID = @ViewBag.User.ID, parentID = @Model.ID }))';
 		//var hiddenID = document.getElementById("store_id");
 		//var id = hiddenID.value;
 		//link = link.replace("-1", id);

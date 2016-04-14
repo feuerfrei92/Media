@@ -27,7 +27,6 @@
 				getRoot();
 			},
 			error: function (xhr) {
-				getRoot();
 				if (xhr.status == 400) {
 					createVisit();
 				}
@@ -98,14 +97,14 @@
 						if (result.Publicity == "Everyone")
 						{
 							var link = '@Html.Raw(Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page }))';
-							$("#comments").load(link);
+							$("#comments").load(link, function () { getTopic() });
 						}
 						if (result.Publicity == "Registered")
 						{
 							if (data.role == "Regular" || data.role == "Mod" || data.role == "Admin")
 							{
 								var link = '@Html.Raw(Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page }))';
-								$("#comments").load(link);
+								$("#comments").load(link, function () { getTopic() });
 							}	
 						}
 						if (result.Publicity == "Admins")
@@ -113,7 +112,7 @@
 							if (data.role == "Mod" || data.role == "Admin")
 							{
 								var link = '@Html.Raw(Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page }))';
-								$("#comments").load(link);
+								$("#comments").load(link, function () { getTopic() });
 							}
 						}
 					}

@@ -1,7 +1,6 @@
 ﻿@model PagedList.IPagedList<WebMediaClient.Models.CommentViewModel>
 @using PagedList.Mvc;
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
-
 <script type="text/javascript">
 	window.addEventListener("load", function () { getTopic(); }, false);
 
@@ -13,12 +12,12 @@
 			type: 'GET',
 			success: function (data) {
 				if (!data.IsProfileTopic && !data.IsInterestTopic)
-					getRoot(data.SectionID);
+					getCommentRoot(data.SectionID);
 			}
 		})
 	}
 
-	function getRoot(id) {
+	function getCommentRoot(id) {
 		var link = '@Url.Action("GetRoot", "Section", new { sectionID = -1 })';
 		link = link.replace("-1", id);
 		$.ajax
@@ -27,12 +26,12 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				checkMember(data.ID);
+				checkCommentMember(data.ID);
 			},
 		})
 	}
 
-	function checkMember(id) {
+	function checkCommentMember(id) {
 		var link = '@Html.Raw(Url.Action("GetMembership", "Section", new { userID = @ViewBag.User.ID, sectionID = -1 }))';
 		link = link.replace("-1", id);
 		$.ajax
@@ -41,8 +40,6 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				//if (data.Role == "Regular" || data.Role == "Admin" || data.Role == "Mod")
-				//	updateControls(data.Role, id);
 				var divs5 = document.getElementsByClassName("col-md-5");
 				var divs3 = document.getElementsByClassName("col-md-3");
 				var divs2 = document.getElementsByClassName("delete_buttons");

@@ -78,7 +78,7 @@ namespace Services.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public IHttpActionResult CreateSection(SectionModel section, int? parentID = null)
+		public IHttpActionResult CreateSection(SectionModel section, int authorID, int? parentID = null)
 		{
 			if (!(ModelState.IsValid))
 			{
@@ -101,6 +101,21 @@ namespace Services.Controllers
 			};
 
 			_nest.Settings.Create(newSetting);
+
+			if (parentID == null)
+			{
+				var newMembership = new Membership
+				{
+					SectionID = newSection.ID,
+					UserID = authorID,
+					IsAccepted = true,
+					Role = SectionRole.Admin,
+					SuspendedUntil = null,
+					Anonymous = false,
+				};
+
+				_nest.Memberships.Create(newMembership);
+			}
 
 			try
 			{
