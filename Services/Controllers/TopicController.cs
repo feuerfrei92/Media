@@ -18,7 +18,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Topic, TopicModel>> BuildTopicModel
 		{
-			get { return t => new TopicModel { ID = t.ID, Name = t.Name, SectionID = t.SectionID, AuthorID = t.AuthorID, DateCreated = t.DateCreated, DateModified = t.DateModified, IsProfileTopic = t.IsProfileTopic, IsInterestTopic = t.IsInterestTopic }; }
+			get { return t => new TopicModel { ID = t.ID, Name = t.Name, SectionID = t.SectionID, AuthorID = t.AuthorID, DateCreated = t.DateCreated, DateModified = t.DateModified, TopicType = t.TopicType }; }
 		}
 
 		public TopicController()
@@ -65,8 +65,6 @@ namespace Services.Controllers
 
 			topic.ID = ID;
 			topic.SectionID = sectionID;
-			topic.IsProfileTopic = existingTopic.IsProfileTopic;
-			topic.IsInterestTopic = existingTopic.IsInterestTopic;
 
 			try
 			{
@@ -95,8 +93,6 @@ namespace Services.Controllers
 				SectionID = sectionID,
 				AuthorID = authorID,
 				DateCreated = DateTime.Now,
-				IsProfileTopic = false,
-				IsInterestTopic = false,
 				TopicType = "Section",
 			};
 
@@ -114,8 +110,6 @@ namespace Services.Controllers
 			topic.ID = newTopic.ID;
 			topic.SectionID = newTopic.SectionID;
 			topic.AuthorID = newTopic.AuthorID;
-			topic.IsProfileTopic = newTopic.IsProfileTopic;
-			topic.IsInterestTopic = newTopic.IsInterestTopic;
 			topic.TopicType = newTopic.TopicType;
 
 			return Ok(topic);
@@ -168,7 +162,7 @@ namespace Services.Controllers
 		[Authorize]
 		public IHttpActionResult GetTopicByOwnerAndType(int ownerID, string topicType)
 		{
-			if (topicType != "Section" || topicType != "Profile" || topicType != "Interest" || topicType != "Album" || topicType != "Video" || topicType != "Photo")
+			if (topicType != "Section" && topicType != "Profile" && topicType != "Interest" && topicType != "Album" && topicType != "Video" && topicType != "Photo")
 				throw new Exception("Invalid topic type");
 
 			TopicModel topic = _nest.Topics.All().Where(t => t.SectionID == ownerID && t.TopicType == topicType).Select(BuildTopicModel).FirstOrDefault();

@@ -106,8 +106,6 @@ namespace Services.Controllers
 				SectionID = newProfile.ID,
 				AuthorID = userID,
 				DateCreated = DateTime.Now,
-				IsProfileTopic = true,
-				IsInterestTopic = false,
 				TopicType = "Profile",
 			};
 

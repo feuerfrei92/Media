@@ -45,27 +45,34 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult CreateVideo(int userID)
+		public ActionResult CreateVideo(int userID, bool isProfile)
 		{
-			if (Request.UrlReferrer == null)
-				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+			if (!isProfile)
+			{
+				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+			}
 
-			if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+			if (((UserModel)HttpContext.Session["currentUser"]).ID != userID && isProfile)
 				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 			ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+			ViewBag.IsProfile = isProfile;
 			return View();
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateVideo(int userID, VideoViewModel videoModel, HttpPostedFileBase file)
+		public async Task<ActionResult> CreateVideo(int userID, bool isProfile, VideoViewModel videoModel, HttpPostedFileBase file)
 		{
 			try
 			{
-				if (Request.UrlReferrer == null)
-					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+				if (!isProfile)
+				{
+					if (Request.UrlReferrer == null)
+						return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+				}
 
-				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID && isProfile)
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				if (file != null && file.ContentLength > 0)
@@ -80,10 +87,13 @@ namespace WebMediaClient.Controllers
 					else
 						token = null;
 					var video = VideoConverter.FromVisualToBasic(videoModel);
+					video.IsProfile = isProfile;
+					video.IsInterest = !isProfile;
 					var createdVideo = await HttpClientBuilder<VideoModel>.PostAsync(video, url, token);
 					var viewModel = VideoConverter.FromBasicToVisual(createdVideo);
 					file.SaveAs(Server.MapPath(@"\UploadedFiles\Videos\ContentID=" + guid));
 					ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+					ViewBag.IsProfile = isProfile;
 					return View(viewModel);
 				}
 				else throw new ArgumentNullException(file.FileName);

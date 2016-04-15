@@ -10,14 +10,6 @@
 <script type="text/javascript">
 	window.addEventListener("load", function () { compareUsername() }, false);
 
-	//function getToken() {
-	//	if (Modernizr.localstorage) {
-	//		var localProfile = window.localStorage;
-	//		var token = JSON.parse(localProfile.getItem("MediaToken"));
-	//		return token;
-	//	}
-	//}
-
 	function compareUsername() {
 		var currentUsername = '@ViewBag.User.Username';
 		var profileUsername = '@Model.Username';
@@ -212,7 +204,7 @@
 </div>
 <div class="row">
 	<div class="col-md-8">
-		@Html.ActionLink("See uploaded videos", "GetVideosForOwner", "Video", new { userID = @Model.UserID }, new { id = "get_videos_link" })
+		@Html.ActionLink("See uploaded videos", "GetVideosForUser", "Video", new { userID = @Model.UserID }, new { id = "get_videos_link" })
 	</div>
 </div>
 <div class="row">

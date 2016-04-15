@@ -236,7 +236,7 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				var response = await HttpClientBuilder<HttpResponseMessage>.PostEmptyAsync(url, token);
+				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
 				//var response = Task.Run<HttpResponseMessage>(() => HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token)).Result;
 				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
 			}

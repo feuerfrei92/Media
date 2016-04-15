@@ -18,7 +18,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.DatabaseModels.Video, VideoModel>> BuildVideoModel
 		{
-			get { return v => new VideoModel { ID = v.ID, Location = v.Location, DateCreated = v.DateCreated, OwnerID = v.OwnerID }; }
+			get { return v => new VideoModel { ID = v.ID, Location = v.Location, DateCreated = v.DateCreated, OwnerID = v.OwnerID, IsProfile = v.IsProfile, IsInterest = v.IsInterest }; }
 		}
 
 		public VideoController()
@@ -55,7 +55,10 @@ namespace Services.Controllers
 				{
 					Location = video.Location,
 					OwnerID = userID,
-					DateCreated = DateTime.Now
+					DateCreated = DateTime.Now,
+					IsInterest = video.IsInterest,
+					IsProfile = video.IsProfile,
+					Rating = 0,
 				};
 
 				_nest.Videos.Create(newVideo);
@@ -66,8 +69,6 @@ namespace Services.Controllers
 					SectionID = video.ID,
 					AuthorID = video.OwnerID,
 					DateCreated = DateTime.Now,
-					IsProfileTopic = false,
-					IsInterestTopic = false,
 					TopicType = "Video",
 				};
 
@@ -147,9 +148,18 @@ namespace Services.Controllers
 
 		[HttpGet]
 		[Authorize]
-		public IHttpActionResult GetVideosForOwner(int userID)
+		public IHttpActionResult GetVideosForUser(int userID)
 		{
-			List<VideoModel> videos = _nest.Videos.All().Where(v => v.OwnerID == userID).Select(BuildVideoModel).ToList();
+			List<VideoModel> videos = _nest.Videos.All().Where(v => v.OwnerID == userID && v.IsProfile).Select(BuildVideoModel).ToList();
+
+			return Ok(videos);
+		}
+
+		[HttpGet]
+		[Authorize]
+		public IHttpActionResult GetVideosForInterest(int interestID)
+		{
+			List<VideoModel> videos = _nest.Videos.All().Where(v => v.OwnerID == interestID && v.IsInterest).Select(BuildVideoModel).ToList();
 
 			return Ok(videos);
 		}

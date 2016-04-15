@@ -85,6 +85,8 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var album = AlbumConverter.FromVisualToBasic(albumModel);
+				album.IsProfile = isProfile;
+				album.IsInterest = !isProfile;
 				var createdAlbum = await HttpClientBuilder<AlbumModel>.PostAsync(album, url, token);
 				var viewModel = AlbumConverter.FromBasicToVisual(createdAlbum);
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];

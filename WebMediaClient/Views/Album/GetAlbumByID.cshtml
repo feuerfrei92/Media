@@ -20,10 +20,16 @@
 				type: 'GET',
 				success: function (data) {
 					var username = '@ViewBag.User.Username';
-					if (data.Username == username)
-						$("#upload_photo_link").show();
 					$("#hidden_id").val(data.ID);
-					getProfileOwner(data.Username);
+					if (data.Username == username) {
+						$("#upload_photo_link").show();
+						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
+						$("#photos").load(link);
+						$("album_topic").load(link1);
+					}
+					else
+						getProfileOwner(data.Username);
 				}
 			})
 		}
@@ -35,9 +41,15 @@
 				type: 'GET',
 				success: function (data) {
 					var userID = '@ViewBag.User.ID';
-					if (data.AuthorID == userID)
-						$("#upload_photo_link").show();
 					$("#hidden_id").val(data.ID);
+					if (data.AuthorID == userID)
+					{
+						$("#upload_photo_link").show();
+						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
+						$("#photos").load(link);
+						$("album_topic").load(link1);
+					}
 					checkIsFollower(data.ID);
 				}
 			})
@@ -71,12 +83,16 @@
 			success: function (data) {
 				if (data.Publicity == "Everyone") {
 					var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+					var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 					$("#photos").load(link);
+					$("album_topic").load(link1);
 				}
 				if (data.Publicity == "Followers") {
 					if (isFollower) {
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 						$("#photos").load(link);
+						$("#album_topic").load(link1);
 					}
 				}
 			}
@@ -141,18 +157,24 @@
 			success: function (data) {
 				if (data.Publicity == "Everyone") {
 					var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+					var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 					$("#photos").load(link);
+					$("album_topic").load(link1);
 				}
 				if (data.Publicity == "Friends") {
 					if (isFriend) {
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 						$("#photos").load(link);
+						$("album_topic").load(link1);
 					}
 				}
 				if (data.Publicity == "FriendsOfFriends") {
 					if (hasCommonFriends) {
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
+						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 						$("#photos").load(link);
+						$("album_topic").load(link1);
 					}
 				}
 			}
@@ -160,6 +182,8 @@
 	}
 </script>
 
+<div id="album_topic" class="col-md-8">
+</div>
 <div id="photos" class="form-group">
 </div>
 

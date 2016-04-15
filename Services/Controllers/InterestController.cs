@@ -97,8 +97,6 @@ namespace Services.Controllers
 				SectionID = newInterest.ID,
 				AuthorID = authorID,
 				DateCreated = DateTime.Now,
-				IsProfileTopic = false,
-				IsInterestTopic = true,
 				TopicType = "Interest",
 			};
 

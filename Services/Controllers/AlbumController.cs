@@ -80,8 +80,6 @@ namespace Services.Controllers
 				SectionID = newAlbum.ID,
 				AuthorID = ownerID,
 				DateCreated = DateTime.Now,
-				IsProfileTopic = false,
-				IsInterestTopic = false,
 				TopicType = "Album",
 			};
 
@@ -236,8 +234,6 @@ namespace Services.Controllers
 				SectionID = photo.ID,
 				AuthorID = album.OwnerID,
 				DateCreated = DateTime.Now,
-				IsProfileTopic = false,
-				IsInterestTopic = false,
 				TopicType = "Photo",
 			};
 

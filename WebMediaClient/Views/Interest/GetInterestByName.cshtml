@@ -24,9 +24,11 @@
 		if (userID == authorID)
 		{
 			var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Interest" }))';
-			var link2 = '@Html.ActionLink("Update interest settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @ViewBag.ID, settingType = SettingType.Interest.ToString() }, new { id = "interest_setting" })';
+			var link2 = '@Html.ActionLink("Update interest settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Interest.ToString() }, new { id = "interest_setting" })';
+			var link3 = '@Html.ActionLink("Update interest", "UpdateInterest", "Interest", new { ID = @Model.ID }, new { @id = "update_interest" })';
 			$("#interest_topic").load(link1, function () { updateVisit(); });
 			$("#update_settings").html(link2);
+			$("#update_interest").html(link3);
 		}
 		else
 			checkIsFollower();
@@ -62,7 +64,7 @@
 						success: function (result) {
 							if (result.Publicity == "Everyone")
 							{
-								var link = '@Url.Action("GetTopicForInterest", "Topic", new { interestID = @Model.ID })';
+								var link = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Interest" }))';
 								$("#interest_topic").load(link, function () { updateVisit(); });
 							}
 						}
@@ -103,13 +105,16 @@
 				<div class="form-group">
 					@Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
 					<div class="col-md-10">
-						@Html.TextBoxFor(m => m.Name, new { @class = "form-control", @enabled = "false" })
+						@Html.TextBoxFor(m => m.Name, new { @class = "form-control", @disabled = "true" })
 					</div>
 				</div>
 			}
 		</section>
 	</div>
-	<div class="col-md-8">
-		@Html.Action("GetTopicForInterest", "Topic", new { interestID = @Model.ID })
+	<div id="interest_topic" class="col-md-8">
+	</div>
+	<div class="row" id="update_settings">
+	</div>
+	<div class="row" id="update_interest">
 	</div>
 </div>

@@ -74,11 +74,15 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		[HttpPut]
 		public async Task<ActionResult> UpdateInterest(int ID, InterestViewModel interestModel)
 		{
 			try
 			{
 				if (Request.UrlReferrer == null)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != interestModel.AuthorID)
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				string url = string.Format("http://localhost:8080/api/Interest/UpdateInterest?ID={0}", ID);
@@ -88,7 +92,7 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var interest = InterestConverter.FromVisualToBasic(interestModel);
-				var updatedInterest = await HttpClientBuilder<InterestModel>.PostAsync(interest, url, token);
+				var updatedInterest = await HttpClientBuilder<InterestModel>.PutAsync(interest, url, token);
 				var viewModel = InterestConverter.FromBasicToVisual(updatedInterest);
 				return View(viewModel);
 			}
@@ -99,6 +103,7 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		[HttpDelete]
 		public ActionResult DeleteInterest(int ID)
 		{
 			try

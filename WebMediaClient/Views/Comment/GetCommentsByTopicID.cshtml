@@ -11,7 +11,7 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				if (!data.IsProfileTopic && !data.IsInterestTopic)
+				if (data.TopicType == "Section")
 					getCommentRoot(data.SectionID);
 			}
 		})

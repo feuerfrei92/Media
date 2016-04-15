@@ -20,8 +20,6 @@ namespace WebMediaClient.Converters
 				AuthorID = topicModel.AuthorID,
 				DateCreated = topicModel.DateCreated,
 				DateModified = topicModel.DateModified,
-				IsProfileTopic = topicModel.IsProfileTopic,
-				IsInterestTopic = topicModel.IsInterestTopic,
 				TopicType = topicModel.TopicType,
 			};
 
@@ -38,8 +36,6 @@ namespace WebMediaClient.Converters
 				AuthorID = viewModel.AuthorID,
 				DateCreated = viewModel.DateCreated,
 				DateModified = viewModel.DateModified,
-				IsProfileTopic = viewModel.IsProfileTopic,
-				IsInterestTopic = viewModel.IsInterestTopic,
 				TopicType = viewModel.TopicType,
 			};
 
