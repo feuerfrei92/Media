@@ -1,0 +1,23 @@
+﻿@model WebMediaClient.Models.PhotoViewModel
+
+@{
+	ViewBag.Title = "GetPhotoByID";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetPhotoByID</h2>
+
+<script type="text/javascript">
+	$(function () {
+		var link = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Photo" }))';
+		$("#photo_topic").load(link, function () { updateVisit() });
+	})
+</script>
+
+<div class="row">
+	<div class="col-md-8">
+		<img src="@Model.Location" />
+	</div>
+</div>
+<div id="photo_topic" class="row">
+</div>

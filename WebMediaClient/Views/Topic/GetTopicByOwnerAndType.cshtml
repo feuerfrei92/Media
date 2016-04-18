@@ -11,10 +11,10 @@
 			dataType: 'json',
 			type: 'PUT',
 			success: function (data) {
-				getRoot();
+				//getSettings();
 			},
 			error: function (xhr) {
-				getRoot();
+				//getSettings();
 				if (xhr.status == 400) {
 					createVisit();
 				}
@@ -30,7 +30,7 @@
 			dataType: 'json',
 			type: 'POST',
 			success: function (data) {
-				getRoot();
+				//getSettings();
 			},
 		})
 	}

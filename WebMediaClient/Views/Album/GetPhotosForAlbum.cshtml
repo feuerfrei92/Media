@@ -1,5 +1,30 @@
 ﻿@model List<WebMediaClient.Models.PhotoViewModel>
 
+<script type="text/javascript">
+	function openPhoto(id)
+	{
+		var link = '@Url.Action("GetPhotoByID", "Album", new { ID = -1 })';
+		link = link.replace("-1", id);
+		$("#dialog").load(link).modal();
+	}
+
+	function changePicture()
+	{
+		var selectedPhotoID = document.querySelector('input[name="profile_photo"]:checked').value;
+		var link = '@Url.Action("ChangeOwnerPicture", "Album", new { photoID = -1 })';
+		link = link.replace("-1", selectedPhotoID);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) {
+				alert("Profile picture successfully changed");
+			}
+		})
+	}
+</script>
+
 <div class="row">
 	<div class="col-md-8">
 		<div class="list-group">
@@ -9,13 +34,17 @@
 				//var imgSrc = String.Format("data:image/jpeg;base64,{0}", base64);
 				<div class="list-group-item">
 					@*<img src="@imgSrc" height="100" width="100" />*@
-					<img src="@item.Location" height="100" width="100" />
+					<img src="@item.Location" height="100" width="100" onclick="@("openPhoto(" + @Html.Raw(Json.Encode(item.ID)) + ")")" /><br />
+					<input type="radio" name="profile_photo" value="@item.ID" />Make main picture<br />
 				</div>
 				@*<div class="col-md-4">
 					@Html.ActionLink("Update photo setting", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @item.ID, settingType = SettingType.Photo.ToString() }, null)
 				</div>*@
 			}
 		</div>
+		<button id="changed_picture" class="btn btn-default" onclick="changePicture()">Change main picture</button>
 	</div>
+</div>
+<div id="dialog" class="modal">
 </div>
 

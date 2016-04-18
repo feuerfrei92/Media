@@ -26,7 +26,7 @@
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 						$("#photos").load(link);
-						$("album_topic").load(link1);
+						$("album_topic").load(link1, function () { updateVisit(); });
 					}
 					else
 						getProfileOwner(data.Username);
@@ -48,7 +48,7 @@
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 						$("#photos").load(link);
-						$("album_topic").load(link1);
+						$("album_topic").load(link1, function () { updateVisit(); });
 					}
 					checkIsFollower(data.ID);
 				}
@@ -85,14 +85,14 @@
 					var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 					var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 					$("#photos").load(link);
-					$("album_topic").load(link1);
+					$("album_topic").load(link1, function () { updateVisit(); });
 				}
 				if (data.Publicity == "Followers") {
 					if (isFollower) {
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 						$("#photos").load(link);
-						$("#album_topic").load(link1);
+						$("#album_topic").load(link1, function () { updateVisit(); });
 					}
 				}
 			}
@@ -159,14 +159,14 @@
 					var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 					var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 					$("#photos").load(link);
-					$("album_topic").load(link1);
+					$("album_topic").load(link1, function () { updateVisit(); });
 				}
 				if (data.Publicity == "Friends") {
 					if (isFriend) {
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 						$("#photos").load(link);
-						$("album_topic").load(link1);
+						$("album_topic").load(link1, function () { updateVisit(); });
 					}
 				}
 				if (data.Publicity == "FriendsOfFriends") {
@@ -174,7 +174,7 @@
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
 						$("#photos").load(link);
-						$("album_topic").load(link1);
+						$("album_topic").load(link1, function () { updateVisit(); });
 					}
 				}
 			}

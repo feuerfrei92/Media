@@ -364,23 +364,23 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var photo = await HttpClientBuilder<PhotoModel>.GetAsync(url, token);
-				var imageStream = System.IO.File.OpenRead(Server.MapPath(photo.Location));
-				byte[] bytes = new byte[imageStream.Length];
-				int allToRead = (int)imageStream.Length;
-				int readSoFar = 0;
-				while (allToRead > 0)
-				{
-					int n = imageStream.Read(bytes, readSoFar, allToRead);
+				//var imageStream = System.IO.File.OpenRead(Server.MapPath(photo.Location));
+				//byte[] bytes = new byte[imageStream.Length];
+				//int allToRead = (int)imageStream.Length;
+				//int readSoFar = 0;
+				//while (allToRead > 0)
+				//{
+				//	int n = imageStream.Read(bytes, readSoFar, allToRead);
 
-					if (n == 0)
-						break;
+				//	if (n == 0)
+				//		break;
 
-					readSoFar += n;
-					allToRead -= n;
-				}
-				return File(bytes, "image/jpg");
-				//var viewModel = PhotoConverter.FromBasicToVisual(photo);
-				//return View(viewModel);
+				//	readSoFar += n;
+				//	allToRead -= n;
+				//}
+				//return File(bytes, "image/jpg");
+				var viewModel = PhotoConverter.FromBasicToVisual(photo);
+				return View(viewModel);
 			}
 			catch (Exception ex)
 			{
@@ -431,6 +431,29 @@ namespace WebMediaClient.Controllers
 			{
 				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "GetPhotosForAlbum");
 				return View("Error", info);
+			}
+		}
+
+		[HttpPut]
+		public async Task<ActionResult> ChangeOwnerPicture(int photoID)
+		{
+			try
+			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				string url = string.Format("http://localhost:8080/api/Album/ChangeOwnerPicture?PhotoID={0}", photoID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+				return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+			}
+			catch (Exception ex)
+			{
+				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
 

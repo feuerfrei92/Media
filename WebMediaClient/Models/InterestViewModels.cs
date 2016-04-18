@@ -14,5 +14,6 @@ namespace WebMediaClient.Models
 		[RegularExpression("^[a-zA-Z0-9]*$")]
 		public string Name { get; set; }
 		public int AuthorID { get; set; }
+		public int? PictureID { get; set; }
 	}
 }

@@ -61,11 +61,13 @@ namespace Services.Controllers
 			existingProfile.Name = profile.Name;
 			existingProfile.Age = profile.Age;
 			existingProfile.Gender = profile.Gender.ToString();
-			existingProfile.PictureID = profile.PictureID;
 
 			_nest.Profiles.Update(existingProfile);
 
 			profile.ID = ID;
+			profile.UserID = existingProfile.UserID;
+			profile.Username = existingProfile.Username;
+			profile.PictureID = existingProfile.PictureID;
 
 			try
 			{
@@ -95,7 +97,6 @@ namespace Services.Controllers
 				Name = profile.Name,
 				Age = profile.Age,
 				Gender = profile.Gender.ToString(),
-				PictureID = profile.PictureID,
 			};
 
 			_nest.Profiles.Create(newProfile);
@@ -131,7 +132,6 @@ namespace Services.Controllers
 
 			profile.ID = newProfile.ID;
 			profile.UserID = userID;
-			profile.PictureID = newProfile.PictureID;
 
 			return Ok(profile);
 		}

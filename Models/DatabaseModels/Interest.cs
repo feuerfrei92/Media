@@ -16,5 +16,6 @@ namespace Models.DatabaseModels
 		public string Name { get; set; }
 		[Required]
 		public int AuthorID { get; set; }
+		public int? PictureID { get; set; }
 	}
 }

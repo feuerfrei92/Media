@@ -317,6 +317,39 @@ namespace Services.Controllers
 
 		[HttpPut]
 		[Authorize]
+		public IHttpActionResult ChangeOwnerPicture(int photoID)
+		{
+			Photo photo = _nest.Photos.All().Where(p => p.ID == photoID).FirstOrDefault();
+			Album album = _nest.Albums.All().Where(a => a.ID == photo.AlbumID).FirstOrDefault();
+
+			if(album.IsProfile)
+			{
+				Profile profile = _nest.Profiles.All().Where(p => p.ID == album.OwnerID).FirstOrDefault();
+				profile.PictureID = photoID;
+				_nest.Profiles.Update(profile);
+			}
+
+			if(album.IsInterest)
+			{
+				Interest interest = _nest.Interests.All().Where(i => i.ID == album.OwnerID).FirstOrDefault();
+				interest.PictureID = photoID;
+				_nest.Interests.Update(interest);
+			}
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			return Ok();
+		}
+
+		[HttpPut]
+		[Authorize]
 		public IHttpActionResult UpdatePhotoRating(int photoID, bool like)
 		{
 			Photo photo = _nest.Photos.All().Where(p => p.ID == photoID).FirstOrDefault();

@@ -17,3 +17,7 @@
 			 "high",
 			 "exactfit",
 			 "transparent")
+
+<div class="row">
+	@Html.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Video" })
+</div>
