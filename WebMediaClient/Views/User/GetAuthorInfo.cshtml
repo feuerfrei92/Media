@@ -2,7 +2,7 @@
 
 <div class="row">
 	<div class="col-md-2">
-		<img src="@Url.Action("GetPhotoByID", "Album", new { ID = @Model.PictureID })" height="100" width="100" />
+		<img src="@Url.Action("GetPhotoAsFile", "Album", new { ID = @Model.PictureID })" height="100" width="100" />
 	</div>
 	<div class="col-md-2">
 		@Html.ActionLink(@Model.Username, "GetProfileByID", "Profile", new { ID = @Model.ID }, null)

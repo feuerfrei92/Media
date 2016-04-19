@@ -334,7 +334,7 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
-				if (Request.UrlReferrer == null)
+				if (!Request.IsAjaxRequest())
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				string url = string.Format("http://localhost:8080/api/Album/DeletePhoto?ID={0}", ID);
@@ -389,10 +389,47 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> GetPhotoAsFile(int ID)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Album/GetPhotoByID?ID={0}", ID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var photo = await HttpClientBuilder<PhotoModel>.GetAsync(url, token);
+				var imageStream = System.IO.File.OpenRead(Server.MapPath(photo.Location));
+				byte[] bytes = new byte[imageStream.Length];
+				int allToRead = (int)imageStream.Length;
+				int readSoFar = 0;
+				while (allToRead > 0)
+				{
+					int n = imageStream.Read(bytes, readSoFar, allToRead);
+
+					if (n == 0)
+						break;
+
+					readSoFar += n;
+					allToRead -= n;
+				}
+				return File(bytes, "image/jpg");
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Album", "GetPhotoAsFile");
+				return View("Error", info);
+			}
+		}
+
 		public async Task<ActionResult> GetPhotoByIDRaw(int ID)
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Album/GetPhotoByID?ID={0}", ID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
@@ -412,6 +449,9 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
+				if (!Request.IsAjaxRequest())
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
 				string url = string.Format("http://localhost:8080/api/Album/GetPhotosForAlbum?AlbumID={0}", albumID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)

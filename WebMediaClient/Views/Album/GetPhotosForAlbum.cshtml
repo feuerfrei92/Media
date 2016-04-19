@@ -1,6 +1,33 @@
 ﻿@model List<WebMediaClient.Models.PhotoViewModel>
 
 <script type="text/javascript">
+	function checkPriviligies()
+	{
+		var divs = document.getElementsByClassName("list-group-item");
+		var labels = document.getElementsByClassName("id_label");
+		for (var i = 0; i < divs.length; i++)
+		{
+			var div = divs[i];
+			var label = labels[i];
+			var input = document.createElement("input");
+			input.type = "radio";
+			input.name = "profile_photo";
+			var value = label.textContent;
+			input.value = value;
+			input.innerHTML = "Make profile picture";
+			div.appendChild(input);
+			var newLine = document.createElement("br");
+			div.appendChild(newLine);
+		}
+		var button = document.createElement("button");
+		button.id = "changed_picture";
+		button.class = "btn btn-default";
+		button.onclick = function () { changePicture() };
+		button.innerHTML = "Change main picture";
+		var mainDiv = document.getElementById("photos_container");
+		mainDiv.appendChild(button);
+	}
+
 	function openPhoto(id)
 	{
 		var link = '@Url.Action("GetPhotoByID", "Album", new { ID = -1 })';
@@ -10,24 +37,27 @@
 
 	function changePicture()
 	{
-		var selectedPhotoID = document.querySelector('input[name="profile_photo"]:checked').value;
-		var link = '@Url.Action("ChangeOwnerPicture", "Album", new { photoID = -1 })';
-		link = link.replace("-1", selectedPhotoID);
-		$.ajax
-		({
-			url: link,
-			dataType: 'json',
-			type: 'PUT',
-			success: function (data) {
-				alert("Profile picture successfully changed");
-			}
-		})
+		if ($("#changed_picture").length)
+		{
+			var selectedPhotoID = document.querySelector('input[name="profile_photo"]:checked').value;
+			var link = '@Url.Action("ChangeOwnerPicture", "Album", new { photoID = -1 })';
+			link = link.replace("-1", selectedPhotoID);
+			$.ajax
+			({
+				url: link,
+				dataType: 'json',
+				type: 'PUT',
+				success: function (data) {
+					alert("Profile picture successfully changed");
+				}
+			})
+		}
 	}
 </script>
 
 <div class="row">
 	<div class="col-md-8">
-		<div class="list-group">
+		<div id="photos_container" class="list-group">
 			@foreach (var item in Model)
 			{
 				//var base64 = Convert.ToBase64String(item.Content);
@@ -35,14 +65,13 @@
 				<div class="list-group-item">
 					@*<img src="@imgSrc" height="100" width="100" />*@
 					<img src="@item.Location" height="100" width="100" onclick="@("openPhoto(" + @Html.Raw(Json.Encode(item.ID)) + ")")" /><br />
-					<input type="radio" name="profile_photo" value="@item.ID" />Make main picture<br />
+					<label class="id_label" hidden="hidden">@item.ID</label>
 				</div>
 				@*<div class="col-md-4">
 					@Html.ActionLink("Update photo setting", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @item.ID, settingType = SettingType.Photo.ToString() }, null)
 				</div>*@
 			}
 		</div>
-		<button id="changed_picture" class="btn btn-default" onclick="changePicture()">Change main picture</button>
 	</div>
 </div>
 <div id="dialog" class="modal">

@@ -35,6 +35,21 @@
 		})
 	}
 
+	@*function getSettings() {
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Topic.ToString() }))',
+			dataType: 'json',
+			type: 'GET',
+			success: function (result) {
+				if (result.Publicity == "Everyone") {
+					link = '@Html.Raw(Url.Action("GetCommentsByTopicWithOwnerAndType", "Comment", new { topicID = @Model.ID, ownerID = @Model.SectionID, topicType = @Model.TopicType }))';
+					$("#comments").load(link, function () { getTopic() });
+				}
+			}
+		})
+	}*@
+
 	function addComment() {
 		//var hiddenID = document.getElementById("store_id");
 		//var id = hiddenID.value;

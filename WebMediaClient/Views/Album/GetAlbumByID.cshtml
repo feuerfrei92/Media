@@ -25,7 +25,7 @@
 						$("#upload_photo_link").show();
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
-						$("#photos").load(link);
+						$("#photos").load(link, function () { checkPriviligies(); });
 						$("album_topic").load(link1, function () { updateVisit(); });
 					}
 					else
@@ -42,12 +42,11 @@
 				success: function (data) {
 					var userID = '@ViewBag.User.ID';
 					$("#hidden_id").val(data.ID);
-					if (data.AuthorID == userID)
-					{
+					if (data.AuthorID == userID) {
 						$("#upload_photo_link").show();
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
-						$("#photos").load(link);
+						$("#photos").load(link, function () { checkPriviligies(); });
 						$("album_topic").load(link1, function () { updateVisit(); });
 					}
 					checkIsFollower(data.ID);
