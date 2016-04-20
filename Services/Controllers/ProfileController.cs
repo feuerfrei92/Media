@@ -544,7 +544,7 @@ namespace Services.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public IHttpActionResult CreateGroup(string discussionGuid)
+		public IHttpActionResult CreateGroup(int userID, string discussionGuid)
 		{
 			Guid guid = Guid.Parse(discussionGuid);
 
@@ -554,6 +554,23 @@ namespace Services.Controllers
 			};
 
 			_nest.Discussions.Create(newDiscussion);
+
+			try
+			{
+				_nest.SaveChanges();
+			}
+			catch
+			{
+				throw;
+			}
+
+			var newDiscussionist = new Discussionist
+			{
+				DiscussionID = newDiscussion.ID,
+				UserID = userID,
+			};
+
+			_nest.Discussionists.Create(newDiscussionist);
 
 			try
 			{

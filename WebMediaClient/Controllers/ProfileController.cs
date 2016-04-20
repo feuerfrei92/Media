@@ -634,14 +634,14 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateGroup(string discussionGuid)
+		public async Task<ActionResult> CreateGroup(int userID, string discussionGuid)
 		{
 			try
 			{
 				if (!Request.IsAjaxRequest())
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
-				string url = string.Format("http://localhost:8080/api/Profile/CreateGroup?DiscussionGuid={0}", discussionGuid);
+				string url = string.Format("http://localhost:8080/api/Profile/CreateGroup?UserID={0}&DiscussionGuid={1}", userID, discussionGuid);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();

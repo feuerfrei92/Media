@@ -93,8 +93,9 @@
 				url: link,
 				dataType: 'json',
 				type: 'GET',
-				error: function (xhr) {
-						var disLink = '@Url.Action("CreateGroup", "Profile", new { discussionGuid = "oooo" })';
+				success: function (data) {
+					if (data.Status == "error") {
+						var disLink = '@Html.Raw(Url.Action("CreateGroup", "Profile", new { userID = ViewBag.User.ID, discussionGuid = "oooo" }))';
 						disLink = disLink.replace("oooo", groupName);
 						$.ajax
 						({
@@ -105,6 +106,7 @@
 							}
 						})
 					}
+				}
 			});
 			var link1 = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { discussionGuid = "oooo" }))';
 			link1 = link.replace("oooo", groupName);
@@ -123,10 +125,10 @@
 		}
 
 		$.getJSON('@Url.Action("GetGroupsForUser", "User", new { UserID = ViewBag.User.ID })', function (data) {
-			$(data).each(function (i, elem) {
+			$(data.Groups).each(function (i, elem) {
 				var label = document.createElement("label");
-				label.id = "label_" + elem.ID;
-				label.onclick = function () { chat.server.CreateGroup(elem.DiscussionGuid) };
+				$(label).text("Group");
+				label.onclick = function () { chat.server.createGroup(elem.DiscussionGuid.toString()) };
 				var div = document.getElementById("group_container");
 				div.appendChild(label);
 			});
