@@ -60,52 +60,63 @@
 		@Html.Partial("SearchSection")
 	</div>
 </div>
-
+<br />
 <div class="row">
     <div class="col-md-4">
         @if (ViewBag.User != null)
 		{
+			<p>New friends requests</p>
 			Html.RenderAction("GetPendingFriends", "Settings", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
     </div>
-    <div class="col-md-4">
-        @if (ViewBag.User != null)
+	<div class="col-md-4">
+		@if (ViewBag.User != null)
 		{
+			<p>Subscribed topics</p>
 			Html.RenderAction("GetSubscribedTopics", "Settings", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
-    </div>
-    <div class="col-md-4">
-        @if (ViewBag.User != null)
+	</div>
+	<div class="col-md-4" style="display: inline-block">
+		@if (ViewBag.User != null)
 		{
+			<p>Subscribed topics with new comments</p>
 			Html.RenderAction("GetTopicsWithNewComments", "Settings", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
-    </div>
+	</div>
 </div>
 <div class="row">
 	<div id="friends_container" class="col-md-4">
-		@if(ViewBag.User != null)
+		@if (ViewBag.User != null)
 		{
+			<p>Friends</p>
 			Html.RenderAction("GetAllFriends", "Profile", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
 	<div id="interests_container" class="col-md-4">
 		@if(ViewBag.User != null)
 		{
+			<p>Followed interests</p>
 			Html.RenderAction("GetInterestsForUser", "Interest", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
-	<div id="sections_container" class="col-md-4">
+	<div id="sections_container" class="col-md-4" style="display: inline-block">
 		@if(ViewBag.User != null)
 		{
+			<p>Sections you are member of</p>
 			Html.RenderAction("GetMembershipsForUser", "Section", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
+</div>
+<div class="row">
 	<div id="activity_container" class="col-md-4">
 		@if (ViewBag.User != null)
 		{
+			<p>Latest friends activity</p>
 			Html.RenderAction("GetFirstLatestFriendsActivity", "Settings", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
+</div>
+<div class="row">
 	<div id="chat_container" class="col-md-4">
 		@if (ViewBag.User != null)
 		{

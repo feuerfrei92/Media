@@ -262,7 +262,7 @@
 		<div class="list-group">
 			@foreach (var item in Model)
 			{
-				<div class="row">
+				<div class="row" style="border-top: medium; border-left: medium; border-right: medium; border-bottom: medium">
 					<div class="col-md-5">
 						@Html.Action("GetAuthorInfo", "User", new { userID = @item.AuthorID });
 						<label class="label-primary" hidden="hidden">@item.ID</label>
@@ -276,10 +276,17 @@
 					</div>
 					<div class="col-md-4">
 						@Html.Raw(item.Text)
-						@*@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })*@
+						<br />
+						<div class="col-md-2" style="margin-right: 50px">
+							<button class="btn btn-group" onclick="@("quoteComment(" + @Html.Raw(Json.Encode(item.ID)) + ")")">Quote</button>
+						</div>
+						<div class="col-md-3" style="margin-right: 50px">
+						</div>
+						<div class="delete_buttons">
+						</div>
 					</div>
 				</div>
-				<div class="row">
+				@*<div class="row">
 					<div class="col-md-2">
 						<button class="btn btn-group" onclick="@("quoteComment(" + @Html.Raw(Json.Encode(item.ID)) + ")")">Quote</button>
 					</div>
@@ -287,7 +294,7 @@
 					</div>
 					<div class="delete_buttons">
 					</div>
-				</div>
+				</div>*@
 			}
 		</div>
 	</div>

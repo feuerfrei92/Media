@@ -189,25 +189,28 @@
 			}
 		</section>
 	</div>
+	<div>
+		<button id="add_friend" class="btn btn-default" onclick="@("getFriendID(" + @Html.Raw(Json.Encode(Model.Username)) + ")")">Add friend</button>
+	</div>
 	<div id="start_chat" class="col-md-8">
 	</div>
 	<div id="profile_topic" class="col-md-8">
 	</div>
-	<div class="col-md-8">
-		<button id="add_friend" class="btn btn-default" onclick="@("getFriendID(" + @Html.Raw(Json.Encode(Model.Username)) + ")")">Add friend</button> 
-	</div>
 </div>
 <div class="row">
 	<div class="col-md-8">
+		<p>Albums</p>
 		@Html.Action("GetAlbumsForProfile", "Album", new { profileID = @ViewBag.ID })
 	</div>
 </div>
 <div class="row">
 	<div class="col-md-8">
+		<p>Videos</p>
 		@Html.ActionLink("See uploaded videos", "GetVideosForUser", "Video", new { userID = @Model.UserID }, new { id = "get_videos_link" })
 	</div>
 </div>
 <div class="row">
+	<p>Latest activity</p>
 	<div id="activity" class="col-md-8">
 	</div>
 </div>

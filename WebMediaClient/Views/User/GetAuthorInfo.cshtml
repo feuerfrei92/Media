@@ -4,6 +4,8 @@
 	<div class="col-md-2">
 		<img src="@Url.Action("GetPhotoAsFile", "Album", new { ID = @Model.PictureID })" height="100" width="100" />
 	</div>
+</div>
+<div class="row">
 	<div class="col-md-2">
 		@Html.ActionLink(@Model.Username, "GetProfileByID", "Profile", new { ID = @Model.ID }, null)
 	</div>

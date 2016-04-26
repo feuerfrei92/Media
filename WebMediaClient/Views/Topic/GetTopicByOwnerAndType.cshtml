@@ -70,13 +70,13 @@
 			success: function (data) {
 				var link = '@Html.Raw(Url.Action("GetCommentsByTopicWithOwnerAndType", "Comment", new { topicID = @Model.ID, ownerID = @Model.SectionID, topicType = @Model.TopicType }))';
 				$("#comments").empty();
-				$('#comments').load(link, function () { setIDs(); });
+				$('#comments').load(link, function () { getTopic(); });
 				updateVisit();
 			},
 			error: function (xhr) {
 				var link = '@Html.Raw(Url.Action("GetCommentsByTopicWithOwnerAndType", "Comment", new { topicID = @Model.ID, ownerID = @Model.SectionID, topicType = @Model.TopicType }))';
 				$("#comments").empty();
-				$('#comments').load(link, function () { setIDs(); });
+				$('#comments').load(link, function () { getTopic(); });
 			}
 		})
 	}

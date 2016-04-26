@@ -3,7 +3,9 @@
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 
 <script type="text/javascript">
-	window.addEventListener("load", function () { getTopic(); }, false);
+	//window.addEventListener("load", function () { getTopic(); }, false);
+
+	$(function () { getTopic() })
 
 	function getTopic() {
 		$.ajax
@@ -126,15 +128,13 @@
 					<div class="col-md-4">
 						@Html.Raw(item.Text)
 						@*@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })*@
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-2">
-						<button class="btn btn-group" onclick="@("quoteComment(" + @Html.Raw(Json.Encode(item.ID)) + ")")">Quote</button>
-					</div>
-					<div class="col-md-3">
-					</div>
-					<div class="delete_buttons">
+						<div class="col-md-2" style="margin-right: 50px">
+							<button class="btn btn-group" onclick="@("quoteComment(" + @Html.Raw(Json.Encode(item.ID)) + ")")">Quote</button>
+						</div>
+						<div class="col-md-3" style="margin-right: 50px">
+						</div>
+						<div class="delete_buttons">
+						</div>
 					</div>
 				</div>
 			}
