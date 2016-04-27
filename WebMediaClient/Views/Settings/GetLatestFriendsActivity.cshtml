@@ -22,7 +22,10 @@
 								@Html.ActionLink(item.Action, "GetTopicByID", "Topic", new { ID = item.ActionID }, null)
 								break;
 							case "photo":
-							@Html.ActionLink(item.Action, "GetPhotoByID", "Album", new { ID = item.ActionID }, null)
+								@Html.ActionLink(item.Action, "GetPhotoByID", "Album", new { ID = item.ActionID }, null)
+								break;
+							case "video":
+								@Html.ActionLink(item.Action, "GetVideoByID", "Video", new { ID = item.ActionID }, null)
 								break;
 							default:
 								break;

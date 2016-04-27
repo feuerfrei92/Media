@@ -76,6 +76,7 @@
 		var name = nameText.value;
 		var ageText = document.getElementById("age_text");
 		var age = ageText.value;
+		var userID = '@ViewBag.User.ID';
 		var link = '@Url.Action("UpdateProfile", "Profile", new { ID = -1 })';
 		link = link.replace("-1", id);
 		$.ajax
@@ -83,6 +84,7 @@
 			url: link,
 			data:
 			{
+				userid: userID,
 				username: username,
 				name: name,
 				age: age,
@@ -98,21 +100,15 @@
 	<div class="col-md-8">
 		<div class="list-group">
 			<label id="username_label" class="label-default">Username:</label>
-			<div class="col-md-4">
-				<input id="username_text" class="input-group-lg" readonly="readonly" />
-			</div>
+			<input id="username_text" class="input-group-lg" readonly="readonly" />
 		</div>
 		<div class="list-group">
 			<label id="name_label" class="label-default">Name:</label>
-			<div class="col-md-4">
-				<input id="name_text" class="input-group-lg" required="required" />
-			</div>
+			<input id="name_text" class="input-group-lg" required="required" />
 		</div>
 		<div class="list-group">
 			<label id="age_label" class="label-default">Age:</label>
-			<div class="col-md-4">
-				<input id="age_text" class="input-group-lg" />
-			</div>
+			<input id="age_text" class="input-group-lg" />
 		</div>
 		<div class="list-group">
 			<button id="submit" class="formbutton" onclick="updateProfile()">Update profile</button>

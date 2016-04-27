@@ -33,7 +33,7 @@
 			{
 				<div class="row">
 					<div class="col-md-5">
-						@Html.Action("GetUserByID", "User", new { ID = item.AuthorID });
+						@Html.Action("GetAuthorInfo", "User", new { userID = item.AuthorID });
 					</div>
 					<div class="col-md-4">
 						@Html.ActionLink("View whole topic", "GetTopicByID", "Topic", new { ID = item.TopicID }, null);
@@ -45,7 +45,7 @@
 						}
 					</div>
 					<div class="col-md-4">
-						@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })
+						@Html.Raw(item.Text)
 					</div>
 				</div>
 			}

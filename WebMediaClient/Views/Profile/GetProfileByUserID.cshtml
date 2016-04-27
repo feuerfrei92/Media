@@ -211,12 +211,14 @@
 		@Html.Action("GetAlbumsForProfile", "Album", new { profileID = @Model.ID })
 	</div>
 </div>
+<br />
 <div class="row">
 	<div class="col-md-8">
 		<p>Videos</p>
 		@Html.ActionLink("See uploaded videos", "GetVideosForUser", "Video", new { userID = @ViewBag.UserID }, new { id = "get_videos_link" })
 	</div>
 </div>
+<br />
 <div class="row">
 	<p>Latest activity</p>
 	<div id="activity" class="col-md-8">

@@ -1,6 +1,13 @@
 ﻿@model PagedList.IPagedList<WebMediaClient.Models.TopicViewModel>
 @using PagedList.Mvc;
 
+@{
+	ViewBag.Title = "GetTopicsByAuthorID";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetTopicsByAuthorID</h2>
+
 <div class="row">
 	<div class="col-md-8">
 		<div class="list-group">

@@ -265,7 +265,7 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
-				string url = string.Format("http://localhost:8080/api/Topic/GetTopicByAuthorID?AuthorID={0}", authorID);
+				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsByAuthorID?AuthorID={0}", authorID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();

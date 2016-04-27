@@ -138,7 +138,6 @@
 					<div class="list-group-item">
 						@Html.ActionLink(item.Username, "GetProfileByID", "Profile", new { ID = item.ID }, null);
 					</div>
-					<div class="col-md-8">
 						<div id="@string.Format("div_{0}", item.Username)" class="add_friend">
 							<script type="text/javascript">
 								var user = @Html.Raw(Json.Encode(ViewBag.User));
@@ -146,7 +145,6 @@
 									addButton(@Html.Raw(Json.Encode(item.Username)));
 							</script>
 						</div>
-					</div>
 				}
 			</div>
 		</div>
