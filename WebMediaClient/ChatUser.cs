@@ -14,17 +14,19 @@ namespace WebMediaClient
 			public UserModel User { get; set; }
 			public string ConnectionID { get; set; }
 			public string SessionID { get; set; }
+			public List<DiscussionModel> Groups { get; set; }
 		}
 
 		public static List<ChatUserModel> onlineUsers = new List<ChatUserModel>();
 
-		public static void AddOnlineUser(UserModel user, string connectionID, string sessionID)
+		public static void AddOnlineUser(UserModel user, string connectionID, string sessionID, List<DiscussionModel> groups)
 		{
 			var chatUser = new ChatUserModel
 			{
 				User = user,
 				ConnectionID = connectionID,
 				SessionID = sessionID,
+				Groups = groups,
 			};
 			onlineUsers.Add(chatUser);
 		}

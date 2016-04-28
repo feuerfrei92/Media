@@ -49,6 +49,12 @@ namespace WebMediaClient.Chat
 			Clients.Caller.onlineStatus(ChatUser.onlineUsers.Select(c => c.User.ID.ToString()).ToList());
 		}
 
+		public void LoadAllGroups()
+		{
+			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.SessionID == HttpContext.Current.Request.Cookies["ASP.NET_SessionId"].Value).FirstOrDefault();
+			Clients.Caller.loadGroups(chatUser.Groups.Select(g => g.DiscussionGuid.ToString()).ToList());
+		}
+
 		public void CreateGroup(string discussionGuid = null)
 		{
 			string groupName = null;
@@ -76,7 +82,7 @@ namespace WebMediaClient.Chat
 			}
 			else
 			{
-				string alertMessage = "You can only add online users";
+				string alertMessage = "This user is currently offline";
 				Clients.Caller.showWarning(alertMessage);
 			}
 		}

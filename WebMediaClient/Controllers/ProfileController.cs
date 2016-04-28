@@ -728,7 +728,9 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var user = await HttpClientBuilder<UserModel>.GetAsync(url, token);
-				ChatUser.AddOnlineUser(user, "", HttpContext.Request.Cookies["ASP.NET_SessionId"].Value);
+				url = string.Format("http://localhost:8080/api/User/GetGroupsForUser?UserID={0}", userID);
+				var groups = Task.Run<List<DiscussionModel>>(() => HttpClientBuilder<DiscussionModel>.GetListAsync(url, token)).Result;
+				ChatUser.AddOnlineUser(user, "", HttpContext.Request.Cookies["ASP.NET_SessionId"].Value, groups);
 				url = string.Format("http://localhost:8080/api/Profile/GetAllFriends?UserID={0}", userID);
 				//var profiles = await HttpClientBuilder<ProfileModel>.GetListAsync(url, token);
 				var profiles = Task.Run<List<ProfileModel>>(() => HttpClientBuilder<ProfileModel>.GetListAsync(url, token)).Result;
