@@ -264,7 +264,14 @@
 			{
 				<div class="row" style="border-top: medium; border-left: medium; border-right: medium; border-bottom: medium">
 					<div class="col-md-5">
-						@Html.Action("GetAuthorInfo", "User", new { userID = @item.AuthorID });
+						@if(!ViewBag.UserIDs.Contains(item.AuthorID))
+						{
+							@Html.Action("GetAuthorInfo", "User", new { userID = @item.AuthorID });
+						}
+						else
+						{
+							@Html.Action("GetAuthorInfo", "User", new { userID = @item.AuthorID, anonymous = true });
+						}
 						<label class="label-primary" hidden="hidden">@item.ID</label>
 						<label class="label-info" hidden="hidden">@item.AuthorID</label>
 					</div>

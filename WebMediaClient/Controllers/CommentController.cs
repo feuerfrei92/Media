@@ -166,9 +166,12 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(CommentConverter.FromBasicToVisual(c));
                 }
+				url = string.Format("http://localhost:8080/api/Section/GetAnonymousUsers?TopicID={0}", topicID);
+				var userIDs = Task.Run<List<int>>(() => HttpClientBuilder<int>.GetListAsync(url, token)).Result;
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				ViewBag.TopicID = topicID;
 				ViewBag.IP = Request.UserHostAddress;
+				ViewBag.UserIDs = userIDs;
 
 				if (page == null)
 					return View(viewModels.ToPagedList(1, 5));
@@ -265,8 +268,11 @@ namespace WebMediaClient.Controllers
 				{
 					viewModels.Add(CommentConverter.FromBasicToVisual(c));
 				}
+				url = string.Format("http://localhost:8080/api/Section/GetSectionAnonymous?SectionID={0}", sectionID);
+				var userIDs = Task.Run<List<int>>(() => HttpClientBuilder<int>.GetListAsync(url, token)).Result;
 				ViewBag.AuthorID = authorID;
 				ViewBag.SectionID = sectionID;
+				ViewBag.UserIDs = userIDs;
 
 				if (page == null)
 					return View(viewModels.ToPagedList(1, 5));

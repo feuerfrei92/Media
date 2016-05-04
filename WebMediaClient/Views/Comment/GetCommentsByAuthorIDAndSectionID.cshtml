@@ -33,7 +33,14 @@
 			{
 				<div class="row">
 					<div class="col-md-5">
-						@Html.Action("GetAuthorInfo", "User", new { userID = item.AuthorID });
+						@if (!ViewBag.UserIDs.Contains(item.AuthorID))
+						{
+							@Html.Action("GetAuthorInfo", "User", new { userID = @item.AuthorID });
+						}
+						else
+						{
+							@Html.Action("GetAuthorInfo", "User", new { userID = @item.AuthorID, anonymous = true });
+						}
 					</div>
 					<div class="col-md-4">
 						@Html.ActionLink("View whole topic", "GetTopicByID", "Topic", new { ID = item.TopicID }, null);

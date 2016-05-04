@@ -193,13 +193,7 @@ namespace Services.Controllers
 		[Authorize]
 		public IHttpActionResult GetRoot(int sectionID)
 		{
-			SectionModel section = _nest.Sections.All().Where(s => s.ID == sectionID).Select(BuildSectionModel).FirstOrDefault();
-			int? parentID = section.ParentID;
-			while (parentID != null)
-			{
-				section = _nest.Sections.All().Where(s => s.ID == parentID).Select(BuildSectionModel).FirstOrDefault();
-				parentID = section.ParentID;
-			}
+			SectionModel section = GetSectionRoot(sectionID);
 
 			return Ok(section);
 		}
@@ -360,6 +354,49 @@ namespace Services.Controllers
 			};
 
 			return Ok(membershipInfo);
+		}
+
+		[HttpGet]
+		[Authorize]
+		public IHttpActionResult GetAnonymousUsers(int topicID)
+		{
+			Topic topic = _nest.Topics.All().Where(t => t.ID == topicID).FirstOrDefault();
+			SectionModel root = GetSectionRoot(topic.SectionID);
+			List<Membership> memberships = _nest.Memberships.All().Where(m => m.SectionID == root.ID).ToList();
+			List<int> userIDs = new List<int>();
+			foreach (Membership mem in memberships)
+			{
+				if (mem.Anonymous)
+					userIDs.Add(mem.UserID);
+			}
+			return Ok(userIDs);
+		}
+
+		[HttpGet]
+		[Authorize]
+		public IHttpActionResult GetSectionAnonymous(int sectionID)
+		{
+			SectionModel root = GetSectionRoot(sectionID);
+			List<Membership> memberships = _nest.Memberships.All().Where(m => m.SectionID == root.ID).ToList();
+			List<int> userIDs = new List<int>();
+			foreach (Membership mem in memberships)
+			{
+				if (mem.Anonymous)
+					userIDs.Add(mem.UserID);
+			}
+			return Ok(userIDs);
+		}
+
+		private SectionModel GetSectionRoot(int sectionID)
+		{
+			SectionModel section = _nest.Sections.All().Where(s => s.ID == sectionID).Select(BuildSectionModel).FirstOrDefault();
+			int? parentID = section.ParentID;
+			while (parentID != null)
+			{
+				section = _nest.Sections.All().Where(s => s.ID == parentID).Select(BuildSectionModel).FirstOrDefault();
+				parentID = section.ParentID;
+			}
+			return section;
 		}
 	}
 }

@@ -60,12 +60,30 @@
 						$("#apply").prop('disabled', true);
 						$("#topic").prop('disabled', false);
 						$("#anonymous_check").prop('disabled', true);
+						var button = document.createElement("button");
+						button.class = "btn btn-default";
+						button.onclick = function () { changeAnonymity() };
+						if (data.Anonymous)
+							button.innerHTML = "Post anonymously";
+						else {
+							button.innerHTML = "Don't post anonymously";
+						}
+						$("#application_container").append(button);
 					}
 					if (data.Role == "Admin") {
 						$("#apply").prop('disabled', true);
 						$("#subsection").prop('disabled', false);
 						$("#topic").prop('disabled', false);
 						$("#anonymous_check").prop('disabled', true);
+						var button = document.createElement("button");
+						button.class = "btn btn-default";
+						button.onclick = function () { changeAnonymity() };
+						if (data.Anonymous)
+							button.innerHTML = "Don't post anonymously";
+						else {
+							button.innerHTML = "Post anonymously";
+						}
+						$("#application_container").append(button);
 						var link1 = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
 						var link2 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 						var link3 = '@Html.ActionLink("Change role of an user", "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })';
@@ -80,6 +98,15 @@
 						$("#subsection").prop('disabled', false);
 						$("#topic").prop('disabled', false);
 						$("#anonymous_check").prop('disabled', true);
+						var button = document.createElement("button");
+						button.class = "btn btn-default";
+						button.onclick = function () { changeAnonymity() };
+						if (data.Anonymous)
+							button.innerHTML = "Don't post anonymously";
+						else {
+							button.innerHTML = "Post anonymously";
+						}
+						$("#application_container").append(button);
 						var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 						$("#suspend_user").html(link1);
 					}
@@ -152,6 +179,15 @@
 					$("#apply").prop('disabled', true);
 					$("#topic").prop('disabled', false);
 					$("#anonymous_check").prop('disabled', true);
+					var button = document.createElement("button");
+					button.class = "btn btn-default";
+					button.onclick = function () { changeAnonymity() };
+					if (data.Anonymous)
+						button.innerHTML = "Don't post anonymously";
+					else {
+						button.innerHTML = "Post anonymously";
+					}
+					$("#application_container").append(button);
 				}
 				if (data.Role == "Admin")
 				{
@@ -159,6 +195,15 @@
 					$("#subsection").prop('disabled', false);
 					$("#topic").prop('disabled', false);
 					$("#anonymous_check").prop('disabled', true);
+					var button = document.createElement("button");
+					button.class = "btn btn-default";
+					button.onclick = function () { changeAnonymity() };
+					if (data.Anonymous)
+						button.innerHTML = "Don't post anonymously";
+					else {
+						button.innerHTML = "Post anonymously";
+					}
+					$("#application_container").append(button);
 					var link1 = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
 					var link2 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 					var link3 = '@Html.ActionLink("Change role of an user", "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })';
@@ -174,6 +219,15 @@
 					$("#subsection").prop('disabled', false);
 					$("#topic").prop('disabled', false);
 					$("#anonymous_check").prop('disabled', true);
+					var button = document.createElement("button");
+					button.class = "btn btn-default";
+					button.onclick = function () { changeAnonymity() };
+					if (data.Anonymous)
+						button.innerHTML = "Don't post anonymously";
+					else {
+						button.innerHTML = "Post anonymously";
+					}
+					$("#application_container").append(button);
 					var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 					$("#suspend_user").html(link1);
 				}
@@ -281,6 +335,17 @@
 		})
 	}
 
+	function changeAnonymity() {
+		$.ajax
+		({
+			url: '@Html.Raw(Url.Action("ChangeVisibilityOfMembership", "Section", new { userID = @ViewBag.User.ID, sectionID = @Model.ID }))',
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) {
+			}
+		})
+	}
+
 	function postTopic() {
 		var link = '@Html.Raw(@Url.Action("CreateTopic", "Topic", new { sectionID = @Model.ID, authorID = @ViewBag.User.ID }))';
 		//var hiddenID = document.getElementById("store_id");
@@ -321,7 +386,7 @@
 	</div>
 </div>
 <div class="row">
-	<div class="list-group">
+	<div id="application_container" class="list-group">
 		<button id="apply" class="btn btn-default" onclick="applyForMember()">Apply for membership</button>
 		<br />
 		<input id="anonymous_check" type="checkbox" name="anonymous" value="Anonymous" />Browse section as Anonymous<br />
