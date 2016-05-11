@@ -9,7 +9,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>SearchProfilesByCriteria</title>
+    <title>@Resources.SearchProfilesByCriteria</title>
 </head>
 <body>
     <div class="row"> 
@@ -29,23 +29,27 @@
 					@Html.LabelFor(m => m.MinimumAge, new { @class = "col-md-2 control-label" })
 					<div class="col-md-10">
 						@Html.TextBoxFor(m => m.MinimumAge, new { @class = "form-control" })
-						@Html.ValidationMessageFor(m => m.MinimumAge, "", new { @class = "text-danger" })
 					</div>
 				</div>
 				<div class="form-group">
 					@Html.LabelFor(m => m.MaximumAge, new { @class = "col-md-2 control-label" })
 					<div class="col-md-10">
 						@Html.TextBoxFor(m => m.MaximumAge, new { @class = "form-control" })
-						@Html.ValidationMessageFor(m => m.MaximumAge, "", new { @class = "text-danger" })
+					</div>
+				</div>
+				<div class="form-group">
+					@Html.LabelFor(m => m.Gender, new { @class = "col-md-2 control-label" })
+					<div class="col-md-10">
+						@Html.DropDownListFor(m => m.Gender, EnumHelper.GetSelectList(typeof(Models.Gender)), new { @class = "form-control" })
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-md-offset-2 col-md-10">
-						<input type="submit" value="Search" class="btn btn-default" />
+						<input type="submit" value="@Resources.Search" class="btn btn-default" />
 					</div>
 				</div>
-			}
-		</section>
+				}
+</section>
 		</div>
 	</div>
 </body>

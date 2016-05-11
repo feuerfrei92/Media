@@ -64,9 +64,9 @@
 						button.class = "btn btn-default";
 						button.onclick = function () { changeAnonymity() };
 						if (data.Anonymous)
-							button.innerHTML = "Post anonymously";
+							button.innerHTML = '@Resources.NonAnonymous';
 						else {
-							button.innerHTML = "Don't post anonymously";
+							button.innerHTML = '@Resources.Anonymous';
 						}
 						$("#application_container").append(button);
 					}
@@ -79,15 +79,15 @@
 						button.class = "btn btn-default";
 						button.onclick = function () { changeAnonymity() };
 						if (data.Anonymous)
-							button.innerHTML = "Don't post anonymously";
+							button.innerHTML = '@Resources.NonAnonymous';
 						else {
-							button.innerHTML = "Post anonymously";
+							button.innerHTML = '@Resources.Anonymous';
 						}
 						$("#application_container").append(button);
 						var link1 = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
-						var link2 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
-						var link3 = '@Html.ActionLink("Change role of an user", "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })';
-						var link4 = '@Html.ActionLink("Update section settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Section.ToString() }, new { id = "section_setting" })';
+						var link2 = '@Html.ActionLink(Resources.SuspendUser, "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
+						var link3 = '@Html.ActionLink(Resources.ChangePositionOfUser, "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })';
+						var link4 = '@Html.ActionLink(Resources.UpdateSettings, "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Section.ToString() }, new { id = "section_setting" })';
 						$("#pending_members_container").load(link1);
 						$("#suspend_user").html(link2);
 						$("#promote_user").html(link3);
@@ -102,12 +102,12 @@
 						button.class = "btn btn-default";
 						button.onclick = function () { changeAnonymity() };
 						if (data.Anonymous)
-							button.innerHTML = "Don't post anonymously";
+							button.innerHTML = '@Resources.NonAnonymous';
 						else {
-							button.innerHTML = "Post anonymously";
+							button.innerHTML = '@Resources.Anonymous';
 						}
 						$("#application_container").append(button);
-						var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
+						var link1 = '@Html.ActionLink(Resources.SuspendUser, "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 						$("#suspend_user").html(link1);
 					}
 
@@ -117,27 +117,22 @@
 						dataType: 'json',
 						type: 'GET',
 						success: function (result) {
-							if (result.Publicity == "Everyone")
-							{
+							if (result.Publicity == "Everyone") {
 								var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
 								var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
 								$("#sections_container").load(link1);
 								$("#topics_container").load(link2);
 							}
-							if (result.Publicity == "Registered")
-							{
-								if (data.role == "Regular" || data.role == "Mod" || data.role == "Admin")
-								{
+							if (result.Publicity == "Registered") {
+								if (data.role == "Regular" || data.role == "Mod" || data.role == "Admin") {
 									var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
 									var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
 									$("#sections_container").load(link1);
 									$("#topics_container").load(link2);
 								}
 							}
-							if (result.Publicity == "Admins")
-							{
-								if (data.role == "Mod" || data.role == "Admin")
-								{
+							if (result.Publicity == "Admins") {
+								if (data.role == "Mod" || data.role == "Admin") {
 									var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
 									var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
 									$("#sections_container").load(link1);
@@ -174,8 +169,7 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				if (data.Role == "Regular")
-				{
+				if (data.Role == "Regular") {
 					$("#apply").prop('disabled', true);
 					$("#topic").prop('disabled', false);
 					$("#anonymous_check").prop('disabled', true);
@@ -183,14 +177,13 @@
 					button.class = "btn btn-default";
 					button.onclick = function () { changeAnonymity() };
 					if (data.Anonymous)
-						button.innerHTML = "Don't post anonymously";
+						button.innerHTML = '@Resources.NonAnonymous';
 					else {
-						button.innerHTML = "Post anonymously";
+						button.innerHTML = '@Resources.Anonymous';
 					}
 					$("#application_container").append(button);
 				}
-				if (data.Role == "Admin")
-				{
+				if (data.Role == "Admin") {
 					$("#apply").prop('disabled', true);
 					$("#subsection").prop('disabled', false);
 					$("#topic").prop('disabled', false);
@@ -199,22 +192,21 @@
 					button.class = "btn btn-default";
 					button.onclick = function () { changeAnonymity() };
 					if (data.Anonymous)
-						button.innerHTML = "Don't post anonymously";
+						button.innerHTML = '@Resources.NonAnonymous';
 					else {
-						button.innerHTML = "Post anonymously";
+						button.innerHTML = '@Resources.Anonymous';
 					}
 					$("#application_container").append(button);
 					var link1 = '@Url.Action("GetPendingMembershipsForSection", "User", new { SectionID = @Model.ID })';
-					var link2 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
-					var link3 = '@Html.ActionLink("Change role of an user", "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })';
-					var link4 = '@Html.ActionLink("Update section settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Section.ToString() }, new { id = "section_setting" })';
+					var link2 = '@Html.ActionLink(Resources.SuspendUser, "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
+					var link3 = '@Html.ActionLink(Resources.ChangePositionOfUser, "ChangePosition", "Settings", new { SectionID = @Model.ID }, new { @id = "change_position_link" })';
+					var link4 = '@Html.ActionLink(Resources.UpdateSettings, "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Section.ToString() }, new { id = "section_setting" })';
 					$("#pending_members_container").load(link1);
 					$("#suspend_user").html(link2);
 					$("#promote_user").html(link3);
 					$("#update_settings").html(link4);
 				}
-				if (data.Role == "Mod")
-				{
+				if (data.Role == "Mod") {
 					$("#apply").prop('disabled', true);
 					$("#subsection").prop('disabled', false);
 					$("#topic").prop('disabled', false);
@@ -223,12 +215,12 @@
 					button.class = "btn btn-default";
 					button.onclick = function () { changeAnonymity() };
 					if (data.Anonymous)
-						button.innerHTML = "Don't post anonymously";
+						button.innerHTML = '@Resources.NonAnonymous';
 					else {
-						button.innerHTML = "Post anonymously";
+						button.innerHTML = '@Resources.Anonymous';
 					}
 					$("#application_container").append(button);
-					var link1 = '@Html.ActionLink("Suspend an user", "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
+					var link1 = '@Html.ActionLink(Resources.SuspendUser, "SuspendUser", "Settings", new { SectionID = @Model.ID }, new { @id = "suspend_user_link" })';
 					$("#suspend_user").html(link1);
 				}
 				//checkPublicity(data.Role);
@@ -308,11 +300,10 @@
 			dataType: 'json',
 			type: 'PUT',
 			success: function (data) {
-				alert("You are already a member");
-			},
-			error: function (xhr) {
-				if (xhr.status == 404) {
+				if (data.Status != null)
 					addMembership();
+				else {
+					alert('@Resources.AlreadyMember');
 				}
 			}
 		})
@@ -320,13 +311,14 @@
 
 	function addMembership() {
 		var anonymous = document.getElementById("anonymous_check").checked;
+		var link;
+		if (anonymous)
+			link = '@Html.Raw(Url.Action("AddMembership", "Section", new { sectionID = @Model.ID, userID = @ViewBag.User.ID, isAnonymous = true }))';
+		else
+			link = '@Html.Raw(Url.Action("AddMembership", "Section", new { sectionID = @Model.ID, userID = @ViewBag.User.ID, isAnonymous = false }))';
 		$.ajax
 		({
-			url: '@Html.Raw(Url.Action("AddMembership", "Section", new { sectionID = @Model.ID, userID = @ViewBag.User.ID }))',
-			data:
-				{
-					anonymous: anonymous,
-				},
+			url: link,
 			dataType: 'json',
 			type: 'POST',
 			success: function (data) {
@@ -377,19 +369,19 @@
 </div>
 <div class="row">
 	<div class="list-group">
-		<button id="subsection" class="btn btn-default" disabled="disabled" onclick="postSection()">Add subsection</button>
+		<button id="subsection" class="btn btn-default" disabled="disabled" onclick="postSection()">@Resources.AddSubSection</button>
 	</div>
 </div>
 <div class="row">
 	<div class="list-group">
-		<button id="topic" class="btn btn-default" disabled="disabled" onclick="postTopic()">Add new topic</button>
+		<button id="topic" class="btn btn-default" disabled="disabled" onclick="postTopic()">@Resources.AddTopic</button>
 	</div>
 </div>
 <div class="row">
 	<div id="application_container" class="list-group">
-		<button id="apply" class="btn btn-default" onclick="applyForMember()">Apply for membership</button>
+		<button id="apply" class="btn btn-default" onclick="applyForMember()">@Resources.ApplyForMembership</button>
 		<br />
-		<input id="anonymous_check" type="checkbox" name="anonymous" value="Anonymous" />Browse section as Anonymous<br />
+		<input id="anonymous_check" type="checkbox" name="anonymous" value="Anonymous" />@Resources.BrowseAnonymous<br />
 	</div>
 </div>
 <div class="row" id="view_members">

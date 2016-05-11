@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>CreateVideo</h2>
+<h2>@Resources.CreateVideo</h2>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -23,7 +23,7 @@
 		@using (Html.BeginForm("CreateVideo", "Video", new { userID = @ViewBag.User.ID, isProfile = @ViewBag.IsProfile }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data", id = "upload_form" }))
 		{
 			<div class="form-group">
-				<label class="col-md-2 control-label">Select video file:</label>
+				<label class="col-md-2 control-label">@Resources.VideoFile</label>
 				<div class="col-md-10">
 					<input type="file" name="file" accept="video/*" />
 				</div>

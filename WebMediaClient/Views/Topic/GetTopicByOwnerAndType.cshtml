@@ -56,7 +56,7 @@
 		var text = CKEDITOR.instances.comment_text.getData();
 		text = text.replace(new RegExp('&lt;', 'g'), '<');
 		text = text.replace(new RegExp('&gt;', 'g'), '>');
-		var link = '@Html.Raw(@Url.Action("CreateComment", "Comment", new { topicID = @Model.ID, authorID = @ViewBag.User.ID }))';
+		var link = '@Html.Raw(Url.Action("CreateComment", "Comment", new { topicID = @Model.ID, authorID = @ViewBag.User.ID }))';
 		//link = link.replace("-1", id);
 		$.ajax
 		({
@@ -189,7 +189,7 @@
 </div>
 <div class="row">
 	<div class="col-md-8">
-		<button id="add_comment" class="btn btn-default" onclick="addComment()">Reply</button>
+		<button id="add_comment" class="btn btn-default" onclick="addComment()">@Resources.Reply</button>
 	</div>
 </div>
 <script>

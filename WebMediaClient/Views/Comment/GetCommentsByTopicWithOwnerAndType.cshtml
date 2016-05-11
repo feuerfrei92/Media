@@ -37,13 +37,13 @@
 				var topicID = '@ViewBag.TopicID';
 				buttonEdit.setAttribute("class", "btn btn-default");
 				buttonEdit.setAttribute("onclick", "updateComment(\"" + commentID + "\", \"" + topicID + "\", \"" + id + "\")");
-				buttonEdit.innerHTML = "Edit";
+				buttonEdit.innerHTML = '@Resources.Edit';
 				div3.appendChild(buttonEdit);
 				var buttonDelete = document.createElement("button");
-				buttonEdit.setAttribute("class", "btn btn-default");
-				buttonEdit.setAttribute("onclick", "deleteComment(\"" + commentID + "\", \"" + buttonDelete + "\")");
-				buttonEdit.innerHTML = "Edit";
-				div2.appendChild(buttonEdit);
+				buttonDelete.setAttribute("class", "btn btn-default");
+				buttonDelete.setAttribute("onclick", "deleteComment(\"" + commentID + "\", \"" + buttonDelete + "\")");
+				buttonDelete.innerHTML = '@Resources.Delete';
+				div2.appendChild(buttonDelete);
 			}
 			else {
 				if (currentID == userID) {
@@ -75,7 +75,7 @@
 	function updateComment(id, topicID, userID) {
 		var currentUserID = '@ViewBag.User.ID';
 		if (userID != currentUserID)
-			alert("Don't even try it!");
+			alert('@Resources.NonPermitedOperation');
 		else {
 			var link = '@Html.Raw(Url.Action("UpdateComment", "Comment", new { ID = -1, TopicID = -2 }))';
 			link = link.replace("-1", id);
@@ -87,7 +87,7 @@
 	function deleteComment(id, elem) {
 		if (elem != null)
 		{
-			alert("Invalid action!");
+			alert('@Resources.InvalidAction');
 		}
 		else
 		{
@@ -99,7 +99,7 @@
 				dataType: 'json',
 				type: 'DELETE',
 				success: function (data) {
-					alert("Successfully deleted");
+					alert('@Resources.SuccessfullyDeleted');
 				},
 			})
 		}
@@ -129,7 +129,7 @@
 						@Html.Raw(item.Text)
 						@*@Html.TextAreaFor(i => item.Text, new { @class = "form-control", @rows = 5, @cols = 25 })*@
 						<div class="col-md-2" style="margin-right: 50px">
-							<button class="btn btn-group" onclick="@("quoteComment(" + @Html.Raw(Json.Encode(item.ID)) + ")")">Quote</button>
+							<button class="btn btn-group" onclick="@("quoteComment(" + @Html.Raw(Json.Encode(item.ID)) + ")")">@Resources.Quote</button>
 						</div>
 						<div class="col-md-3" style="margin-right: 50px">
 						</div>

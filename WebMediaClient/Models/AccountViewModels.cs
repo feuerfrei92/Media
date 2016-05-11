@@ -6,7 +6,7 @@ namespace WebMediaClient.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(ResourceType = typeof(Resources), Name = "Email")]
         public string Email { get; set; }
     }
 
@@ -29,11 +29,11 @@ namespace WebMediaClient.Models
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Code")]
+		[Display(ResourceType = typeof(Resources), Name = "Code")]
         public string Code { get; set; }
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Remember this browser?")]
+		[Display(ResourceType = typeof(Resources), Name = "RememberBrowser")]
         public bool RememberBrowser { get; set; }
 
         public bool RememberMe { get; set; }
@@ -42,20 +42,20 @@ namespace WebMediaClient.Models
     public class ForgotViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+		[Display(ResourceType = typeof(Resources), Name = "Email")]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+		[Display(ResourceType = typeof(Resources), Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+		[Display(ResourceType = typeof(Resources), Name = "Password")]
         public string Password { get; set; }
     }
 
@@ -63,23 +63,23 @@ namespace WebMediaClient.Models
     {
 		[Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+		[Display(ResourceType = typeof(Resources), Name = "Email")]
         public string Email { get; set; }
 
 		[Required]
 		[RegularExpression("^[a-zA-Z0-9_-]*$")]
-		[Display(Name = "Username")]
+		[Display(ResourceType = typeof(Resources), Name = "Username")]
 		public string Username { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+		[Display(ResourceType = typeof(Resources), Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+		[Display(ResourceType = typeof(Resources), Name = "ConfirmPassword")]
+        [Compare("Password", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "UnmatchingPasssword")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -87,18 +87,18 @@ namespace WebMediaClient.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+		[Display(ResourceType = typeof(Resources), Name = "Email")]
         public string Email { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+		[Display(ResourceType = typeof(Resources), Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+		[Display(ResourceType = typeof(Resources), Name = "ConfirmPassword")]
+		[Compare("Password", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "UnmatchingPasssword")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -108,7 +108,7 @@ namespace WebMediaClient.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+		[Display(ResourceType = typeof(Resources), Name = "Email")]
         public string Email { get; set; }
     }
 }

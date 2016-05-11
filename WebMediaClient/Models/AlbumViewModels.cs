@@ -11,6 +11,7 @@ namespace WebMediaClient.Models
 	{
 		public int ID { get; set; }
 		[Required]
+		[Display(ResourceType = typeof(Resources), Name = "Name")]
 		[RegularExpression("^[a-zA-Z0-9]+$")]
 		public string Name { get; set; }
 		public int OwnerID { get; set; }

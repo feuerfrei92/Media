@@ -50,7 +50,7 @@
 	{
 		//var hiddenID = document.getElementById("store_id");
 		//var userID = hiddenID.value;
-		var link = '@Html.Raw(@Url.Action("AcceptFriendship", "Profile", new { userID = @ViewBag.User.ID, friendID = -1 }))';
+		var link = '@Html.Raw(Url.Action("AcceptFriendship", "Profile", new { userID = @ViewBag.User.ID, friendID = -1 }))';
 		//link = link.replace("-1", userID);
 		link = link.replace("-1", id);
 		$.ajax

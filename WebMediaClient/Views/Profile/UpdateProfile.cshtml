@@ -44,21 +44,20 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				var hiddenText = document.getElementById("hidden_input");
-				hiddenText.value = data.ID;
-				var usernameText = document.getElementById("username_text");
-				usernameText.value = data.Username;
-				var nameText = document.getElementById("name_text");
-				nameText.value = data.Name;
-				var ageText = document.getElementById("age_text");
-				ageText.value = data.Age;
-			},
-			error: function (xhr) {
-				if (xhr.status == 500) {
-					//var hiddenID = document.getElementById("store_id");
-					//var id = hiddenID.value;
+				if (data.Status == null)
+				{
+					var hiddenText = document.getElementById("hidden_input");
+					hiddenText.value = data.ID;
+					var usernameText = document.getElementById("username_text");
+					usernameText.value = data.Username;
+					var nameText = document.getElementById("name_text");
+					nameText.value = data.Name;
+					var ageText = document.getElementById("age_text");
+					ageText.value = data.Age;
+				}
+				else
+				{
 					var link = '@Url.Action("CreateProfile", "Profile", new { userID = @ViewBag.User.ID })';
-					//link = link.replace("-1", id);
 					window.location.href = link;
 				}
 			}
@@ -76,6 +75,7 @@
 		var name = nameText.value;
 		var ageText = document.getElementById("age_text");
 		var age = ageText.value;
+		var gender = $("#gender_select option:selected").text();
 		var userID = '@ViewBag.User.ID';
 		var link = '@Url.Action("UpdateProfile", "Profile", new { ID = -1 })';
 		link = link.replace("-1", id);
@@ -88,6 +88,7 @@
 				username: username,
 				name: name,
 				age: age,
+				gender: gender,
 			},
 			dataType: 'json',
 			type: 'PUT',
@@ -99,19 +100,25 @@
 <div class="row">
 	<div class="col-md-8">
 		<div class="list-group">
-			<label id="username_label" class="label-default">Username:</label>
+			<label id="username_label" class="label-default">@Resources.Username</label>
 			<input id="username_text" class="input-group-lg" readonly="readonly" />
 		</div>
 		<div class="list-group">
-			<label id="name_label" class="label-default">Name:</label>
+			<label id="name_label" class="label-default">@Resources.Name</label>
 			<input id="name_text" class="input-group-lg" required="required" />
 		</div>
 		<div class="list-group">
-			<label id="age_label" class="label-default">Age:</label>
+			<label id="age_label" class="label-default">@Resources.Age</label>
 			<input id="age_text" class="input-group-lg" />
 		</div>
 		<div class="list-group">
-			<button id="submit" class="formbutton" onclick="updateProfile()">Update profile</button>
+			<select id="gender_select">
+				<option value="Male">@Resources.Male</option>
+				<option value="Female">@Resources.Female</option>
+			</select>
+		</div>
+		<div class="list-group">
+			<button id="submit" class="formbutton" onclick="updateProfile()">@Resources.Update</button>
 		</div>
 		<div class="list-group">
 			<input id="hidden_input" hidden="hidden" />

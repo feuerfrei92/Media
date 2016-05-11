@@ -1,7 +1,7 @@
 ﻿@model WebMediaClient.Models.AlbumViewModel
 
 @{
-    ViewBag.Title = "GetAlbumByID";
+    ViewBag.Title = Model.Name;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -25,8 +25,10 @@
 						$("#upload_photo_link").show();
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
+						var link2 = '@Html.ActionLink(Resources.UploadPhoto, "CreatePhoto", "Album", new { userID = @ViewBag.User.ID, albumID = @ViewBag.ID }, new { @id = "upload_photo_link" })';
 						$("#photos").load(link, function () { checkPriviligies(); });
 						$("album_topic").load(link1, function () { updateVisit(); });
+						$("#upload_photo").html(link2);
 					}
 					else
 						getProfileOwner(data.Username);
@@ -46,8 +48,10 @@
 						$("#upload_photo_link").show();
 						var link = '@Url.Action("GetPhotosForAlbum", "Album", new { albumID = @Model.ID })';
 						var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Album" }))';
+						var link2 = '@Html.ActionLink(Resources.UploadPhoto, "CreatePhoto", "Album", new { userID = @ViewBag.User.ID, albumID = @ViewBag.ID }, new { @id = "upload_photo_link" })';
 						$("#photos").load(link, function () { checkPriviligies(); });
 						$("album_topic").load(link1, function () { updateVisit(); });
+						$("#upload_photo").html(link2);
 					}
 					checkIsFollower(data.ID);
 				}
@@ -64,10 +68,9 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				checkInterestPublicity(true);
-			},
-			error: function (xhr) {
-				if (xhr.status == 404)
+				if(data.Status == null)
+					checkInterestPublicity(true);
+				else
 					checkInterestPublicity(false);
 			}
 		})
@@ -121,10 +124,9 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				checkProfilePublicity(true, true);
-			},
-			error: function (xhr) {
-				if (xhr.status == 404)
+				if(data.Status == null)
+					checkProfilePublicity(true, true);
+				else
 					checkCommonFriends(id);
 			}
 		})
@@ -185,11 +187,8 @@
 </div>
 <div id="photos" class="form-group">
 </div>
-
-<div class="row">
-	<div class="col-md-8">
-		@Html.ActionLink("Upload photo", "CreatePhoto", "Album", new { userID = @ViewBag.User.ID, albumID = @ViewBag.ID }, new { @id = "upload_photo_link" })
-	</div>
+<br />
+<div id="upload_photo "class="col-md-8">
 </div>
 
 <input id="hidden_id" hidden="hidden" />

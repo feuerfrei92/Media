@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>SuspendUser</h2>
+<h2>@Resources.SuspendUser</h2>
 
 <script type="text/javascript">
 	window.addEventListener("load", function () { getRoot() }, false);
@@ -49,7 +49,7 @@
 			type: 'GET',
 			success: function (data) {
 				if (data.Role != "Admin" && data.Role != "Mod") {
-					alert("You aren't allowed to view this page");
+					alert('@Resources.NonPermitedOperation');
 					window.location.href = '@Url.Action("Index", "Home")';
 				}
 			}
@@ -82,20 +82,20 @@
 		@if(ViewBag.UserID == null)
 		{ 
 			<div class="list-group">
-				<label id="user_label" class="label-default">Select user:</label>
+				<label id="user_label" class="label-default">@Resources.SelectUser</label>
 				<div class="col-md-4">
 					@Html.DropDownList("User", new SelectList(Enumerable.Empty<SelectListItem>()), new { @id = "user_dropdown" })
 				</div>
 			</div>
 		}
 		<div class="list-group">
-			<label id="date_label" class="label-default">Suspended until:</label>
+			<label id="date_label" class="label-default">@Resources.SuspendedUntil</label>
 			<div class="col-md-4">
 				<input id="date_input" class="datepicker" required="required" />
 			</div>
 		</div>
 		<div class="list-group">
-			<button id="submit" class="formbutton" onclick="suspendUser()">Suspend</button>
+			<button id="submit" class="formbutton" onclick="suspendUser()">@Resources.Suspend</button>
 		</div>
 	</div>
 </div>

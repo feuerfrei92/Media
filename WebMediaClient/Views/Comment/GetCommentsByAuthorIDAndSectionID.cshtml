@@ -2,11 +2,8 @@
 @using PagedList.Mvc;
 
 @{
-    ViewBag.Title = "GetCommentsByAuthorIDAndSectionID";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>GetCommentsByAuthorIDAndSectionID</h2>
 
 <script type="text/javascript">
 	window.addEventListener("load", function () { setIDs(); }, false);
@@ -43,7 +40,7 @@
 						}
 					</div>
 					<div class="col-md-4">
-						@Html.ActionLink("View whole topic", "GetTopicByID", "Topic", new { ID = item.TopicID }, null);
+						@Html.ActionLink(Resources.WholeTopic, "GetTopicByID", "Topic", new { ID = item.TopicID }, null);
 					</div>
 					<div class="col-md-4">
 						@if (item.Name != null)

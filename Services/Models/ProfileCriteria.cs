@@ -15,6 +15,6 @@ namespace Services.Models
 		public int? MinimumAge { get; set; }
 		[Range(14, 100)]
 		public int? MaximumAge { get; set; }
-		public GenderCriterion Gender { get; set; }
+		public string Gender { get; set; }
 	}
 }

@@ -16,7 +16,7 @@
 				var actionLinkElement = document.createElement("label");
 				actionLinkElement.setAttribute("class", "label-default dropdown-toggle");
 				actionLinkElement.setAttribute("data-toggle", "dropdown");
-				var manageElem = "Hello, " + data.Username;
+				var manageElem = '@Resources.Hello' + data.Username;
 				actionLinkElement.innerHTML = manageElem;
 				manageNode.appendChild(actionLinkElement);
 				actionsList.appendChild(manageNode);
@@ -64,20 +64,20 @@
 	<ul id="actions_list" class="nav navbar-nav navbar-right">
 		@if((Services.Models.UserModel)HttpContext.Current.Session["currentUser"] == null)
 		{ 
-			<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-			<li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+			<li>@Html.ActionLink(Resources.Register, "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+			<li>@Html.ActionLink(Resources.Login, "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
 		}
 		else
 		{
 			var user = (Services.Models.UserModel)HttpContext.Current.Session["currentUser"];
 			<li class="dropdown"><label class="label-default dropdown-toggle" data-toggle="dropdown">@user.Username<span class="caret" /></label>
 				<ul class="dropdown-menu">
-					<li>@Html.ActionLink("View profile", "GetProfileByUserID", "Profile", routeValues: new { userID = @user.ID }, htmlAttributes: new { id = "view_profile_link" })</li>
-					<li>@Html.ActionLink("Update profile", "UpdateProfile", "Profile", routeValues: null, htmlAttributes: new { id = "update_profile_link" })</li>
-					<li>@Html.ActionLink("Update settings", "Index", "Settings", routeValues: null, htmlAttributes: new { id = "setting_link" })</li>
+					<li>@Html.ActionLink(Resources.ViewProfile, "GetProfileByUserID", "Profile", routeValues: new { userID = @user.ID }, htmlAttributes: new { id = "view_profile_link" })</li>
+					<li>@Html.ActionLink(Resources.UpdateYourProfile, "UpdateProfile", "Profile", routeValues: null, htmlAttributes: new { id = "update_profile_link" })</li>
+					<li>@Html.ActionLink(Resources.UpdateSettings, "Index", "Settings", routeValues: null, htmlAttributes: new { id = "setting_link" })</li>
 				</ul>
 			</li>
-			<li>@Html.ActionLink("Log off", "LogOff", "Home", routeValues: null, htmlAttributes: new { id = "logoff_link" })</li>
+			<li>@Html.ActionLink(Resources.Logoff, "LogOff", "Home", routeValues: null, htmlAttributes: new { id = "logoff_link" })</li>
 		}
 	</ul>
 }

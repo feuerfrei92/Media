@@ -14,7 +14,7 @@
 			input.name = "profile_photo";
 			var value = label.textContent;
 			input.value = value;
-			input.innerHTML = "Make profile picture";
+			input.innerHTML = '@Resources.MakeProfilePicture';
 			div.appendChild(input);
 			var newLine = document.createElement("br");
 			div.appendChild(newLine);
@@ -23,7 +23,7 @@
 		button.id = "changed_picture";
 		button.class = "btn btn-default";
 		button.onclick = function () { changePicture() };
-		button.innerHTML = "Change main picture";
+		button.innerHTML = '@Resources.ChangeMainPicture';
 		var mainDiv = document.getElementById("photos_container");
 		mainDiv.appendChild(button);
 	}
@@ -48,7 +48,7 @@
 				dataType: 'json',
 				type: 'PUT',
 				success: function (data) {
-					alert("Profile picture successfully changed");
+					alert('@Resources.ProfilePictureChanged');
 				}
 			})
 		}

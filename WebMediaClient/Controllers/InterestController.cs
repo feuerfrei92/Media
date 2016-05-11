@@ -283,9 +283,7 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var follower = await HttpClientBuilder<FollowerInfo>.GetAsync(url, token);
-				if (follower == null)
-					return HttpNotFound("No follower");
-				else return Json(new { Follower = follower }, JsonRequestBehavior.AllowGet);
+				return Json(new { Follower = follower }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{

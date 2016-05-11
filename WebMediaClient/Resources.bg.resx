@@ -1,0 +1,465 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Accept" xml:space="preserve">
+    <value>Приеми</value>
+  </data>
+  <data name="AddFriend" xml:space="preserve">
+    <value>Добави приятел</value>
+  </data>
+  <data name="AddSubSection" xml:space="preserve">
+    <value>Създай подсекция</value>
+  </data>
+  <data name="AddTopic" xml:space="preserve">
+    <value>Създай нова тема</value>
+  </data>
+  <data name="Admin" xml:space="preserve">
+    <value>Админ</value>
+  </data>
+  <data name="AdvancedSearch" xml:space="preserve">
+    <value>Разширено търсене</value>
+  </data>
+  <data name="Age" xml:space="preserve">
+    <value>Възраст</value>
+  </data>
+  <data name="AlbumSettings" xml:space="preserve">
+    <value>Настройки на албум</value>
+  </data>
+  <data name="AllTopics" xml:space="preserve">
+    <value>Всички теми</value>
+  </data>
+  <data name="AlreadyMember" xml:space="preserve">
+    <value>Вече сте член</value>
+  </data>
+  <data name="Anonymous" xml:space="preserve">
+    <value>Анонимен</value>
+  </data>
+  <data name="ApplyForMembership" xml:space="preserve">
+    <value>Кандидатствай за членство</value>
+  </data>
+  <data name="BrowseAnonymous" xml:space="preserve">
+    <value>Анонимно членство</value>
+  </data>
+  <data name="Change" xml:space="preserve">
+    <value>Смени</value>
+  </data>
+  <data name="ChangeMainPicture" xml:space="preserve">
+    <value>Смени заглавна снимка</value>
+  </data>
+  <data name="ChangePassword" xml:space="preserve">
+    <value>Смени парола</value>
+  </data>
+  <data name="ChangePasswordForm" xml:space="preserve">
+    <value>Смяна на парола</value>
+  </data>
+  <data name="ChangePosition" xml:space="preserve">
+    <value>Смени позиция</value>
+  </data>
+  <data name="ChangePositionOfUser" xml:space="preserve">
+    <value>Смени позицията на члена</value>
+  </data>
+  <data name="ChangeYourSettings" xml:space="preserve">
+    <value>Смени настройките си</value>
+  </data>
+  <data name="ChatRoom" xml:space="preserve">
+    <value>Влез в чат стаята</value>
+  </data>
+  <data name="ChatRoomName" xml:space="preserve">
+    <value>Чат стая</value>
+  </data>
+  <data name="Code" xml:space="preserve">
+    <value>Код</value>
+  </data>
+  <data name="ConfirmNewPassword" xml:space="preserve">
+    <value>Потвърди новата парола</value>
+  </data>
+  <data name="ConfirmPassword" xml:space="preserve">
+    <value>Потвърди паролата</value>
+  </data>
+  <data name="Create" xml:space="preserve">
+    <value>Създай</value>
+  </data>
+  <data name="CreateAlbum" xml:space="preserve">
+    <value>Създай албум</value>
+  </data>
+  <data name="CreateGroupChat" xml:space="preserve">
+    <value>Създай групов чат</value>
+  </data>
+  <data name="CreateInterest" xml:space="preserve">
+    <value>Създай интерес</value>
+  </data>
+  <data name="CreatePhoto" xml:space="preserve">
+    <value>Качи снимка</value>
+  </data>
+  <data name="CreateProfile" xml:space="preserve">
+    <value>Създай профил</value>
+  </data>
+  <data name="CreateSection" xml:space="preserve">
+    <value>Създай секция</value>
+  </data>
+  <data name="CreateTopic" xml:space="preserve">
+    <value>Създай тема</value>
+  </data>
+  <data name="CreateVideo" xml:space="preserve">
+    <value>Качи видео</value>
+  </data>
+  <data name="CurrentPassword" xml:space="preserve">
+    <value>Текуща парола</value>
+  </data>
+  <data name="Decline" xml:space="preserve">
+    <value>Отхвърли</value>
+  </data>
+  <data name="Delete" xml:space="preserve">
+    <value>Изтрий</value>
+  </data>
+  <data name="DeleteTopic" xml:space="preserve">
+    <value>Изтрий темата</value>
+  </data>
+  <data name="DisplaySearchSectionResults" xml:space="preserve">
+    <value>Покажи резултатите</value>
+  </data>
+  <data name="Edit" xml:space="preserve">
+    <value>Редактирай</value>
+  </data>
+  <data name="EditComment" xml:space="preserve">
+    <value>Редактирай коментар</value>
+  </data>
+  <data name="Email" xml:space="preserve">
+    <value>Имейл</value>
+  </data>
+  <data name="EmailLink" xml:space="preserve">
+    <value>Имейл линк</value>
+  </data>
+  <data name="Everyone" xml:space="preserve">
+    <value>Всеки</value>
+  </data>
+  <data name="FollowedInterests" xml:space="preserve">
+    <value>Последвани интереси</value>
+  </data>
+  <data name="Followers" xml:space="preserve">
+    <value>Последователи</value>
+  </data>
+  <data name="Friends" xml:space="preserve">
+    <value>Приятели</value>
+  </data>
+  <data name="FriendsOfFriends" xml:space="preserve">
+    <value>Приятели на приятелите</value>
+  </data>
+  <data name="FullActivity" xml:space="preserve">
+    <value>Виж цялата активност</value>
+  </data>
+  <data name="Gender" xml:space="preserve">
+    <value>Пол</value>
+  </data>
+  <data name="Homepage" xml:space="preserve">
+    <value>Начална страница</value>
+  </data>
+  <data name="InvalidAction" xml:space="preserve">
+    <value>Невалидна операция</value>
+  </data>
+  <data name="LatestActivity" xml:space="preserve">
+    <value>Последна активност</value>
+  </data>
+  <data name="LatestFriendsActivity" xml:space="preserve">
+    <value>Последна активност на приятелите</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Вход</value>
+  </data>
+  <data name="MakeProfilePicture" xml:space="preserve">
+    <value>Направи профилна снимка</value>
+  </data>
+  <data name="MaximumAge" xml:space="preserve">
+    <value>Максимална възраст</value>
+  </data>
+  <data name="MinimumAge" xml:space="preserve">
+    <value>Минимална възраст</value>
+  </data>
+  <data name="Mod" xml:space="preserve">
+    <value>Мод</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Име</value>
+  </data>
+  <data name="NewFriendsRequests" xml:space="preserve">
+    <value>Нови заявки за приятелство</value>
+  </data>
+  <data name="NewPassword" xml:space="preserve">
+    <value>Нова парола</value>
+  </data>
+  <data name="NewSubscribedTopics" xml:space="preserve">
+    <value>Нови коментирани теми</value>
+  </data>
+  <data name="NonAnonymous" xml:space="preserve">
+    <value>Коментирай открито</value>
+  </data>
+  <data name="NonPermitedOperation" xml:space="preserve">
+    <value>Забранена операция</value>
+  </data>
+  <data name="Offline" xml:space="preserve">
+    <value>неактивен</value>
+  </data>
+  <data name="Online" xml:space="preserve">
+    <value>активен</value>
+  </data>
+  <data name="OwnerType" xml:space="preserve">
+    <value>Тип на притежател</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Парола</value>
+  </data>
+  <data name="PhotoFile" xml:space="preserve">
+    <value>Избери снимков файл</value>
+  </data>
+  <data name="ProfilePictureChanged" xml:space="preserve">
+    <value>Успешна смяна</value>
+  </data>
+  <data name="ProfileSearchResults" xml:space="preserve">
+    <value>Резултати от търсенето</value>
+  </data>
+  <data name="ProfileSettings" xml:space="preserve">
+    <value>Настройки на профила</value>
+  </data>
+  <data name="Publicity" xml:space="preserve">
+    <value>Публичност</value>
+  </data>
+  <data name="Quote" xml:space="preserve">
+    <value>Цитирай</value>
+  </data>
+  <data name="ReferenceLogin" xml:space="preserve">
+    <value>Натисни тук за вход</value>
+  </data>
+  <data name="Register" xml:space="preserve">
+    <value>Регистрирай се</value>
+  </data>
+  <data name="Registered" xml:space="preserve">
+    <value>Регистриран</value>
+  </data>
+  <data name="RegisterNewUser" xml:space="preserve">
+    <value>Регистрирай се като нов потребител</value>
+  </data>
+  <data name="Regular" xml:space="preserve">
+    <value>Редови</value>
+  </data>
+  <data name="RememberBrowser" xml:space="preserve">
+    <value>Запомни браузър</value>
+  </data>
+  <data name="Reply" xml:space="preserve">
+    <value>Отговор</value>
+  </data>
+  <data name="Reset" xml:space="preserve">
+    <value>Възстанови начална стойност</value>
+  </data>
+  <data name="Search" xml:space="preserve">
+    <value>Търси</value>
+  </data>
+  <data name="SearchProfilesByCriteria" xml:space="preserve">
+    <value>Търси профил по критерии</value>
+  </data>
+  <data name="SectionsMember" xml:space="preserve">
+    <value>Секции на които сте член</value>
+  </data>
+  <data name="SelectMembers" xml:space="preserve">
+    <value>Избери членове</value>
+  </data>
+  <data name="SelectPosition" xml:space="preserve">
+    <value>Избери позиция</value>
+  </data>
+  <data name="SelectUser" xml:space="preserve">
+    <value>Избери потребител</value>
+  </data>
+  <data name="Send" xml:space="preserve">
+    <value>Изпрати</value>
+  </data>
+  <data name="StartChat" xml:space="preserve">
+    <value>Започни чат</value>
+  </data>
+  <data name="Submit" xml:space="preserve">
+    <value>Завърши</value>
+  </data>
+  <data name="SubscribedTopics" xml:space="preserve">
+    <value>Коментирани теми</value>
+  </data>
+  <data name="SuccessfullyDeleted" xml:space="preserve">
+    <value>Успешно изтриване</value>
+  </data>
+  <data name="Suspend" xml:space="preserve">
+    <value>Отстрани</value>
+  </data>
+  <data name="SuspendedUntil" xml:space="preserve">
+    <value>Отстранен до</value>
+  </data>
+  <data name="SuspendUser" xml:space="preserve">
+    <value>Отстрани член</value>
+  </data>
+  <data name="UnmatchingPassword" xml:space="preserve">
+    <value>Паролите не съвпадат</value>
+  </data>
+  <data name="Update" xml:space="preserve">
+    <value>Редактирай</value>
+  </data>
+  <data name="UpdateProfile" xml:space="preserve">
+    <value>Редактирай профил</value>
+  </data>
+  <data name="UpdateSettings" xml:space="preserve">
+    <value>Обнови настройки</value>
+  </data>
+  <data name="UpdateYourProfile" xml:space="preserve">
+    <value>Редактирай профила си</value>
+  </data>
+  <data name="UploadedVideos" xml:space="preserve">
+    <value>Виж качени клипове</value>
+  </data>
+  <data name="UploadPhoto" xml:space="preserve">
+    <value>Качи снимка</value>
+  </data>
+  <data name="UploadVideo" xml:space="preserve">
+    <value>Качи видео</value>
+  </data>
+  <data name="Username" xml:space="preserve">
+    <value>Потребителско име</value>
+  </data>
+  <data name="VideoFile" xml:space="preserve">
+    <value>Избери видео файл</value>
+  </data>
+  <data name="ViewAllComments" xml:space="preserve">
+    <value>Виж всичките им коментари в секцията</value>
+  </data>
+  <data name="ViewAllTopics" xml:space="preserve">
+    <value>Виж всичките им теми в секцията</value>
+  </data>
+  <data name="WholeTopic" xml:space="preserve">
+    <value>Виж цялата тема</value>
+  </data>
+  <data name="Hello" xml:space="preserve">
+    <value>Здравей,</value>
+  </data>
+  <data name="ViewProfile" xml:space="preserve">
+    <value>Виж профила си</value>
+  </data>
+  <data name="Logoff" xml:space="preserve">
+    <value>Изход</value>
+  </data>
+  <data name="Female" xml:space="preserve">
+    <value>Жена</value>
+  </data>
+  <data name="Male" xml:space="preserve">
+    <value>Мъж</value>
+  </data>
+</root>

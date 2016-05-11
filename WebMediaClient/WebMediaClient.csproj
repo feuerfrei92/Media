@@ -246,6 +246,16 @@
     <Compile Include="Models\VideoViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PublicityType.cs" />
+    <Compile Include="Resources.bg.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.bg.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SettingType.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="TokenInfo.cs" />
@@ -405,6 +415,121 @@
     <Content Include="ckeditor\plugins\pastefromword\filter\default.js" />
     <Content Include="ckeditor\plugins\scayt\dialogs\options.js" />
     <Content Include="ckeditor\plugins\scayt\dialogs\toolbar.css" />
+    <Content Include="ckeditor\plugins\smiley\dialogs\smiley.js" />
+    <Content Include="ckeditor\plugins\smiley\icons\hidpi\smiley.png" />
+    <Content Include="ckeditor\plugins\smiley\icons\smiley.png" />
+    <Content Include="ckeditor\plugins\smiley\images\angel_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\angel_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\angry_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\angry_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\broken_heart.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\broken_heart.png" />
+    <Content Include="ckeditor\plugins\smiley\images\confused_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\confused_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\cry_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\cry_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\devil_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\devil_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\embaressed_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\embarrassed_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\embarrassed_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\envelope.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\envelope.png" />
+    <Content Include="ckeditor\plugins\smiley\images\heart.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\heart.png" />
+    <Content Include="ckeditor\plugins\smiley\images\kiss.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\kiss.png" />
+    <Content Include="ckeditor\plugins\smiley\images\lightbulb.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\lightbulb.png" />
+    <Content Include="ckeditor\plugins\smiley\images\omg_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\omg_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\regular_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\regular_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\sad_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\sad_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\shades_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\shades_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\teeth_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\teeth_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\thumbs_down.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\thumbs_down.png" />
+    <Content Include="ckeditor\plugins\smiley\images\thumbs_up.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\thumbs_up.png" />
+    <Content Include="ckeditor\plugins\smiley\images\tongue_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\tongue_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\tounge_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\whatchutalkingabout_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\whatchutalkingabout_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\images\wink_smile.gif" />
+    <Content Include="ckeditor\plugins\smiley\images\wink_smile.png" />
+    <Content Include="ckeditor\plugins\smiley\lang\af.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\ar.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\bg.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\bn.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\bs.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\ca.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\cs.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\cy.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\da.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\de-ch.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\de.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\el.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\en-au.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\en-ca.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\en-gb.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\en.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\eo.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\es.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\et.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\eu.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\fa.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\fi.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\fo.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\fr-ca.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\fr.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\gl.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\gu.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\he.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\hi.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\hr.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\hu.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\id.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\is.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\it.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\ja.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\ka.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\km.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\ko.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\ku.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\lt.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\lv.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\mk.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\mn.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\ms.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\nb.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\nl.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\no.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\pl.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\pt-br.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\pt.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\ro.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\ru.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\si.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\sk.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\sl.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\sq.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\sr-latn.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\sr.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\sv.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\th.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\tr.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\tt.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\ug.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\uk.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\vi.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\zh-cn.js" />
+    <Content Include="ckeditor\plugins\smiley\lang\zh.js" />
+    <Content Include="ckeditor\plugins\smiley\plugin.js" />
     <Content Include="ckeditor\plugins\specialchar\dialogs\lang\af.js" />
     <Content Include="ckeditor\plugins\specialchar\dialogs\lang\ar.js" />
     <Content Include="ckeditor\plugins\specialchar\dialogs\lang\bg.js" />
@@ -753,7 +878,7 @@
     <Content Include="Views\Comment\UpdateComment.cshtml" />
     <Content Include="Views\Video\CreateVideo.cshtml" />
     <Content Include="Views\Video\GetVideoByID.cshtml" />
-    <Content Include="Views\Video\GetVideosForUser.cshtml" />
+    <Content Include="Views\Video\GetVideosForOwner.cshtml" />
     <Content Include="Views\User\GetAuthorInfo.cshtml" />
     <Content Include="Views\Profile\ChatRoom.cshtml" />
     <Content Include="Views\Profile\GetChatMessages.cshtml" />
@@ -785,6 +910,16 @@
       <Project>{d24feba6-582f-49ea-a858-c1484b3c8e58}</Project>
       <Name>Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources.bg.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.bg.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

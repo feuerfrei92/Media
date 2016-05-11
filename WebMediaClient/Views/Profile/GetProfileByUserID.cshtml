@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>GetProfileByUserID</h2>
+<h2>@Model.Name</h2>
 
 <script type="text/javascript">
 	window.addEventListener("load", function () { compareUsername() }, false);
@@ -50,18 +50,20 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				$('#add_friend').prop('disabled', true);
-				var link1 = '@Html.ActionLink("Start chat", "GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.UserID }, new { id = "chat_link" })';
-				var link2 = '@Url.Action("GetFirstLatestProfileActivity", "Settings", new { userID = @ViewBag.UserID })';
-				var link3 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Profile" }))';
-				$("#start_chat").html(link1);
-				$("#activity").load(link2);
-				$("#profile_topic").load(link3, function () { updateVisit(); });
-				//checkPublicity(true, true);
-			},
-			error: function (xhr) {
-				if (xhr.status == 404)
+				if (data.Status == null)
+				{
+					$('#add_friend').prop('disabled', true);
+					var link1 = '@Html.ActionLink(Resources.StartChat, "GetMessages", "Profile", new { senderID = @ViewBag.User.ID, receiverID = @ViewBag.UserID }, new { id = "chat_link" })';
+					var link2 = '@Url.Action("GetFirstLatestProfileActivity", "Settings", new { userID = @ViewBag.UserID })';
+					var link3 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Profile" }))';
+					$("#start_chat").html(link1);
+					$("#activity").load(link2);
+					$("#profile_topic").load(link3, function () { updateVisit(); });
+				}
+				else
+				{
 					checkCommonFriends(id);
+				}
 			}
 		})
 	}
@@ -198,7 +200,7 @@
 		</section>
 	</div>
 	<div>
-		<button id="add_friend" class="btn btn-default" onclick="@("getFriendID(" + @Html.Raw(Json.Encode(Model.Username)) + ")")">Add friend</button>
+		<button id="add_friend" class="btn btn-default" onclick="@("getFriendID(" + @Html.Raw(Json.Encode(Model.Username)) + ")")">@Resources.AddFriend</button>
 	</div>
 	<div id="start_chat" class="col-md-8">
 	</div>
@@ -215,12 +217,12 @@
 <div class="row">
 	<div class="col-md-8">
 		<p>Videos</p>
-		@Html.ActionLink("See uploaded videos", "GetVideosForUser", "Video", new { userID = @ViewBag.UserID }, new { id = "get_videos_link" })
+		@Html.ActionLink(Resources.UploadedVideos, "GetVideosForUser", "Video", new { userID = @ViewBag.UserID }, new { id = "get_videos_link" })
 	</div>
 </div>
 <br />
 <div class="row">
-	<p>Latest activity</p>
+	<p>@Resources.LatestActivity</p>
 	<div id="activity" class="col-md-8">
 	</div>
 </div>

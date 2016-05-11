@@ -37,10 +37,10 @@
 					@Html.ActionLink(item.Username, "GetProfileByUserID", "Profile", new { userID = item.ID });
 				</div>
 				<div class="col-md-4">
-					<button class="button" onclick="acceptMembership(@Html.Raw(Json.Encode(item.ID)))">Accept</button>
+					<button class="button" onclick="acceptMembership(@Html.Raw(Json.Encode(item.ID)))">@Resources.Accept</button>
 				</div>
 				<div class="col-md-4">
-					<button class="button" onclick="declineMembership(@Html.Raw(Json.Encode(item.ID)))">Decline</button>
+					<button class="button" onclick="declineMembership(@Html.Raw(Json.Encode(item.ID)))">@Resources.Decline</button>
 				</div>
 			}
 		</div>

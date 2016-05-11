@@ -32,7 +32,7 @@
 {
 	<div class="row">
 		<div class="col-md-8">
-			@Html.ActionLink("Upload video", "CreateVideo", "Video", new { userID = @ViewBag.User.ID }, new { @id = "add_video_link" })
+			@Html.ActionLink(Resources.UploadVideo, "CreateVideo", "Video", new { userID = @ViewBag.User.ID }, new { @id = "add_video_link" })
 		</div>
 	</div>
 }

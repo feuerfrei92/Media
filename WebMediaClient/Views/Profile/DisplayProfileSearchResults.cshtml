@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Profile search results</h2>
+<h2>@Resources.ProfileSearchResults</h2>
 
 <script type="text/javascript">
 	window.addEventListener("load", function () { compareUsername() }, false);
@@ -43,7 +43,7 @@
 		buttonFriend.setAttribute("id", username);
 		buttonFriend.setAttribute("class", "button");
 		buttonFriend.setAttribute("onclick", "getFriendID(\"" + username + "\")");
-		buttonFriend.innerHTML = "Add friend";
+		buttonFriend.innerHTML = '@Resources.AddFriend';
 		profileList.appendChild(buttonFriend);
 	}
 

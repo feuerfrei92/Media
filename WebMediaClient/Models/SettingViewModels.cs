@@ -13,8 +13,10 @@ namespace WebMediaClient.Models
 		public int ID { get; set; }
 		public int OwnerID { get; set; }
 		[Required]
+		[Display(ResourceType = typeof(Resources), Name = "OwnerType")]
 		public SettingType OwnerType { get; set; }
 		[Required]
+		[Display(ResourceType = typeof(Resources), Name = "Publicity")]
 		public PublicityType Publicity { get; set; }
 	}
 }

@@ -79,12 +79,12 @@
 					button.id = "del_button";
 					button.class = "button";
 					button.onclick = "deleteTopic()";
-					button.innerHTML = "Delete topic";
+					button.innerHTML = '@Resources.DeleteTopic';
 					div.appendChild(button);
 				}
 				if (data.Role == "Admin")
 				{
-					var link1 = '@Html.ActionLink("Update topic settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Topic.ToString() }, new { id = "topic_setting" })';
+					var link1 = '@Html.ActionLink(Resources.UpdateSettings, "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Topic.ToString() }, new { id = "topic_setting" })';
 					$("#update_settings").html(link1);
 				}
 				
@@ -217,7 +217,7 @@
 </div>
 <div class="row">
 	<div class="col-md-8">
-		<button id="add_comment" class="btn btn-default" disabled="disabled" onclick="addComment()">Reply</button>
+		<button id="add_comment" class="btn btn-default" disabled="disabled" onclick="addComment()">@Resources.Reply</button>
 	</div>
 </div>
 <div class="row">

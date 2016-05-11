@@ -12,6 +12,7 @@ namespace WebMediaClient.Models
 		public int ID { get; set; }
 		[Required]
 		[RegularExpression("^[a-zA-Z0-9]*$")]
+		[Display(ResourceType = typeof(Resources), Name = "Name")]
 		public string Name { get; set; }
 		public int SectionID { get; set; }
 		public int AuthorID { get; set; }
@@ -23,6 +24,7 @@ namespace WebMediaClient.Models
 	public class TopicCriteriaViewModel
 	{
 		[RegularExpression("^[a-zA-Z0-9]*$")]
+		[Display(ResourceType = typeof(Resources), Name = "Name")]
 		public string Name { get; set; }
 		public int? SectionID { get; set; }
 		public int? AuthorID { get; set; }

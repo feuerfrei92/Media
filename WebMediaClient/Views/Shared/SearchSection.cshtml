@@ -15,6 +15,6 @@
 			@Html.TextBoxFor(m => m.Name, new { @id="name_text", @class = "form-control" })
 			@Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
 		</li>
-		<li><button class="btn btn-default" onclick="searchSection()">Search</button></li>
+		<li><button class="btn btn-default" onclick="searchSection()">@Resources.Search</button></li>
 </ul>
 

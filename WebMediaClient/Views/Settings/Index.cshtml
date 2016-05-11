@@ -41,10 +41,10 @@
 				var tableElement = document.createElement("dl");
 				tableElement.setAttribute("class", "dl-horizontal");
 				var titleElement = document.createElement("dt");
-				titleElement.innerHTML = "Manage profile settings:";
+				titleElement.innerHTML = '@Resources.ProfileSettings';
 				var contElement = document.createElement("dd");
 				var linkElement = document.createElement("a");
-				var link = '@Html.ActionLink("Update", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = -1, settingType = SettingType.Profile.ToString(), token = @HttpContext.Current.Session["token"].ToString() }, new { id = "profile_setting" })';
+				var link = '@Html.ActionLink(Resources.Update, "GetSettingByOwnerIDAndType", "Settings", new { ownerID = -1, settingType = SettingType.Profile.ToString(), token = @HttpContext.Current.Session["token"].ToString() }, new { id = "profile_setting" })';
 				link = link.replace("-1", data.ID);
 				linkElement.innerHTML = link;
 				contElement.appendChild(linkElement);
@@ -65,13 +65,13 @@
 				var tableElement = document.createElement("dl");
 				tableElement.setAttribute("class", "dl-horizontal");
 				var titleElement = document.createElement("dt");
-				titleElement.innerHTML = "Manage album settings:";
+				titleElement.innerHTML = '@Resources.AlbumSettings';
 				var contElement = document.createElement("dd");
 				var linkElement = document.createElement("a");
 				var link = '@Url.Action("GetSettingByOwnerIDAndType", "Settings", new { ownerID = -1, settingType = SettingType.Album.ToString() })';
 				link = link.replace("-1", this.ID);
 				linkElement.href = link;
-				linkElement.innerHTML = "Update " + this.Name;
+				linkElement.innerHTML = '@Resources.Update' + this.Name;
 				linkElement.id = "update_album " + this.ID.toString();
 				contElement.appendChild(linkElement);
 				tableElement.appendChild(titleElement);
@@ -84,18 +84,18 @@
 
 <p class="text-success">@ViewBag.StatusMessage</p>
 <div id="main_container">
-    <h4>Change your settings</h4>
+    <h4>@Resources.ChangeYourSettings</h4>
     <hr />
     <dl class="dl-horizontal">
-        <dt>Password:</dt>
+        <dt>@Resources.Password</dt>
         <dd>
-            @Html.ActionLink("Change your password", "ChangePassword", "Manage")
+            @Html.ActionLink(Resources.ChangePassword, "ChangePassword", "Manage")
         </dd>
     </dl>
 	<dl class="dl-horizontal">
-		<dt>Update your profile:</dt>
+		<dt>@Resources.UpdateYourProfile</dt>
 		<dd>
-			@Html.ActionLink("Update profile", "UpdateProfile", "Profile", null, new { id = "update_profile" })
+			@Html.ActionLink(Resources.UpdateProfile, "UpdateProfile", "Profile", null, new { id = "update_profile" })
 		</dd>
 	</dl>
 </div>

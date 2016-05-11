@@ -481,6 +481,7 @@ D:\Projects\Media\Services\bin\Antlr3.Runtime.dll
 D:\Projects\Media\Services\bin\Data.dll
 D:\Projects\Media\Services\bin\EntityFramework.dll
 D:\Projects\Media\Services\bin\EntityFramework.SqlServer.dll
+D:\Projects\Media\Services\bin\HtmlAgilityPack.dll
 D:\Projects\Media\Services\bin\Microsoft.AspNet.Identity.Core.dll
 D:\Projects\Media\Services\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 D:\Projects\Media\Services\bin\Microsoft.AspNet.Identity.Owin.dll
@@ -525,6 +526,8 @@ D:\Projects\Media\Services\bin\WebGrease.dll
 D:\Projects\Media\Services\bin\Data.pdb
 D:\Projects\Media\Services\bin\Models.pdb
 D:\Projects\Media\Services\bin\Antlr3.Runtime.pdb
+D:\Projects\Media\Services\bin\HtmlAgilityPack.pdb
+D:\Projects\Media\Services\bin\HtmlAgilityPack.xml
 D:\Projects\Media\Services\bin\Microsoft.OData.Core.xml
 D:\Projects\Media\Services\bin\Microsoft.OData.Edm.xml
 D:\Projects\Media\Services\bin\Microsoft.Spatial.xml
@@ -593,6 +596,3 @@ D:\Projects\Media\Services\bin\zh-Hant\Microsoft.Spatial.resources.dll
 D:\Projects\Media\Services\obj\Debug\Services.csprojResolveAssemblyReference.cache
 D:\Projects\Media\Services\obj\Debug\Services.dll
 D:\Projects\Media\Services\obj\Debug\Services.pdb
-D:\Projects\Media\Services\bin\HtmlAgilityPack.dll
-D:\Projects\Media\Services\bin\HtmlAgilityPack.pdb
-D:\Projects\Media\Services\bin\HtmlAgilityPack.xml

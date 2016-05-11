@@ -23,14 +23,14 @@
 			var label = document.getElementById(userID);
 			if (label != null) {
 				label.style.color = "green";
-				label.innerHTML = "online";
+				label.innerHTML = '@Resources.Online';
 			}
 		}
 		chat.client.left = function (userID) {
 			var label = document.getElementById(userID);
 			if (label != null) {
 				label.style.color = "red";
-				label.innerHTML = "offline";
+				label.innerHTML = '@Resources.Offline';
 			}
 		}
 		chat.client.onlineStatus = function (users) {
@@ -38,7 +38,7 @@
 				var label = document.getElementById(id);
 				if (label != null) {
 					label.style.color = "green";
-					label.innerHTML = "online";
+					label.innerHTML = '@Resources.Online';
 				}
 			})
 		}
@@ -287,7 +287,7 @@
 		//CKEDITOR.replace("textarea_" + textareas.toString());
 	}
 </script>
-	<title>Chat room</title>
+	<title>@Resources.ChatRoomName</title>
 </head>
 <body>
 	<div class="row">
@@ -295,7 +295,7 @@
 			@foreach (var item in Model)
 			{
 				<label class="label-default" onclick="@("openChatWindow(" + @Html.Raw(Json.Encode(item.UserID)) + ")")">@item.Username</label>
-				<label id="@item.ID.ToString()" class="label-default-small" style="color: red">offline</label>
+				<label id="@item.ID.ToString()" class="label-default-small" style="color: red">@Resources.Offline</label>
 			}
 		</div>
 		<div id="chat_container" class="col-md-8">
@@ -307,7 +307,7 @@
 	</div>
 	<div class="row">
 		<div class="col-md-8">
-			<button id="create_group" class="btn btn-default">Create group chat</button>
+			<button id="create_group" class="btn btn-default">@Resources.CreateGroupChat</button>
 		</div>
 		<div id="add_members_div" hidden="hidden">
 		</div>

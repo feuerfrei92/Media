@@ -488,9 +488,7 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var friendship = await HttpClientBuilder<FriendshipInfo>.GetAsync(url, token);
-				if (friendship == null)
-					return HttpNotFound("No friendship");
-				else return Json(new { ID = friendship.ID, UserID_1 = friendship.UserID_1, UserID_2 = friendship.UserID_2, IsAccepted = friendship.IsAccepted }, JsonRequestBehavior.AllowGet);
+				return Json(new { ID = friendship.ID, UserID_1 = friendship.UserID_1, UserID_2 = friendship.UserID_2, IsAccepted = friendship.IsAccepted }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{

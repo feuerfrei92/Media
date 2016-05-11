@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Get interest by ID</h2>
+<h2>@Model.Name</h2>
 
 <script type="text/javascript">
 	window.addEventListener("load", function () { checkIsOwner() }, false);
@@ -24,8 +24,8 @@
 		if (userID == authorID)
 		{
 			var link1 = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Interest" }))';
-			var link2 = '@Html.ActionLink("Update interest settings", "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @ViewBag.ID, settingType = SettingType.Interest.ToString() }, new { id = "interest_setting" })';
-			var link3 = '@Html.ActionLink("Update interest", "UpdateInterest", "Interest", new { ID = @Model.ID }, new { @id = "update_interest" })';
+			var link2 = '@Html.ActionLink(Resources.UpdateSettings, "GetSettingByOwnerIDAndType", "Settings", new { ownerID = @ViewBag.ID, settingType = SettingType.Interest.ToString() }, new { id = "interest_setting" })';
+			var link3 = '@Html.ActionLink(Resources.Update, "UpdateInterest", "Interest", new { ID = @Model.ID }, new { @id = "update_interest" })';
 			$("#interest_topic").load(link1, function () { updateVisit(); });
 			$("#update_settings").html(link2);
 			$("#update_interest").html(link3);
@@ -41,20 +41,20 @@
 			dataType: 'json',
 			type: 'GET',
 			success: function (data) {
-				$.ajax
-				({
-					url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Interest.ToString() }))',
-					dataType: 'json',
-					type: 'GET',
-					success: function (result) {
-						var link = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Interest" }))';
-						$("#interest_topic").load(link, function () { updateVisit(); });
-					}
-				})
-				//checkInterestPublicity(true);
-			},
-			error: function (xhr) {
-				if (xhr.status == 404)
+				if (data.Status == null)
+				{
+					$.ajax
+					({
+						url: '@Html.Raw(Url.Action("GetSettingByOwnerIDAndTypeRaw", "Settings", new { ownerID = @Model.ID, settingType = SettingType.Interest.ToString() }))',
+						dataType: 'json',
+						type: 'GET',
+						success: function (result) {
+							var link = '@Html.Raw(Url.Action("GetTopicByOwnerAndType", "Topic", new { ownerID = @Model.ID, topicType = "Interest" }))';
+							$("#interest_topic").load(link, function () { updateVisit(); });
+						}
+					})
+				}
+				else
 				{
 					$.ajax
 					({
@@ -70,7 +70,6 @@
 						}
 					})
 				}
-				//checkInterestPublicity(false);
 			}
 		})
 	}

@@ -218,14 +218,14 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> AddMembership(int sectionID, int userID)
+		public async Task<ActionResult> AddMembership(int sectionID, int userID, bool isAnonymous)
 		{
 			try
 			{
 				if (!Request.IsAjaxRequest())
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
-				string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}", sectionID, userID);
+				string url = string.Format("http://localhost:8080/api/Section/AddMembership?SectionID={0}&UserID={1}&IsAnonymous={2}", sectionID, userID, isAnonymous);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();
@@ -376,9 +376,7 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var membership = await HttpClientBuilder<MembershipInfo>.GetAsync(url, token);
-				if (membership == null)
-					return HttpNotFound("No membership");
-				else return Json(new { ID = membership.ID, SectionID = membership.SectionID, UserID = membership.UserID, Role = membership.Role.ToString(), SuspendedUntil = membership.SuspendedUntil, IsAccepted = membership.IsAccepted, Anonymous = membership.Anonymous }, JsonRequestBehavior.AllowGet);
+				return Json(new { ID = membership.ID, SectionID = membership.SectionID, UserID = membership.UserID, Role = membership.Role.ToString(), SuspendedUntil = membership.SuspendedUntil, IsAccepted = membership.IsAccepted, Anonymous = membership.Anonymous }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{

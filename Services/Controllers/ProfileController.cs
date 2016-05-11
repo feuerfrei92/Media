@@ -20,7 +20,7 @@ namespace Services.Controllers
 
 		private static Expression<Func<global::Models.Profile, ProfileModel>> BuildProfileModel
 		{
-			get { return p => new ProfileModel { ID = p.ID, UserID = p.UserID, Username = p.Username, Name = p.Name, Age = p.Age, PictureID = p.PictureID }; }
+			get { return p => new ProfileModel { ID = p.ID, UserID = p.UserID, Username = p.Username, Name = p.Name, Age = p.Age, Gender= p.Gender, PictureID = p.PictureID }; }
 		}
 
 		public ProfileController()
@@ -250,11 +250,6 @@ namespace Services.Controllers
 			try
 			{
 				ProfileModel profile = _nest.Profiles.All().Where(p => p.Username == username).Select(BuildProfileModel).FirstOrDefault();
-
-				if (profile == null)
-				{
-					return BadRequest("No profile with the specified username exists.");
-				}
 				
 				return Ok(profile);
 			}
@@ -645,8 +640,8 @@ namespace Services.Controllers
 				return false;
 			if (profile.Age < criteria.MinimumAge || profile.Age > criteria.MaximumAge)
 				return false;
-			if ((criteria.Gender == GenderCriterion.Female && profile.Gender == Gender.Male)
-			|| (criteria.Gender == GenderCriterion.Female && profile.Gender == Gender.Male))
+			if ((criteria.Gender == "1" && profile.Gender == "Male")
+			|| (criteria.Gender == "0" && profile.Gender == "Female"))
 				return false;
 
 			return true;

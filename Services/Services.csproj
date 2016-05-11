@@ -297,7 +297,6 @@
     <Compile Include="Models\DiscussionistInfo.cs" />
     <Compile Include="Models\FollowerInfo.cs" />
     <Compile Include="Models\FriendshipInfo.cs" />
-    <Compile Include="Models\GenderCriterion.cs" />
     <Compile Include="Models\CommentModel.cs" />
     <Compile Include="Models\DiscussionModel.cs" />
     <Compile Include="Models\InterestModel.cs" />

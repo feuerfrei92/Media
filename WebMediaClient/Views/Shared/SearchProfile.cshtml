@@ -7,7 +7,7 @@
 			@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
 			@Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
 		</li>
-		<li><input type="submit" value="Search" class="btn btn-default" /></li>
+		<li><input type="submit" value="@Resources.Search" class="btn btn-default" /></li>
 	}
-	<li>@Html.ActionLink("Advanced search", "SearchProfilesByCriteria", "Profile")</li>
+	<li>@Html.ActionLink(Resources.AdvancedSearch, "SearchProfilesByCriteria", "Profile")</li>
 </ul>

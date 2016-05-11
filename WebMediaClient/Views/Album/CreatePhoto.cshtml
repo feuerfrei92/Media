@@ -1,11 +1,11 @@
 ﻿@model WebMediaClient.Models.PhotoViewModel
 
 @{
-    ViewBag.Title = "CreatePhoto";
+    ViewBag.Title = Resources.CreatePhoto;
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create photo</h2>
+<h2>@Resources.CreatePhoto</h2>
 
 <script type="text/javascript">
 	$(document).ready(function() {
@@ -23,7 +23,7 @@
 		@using (Html.BeginForm("CreatePhoto", "Album", new { userID = @ViewBag.User.ID, albumID = @ViewBag.ID }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data", id = "upload_form" }))
 		{
 			<div class="form-group">
-				<label class="col-md-2 control-label">Select image file:</label>
+				<label class="col-md-2 control-label">@Resources.PhotoFile</label>
 				<div class="col-md-10">
 					<input type="file" name="file" accept="image/*" />
 				</div>

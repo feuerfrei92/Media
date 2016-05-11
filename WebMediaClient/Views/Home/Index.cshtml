@@ -65,21 +65,21 @@
     <div class="col-md-4">
         @if (ViewBag.User != null)
 		{
-			<p>New friends requests</p>
+			<p>@Resources.NewFriendsRequests</p>
 			Html.RenderAction("GetPendingFriends", "Settings", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
     </div>
 	<div class="col-md-4">
 		@if (ViewBag.User != null)
 		{
-			<p>Subscribed topics</p>
+			<p>@Resources.SubscribedTopics</p>
 			Html.RenderAction("GetSubscribedTopics", "Settings", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
 	<div class="col-md-4" style="display: inline-block">
 		@if (ViewBag.User != null)
 		{
-			<p>Subscribed topics with new comments</p>
+			<p>@Resources.NewSubscribedTopics</p>
 			Html.RenderAction("GetTopicsWithNewComments", "Settings", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
@@ -88,21 +88,21 @@
 	<div id="friends_container" class="col-md-4">
 		@if (ViewBag.User != null)
 		{
-			<p>Friends</p>
+			<p>@Resources.Friends</p>
 			Html.RenderAction("GetAllFriends", "Profile", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
 	<div id="interests_container" class="col-md-4">
 		@if(ViewBag.User != null)
 		{
-			<p>Followed interests</p>
+			<p>@Resources.FollowedInterests</p>
 			Html.RenderAction("GetInterestsForUser", "Interest", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
 	<div id="sections_container" class="col-md-4" style="display: inline-block">
 		@if(ViewBag.User != null)
 		{
-			<p>Sections you are member of</p>
+			<p>@Resources.SectionsMember</p>
 			Html.RenderAction("GetMembershipsForUser", "Section", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
@@ -111,7 +111,7 @@
 	<div id="activity_container" class="col-md-4">
 		@if (ViewBag.User != null)
 		{
-			<p>Latest friends activity</p>
+			<p>@Resources.LatestFriendsActivity</p>
 			Html.RenderAction("GetFirstLatestFriendsActivity", "Settings", new { userID = ViewBag.User.ID, token = @HttpContext.Current.Session["token"].ToString() });
 		}
 	</div>
@@ -120,7 +120,7 @@
 	<div id="chat_container" class="col-md-4">
 		@if (ViewBag.User != null)
 		{
-			<a href="@Url.Action("ChatRoom", "Profile", new { userID = ViewBag.User.ID })">Join chat room</a>
+			<a href="@Url.Action("ChatRoom", "Profile", new { userID = ViewBag.User.ID })">@Resources.ChatRoom</a>
 		}
 	</div>
 </div>
