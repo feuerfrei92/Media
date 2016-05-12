@@ -552,7 +552,7 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetUnreadMessages(int receiverID)
+		public ActionResult GetUnreadMessages(int receiverID)
 		{
 			try
 			{
@@ -562,7 +562,7 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				var messages = await HttpClientBuilder<MessageModel>.GetListAsync(url, token);
+				var messages = Task.Run<List<MessageModel>>(() => HttpClientBuilder<MessageModel>.GetListAsync(url, token)).Result;
 				var viewModels = new List<MessageViewModel>();
 				foreach (MessageModel m in messages)
 				{
@@ -586,10 +586,10 @@ namespace WebMediaClient.Controllers
 				if (!Request.IsAjaxRequest())
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
-				if (((UserModel)HttpContext.Session["currentUser"]).ID != senderID)
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != receiverID)
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
-				string url = string.Format("http://localhost:8080/api/Profile/CreateMessage?SenderID={0}&ReceiverID={1}", senderID, receiverID);
+				string url = string.Format("http://localhost:8080/api/Profile/ReadMessages?SenderID={0}&ReceiverID={1}", senderID, receiverID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();

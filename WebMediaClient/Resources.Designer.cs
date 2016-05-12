@@ -979,6 +979,15 @@ namespace WebMediaClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to View unread messages.
+        /// </summary>
+        public static string UnreadMessages {
+            get {
+                return ResourceManager.GetString("UnreadMessages", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Update.
         /// </summary>
         public static string Update {

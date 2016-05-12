@@ -1,5 +1,21 @@
 ﻿@model List<WebMediaClient.Models.MessageViewModel>
 
+<script type="text/javascript">
+	function readMessages(id)
+	{
+		var link = '@Html.Raw(Url.Action("ReadMessages", "Profile", new { senderID = -1, receiverID = ViewBag.User.ID }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) {
+			}
+		});
+	}
+</script>
+
 <div class="row">
 	<div class="col-md-8">
 		<div class="list-group">
@@ -7,7 +23,10 @@
 			{
 				<div class="row">
 					<div class="col-md-4">
-						@item.Text
+						@Html.Action("GetAuthorInfo", "User", new { userID = @item.SenderID })
+					</div>
+					<div class="col-md-4" onclick="readMessages(@Html.Raw(Json.Encode(item.SenderID)))">
+						@Html.Raw(item.Text)
 					</div>
 				</div>
 			}
