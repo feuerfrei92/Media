@@ -331,8 +331,8 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				var users = await HttpClientBuilder<SectionModel>.GetListAsync(url, token);
-				return Json(users, JsonRequestBehavior.AllowGet);
+				var users = await HttpClientBuilder<UserModel>.GetListAsync(url, token);
+				return Json(new { Users = users }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{
@@ -344,8 +344,8 @@ namespace WebMediaClient.Controllers
 		{
 			try
 			{
-				if(!ControllerContext.IsChildAction)
-					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+				//if(!ControllerContext.IsChildAction)
+				//	return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				string url = string.Format("http://localhost:8080/api/User/GetPendingMembershipsForSection?SectionID={0}", sectionID);
 				string token = "";

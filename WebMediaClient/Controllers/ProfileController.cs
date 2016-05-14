@@ -631,6 +631,32 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult GetDiscussion(string discussionGuid)
+		{
+			try
+			{
+				string url = string.Format("http://localhost:8080/api/Profile/GetDiscussion?DiscussionGuid={0}", discussionGuid);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var messages = Task.Run<List<MessageModel>>(() => HttpClientBuilder<MessageModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<MessageViewModel>();
+				foreach (MessageModel m in messages)
+				{
+					viewModels.Add(MessageConverter.FromBasicToVisual(m));
+				}
+				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
+				return View("GetChatMessages", viewModels);
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "GetDiscussion");
+				return View("Error", info);
+			}
+		}
+
 		[HttpPost]
 		public async Task<ActionResult> CreateGroup(int userID, string discussionGuid)
 		{

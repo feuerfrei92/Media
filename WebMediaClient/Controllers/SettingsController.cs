@@ -379,7 +379,6 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		[HttpPut]
 		public ActionResult SuspendUser(int sectionID, int? userID = null)
 		{
 			try
@@ -399,7 +398,6 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		[HttpPut]
 		public ActionResult ChangePosition(int sectionID, int? userID = null)
 		{
 			try

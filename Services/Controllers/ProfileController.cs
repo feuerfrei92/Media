@@ -505,14 +505,24 @@ namespace Services.Controllers
 
 		[HttpGet]
 		[Authorize]
-		public IHttpActionResult GetDiscussion(int discussionID)
+		public IHttpActionResult GetDiscussion(string discussionGuid)
 		{
-			var messages = _nest.Messages.All().Where(m => m.DiscussionID == discussionID)
-				.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionID = m.DiscussionID })
-				.OrderBy(m => m.DateCreated)
-				.ToList();
+			Guid groupGuid = new Guid(discussionGuid);
+			Discussion group = _nest.Discussions.All().Where(d => d.DiscussionGuid == groupGuid).FirstOrDefault();
 
-			return Ok(messages);
+			try
+			{
+				var messages = _nest.Messages.All().Where(m => m.DiscussionID == group.ID)
+					.Select(m => new MessageModel { ID = m.ID, SenderID = m.SenderID, ReceiverID = m.ReceiverID, Text = m.Text, DateCreated = m.DateCreated, DiscussionID = m.DiscussionID })
+					.OrderBy(m => m.DateCreated)
+					.ToList();
+
+				return Ok(messages);
+			}
+			catch
+			{
+				throw;
+			}
 		}
 
 		[HttpPut]

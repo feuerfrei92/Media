@@ -8,9 +8,9 @@
 <script type="text/javascript">
 	window.addEventListener("load", function () { getRoot() }, false);
 
-	$(function () {
+	function loadValues() {
 		var userID = '@ViewBag.UserID';
-		if (userID == null) {
+		//if (userID == null) {
 			$.getJSON('@Html.Raw(Url.Action("GetMembershipsForSectionRaw", "User", new { sectionID = @ViewBag.SectionID, getSpecial = 1 }))', function (result) {
 				var ddl = $('#user_dropdown');
 				ddl.empty();
@@ -22,9 +22,8 @@
 					);
 				});
 			});
-		}
-		getRoot();
-	});
+		//}
+	}
 
 	function getRoot() {
 		$.ajax
@@ -50,6 +49,9 @@
 				if (data.Role != "Admin" && data.Role != "Mod") {
 					alert('@Resources.NonPermitedOperation');
 					window.location.href = '@Url.Action("Index", "Home")';
+				}
+				else {
+					loadValues();
 				}
 			}
 		})

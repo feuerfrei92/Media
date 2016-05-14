@@ -117,7 +117,7 @@
 						div3.appendChild(buttonEdit);
 						var buttonDelete = document.createElement("button");
 						buttonDelete.setAttribute("class", "btn btn-default");
-						buttonDelete.setAttribute("onclick", "deleteComment(\"" + commentID + "\", \"" + buttonDelete + "\")");
+						buttonDelete.setAttribute("onclick", "deleteComment(\"" + commentID + "\")");
 						buttonDelete.innerHTML = '@Resources.Delete';
 						div2.appendChild(buttonDelete);
 					}
@@ -167,23 +167,18 @@
 		})
 	}
 
-	function deleteComment(id, elem) {
-		if (elem != null) {
-			alert('@Resources.InvalidAction');
-		}
-		else {
-			var link = '@Url.Action("DeleteComment", "Comment", new { ID = -1 })';
-			link = link.replace("-1", id);
-			$.ajax
-			({
-				url: link,
-				dataType: 'json',
-				type: 'DELETE',
-				success: function (data) {
-					alert('@Resources.SuccessfullyDeleted');
-				},
-			})
-		}
+	function deleteComment(id) {
+		var link = '@Url.Action("DeleteComment", "Comment", new { ID = -1 })';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'DELETE',
+			success: function (data) {
+				alert('@Resources.SuccessfullyDeleted');
+			},
+		});
 	}
 
 	@*function updateControls(role, id) {

@@ -209,7 +209,7 @@
 <div class="row">
 	<div class="col-md-8">
 		<p>Videos</p>
-		@Html.ActionLink(Resources.UploadedVideos, "GetVideosForUser", "Video", new { userID = @Model.UserID }, new { id = "get_videos_link" })
+		@Html.ActionLink(Resources.UploadedVideos, "GetVideosForOwner", "Video", new { userID = @Model.UserID }, new { id = "get_videos_link" })
 	</div>
 </div>
 <br />

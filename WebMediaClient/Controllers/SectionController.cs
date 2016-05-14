@@ -241,7 +241,6 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		[Authorize]
 		public async Task<ActionResult> AcceptMembership(int sectionID, int userID)
 		{
 			try

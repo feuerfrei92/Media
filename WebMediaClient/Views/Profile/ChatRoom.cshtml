@@ -17,72 +17,108 @@
 	<script src="~/signalr/hubs"></script>
 	@*<script src="~/ckeditor/ckeditor.js"></script>*@
 	<script type="text/javascript">
-	$(function () {
-		var chat = $.connection.chatHub;
-		chat.client.joined = function (userID) {
-			var label = document.getElementById(userID);
-			if (label != null) {
-				label.style.color = "green";
-				label.innerHTML = '@Resources.Online';
-			}
-		}
-		chat.client.left = function (userID) {
-			var label = document.getElementById(userID);
-			if (label != null) {
-				label.style.color = "red";
-				label.innerHTML = '@Resources.Offline';
-			}
-		}
-		chat.client.onlineStatus = function (users) {
-			$(users).each(function (index, id) {
-				var label = document.getElementById(id);
+		$(function () {
+			var chat = $.connection.chatHub;
+			chat.client.joined = function (userID) {
+				var label = document.getElementById(userID);
 				if (label != null) {
 					label.style.color = "green";
 					label.innerHTML = '@Resources.Online';
 				}
-			})
-		}
-		chat.client.loadGroups = function (groups) {
-			$(groups).each(function (index, guid) {
-				var label = document.createElement("label");
-				label.id = guid;
-				label.innerHTML = guid;
-				label.onclick = function () { chat.client.openWindow(guid) };
-				$("#group_container").append(label);
-			})
-		}
-		chat.client.broadcastMessage = function (message, yourID, otherID, authorID) {
-			if ($("div[uniquename=" + yourID + "_" + otherID + "]").length == 0
-				&& $("div[uniquename=" + otherID + "_" + yourID + "]").length == 0) {
-				var link = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { senderID = -1, receiverID = -2 }))';
-				link = link.replace("-1", yourID);
-				link = link.replace("-2", otherID);
-				var chatWindow = $("#chat_window").clone(true);
-				chatWindow.attr("uniquename", yourID + "_" + otherID);
-				chatWindow.append("<div class=div_messages></div>");
-				chatWindow.append("<textarea class=message_text cols=25 rows=5></textarea><button class=send_message>Send</button><label class=hidden>" + otherID + "</label>");
-				$("#chat_container").append(chatWindow);
-				var textareas = $(".message_text").length;
-				$(".message_text").last().attr("id", "textarea_" + textareas.toString());
-				$(".div_messages").last().load(link);
-				//CKEDITOR.replace("textarea_" + textareas.toString());
 			}
-			else {
-				var link1 = '@Url.Action("GetProfileByUserIDRaw", "Profile", new { UserID = -1 })';
-				link1 = link1.replace("-1", authorID);
-				$.getJSON(link1, function (data) {
-					if ($("div[uniquename=" + yourID + "_" + otherID + "]").length != 0)
-						$("div[uniquename=" + yourID + "_" + otherID + "]").find(".message_text").first().before("<br>" + data.Name + ": " + message + "<br>");
-					else
-						$("div[uniquename=" + otherID + "_" + yourID + "]").find(".message_text").first().before("<br>" + data.Name + ": " + message + "<br>");
-				});
+			chat.client.left = function (userID) {
+				var label = document.getElementById(userID);
+				if (label != null) {
+					label.style.color = "red";
+					label.innerHTML = '@Resources.Offline';
+				}
 			}
-		}
+			chat.client.onlineStatus = function (users) {
+				$(users).each(function (index, id) {
+					var label = document.getElementById(id);
+					if (label != null) {
+						label.style.color = "green";
+						label.innerHTML = '@Resources.Online';
+					}
+				})
+			}
+			chat.client.loadGroups = function (groups) {
+				$(groups).each(function (index, guid) {
+					var label = document.createElement("label");
+					label.id = guid;
+					label.innerHTML = guid;
+					label.onclick = function () { chat.client.openWindow(guid) };
+					$("#group_container").append(label);
+				})
+			}
+			chat.client.broadcastMessage = function (message, yourID, otherID, authorID) {
+				if ($("div[uniquename=" + yourID + "_" + otherID + "]").length == 0
+					&& $("div[uniquename=" + otherID + "_" + yourID + "]").length == 0) {
+					var link = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { senderID = -1, receiverID = -2 }))';
+					link = link.replace("-1", yourID);
+					link = link.replace("-2", otherID);
+					var chatWindow = $("#chat_window").clone(true);
+					chatWindow.attr("uniquename", yourID + "_" + otherID);
+					chatWindow.append("<div class=div_messages></div>");
+					chatWindow.append("<textarea class=message_text cols=25 rows=5></textarea><button class=send_message>Send</button><label class=hidden>" + otherID + "</label>");
+					$("#chat_container").append(chatWindow);
+					var textareas = $(".message_text").length;
+					$(".message_text").last().attr("id", "textarea_" + textareas.toString());
+					$(".div_messages").last().load(link);
+					//CKEDITOR.replace("textarea_" + textareas.toString());
+				}
+				else {
+					var link1 = '@Url.Action("GetProfileByUserIDRaw", "Profile", new { UserID = -1 })';
+					link1 = link1.replace("-1", authorID);
+					$.getJSON(link1, function (data) {
+						if ($("div[uniquename=" + yourID + "_" + otherID + "]").length != 0)
+							$("div[uniquename=" + yourID + "_" + otherID + "]").find(".message_text").first().before("<br>" + data.Name + ": " + message + "<br>");
+						else
+							$("div[uniquename=" + otherID + "_" + yourID + "]").find(".message_text").first().before("<br>" + data.Name + ": " + message + "<br>");
+					});
+				}
+			}
 
-		chat.client.broadcastGroupMessage = function (message, senderID, groupName) {
-			if ($("div[groupname=" + groupName + "]").length == 0) {
-				var link = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { discussionGuid = "oooo" }))';
+			chat.client.broadcastGroupMessage = function (message, senderID, groupName) {
+				if ($("div[groupname=" + groupName + "]").length == 0) {
+					var link = '@Html.Raw(Url.Action("GetDiscussion", "Profile", new { discussionGuid = "oooo" }))';
+					link = link.replace("oooo", groupName);
+					var chatWindow = $("#chat_window").clone(true);
+					chatWindow.attr("groupname", groupName);
+					chatWindow.append("<div class=div_messages></div>");
+					chatWindow.append("<textarea class=group_message_text cols=25 rows=5></textarea><button class=send_group_message>Send</button><button class=add_member>Add member</button><button class=leave_group>Leave</button>");
+					$("#chat_container").append(chatWindow);
+					var textareas = $(".message_text").length;
+					$(".message_text").last().attr("id", "textarea_" + textareas.toString());
+					$(".div_messages").last().load(link);
+				}
+			}
+
+			chat.client.openWindow = function (groupName) {
+				var link = '@Url.Action("GetGroupByDiscussionGuid", "Profile", new { discussionGuid = "oooo" })';
 				link = link.replace("oooo", groupName);
+				$.ajax
+				({
+					url: link,
+					dataType: 'json',
+					type: 'GET',
+					success: function (data) {
+						if (data.Status == "error") {
+							var disLink = '@Html.Raw(Url.Action("CreateGroup", "Profile", new { userID = ViewBag.User.ID, discussionGuid = "oooo" }))';
+							disLink = disLink.replace("oooo", groupName);
+							$.ajax
+							({
+								url: disLink,
+								dataType: 'json',
+								type: 'POST',
+								success: function (data) {
+								}
+							})
+						}
+					}
+				});
+				var link1 = '@Html.Raw(Url.Action("GetDiscussion", "Profile", new { discussionGuid = "oooo" }))';
+				link1 = link1.replace("oooo", groupName);
 				var chatWindow = $("#chat_window").clone(true);
 				chatWindow.attr("groupname", groupName);
 				chatWindow.append("<div class=div_messages></div>");
@@ -90,202 +126,201 @@
 				$("#chat_container").append(chatWindow);
 				var textareas = $(".message_text").length;
 				$(".message_text").last().attr("id", "textarea_" + textareas.toString());
-				$(".div_messages").last().load(link);
+				$(".div_messages").last().load(link1);
 			}
-		}
 
-		chat.client.openWindow = function (groupName) {
-			var link = '@Url.Action("GetGroupByDiscussionGuid", "Profile", new { discussionGuid = "oooo" })';
-			link = link.replace("oooo", groupName);
-			$.ajax
-			({
-				url: link,
-				dataType: 'json',
-				type: 'GET',
-				success: function (data) {
-					if (data.Status == "error") {
-						var disLink = '@Html.Raw(Url.Action("CreateGroup", "Profile", new { userID = ViewBag.User.ID, discussionGuid = "oooo" }))';
-						disLink = disLink.replace("oooo", groupName);
-						$.ajax
+			chat.client.showWarning = function (alertMessage) {
+				alert(alertMessage);
+			}
+
+			$.connection.hub.start(function () {
+				chat.server.getAllOnlineUsers();
+				chat.server.loadAllGroups();
+
+				$(document).on("click", ".send_message", function () {
+					var userID = '@ViewBag.User.ID';
+					var parentDiv = $(this).parent();
+					var text = $(parentDiv).find(".message_text").first().val();
+					text = text.replace(new RegExp('&lt;', 'g'), '<');
+					text = text.replace(new RegExp('&gt;', 'g'), '>');
+					var receiverID = $(parentDiv).find(".hidden").first().text();
+					var link = '@Html.Raw(Url.Action("CreateMessage", "Profile", new { senderID = @ViewBag.User.ID, receiverID = -1 }))';
+					link = link.replace("-1", receiverID);
+					$.ajax
 						({
-							url: disLink,
+							url: link,
+							data:
+							{
+								text: text,
+								datecreated: Date.now(),
+							},
 							dataType: 'json',
 							type: 'POST',
 							success: function (data) {
+								chat.server.send(userID.toString(), receiverID.toString(), text);
 							}
 						})
-					}
-				}
-			});
-			var link1 = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { discussionGuid = "oooo" }))';
-			link1 = link.replace("oooo", groupName);
-			var chatWindow = $("#chat_window").clone(true);
-			chatWindow.attr("groupname", groupName);
-			chatWindow.append("<div class=div_messages></div>");
-			chatWindow.append("<textarea class=group_message_text cols=25 rows=5></textarea><button class=send_group_message>Send</button><button class=add_member>Add member</button><button class=leave_group>Leave</button>");
-			$("#chat_container").append(chatWindow);
-			var textareas = $(".message_text").length;
-			$(".message_text").last().attr("id", "textarea_" + textareas.toString());
-			$(".div_messages").last().load(link1);
-		}
+					$(parentDiv).find(".message_text").first().val('');
+				});
 
-		chat.client.showWarning = function (alertMessage) {
-			alert(alertMessage);
-		}
-
-		$.connection.hub.start(function () {
-			chat.server.getAllOnlineUsers();
-			chat.server.loadAllGroups();
-
-			$(document).on("click", ".send_message", function () {
-				var userID = '@ViewBag.User.ID';
-				var parentDiv = $(this).parent();
-				var text = $(parentDiv).find(".message_text").first().val();
-				text = text.replace(new RegExp('&lt;', 'g'), '<');
-				text = text.replace(new RegExp('&gt;', 'g'), '>');
-				var receiverID = $(parentDiv).find(".hidden").first().text();
-				var link = '@Html.Raw(Url.Action("CreateMessage", "Profile", new { senderID = @ViewBag.User.ID, receiverID = -1 }))';
-				link = link.replace("-1", receiverID);
-				$.ajax
+				$(document).on("click", ".send_group_message", function () {
+					var userID = '@ViewBag.User.ID';
+					var parentDiv = $(this).parent();
+					var text = $(parentDiv).find(".group_message_text").first().val();
+					text = text.replace(new RegExp('&lt;', 'g'), '<');
+					text = text.replace(new RegExp('&gt;', 'g'), '>');
+					var groupName = $(parentDiv).attr("groupname");
+					var link = '@Url.Action("GetGroupByDiscussionGuid", "Profile", new { discussionGuid = "oooo" })';
+					link = link.replace("oooo", groupName);
+					$.ajax
 					({
 						url: link,
-						data:
-						{
-							text: text,
-							datecreated: Date.now(),
-						},
 						dataType: 'json',
-						type: 'POST',
+						type: 'GET',
 						success: function (data) {
-							chat.server.send(userID.toString(), receiverID.toString(), text);
+							var link1 = '@Html.Raw(Url.Action("CreateMessage", "Profile", new { senderID = @ViewBag.User.ID, receiverID = 0 }))';
+							$.ajax
+								({
+									url: link1,
+									data:
+									{
+										text: text,
+										datecreated: Date.now(),
+										discussionID: data.ID,
+									},
+									dataType: 'json',
+									type: 'POST',
+									success: function (result) {
+										chat.server.sendToGroup(userID.toString(), groupName, text);
+									}
+								})
+							$(parentDiv).find(".group_message_text").first().val('');
+						}
+					});
+
+					$(document).on("click", ".add_member", function () {
+						var child = window.open('@Url.Action("PickFriends", "Profile", new { userID = ViewBag.User.ID })');
+						var thisButton = $(this);
+						var timer = setInterval(function () { userToGroup(thisButton); }, 500);
+
+						function userToGroup(button) {
+							if (child.closed) {
+								var memberID = $("#add_members_div").find("label").first().text();
+								var parentDiv = $(button).parent();
+								var groupName = $(parentDiv).attr("groupname");
+								var link = '@Url.Action("GetGroupByDiscussionGuid", "Profile", new { discussionGuid = "oooo" })';
+								link = link.replace("oooo", groupName);
+								$.ajax
+								({
+									url: link,
+									dataType: 'json',
+									type: 'GET',
+									success: function (data) {
+										var disLink = '@Html.Raw(Url.Action("AddUserToGroup", "User", new { userID = -1, groupID = -2 }))';
+										disLink = disLink.replace("-1", memberID);
+										disLink = disLink.replace("-2", data.ID);
+										$.ajax
+										({
+											url: disLink,
+											dataType: 'json',
+											type: 'POST',
+											success: function (result) {
+												chat.server.addGroupMember(memberID, groupName);
+											}
+										})
+									}
+								})
+								clearInterval(timer);
+							}
 						}
 					})
-				$(parentDiv).find(".message_text").first().val('');
-			});
 
-			$(document).on("click", ".add_member", function () {
-				var child = window.open('@Url.Action("PickFriends", "Profile", new { userID = ViewBag.User.ID })');
-				var thisButton = $(this);
-				var timer = setInterval(function () { userToGroup(thisButton); }, 500);
 
-				function userToGroup(button) {
-					if (child.closed)
-					{
-						var memberID = $("#add_members_div").find("label").first().text();
-						var parentDiv = $(button).parent();
-						var groupName = $(parentDiv).attr("groupname");
+
+					$(document).on("click", ".leave_group", function () {
+						var parentDiv = $(this).parent();
+						var discussionGuid = $(parentDiv).attr("groupname");
+						$(parentDiv).remove();
 						var link = '@Url.Action("GetGroupByDiscussionGuid", "Profile", new { discussionGuid = "oooo" })';
-						link = link.replace("oooo", groupName);
+						link = disLink.replace("oooo", discussionGuid);
 						$.ajax
 						({
 							url: link,
 							dataType: 'json',
 							type: 'GET',
 							success: function (data) {
-								var disLink = '@Html.Raw(Url.Action("AddUserToGroup", "User", new { userID = -1, groupID = -2 }))';
-								disLink = disLink.replace("-1", memberID);
-								disLink = disLink.replace("-2", data.ID);
+								var disLink = '@Html.Raw(Url.Action("RemoveUserFromGroup", "User", new { userID = ViewBag.User.ID, groupID = -1 }))';
+								disLink = disLink.replace("-1", data.ID);
 								$.ajax
 								({
 									url: disLink,
 									dataType: 'json',
-									type: 'POST',
-									success: function (result) {
-										chat.server.addGroupMember(memberID, groupName);
+									type: 'DELETE',
+									success: function () {
+										var grLink = '@Url.Action("GetProfilesForGroup", "Profile", new { groupID = -1 })';
+										grLink = grLink.replace("-1", data.ID);
+										$.ajax
+										({
+											url: grLink,
+											dataType: 'json',
+											type: 'GET',
+											success: function (result) {
+												if (result.Count == 0) {
+													var delLink = '@Url.Action("DeleteGroup", "Group", new { discussionGuid = "pppp" })';
+													delLink = delLink.replace("pppp", discussionGuid);
+													$.ajax
+													({
+														url: delLink,
+														dataType: 'json',
+														type: 'DELETE',
+														success: function (newResult) {
+														}
+													})
+												}
+											}
+										})
 									}
 								})
 							}
 						})
-						clearInterval(timer);
-					}
-				}
-			})
+					})
 
-
-
-			$(document).on("click", ".leave_group", function () {
-				var parentDiv = $(this).parent();
-				var discussionGuid = $(parentDiv).attr("groupname");
-				$(parentDiv).remove();
-				var link = '@Url.Action("GetGroupByDiscussionGuid", "Profile", new { discussionGuid = "oooo" })';
-				link = disLink.replace("oooo", discussionGuid);
-				$.ajax
-				({
-					url: link,
-					dataType: 'json',
-					type: 'GET',
-					success: function (data) {
-						var disLink = '@Html.Raw(Url.Action("RemoveUserFromGroup", "User", new { userID = ViewBag.User.ID, groupID = -1 }))';
-						disLink = disLink.replace("-1", data.ID);
+					$(document).on("mouseover", ".message_text", function () {
+						var parentDiv = $(this).parent();
+						var senderID = parseInt($(parentDiv).find(".hidden").first().text());
+						var link = '@Html.Raw(Url.Action("ReadMessages", "Profile", new { senderID = -1, receiverID = ViewBag.User.ID }))';
+						link = link.replace("-1", senderID);
 						$.ajax
 						({
-							url: disLink,
+							url: link,
 							dataType: 'json',
-							type: 'DELETE',
-							success: function () {
-								var grLink = '@Url.Action("GetProfilesForGroup", "Profile", new { groupID = -1 })';
-								grLink = grLink.replace("-1", data.ID);
-								$.ajax
-								({
-									url: grLink,
-									dataType: 'json',
-									type: 'GET',
-									success: function (result) {
-										if (result.Count == 0) {
-											var delLink = '@Url.Action("DeleteGroup", "Group", new { discussionGuid = "pppp" })';
-											delLink = delLink.replace("pppp", discussionGuid);
-											$.ajax
-											({
-												url: delLink,
-												dataType: 'json',
-												type: 'DELETE',
-												success: function (newResult) {
-												}
-											})
-										}
-									}
-								})
+							type: 'PUT',
+							success: function (data) {
 							}
 						})
-					}
-				})
-			})
+					});
 
-			$(document).on("mouseover", ".message_text", function () {
-				var parentDiv = $(this).parent();
-				var senderID = parseInt($(parentDiv).find(".hidden").first().text());
-				var link = '@Html.Raw(Url.Action("ReadMessages", "Profile", new { senderID = -1, receiverID = ViewBag.User.ID }))';
-				link = link.replace("-1", senderID);
-				$.ajax
-				({
-					url: link,
-					dataType: 'json',
-					type: 'PUT',
-					success: function (data) {
-					}
-				})
-			});
-
-			$(document).on("click", "#create_group", function () {
-				chat.server.createGroup(null);
+					$(document).on("click", "#create_group", function () {
+						chat.server.createGroup(null);
+					});
+				});
 			});
 		});
-	})
 
-	function openChatWindow(id) {
-		var userID = '@ViewBag.User.ID';
-		var link = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { senderID = ViewBag.User.ID, receiverID = -1 }))';
-		link = link.replace("-1", id);
-		var chatWindow = $("#chat_window").clone(true);
-		chatWindow.attr("uniquename", userID.toString() + "_" + id.toString());
-		chatWindow.append("<div class=div_messages></div>");
-		chatWindow.append("<textarea class=message_text cols=25 rows=5></textarea><button class=send_message>Send</button><label class=hidden>" + id + "</label>");
-		$("#chat_container").append(chatWindow);
-		var textareas = $(".message_text").length;
-		$(".message_text").last().attr("id", "textarea_" + textareas.toString());
-		$(".div_messages").last().load(link);
-		//CKEDITOR.replace("textarea_" + textareas.toString());
-	}
+			function openChatWindow(id) {
+				var userID = '@ViewBag.User.ID';
+				var link = '@Html.Raw(Url.Action("GetChatMessages", "Profile", new { senderID = ViewBag.User.ID, receiverID = -1 }))';
+				link = link.replace("-1", id);
+				var chatWindow = $("#chat_window").clone(true);
+				chatWindow.attr("uniquename", userID.toString() + "_" + id.toString());
+				chatWindow.append("<div class=div_messages></div>");
+				chatWindow.append("<textarea class=message_text cols=25 rows=5></textarea><button class=send_message>Send</button><label class=hidden>" + id + "</label>");
+				$("#chat_container").append(chatWindow);
+				var textareas = $(".message_text").length;
+				$(".message_text").last().attr("id", "textarea_" + textareas.toString());
+				$(".div_messages").last().load(link);
+				//CKEDITOR.replace("textarea_" + textareas.toString());
+			}
 </script>
 	<title>@Resources.ChatRoomName</title>
 </head>
