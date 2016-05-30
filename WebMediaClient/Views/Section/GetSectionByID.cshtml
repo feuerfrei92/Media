@@ -231,14 +231,14 @@
 						type: 'GET',
 						success: function (result) {
 							if (result.Publicity == "Everyone") {
-								var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+								var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { parentID = @Model.ID })';
 								var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
 								$("#sections_container").load(link1);
 								$("#topics_container").load(link2);
 							}
 							if (result.Publicity == "Registered") {
 								if (data.role == "Regular" || data.role == "Mod" || data.role == "Admin") {
-									var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+									var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { parentID = @Model.ID })';
 									var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
 									$("#sections_container").load(link1);
 									$("#topics_container").load(link2);
@@ -246,7 +246,7 @@
 							}
 							if (result.Publicity == "Admins") {
 								if (data.role == "Mod" || data.role == "Admin") {
-									var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { sectionID = @Model.ID })';
+									var link1 = '@Url.Action("GetSectionsByParentID", "Section", new { parentID = @Model.ID })';
 									var link2 = '@Url.Action("GetTopicsBySectionID", "Topic", new { sectionID = @Model.ID })';
 									$("#sections_container").load(link1);
 									$("#topics_container").load(link2);
@@ -356,14 +356,17 @@
 </script>
 
 <div class="row">
+	<p>@Resources.Subsections</p>
 	<div id="sections_container" class="col-md-4">
 	</div>
 </div>
 <div class="row">
+	<p>@Resources.Topics</p>
 	<div id="topics_container" class="col-md-4">
 	</div>
 </div>
 <div class="row">
+	<p>@Resources.PendingMembers</p>
 	<div id="pending_members_container" class="col-md-4">
 	</div>
 </div>

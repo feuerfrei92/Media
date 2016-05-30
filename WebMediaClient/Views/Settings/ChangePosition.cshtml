@@ -84,20 +84,16 @@
 		{
 			<div class="list-group">
 				<label id="user_label" class="label-default">@Resources.SelectUser</label>
-				<div class="col-md-4">
-					@Html.DropDownList("User", new SelectList(Enumerable.Empty<SelectListItem>()), new { @id = "user_dropdown" })
-				</div>
+				@Html.DropDownList("User", new SelectList(Enumerable.Empty<SelectListItem>()), new { @id = "user_dropdown" })
 			</div>
 		}
 		<div class="list-group">
 			<label id="position_label" class="label-default">@Resources.SelectPosition</label>
-			<div class="col-md-4">
-				<select id="position_select">
-					<option value="Regular">@Resources.Regular</option>
-					<option value="Mod">@Resources.Mod</option>
-					<option value="Admin">@Resources.Admin</option>
-				</select>
-			</div>
+			<select id="position_select">
+				<option value="Regular">Regular</option>
+				<option value="Mod">Mod</option>
+				<option value="Admin">Admin</option>
+			</select>
 		</div>
 		<div class="list-group">
 			<button id="submit" class="formbutton" onclick="changePosition()">@Resources.Change</button>

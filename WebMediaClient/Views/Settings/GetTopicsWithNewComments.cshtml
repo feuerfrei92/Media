@@ -6,7 +6,21 @@
 			@foreach (var item in Model)
 			{
 				<div class="list-group-item">
-					@Html.ActionLink(item.Name, "GetTopicByID", "Topic", new { ID = item.ID }, null);
+					@switch (item.TopicType)
+					{
+						case "Section": @Html.ActionLink(item.Name, "GetTopicByID", "Topic", new { ID = item.ID }, null);
+						break;
+						case "Profile": @Html.ActionLink(item.Name, "GetProfileByID", "Profile", new { ID = item.SectionID }, null);
+						break;
+						case "Interest": @Html.ActionLink(item.Name, "GetInterestByID", "Interest", new { ID = item.SectionID }, null);
+						break;
+						case "Album": @Html.ActionLink(item.Name, "GetAlbumByID", "Album", new { ID = item.SectionID }, null);
+						break;
+						case "Photo": @Html.ActionLink(item.Name, "GetPhotoByID", "Album", new { ID = item.SectionID }, null);
+						break;
+						case "Video": @Html.ActionLink(item.Name, "GetVideoByID", "Video", new { ID = item.SectionID }, null);
+						break;
+					}
 				</div>
 			}
 		</div>

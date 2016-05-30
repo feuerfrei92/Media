@@ -86,16 +86,12 @@
 		{ 
 			<div class="list-group">
 				<label id="user_label" class="label-default">@Resources.SelectUser</label>
-				<div class="col-md-4">
-					@Html.DropDownList("User", new SelectList(Enumerable.Empty<SelectListItem>()), new { @id = "user_dropdown" })
-				</div>
+				@Html.DropDownList("User", new SelectList(Enumerable.Empty<SelectListItem>()), new { @id = "user_dropdown" })
 			</div>
 		}
 		<div class="list-group">
 			<label id="date_label" class="label-default">@Resources.SuspendedUntil</label>
-			<div class="col-md-4">
-				<input id="date_input" class="datepicker" required="required" />
-			</div>
+			<input id="date_input" class="datepicker" required="required" />
 		</div>
 		<div class="list-group">
 			<button id="submit" class="formbutton" onclick="suspendUser()">@Resources.Suspend</button>

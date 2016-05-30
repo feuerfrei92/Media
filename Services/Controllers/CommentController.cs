@@ -93,7 +93,7 @@ namespace Services.Controllers
 
 			var text = comment.Text;
 			HtmlAgilityPack.HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
-			MemoryStream ms = new MemoryStream(Encoding.UTF8.GetBytes(text));
+			MemoryStream ms = new MemoryStream(Encoding.GetEncoding(1251).GetBytes(text)); 
 			doc.Load(ms);
 			doc.DocumentNode.Descendants()
 				.Where(n => n.Name == "script" || n.Name == "object" || n.Name == "embed" || n.Name == "link")

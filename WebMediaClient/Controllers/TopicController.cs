@@ -176,7 +176,7 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> GetTopicByOwnerAndType(int ownerID, string topicType, int? page = null)
+		public ActionResult GetTopicByOwnerAndType(int ownerID, string topicType, int? page = null)
 		{
 			try
 			{
@@ -186,7 +186,7 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
+				var topic = Task.Run<TopicModel>(() => HttpClientBuilder<TopicModel>.GetAsync(url, token)).Result;
 				var viewModel = TopicConverter.FromBasicToVisual(topic);
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 				ViewBag.Page = page;

@@ -266,6 +266,7 @@
     <Content Include="ckeditor\ckeditor.js" />
     <Content Include="ckeditor\config.js" />
     <Content Include="ckeditor\contents.css" />
+    <Content Include="ckeditor\customconfig.js" />
     <Content Include="ckeditor\lang\af.js" />
     <Content Include="ckeditor\lang\ar.js" />
     <Content Include="ckeditor\lang\bg.js" />

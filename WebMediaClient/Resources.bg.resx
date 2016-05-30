@@ -465,4 +465,22 @@
   <data name="UnreadMessages" xml:space="preserve">
     <value>Непрочетени съобщения</value>
   </data>
+  <data name="Options" xml:space="preserve">
+    <value>Опции</value>
+  </data>
+  <data name="SearchProfile" xml:space="preserve">
+    <value>Търси профил</value>
+  </data>
+  <data name="SearchSection" xml:space="preserve">
+    <value>Търси секция</value>
+  </data>
+  <data name="Subsections" xml:space="preserve">
+    <value>Подсекции</value>
+  </data>
+  <data name="Topics" xml:space="preserve">
+    <value>Теми</value>
+  </data>
+  <data name="PendingMembers" xml:space="preserve">
+    <value>Членове очакващи одобрение</value>
+  </data>
 </root>

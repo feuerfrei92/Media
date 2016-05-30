@@ -45,6 +45,16 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public ActionResult CreateSection(int authorID, int? parentID = null)
+		{
+			if (Request.UrlReferrer == null)
+				return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+			ViewBag.ParentID = parentID;
+			ViewBag.AuthorID = authorID;
+			return View();
+		}
+
 		[HttpPost]
 		public async Task<ActionResult> CreateSection(SectionViewModel sectionModel, int authorID, int? parentID = null)
 		{
@@ -53,7 +63,7 @@ namespace WebMediaClient.Controllers
 				if (((UserModel)HttpContext.Session["currentUser"]).ID != authorID)
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
-				string url = string.Format("http://localhost:8080/api/Section/CreateSection?ParentID={0}", parentID);
+				string url = string.Format("http://localhost:8080/api/Section/CreateSection?AuthorID={0}&ParentID={0}", authorID, parentID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();

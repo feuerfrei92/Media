@@ -315,3 +315,4 @@
 /// <reference path="../ckeditor/plugins/youtube/lang/cs.js" />
 /// <reference path="../ckeditor/plugins/youtube/lang/ar.js" />
 /// <reference path="../ckeditor/plugins/youtube/plugin.js" />
+/// <reference path="../ckeditor/customconfig.js" />

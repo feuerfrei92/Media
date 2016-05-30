@@ -15,7 +15,7 @@
 	@Scripts.Render("~/bundles/modernizr")
 	<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
 	<script src="~/signalr/hubs"></script>
-	@*<script src="~/ckeditor/ckeditor.js"></script>*@
+	<script src="~/ckeditor/ckeditor.js"></script>
 	<script type="text/javascript">
 		$(function () {
 			var chat = $.connection.chatHub;
@@ -46,6 +46,7 @@
 				$(groups).each(function (index, guid) {
 					var label = document.createElement("label");
 					label.id = guid;
+					$(label).css({ 'float': 'right' });
 					label.innerHTML = guid;
 					label.onclick = function () { chat.client.openWindow(guid) };
 					$("#group_container").append(label);
@@ -65,7 +66,9 @@
 					var textareas = $(".message_text").length;
 					$(".message_text").last().attr("id", "textarea_" + textareas.toString());
 					$(".div_messages").last().load(link);
-					//CKEDITOR.replace("textarea_" + textareas.toString());
+					CKEDITOR.replace("textarea_" + textareas.toString(), { customConfig: 'customconfig.js' });
+					CKEDITOR.config.height = 100;
+					CKEDITOR.config.width = 250;
 				}
 				else {
 					var link1 = '@Url.Action("GetProfileByUserIDRaw", "Profile", new { UserID = -1 })';
@@ -87,7 +90,8 @@
 					chatWindow.attr("groupname", groupName);
 					chatWindow.append("<div class=div_messages></div>");
 					chatWindow.append("<textarea class=group_message_text cols=25 rows=5></textarea><button class=send_group_message>Send</button><button class=add_member>Add member</button><button class=leave_group>Leave</button>");
-					$("#chat_container").append(chatWindow);
+					chatWindow.css({ 'float': 'right' });
+					$("#group_container").append(chatWindow);
 					var textareas = $(".message_text").length;
 					$(".message_text").last().attr("id", "textarea_" + textareas.toString());
 					$(".div_messages").last().load(link);
@@ -123,7 +127,8 @@
 				chatWindow.attr("groupname", groupName);
 				chatWindow.append("<div class=div_messages></div>");
 				chatWindow.append("<textarea class=group_message_text cols=25 rows=5></textarea><button class=send_group_message>Send</button><button class=add_member>Add member</button><button class=leave_group>Leave</button>");
-				$("#chat_container").append(chatWindow);
+				chatWindow.css({ 'float': 'right' });
+				$("#group_container").append(chatWindow);
 				var textareas = $(".message_text").length;
 				$(".message_text").last().attr("id", "textarea_" + textareas.toString());
 				$(".div_messages").last().load(link1);
@@ -319,7 +324,9 @@
 				var textareas = $(".message_text").length;
 				$(".message_text").last().attr("id", "textarea_" + textareas.toString());
 				$(".div_messages").last().load(link);
-				//CKEDITOR.replace("textarea_" + textareas.toString());
+				CKEDITOR.replace("textarea_" + textareas.toString(), { customConfig: 'customconfig.js' });
+				CKEDITOR.config.height = 100;
+				CKEDITOR.config.width = 250;
 			}
 </script>
 	<title>@Resources.ChatRoomName</title>
@@ -333,16 +340,18 @@
 				<label id="@item.ID.ToString()" class="label-default-small" style="color: red">@Resources.Offline</label>
 			}
 		</div>
-		<div id="chat_container" class="col-md-8">
+	</div>
+	<div class="row">
+		<div id="chat_container" class="col-md-4">
 			<div id="chat_window">
 			</div>
 		</div>
-	</div>
-	<div id="group_container" class="row">
+		<div id="group_container" class="col-md-4" style="float:right">
+		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-8">
-			<button id="create_group" class="btn btn-default">@Resources.CreateGroupChat</button>
+		<div class="col-md-4" style="float:right">
+			<button id="create_group" class="btn btn-default" style="float:right">@Resources.CreateGroupChat</button>
 		</div>
 		<div id="add_members_div" hidden="hidden">
 		</div>

@@ -332,7 +332,7 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var users = await HttpClientBuilder<UserModel>.GetListAsync(url, token);
-				return Json(new { Users = users }, JsonRequestBehavior.AllowGet);
+				return Json(users, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{

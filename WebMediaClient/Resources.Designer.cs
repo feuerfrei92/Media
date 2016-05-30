@@ -700,6 +700,15 @@ namespace WebMediaClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Options.
+        /// </summary>
+        public static string Options {
+            get {
+                return ResourceManager.GetString("Options", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Owner type.
         /// </summary>
         public static string OwnerType {
@@ -714,6 +723,15 @@ namespace WebMediaClient {
         public static string Password {
             get {
                 return ResourceManager.GetString("Password", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Pending memberships.
+        /// </summary>
+        public static string PendingMembers {
+            get {
+                return ResourceManager.GetString("PendingMembers", resourceCulture);
             }
         }
         
@@ -853,11 +871,29 @@ namespace WebMediaClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Search profile.
+        /// </summary>
+        public static string SearchProfile {
+            get {
+                return ResourceManager.GetString("SearchProfile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Search profiles by criteria.
         /// </summary>
         public static string SearchProfilesByCriteria {
             get {
                 return ResourceManager.GetString("SearchProfilesByCriteria", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Search section.
+        /// </summary>
+        public static string SearchSection {
+            get {
+                return ResourceManager.GetString("SearchSection", resourceCulture);
             }
         }
         
@@ -907,6 +943,15 @@ namespace WebMediaClient {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        public static string Settings {
+            get {
+                return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Start chat.
         /// </summary>
         public static string StartChat {
@@ -930,6 +975,15 @@ namespace WebMediaClient {
         public static string SubscribedTopics {
             get {
                 return ResourceManager.GetString("SubscribedTopics", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subsections.
+        /// </summary>
+        public static string Subsections {
+            get {
+                return ResourceManager.GetString("Subsections", resourceCulture);
             }
         }
         
@@ -966,6 +1020,15 @@ namespace WebMediaClient {
         public static string SuspendUser {
             get {
                 return ResourceManager.GetString("SuspendUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Topics.
+        /// </summary>
+        public static string Topics {
+            get {
+                return ResourceManager.GetString("Topics", resourceCulture);
             }
         }
         

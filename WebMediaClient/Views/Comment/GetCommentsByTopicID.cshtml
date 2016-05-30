@@ -59,7 +59,7 @@
 					var actionLinkElement = document.createElement("label");
 					actionLinkElement.setAttribute("class", "label-default dropdown-toggle");
 					actionLinkElement.setAttribute("data-toggle", "dropdown");
-					var manageElem = "Options";
+					var manageElem = '@Resources.Options';
 					actionLinkElement.innerHTML = manageElem;
 					manageNode.appendChild(actionLinkElement);
 					var dropdownMenu = document.createElement("ul");
@@ -134,6 +134,7 @@
 					manageNode.appendChild(actionLinkElement);
 					manageNode.appendChild(dropdownMenu);
 					div5.appendChild(manageNode);
+					$(".dropdown-toggle").dropdown();
 				}
 			}
 		})

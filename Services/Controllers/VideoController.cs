@@ -148,7 +148,7 @@ namespace Services.Controllers
 
 		[HttpGet]
 		[Authorize]
-		public IHttpActionResult GetVideosForUser(int userID)
+		public IHttpActionResult GetVideosForOwner(int userID)
 		{
 			List<VideoModel> videos = _nest.Videos.All().Where(v => v.OwnerID == userID && v.IsProfile).Select(BuildVideoModel).ToList();
 
