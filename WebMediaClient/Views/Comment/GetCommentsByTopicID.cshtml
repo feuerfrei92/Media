@@ -144,8 +144,7 @@
 		var currentUserID = '@ViewBag.User.ID';
 		if (userID != currentUserID)
 			alert('@Resources.NonPermitedOperation');
-		else
-		{
+		else {
 			var link = '@Html.Raw(Url.Action("UpdateComment", "Comment", new { ID = -1, TopicID = -2 }))';
 			link = link.replace("-1", id);
 			link = link.replace("-2", topicID);
@@ -153,8 +152,7 @@
 		}
 	}
 
-	function quoteComment(id)
-	{
+	function quoteComment(id) {
 		var link = '@Url.Action("GetCommentByID", "Comment", new { ID = -1 })';
 		link = link.replace("-1", id);
 		$.ajax
@@ -178,6 +176,34 @@
 			type: 'DELETE',
 			success: function (data) {
 				alert('@Resources.SuccessfullyDeleted');
+			},
+		});
+	}
+
+	function rateCommentPositive(id) {
+		var link = '@Html.Raw(Url.Action("UpdateRating", "Comment", new { commentID = -1, like = true }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) {
+
+			},
+		});
+	}
+
+	function rateCommentNegative(id) {
+		var link = '@Html.Raw(Url.Action("UpdateRating", "Comment", new { commentID = -1, like = false }))';
+		link = link.replace("-1", id);
+		$.ajax
+		({
+			url: link,
+			dataType: 'json',
+			type: 'PUT',
+			success: function (data) {
+
 			},
 		});
 	}
@@ -283,6 +309,8 @@
 						<br />
 						<div class="col-md-2" style="margin-right: 50px">
 							<button class="btn btn-group" onclick="@("quoteComment(" + @Html.Raw(Json.Encode(item.ID)) + ")")">@Resources.Quote</button>
+							@*<button class="btn btn-group" style="width: 5em; height: 2em" onclick="@("rateCommentPositive(" + @Html.Raw(Json.Encode(item.ID)) + ")")">+</button>
+							<button class="btn btn-group" style="width: 5em; height: 2em" onclick="@("rateCommentNegative(" + @Html.Raw(Json.Encode(item.ID)) + ")")">-</button>*@
 						</div>
 						<div class="col-md-3" style="margin-right: 50px">
 						</div>

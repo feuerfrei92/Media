@@ -180,7 +180,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpDelete]
-		public ActionResult DeleteProfile(int ID)
+		public async Task<ActionResult> DeleteProfile(int ID)
 		{
 			try
 			{
@@ -193,7 +193,7 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				HttpClientBuilder<ProfileModel>.DeleteAsync(url, token);
+				var response = await HttpClientBuilder<ProfileModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
 			catch (Exception ex)

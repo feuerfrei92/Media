@@ -108,7 +108,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpDelete]
-		public ActionResult DeleteTopic(int ID)
+		public async Task<ActionResult> DeleteTopic(int ID)
 		{
 			try
 			{
@@ -121,7 +121,7 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				HttpClientBuilder<TopicModel>.DeleteAsync(url, token);
+				var response = await HttpClientBuilder<TopicModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
 			catch (Exception ex)

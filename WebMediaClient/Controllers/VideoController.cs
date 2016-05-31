@@ -105,7 +105,8 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult DeleteVideo(int ID)
+		[HttpDelete]
+		public async Task<ActionResult> DeleteVideo(int ID)
 		{
 			try
 			{
@@ -118,7 +119,7 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				HttpClientBuilder<VideoModel>.DeleteAsync(url, token);
+				var response = await HttpClientBuilder<VideoModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
 			catch (Exception ex)

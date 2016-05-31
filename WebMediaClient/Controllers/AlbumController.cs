@@ -100,7 +100,8 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public ActionResult DeleteAlbum(int ID)
+		[HttpDelete]
+		public async Task<ActionResult> DeleteAlbum(int ID)
 		{
 			try
 			{
@@ -113,7 +114,7 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				HttpClientBuilder<PhotoModel>.DeleteAsync(url, token);
+				var response = await HttpClientBuilder<PhotoModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
 			catch (Exception ex)
@@ -330,7 +331,8 @@ namespace WebMediaClient.Controllers
 			else throw new ArgumentNullException(file.FileName);
 		}
 
-		public ActionResult DeletePhoto(int ID)
+		[HttpDelete]
+		public async Task<ActionResult> DeletePhoto(int ID)
 		{
 			try
 			{
@@ -343,7 +345,7 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				HttpClientBuilder<PhotoModel>.DeleteAsync(url, token);
+				var response = await HttpClientBuilder<PhotoModel>.DeleteAsync(url, token);
 				return RedirectToAction("Index", "Home");
 			}
 			catch (Exception ex)

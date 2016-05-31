@@ -190,14 +190,16 @@ namespace WebMediaClient
 			}
 		}
 
-		public async static void DeleteAsync(string url, string token)
+		public async static Task<HttpResponseMessage> DeleteAsync(string url, string token)
 		{
 			using (var client = new HttpClient())
 			{
 				InitializeClient(client, url, token);
 
 				HttpResponseMessage response = await client.DeleteAsync(url);
-				if (!response.IsSuccessStatusCode)
+				if (response.IsSuccessStatusCode)
+					return response;
+				else
 					throw new Exception(string.Concat("Request failed with status code: ", response.StatusCode.ToString()));
 			}
 		}
