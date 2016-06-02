@@ -658,14 +658,14 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPost]
-		public async Task<ActionResult> CreateGroup(int userID, string discussionGuid)
+		public async Task<ActionResult> CreateGroup(int userID, string name, string discussionGuid)
 		{
 			try
 			{
 				if (!Request.IsAjaxRequest())
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
-				string url = string.Format("http://localhost:8080/api/Profile/CreateGroup?UserID={0}&DiscussionGuid={1}", userID, discussionGuid);
+				string url = string.Format("http://localhost:8080/api/Profile/CreateGroup?UserID={0}&Name={1}&DiscussionGuid={2}", userID, name, discussionGuid);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();
@@ -681,7 +681,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpDelete]
-		public ActionResult DeleteGroup(string discussionGuid)
+		public async Task<ActionResult> DeleteGroup(string discussionGuid)
 		{
 			try
 			{
@@ -694,8 +694,8 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				HttpClientBuilder<ProfileModel>.DeleteAsync(url, token);
-				return Json(new { Response = System.Net.HttpStatusCode.OK }, JsonRequestBehavior.AllowGet);
+				HttpResponseMessage response = await HttpClientBuilder<ProfileModel>.DeleteAsync(url, token);
+				return Json(new { Response = response }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{
@@ -714,7 +714,7 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var group = await HttpClientBuilder<DiscussionModel>.GetAsync(url, token);
-				return Json(new { ID = group.ID, DiscussionGuid = group.DiscussionGuid }, JsonRequestBehavior.AllowGet);
+				return Json(new { ID = group.ID, Name = group.Name, DiscussionGuid = group.DiscussionGuid }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{

@@ -394,7 +394,7 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpDelete]
-		public ActionResult RemoveUserFromGroup(int userID, int groupID)
+		public async Task<ActionResult> RemoveUserFromGroup(int userID, int groupID)
 		{
 			try
 			{
@@ -407,8 +407,8 @@ namespace WebMediaClient.Controllers
 					token = HttpContext.Session["token"].ToString();
 				else
 					token = null;
-				HttpClientBuilder<HttpResponseMessage>.DeleteAsync(url, token);
-				return Json(new { Response = System.Net.HttpStatusCode.OK }, JsonRequestBehavior.AllowGet);
+				HttpResponseMessage response = await HttpClientBuilder<HttpResponseMessage>.DeleteAsync(url, token);
+				return Json(new { Response = response }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{

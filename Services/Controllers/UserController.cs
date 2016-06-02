@@ -381,7 +381,7 @@ namespace Services.Controllers
 			List<DiscussionModel> discussions = new List<DiscussionModel>();
 			foreach (Discussionist dis in discussionists)
 			{
-				var group = _nest.Discussions.All().Where(d => d.ID == dis.DiscussionID).Select(d => new DiscussionModel { ID = d.ID, DiscussionGuid = d.DiscussionGuid }).FirstOrDefault();
+				var group = _nest.Discussions.All().Where(d => d.ID == dis.DiscussionID).Select(d => new DiscussionModel { ID = d.ID, Name = d.Name, DiscussionGuid = d.DiscussionGuid }).FirstOrDefault();
 				discussions.Add(group);
 			}
 			return Ok(discussions);

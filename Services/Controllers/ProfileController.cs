@@ -504,7 +504,7 @@ namespace Services.Controllers
 		}
 
 		[HttpGet]
-		[Authorize]
+		//[Authorize]
 		public IHttpActionResult GetDiscussion(string discussionGuid)
 		{
 			Guid groupGuid = new Guid(discussionGuid);
@@ -549,12 +549,13 @@ namespace Services.Controllers
 
 		[HttpPost]
 		[Authorize]
-		public IHttpActionResult CreateGroup(int userID, string discussionGuid)
+		public IHttpActionResult CreateGroup(int userID, string name, string discussionGuid)
 		{
 			Guid guid = Guid.Parse(discussionGuid);
 
 			var newDiscussion = new Discussion
 			{
+				Name = name,
 				DiscussionGuid = guid,
 			};
 
@@ -620,7 +621,7 @@ namespace Services.Controllers
 		public IHttpActionResult GetGroupByDiscussionGuid(string discussionGuid)
 		{
 			Guid guid = Guid.Parse(discussionGuid);
-			var group = _nest.Discussions.All().Where(d => d.DiscussionGuid == guid).Select(d => new DiscussionModel { ID = d.ID, DiscussionGuid = d.DiscussionGuid }).FirstOrDefault();
+			var group = _nest.Discussions.All().Where(d => d.DiscussionGuid == guid).Select(d => new DiscussionModel { ID = d.ID, Name = d.Name, DiscussionGuid = d.DiscussionGuid }).FirstOrDefault();
 
 			if (group == null)
 			{

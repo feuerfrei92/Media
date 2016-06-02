@@ -9,6 +9,7 @@ namespace Services.Models
 	public class DiscussionModel
 	{
 		public int ID { get; set; }
+		public string Name { get; set; }
 		public Guid DiscussionGuid { get; set; }
 	}
 }

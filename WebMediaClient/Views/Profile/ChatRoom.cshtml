@@ -44,12 +44,22 @@
 			}
 			chat.client.loadGroups = function (groups) {
 				$(groups).each(function (index, guid) {
-					var label = document.createElement("label");
-					label.id = guid;
-					$(label).css({ 'float': 'right' });
-					label.innerHTML = guid;
-					label.onclick = function () { chat.client.openWindow(guid) };
-					$("#group_container").append(label);
+					var link = '@Url.Action("GetGroupByDiscussionGuid", "Profile", new { discussionGuid = "oooo" })';
+					link = link.replace("oooo", guid);
+					$.ajax
+					({
+						url: link,
+						dataType: 'json',
+						type: 'GET',
+						success: function (data) {
+							var label = document.createElement("label");
+							label.id = guid;
+							$(label).css({ 'float': 'right' });
+							label.innerHTML = data.Name;
+							label.onclick = function () { chat.client.openWindow(guid) };
+							$("#group_container").append(label);
+						}
+					})
 				})
 			}
 			chat.client.broadcastMessage = function (message, yourID, otherID, authorID) {
@@ -108,8 +118,10 @@
 					type: 'GET',
 					success: function (data) {
 						if (data.Status == "error") {
-							var disLink = '@Html.Raw(Url.Action("CreateGroup", "Profile", new { userID = ViewBag.User.ID, discussionGuid = "oooo" }))';
+							var displayName = $("#group_display_name").val();
+							var disLink = '@Html.Raw(Url.Action("CreateGroup", "Profile", new { userID = ViewBag.User.ID, name = "unknown", discussionGuid = "oooo" }))';
 							disLink = disLink.replace("oooo", groupName);
+							disLink = disLink.replace("unknown", displayName);
 							$.ajax
 							({
 								url: disLink,
@@ -202,6 +214,7 @@
 							$(parentDiv).find(".group_message_text").first().val('');
 						}
 					});
+				});
 
 					$(document).on("click", ".add_member", function () {
 						var child = window.open('@Url.Action("PickFriends", "Profile", new { userID = ViewBag.User.ID })');
@@ -238,7 +251,7 @@
 								clearInterval(timer);
 							}
 						}
-					})
+					});
 
 
 
@@ -288,7 +301,7 @@
 								})
 							}
 						})
-					})
+					});
 
 					$(document).on("mouseover", ".message_text", function () {
 						var parentDiv = $(this).parent();
@@ -308,7 +321,6 @@
 					$(document).on("click", "#create_group", function () {
 						chat.server.createGroup(null);
 					});
-				});
 			});
 		});
 
@@ -351,6 +363,8 @@
 	</div>
 	<div class="row">
 		<div class="col-md-4" style="float:right">
+			<label class="label-default">Group chat name:</label>
+			<input id="group_display_name" class="input-lg" />
 			<button id="create_group" class="btn btn-default" style="float:right">@Resources.CreateGroupChat</button>
 		</div>
 		<div id="add_members_div" hidden="hidden">
