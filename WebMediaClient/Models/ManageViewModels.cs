@@ -52,9 +52,10 @@ namespace WebMediaClient.Models
 		[Display(ResourceType = typeof(Resources), Name = "NewPassword")]
         public string NewPassword { get; set; }
 
+		[Required]
         [DataType(DataType.Password)]
 		[Display(ResourceType = typeof(Resources), Name = "ConfirmNewPassword")]
-		[Compare("Password", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "UnmatchingPasssword")]
+		[Compare("NewPassword", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "UnmatchingPassword")]
         public string ConfirmPassword { get; set; }
     }
 

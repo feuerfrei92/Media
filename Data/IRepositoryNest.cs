@@ -28,6 +28,7 @@ namespace Data
 		IRepository<Message> Messages { get; }
 		IRepository<Discussion> Discussions { get; }
 		IRepository<Discussionist> Discussionists { get; }
+		IRepository<Vote> Votes { get; }
 		void SaveChanges();
 	}
 }

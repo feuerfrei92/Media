@@ -44,7 +44,7 @@
 				titleElement.innerHTML = '@Resources.ProfileSettings';
 				var contElement = document.createElement("dd");
 				var linkElement = document.createElement("a");
-				var link = '@Html.ActionLink(Resources.Update, "GetSettingByOwnerIDAndType", "Settings", new { ownerID = -1, settingType = SettingType.Profile.ToString(), token = @HttpContext.Current.Session["token"].ToString() }, new { id = "profile_setting" })';
+				var link = '@Html.ActionLink(Resources.Update, "GetSettingByOwnerIDAndType", "Settings", new { ownerID = -1, settingType = SettingType.Profile.ToString() }, new { id = "profile_setting" })';
 				link = link.replace("-1", data.ID);
 				linkElement.innerHTML = link;
 				contElement.appendChild(linkElement);
@@ -89,7 +89,7 @@
     <dl class="dl-horizontal">
         <dt>@Resources.Password</dt>
         <dd>
-            @Html.ActionLink(Resources.ChangePassword, "ChangePassword", "Manage")
+            @Html.ActionLink(Resources.ChangePassword, "ChangeAccPassword", "Account", null, new { id = "change_password" })
         </dd>
     </dl>
 	<dl class="dl-horizontal">

@@ -215,62 +215,6 @@ namespace WebMediaClient.Controllers
         }
 
         //
-        // GET: /Manage/ChangePassword
-        public ActionResult ChangePassword()
-        {
-            return View();
-        }
-
-        //
-        // POST: /Manage/ChangePassword
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
-			try
-			{
-				string url = "http://localhost:8080/api/Account/ChangePassword";
-				string token = "";
-				if (HttpContext.Session["token"] != null)
-					token = HttpContext.Session["token"].ToString();
-				else
-					token = null;
-				var passwordModel = new ChangePasswordBindingModel
-				{
-					OldPassword = model.OldPassword,
-					NewPassword = model.NewPassword,
-					ConfirmPassword = model.ConfirmPassword,
-				};
-				var response = await HttpClientBuilder<ChangePasswordBindingModel>.PostAsync<HttpResponseMessage>(passwordModel, url, token);
-				if (response.IsSuccessStatusCode)
-					return RedirectToAction("Index", "Home");
-				else
-					return View(model);
-			}
-			catch (Exception ex)
-			{
-				HandleErrorInfo info = new HandleErrorInfo(ex, "Manage", "ChangePassword");
-				return View("Error", info);
-			}
-			//var result = await UserManager.ChangePasswordAsync(User.Identity.GetUserId(), model.OldPassword, model.NewPassword);
-			//if (result.Succeeded)
-			//{
-			//	var user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-			//	if (user != null)
-			//	{
-			//		await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-			//	}
-			//	return RedirectToAction("Index", new { Message = ManageMessageId.ChangePasswordSuccess });
-			//}
-			//AddErrors(result);
-        }
-
-        //
         // GET: /Manage/SetPassword
         public ActionResult SetPassword()
         {

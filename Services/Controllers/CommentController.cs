@@ -1,6 +1,7 @@
 ﻿using Data;
 using HtmlAgilityPack;
 using Models;
+using Models.DatabaseModels;
 using Services.Models;
 using System;
 using System.Collections.Generic;
@@ -232,9 +233,13 @@ namespace Services.Controllers
 
 		[HttpPut]
 		[Authorize]
-		public IHttpActionResult UpdateRating(int commentID, bool like)
+		public IHttpActionResult UpdateRating(int commentID, int voterID, bool like)
 		{
 			Comment comment = _nest.Comments.All().Where(c => c.ID == commentID).FirstOrDefault();
+			Vote existingVote = _nest.Votes.All().Where(v => v.TargetID == commentID && v.Type == "Comment" && v.VoterID == voterID).FirstOrDefault();
+
+			if (existingVote != null)
+				return BadRequest();
 
 			if (like)
 				comment.Rating++;
@@ -242,6 +247,15 @@ namespace Services.Controllers
 				comment.Rating--;
 
 			_nest.Comments.Update(comment);
+
+			var vote = new Vote
+			{
+				TargetID = commentID,
+				VoterID = voterID,
+				Type = "Comment",
+			};
+
+			_nest.Votes.Create(vote);
 
 			try
 			{

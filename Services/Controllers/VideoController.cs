@@ -166,9 +166,13 @@ namespace Services.Controllers
 
 		[HttpPut]
 		[Authorize]
-		public IHttpActionResult UpdateRating(int videoID, bool like)
+		public IHttpActionResult UpdateRating(int videoID, int voterID, bool like)
 		{
 			Video video = _nest.Videos.All().Where(v => v.ID == videoID).FirstOrDefault();
+			Vote existingVote = _nest.Votes.All().Where(v => v.TargetID == videoID && v.Type == "Video" && v.VoterID == voterID).FirstOrDefault();
+
+			if (existingVote != null)
+				return BadRequest();
 
 			if (like)
 				video.Rating++;
@@ -176,6 +180,15 @@ namespace Services.Controllers
 				video.Rating--;
 
 			_nest.Videos.Update(video);
+
+			var vote = new Vote
+			{
+				TargetID = videoID,
+				VoterID = voterID,
+				Type = "Video",
+			};
+
+			_nest.Votes.Create(vote);
 
 			try
 			{

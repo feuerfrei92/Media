@@ -171,9 +171,13 @@ namespace Services.Controllers
 
 		[HttpPut]
 		[Authorize]
-		public IHttpActionResult UpdateAlbumRating(int albumID, bool like)
+		public IHttpActionResult UpdateAlbumRating(int albumID, int voterID, bool like)
 		{
 			Album album = _nest.Albums.All().Where(a => a.ID == albumID).FirstOrDefault();
+			Vote existingVote = _nest.Votes.All().Where(v => v.TargetID == albumID && v.Type == "Album" && v.VoterID == voterID).FirstOrDefault();
+
+			if (existingVote != null)
+				return BadRequest();
 
 			if (like)
 				album.Rating++;
@@ -181,6 +185,15 @@ namespace Services.Controllers
 				album.Rating--;
 
 			_nest.Albums.Update(album);
+
+			var vote = new Vote
+			{
+				TargetID = albumID,
+				VoterID = voterID,
+				Type = "Album",
+			};
+
+			_nest.Votes.Create(vote);
 
 			try
 			{
@@ -350,9 +363,13 @@ namespace Services.Controllers
 
 		[HttpPut]
 		[Authorize]
-		public IHttpActionResult UpdatePhotoRating(int photoID, bool like)
+		public IHttpActionResult UpdatePhotoRating(int photoID, int voterID, bool like)
 		{
 			Photo photo = _nest.Photos.All().Where(p => p.ID == photoID).FirstOrDefault();
+			Vote existingVote = _nest.Votes.All().Where(v => v.TargetID == photoID && v.Type == "Photo" && v.VoterID == voterID).FirstOrDefault();
+
+			if (existingVote != null)
+				return BadRequest();
 
 			if (like)
 				photo.Rating++;
@@ -360,6 +377,15 @@ namespace Services.Controllers
 				photo.Rating--;
 
 			_nest.Photos.Update(photo);
+
+			var vote = new Vote
+			{
+				TargetID = photoID,
+				VoterID = voterID,
+				Type = "Photo",
+			};
+
+			_nest.Votes.Create(vote);
 
 			try
 			{

@@ -58,6 +58,8 @@
 							label.innerHTML = data.Name;
 							label.onclick = function () { chat.client.openWindow(guid) };
 							$("#group_container").append(label);
+							$("#group_container").append('<br />');
+							$("#group_container").append('<br />');
 						}
 					})
 				})
@@ -363,9 +365,13 @@
 	</div>
 	<div class="row">
 		<div class="col-md-4" style="float:right">
-			<label class="label-default">Group chat name:</label>
-			<input id="group_display_name" class="input-lg" />
-			<button id="create_group" class="btn btn-default" style="float:right">@Resources.CreateGroupChat</button>
+			<fieldset style="float:right">
+				<label class="label-default">Group chat name:</label>
+				<input id="group_display_name" />
+			</fieldset>
+			<br />
+			<br />
+			<button id="create_group" class="btn btn-default pull-right" style="height: 2em; width: 10em">@Resources.CreateGroupChat</button>
 		</div>
 		<div id="add_members_div" hidden="hidden">
 		</div>

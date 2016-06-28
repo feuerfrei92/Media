@@ -240,14 +240,14 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> UpdateAlbumRating(int albumID, bool like)
+		public async Task<ActionResult> UpdateAlbumRating(int albumID, int voterID, bool like)
 		{
 			try
 			{
 				if (!Request.IsAjaxRequest())
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
-				string url = string.Format("http://localhost:8080/api/Album/UpdateAlbumRating?AlbumID={0}&Like={1}", albumID, like);
+				string url = string.Format("http://localhost:8080/api/Album/UpdateAlbumRating?AlbumID={0}&VoterID={1}&Like={2}", albumID, voterID, like);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();
@@ -500,14 +500,14 @@ namespace WebMediaClient.Controllers
 		}
 
 		[HttpPut]
-		public async Task<ActionResult> UpdateRating(int photoID, bool like)
+		public async Task<ActionResult> UpdatePhotoRating(int photoID, int voterID, bool like)
 		{
 			try
 			{
 				if (!Request.IsAjaxRequest())
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
-				string url = string.Format("http://localhost:8080/api/Album/UpdateRating?PhotoID={0}&Like={1}", photoID, like);
+				string url = string.Format("http://localhost:8080/api/Album/UpdateRating?PhotoID={0}&VoterID={1}&Like={2}", photoID, voterID, like);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();

@@ -36,6 +36,7 @@ namespace Data
 		public virtual IDbSet<Message> Messages { get; set; }
 		public virtual IDbSet<Discussion> Discussions { get; set; }
 		public virtual IDbSet<Discussionist> Discussionists { get; set; }
+		public virtual IDbSet<Vote> Votes { get; set; }
 
 		public new void SaveChanges()
 		{

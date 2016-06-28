@@ -196,14 +196,14 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
-		public async Task<ActionResult> UpdateRating(int videoID, bool like)
+		public async Task<ActionResult> UpdateRating(int videoID, int voterID, bool like)
 		{
 			try
 			{
 				if (!Request.IsAjaxRequest())
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
-				string url = string.Format("http://localhost:8080/api/Video/UpdateRating?VideoID={0}&Like={1}", videoID, like);
+				string url = string.Format("http://localhost:8080/api/Video/UpdateRating?VideoID={0}VoterID={1}&Like={2}", videoID, voterID, like);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();

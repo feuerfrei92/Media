@@ -98,17 +98,22 @@ namespace Data
 
 		public IRepository<Message> Messages
 		{
-			get { return GetRepository<Message>();  }
+			get { return GetRepository<Message>(); }
 		}
 
 		public IRepository<Discussion> Discussions
 		{
-			get { return GetRepository<Discussion>();  }
+			get { return GetRepository<Discussion>(); }
 		}
 
 		public IRepository<Discussionist> Discussionists
 		{
-			get { return GetRepository<Discussionist>();  }
+			get { return GetRepository<Discussionist>(); }
+		}
+
+		public IRepository<Vote> Votes
+		{
+			get { return GetRepository<Vote>(); }
 		}
 
 		public void SaveChanges()

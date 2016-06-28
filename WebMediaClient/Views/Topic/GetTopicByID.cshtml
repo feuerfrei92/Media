@@ -189,13 +189,13 @@
 				},
 			type: 'POST',
 			success: function (data) {
-				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page })';
 				$("#comments").empty();
 				$('#comments').load(link, function () { setIDs(); });
 				updateVisit();
 			},
 			error: function (xhr) {
-				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID })';
+				var link = '@Url.Action("GetCommentsByTopicID", "Comment", new { topicID = @Model.ID, page = @ViewBag.Page })';
 				$("#comments").empty();
 				$('#comments').load(link, function () { setIDs(); });
 			}

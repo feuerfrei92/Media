@@ -318,15 +318,6 @@
 						</div>
 					</div>
 				</div>
-				@*<div class="row">
-					<div class="col-md-2">
-						<button class="btn btn-group" onclick="@("quoteComment(" + @Html.Raw(Json.Encode(item.ID)) + ")")">Quote</button>
-					</div>
-					<div class="col-md-3">
-					</div>
-					<div class="delete_buttons">
-					</div>
-				</div>*@
 			}
 		</div>
 	</div>
@@ -337,8 +328,6 @@
 <div class="row">
 	Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
-	@*@Html.PagedListPager(Model, page => Url.Action("GetCommentsByTopicID",
-	new { topicID = @ViewBag.TopicID, page }), PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new AjaxOptions { HttpMethod = "GET", UpdateTargetId = "comments", OnSuccess = "replaceTexts" }))*@
 	@Html.PagedListPager(Model, page => Url.Action("GetTopicByID", "Topic",
 	new { ID = @ViewBag.TopicID, page }))
 </div>
