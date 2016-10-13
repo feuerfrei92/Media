@@ -555,7 +555,7 @@ namespace Services.Controllers
 			{
 				return BadRequest("User ID or code is null");
 			}
-			code = HttpUtility.UrlDecode(code);
+			//code = HttpUtility.UrlDecode(code);
 			var result = await UserManager.ConfirmEmailAsync(userId, code);
 			if (result.Succeeded)
 			{

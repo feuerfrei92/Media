@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using WebMediaClient.Converters;
 using WebMediaClient.Models;
+using System.IO;
 
 namespace WebMediaClient.Controllers
 {
@@ -77,8 +78,18 @@ namespace WebMediaClient.Controllers
 
 				if (file != null && file.ContentLength > 0)
 				{
-					string guid = Guid.NewGuid().ToString() + ".swf";
-					videoModel.Location = @"\UploadedFiles\Videos\ContentID=" + guid;
+					string guid = Guid.NewGuid().ToString();
+					string swfGuid = guid + ".swf";
+					string fileExt = System.IO.Path.GetExtension(file.FileName);
+					string fileGuid = guid + fileExt;
+					file.SaveAs(Server.MapPath(@"\UploadedFiles\Videos\ContentID=" + fileGuid));
+					var ffMpeg = new NReco.VideoConverter.FFMpegConverter();
+					using (FileStream videoStream = System.IO.File.Create(Server.MapPath(@"\UploadedFiles\Videos\ContentID=" + swfGuid)))
+					{
+						ffMpeg.ConvertMedia(Server.MapPath(@"\UploadedFiles\Videos\ContentID=" + fileGuid), videoStream, "swf");
+					}
+					System.IO.File.Delete(Server.MapPath(@"\UploadedFiles\Videos\ContentID=" + fileGuid));
+					videoModel.Location = @"\UploadedFiles\Videos\ContentID=" + swfGuid;
 					videoModel.DateCreated = DateTime.Now;
 					string url = string.Format("http://localhost:8080/api/Video/CreateVideo?UserID={0}", userID);
 					string token = "";
@@ -91,7 +102,7 @@ namespace WebMediaClient.Controllers
 					video.IsInterest = !isProfile;
 					var createdVideo = await HttpClientBuilder<VideoModel>.PostAsync(video, url, token);
 					var viewModel = VideoConverter.FromBasicToVisual(createdVideo);
-					file.SaveAs(Server.MapPath(@"\UploadedFiles\Videos\ContentID=" + guid));
+					
 					ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
 					ViewBag.IsProfile = isProfile;
 					return View(viewModel);

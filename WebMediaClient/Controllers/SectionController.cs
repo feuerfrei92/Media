@@ -362,7 +362,7 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(SectionConverter.FromBasicToVisual(s));
                 }
-				return View(viewModels);
+				return PartialView(viewModels);
 			}
 			catch (Exception ex)
 			{

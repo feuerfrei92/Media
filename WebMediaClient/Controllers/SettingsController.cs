@@ -198,7 +198,7 @@ namespace WebMediaClient.Controllers
 					viewModels.Add(ProfileConverter.FromBasicToVisual(p));
 				}
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
-				return View(viewModels);
+				return PartialView(viewModels);
 			}
 			catch (Exception ex)
 			{
@@ -215,6 +215,35 @@ namespace WebMediaClient.Controllers
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				string url = string.Format("http://localhost:8080/api/Topic/GetSubscribedTopics?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+				var topics = Task.Run<List<TopicModel>>(() => HttpClientBuilder<TopicModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<TopicViewModel>();
+				foreach (TopicModel t in topics)
+				{
+					viewModels.Add(TopicConverter.FromBasicToVisual(t));
+				}
+				return PartialView(viewModels);
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetSubscribedTopics");
+				return View("Error", info);
+			}
+		}
+
+		public ActionResult GetAllSubscribedTopics(int userID)
+		{
+			try
+			{
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				string url = string.Format("http://localhost:8080/api/Topic/GetAllSubscribedTopics?UserID={0}", userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();
@@ -244,6 +273,35 @@ namespace WebMediaClient.Controllers
 					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
 
 				string url = string.Format("http://localhost:8080/api/Topic/GetTopicsWithNewComments?UserID={0}", userID);
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				//var topics = await HttpClientBuilder<TopicModel>.GetListAsync(url, token);
+				var topics = Task.Run<List<TopicModel>>(() => HttpClientBuilder<TopicModel>.GetListAsync(url, token)).Result;
+				var viewModels = new List<TopicViewModel>();
+				foreach (TopicModel t in topics)
+				{
+					viewModels.Add(TopicConverter.FromBasicToVisual(t));
+				}
+				return PartialView(viewModels);
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Settings", "GetTopicsWithNewComments");
+				return View("Error", info);
+			}
+		}
+
+		public ActionResult GetAllTopicsWithNewComments(int userID)
+		{
+			try
+			{
+				if (((UserModel)HttpContext.Session["currentUser"]).ID != userID)
+					return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+				string url = string.Format("http://localhost:8080/api/Topic/GetAllTopicsWithNewComments?UserID={0}", userID);
 				string token = "";
 				if (HttpContext.Session["token"] != null)
 					token = HttpContext.Session["token"].ToString();
@@ -341,7 +399,7 @@ namespace WebMediaClient.Controllers
 					viewModels.Add(ActivityConverter.FromBasicToVisual(a));
 				}
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
-				return View(viewModels);
+				return PartialView(viewModels);
 			}
 			catch (Exception ex)
 			{

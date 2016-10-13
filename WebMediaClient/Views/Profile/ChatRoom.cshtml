@@ -159,7 +159,9 @@
 				$(document).on("click", ".send_message", function () {
 					var userID = '@ViewBag.User.ID';
 					var parentDiv = $(this).parent();
-					var text = $(parentDiv).find(".message_text").first().val();
+					var textareaID = $(parentDiv).find(".message_text").first().attr("id");
+					var editor = CKEDITOR.instances[textareaID];
+					var text = editor.getData();
 					text = text.replace(new RegExp('&lt;', 'g'), '<');
 					text = text.replace(new RegExp('&gt;', 'g'), '>');
 					var receiverID = $(parentDiv).find(".hidden").first().text();

@@ -50,7 +50,7 @@ namespace WebMediaClient.Models
     {
         [Required]
 		[Display(ResourceType = typeof(Resources), Name = "Email")]
-        [EmailAddress]
+        //[EmailAddress]
         public string Email { get; set; }
 
         [Required]
@@ -79,7 +79,7 @@ namespace WebMediaClient.Models
 
         [DataType(DataType.Password)]
 		[Display(ResourceType = typeof(Resources), Name = "ConfirmPassword")]
-        [Compare("Password", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "UnmatchingPasssword")]
+        [Compare("Password", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "UnmatchingPassword")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -98,7 +98,7 @@ namespace WebMediaClient.Models
 
         [DataType(DataType.Password)]
 		[Display(ResourceType = typeof(Resources), Name = "ConfirmPassword")]
-		[Compare("Password", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "UnmatchingPasssword")]
+		[Compare("Password", ErrorMessageResourceType = typeof(Resources), ErrorMessageResourceName = "UnmatchingPassword")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

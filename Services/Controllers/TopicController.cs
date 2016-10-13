@@ -229,6 +229,22 @@ namespace Services.Controllers
 			foreach (Comment c in comments)
 			{
 				var topic = _nest.Topics.All().Where(t => t.ID == c.TopicID).Select(BuildTopicModel).FirstOrDefault();
+				if (!topics.Exists(t => t.ID == topic.ID) && topics.Count < 5)
+					topics.Add(topic);
+			}
+
+			return Ok(topics);
+		}
+
+		[HttpGet]
+		[Authorize]
+		public IHttpActionResult GetAllSubscribedTopics(int userID)
+		{
+			List<Comment> comments = _nest.Comments.All().Where(c => c.AuthorID == userID).ToList();
+			var topics = new List<TopicModel>();
+			foreach (Comment c in comments)
+			{
+				var topic = _nest.Topics.All().Where(t => t.ID == c.TopicID).Select(BuildTopicModel).FirstOrDefault();
 				if (!topics.Exists(t => t.ID == topic.ID))
 					topics.Add(topic);
 			}
@@ -239,6 +255,29 @@ namespace Services.Controllers
 		[HttpGet]
 		[Authorize]
 		public IHttpActionResult GetTopicsWithNewComments(int userID)
+		{
+			List<Comment> comments = _nest.Comments.All().Where(c => c.AuthorID == userID).ToList();
+			var topics = new List<TopicModel>();
+			foreach (Comment c in comments)
+			{
+				var topic = _nest.Topics.All().Where(t => t.ID == c.TopicID).Select(BuildTopicModel).FirstOrDefault();
+				var visit = _nest.Visits.All().Where(v => v.TopicID == topic.ID && v.UserID == userID).FirstOrDefault();
+				if (topic.DateModified.HasValue)
+				{
+					if (visit.LastVisit.CompareTo(topic.DateModified.Value) < 0)
+					{
+						if (!topics.Exists(t => t.ID == topic.ID) && topics.Count < 5)
+							topics.Add(topic);
+					}
+				}
+			}
+
+			return Ok(topics);
+		}
+
+		[HttpGet]
+		[Authorize]
+		public IHttpActionResult GetAllTopicsWithNewComments(int userID)
 		{
 			List<Comment> comments = _nest.Comments.All().Where(c => c.AuthorID == userID).ToList();
 			var topics = new List<TopicModel>();

@@ -52,16 +52,6 @@
 	}*@
 </script>
 
-<div class="jumbotron">
-	<div class="col-md-4">
-		<p>@Resources.SearchProfile</p>
-		@Html.Partial("SearchProfile")
-	</div>
-	<div class="col-md-4">
-		<p>@Resources.SearchSection</p>
-		@Html.Partial("SearchSection")
-	</div>
-</div>
 <br />
 <div class="row">
 
@@ -81,21 +71,21 @@
 		{
 			<p>@Resources.UnreadMessages</p>
 			Html.RenderAction("GetUnreadMessages", "Profile", new { receiverID = ViewBag.User.ID });
-		}
+			}
 	</div>
 	<div class="col-md-4">
 		@if (ViewBag.User != null)
 		{
 			<p>@Resources.SubscribedTopics</p>
 			Html.RenderAction("GetSubscribedTopics", "Settings", new { userID = ViewBag.User.ID });
-		}
+			}
 	</div>
 	<div class="col-md-4" style="display: inline-block">
 		@if (ViewBag.User != null)
 		{
 			<p>@Resources.NewSubscribedTopics</p>
 			Html.RenderAction("GetTopicsWithNewComments", "Settings", new { userID = ViewBag.User.ID });
-		}
+			}
 	</div>
 </div>
 <div class="row">
@@ -104,21 +94,21 @@
 		{
 			<p>@Resources.Friends</p>
 			Html.RenderAction("GetAllFriends", "Profile", new { userID = ViewBag.User.ID });
-		}
+			}
 	</div>
 	<div id="interests_container" class="col-md-4">
 		@if(ViewBag.User != null)
 		{
 			<p>@Resources.FollowedInterests</p>
 			Html.RenderAction("GetInterestsForUser", "Interest", new { userID = ViewBag.User.ID });
-		}
+			}
 	</div>
 	<div id="sections_container" class="col-md-4" style="display: inline-block">
 		@if(ViewBag.User != null)
 		{
 			<p>@Resources.SectionsMember</p>
 			Html.RenderAction("GetMembershipsForUser", "Section", new { userID = ViewBag.User.ID });
-		}
+			}
 	</div>
 </div>
 <div class="row">
@@ -126,7 +116,7 @@
 		@if (ViewBag.User != null)
 		{
 			<p>@Resources.LatestFriendsActivity</p>
-			Html.RenderAction("GetFirstLatestFriendsActivity", "Settings", new { userID = ViewBag.User.ID });
+			Html.RenderAction("GetFirstLatestFriendsActivity", "Settings", new { userID = ViewBag.User.ID }); 
 		}
 	</div>
 </div>

@@ -558,3 +558,5 @@ D:\Projects\Media\WebMediaClient\obj\Debug\WebMediaClient.csproj.GenerateResourc
 D:\Projects\Media\WebMediaClient\obj\Debug\bg\WebMediaClient.resources.dll
 D:\Projects\Media\WebMediaClient\obj\Debug\WebMediaClient.dll
 D:\Projects\Media\WebMediaClient\obj\Debug\WebMediaClient.pdb
+D:\Projects\Media\WebMediaClient\bin\NReco.VideoConverter.dll
+D:\Projects\Media\WebMediaClient\bin\NReco.VideoConverter.xml

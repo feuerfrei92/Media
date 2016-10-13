@@ -168,7 +168,7 @@ namespace WebMediaClient.Controllers
 				else
 					token = null;
 				var topic = await HttpClientBuilder<TopicModel>.GetAsync(url, token);
-				return Json(new { SectionID = topic.SectionID, TopicType = topic.TopicType }, JsonRequestBehavior.AllowGet);
+				return Json(new { AuthorID = topic.AuthorID, SectionID = topic.SectionID, TopicType = topic.TopicType }, JsonRequestBehavior.AllowGet);
 			}
 			catch (Exception ex)
 			{

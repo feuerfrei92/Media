@@ -60,7 +60,7 @@ namespace Services.Controllers
 		}
 
 		[HttpPost]
-		//[Authorize]
+		[Authorize]
 		public IHttpActionResult CreateSetting(int ownerID, SettingModel setting)
 		{
 			if (!(ModelState.IsValid))

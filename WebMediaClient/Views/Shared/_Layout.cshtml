@@ -23,8 +23,16 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home")</li>
                 </ul>
+				<ul class="nav navbar-nav">
+					@Resources.SearchProfile
+					@Html.Partial("SearchProfile")
+				</ul>
+				<ul class="nav navbar-nav">
+					@Resources.SearchSection
+					@Html.Partial("SearchSection")
+				</ul>
 				@Html.Partial("_LoginPartial")
-            </div>
+</div>
         </div>
     </div>
     <div class="container body-content">

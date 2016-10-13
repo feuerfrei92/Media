@@ -1,20 +1,18 @@
-﻿@model WebMediaClient.Models.SectionViewModel
-
-<script type="text/javascript">
+﻿<script type="text/javascript">
 	function searchSection() {
-		var name = $("#name_text").val();
+		var name = $("#name_text_section").val();
+		if (name == null || name == "") {
+			alert("Name must be filled out");
+			return false;
+		}
 		var link = '@Url.Action("SearchBySectionName", "Section", new { name = "oooo" })';
 		link = link.replace("oooo", name);
 		window.location.href = link;
 	}
 </script>
 
-<ul id="actions_list" class="nav navbar-nav navbar-right">
-		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-		<li>
-			@Html.TextBoxFor(m => m.Name, new { @id="name_text", @class = "form-control" })
-			@Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-		</li>
-		<li><button class="btn btn-default" onclick="searchSection()">@Resources.Search</button></li>
+<ul id="actions_list_section" class="nav navbar-nav navbar-right">
+	<li>@Resources.Name: <textarea id="name_text_section"></textarea></li>
+	<li><button class="btn btn-default" onclick="searchSection()">@Resources.Search</button></li>
 </ul>
 

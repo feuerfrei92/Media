@@ -1,0 +1,35 @@
+﻿@model List<WebMediaClient.Models.TopicViewModel>
+@{
+    ViewBag.Title = "GetAllSubscribedTopics";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>GetAllSubscribedTopics</h2>
+
+<div class="row">
+	<div class="col-md-3">
+		<div class="list-group">
+			@foreach (var item in Model)
+			{
+				<div class="list-group-item">
+					@switch (item.TopicType)
+					{
+						case "Section": @Html.ActionLink(item.Name, "GetTopicByID", "Topic", new { ID = item.ID }, null);
+						break;
+						case "Profile": @Html.ActionLink(item.Name, "GetProfileByID", "Profile", new { ID = item.SectionID }, null);
+						break;
+						case "Interest": @Html.ActionLink(item.Name, "GetInterestByID", "Interest", new { ID = item.SectionID }, null);
+						break;
+						case "Album": @Html.ActionLink(item.Name, "GetAlbumByID", "Album", new { ID = item.SectionID }, null);
+						break;
+						case "Photo": @Html.ActionLink(item.Name, "GetPhotoByID", "Album", new { ID = item.SectionID }, null);
+						break;
+						case "Video": @Html.ActionLink(item.Name, "GetVideoByID", "Video", new { ID = item.SectionID }, null);
+						break;
+					}
+				</div>
+			}
+		</div>
+	</div>
+</div>
+

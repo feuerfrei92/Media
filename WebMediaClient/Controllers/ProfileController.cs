@@ -340,6 +340,36 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+		public async Task<ActionResult> SearchProfilesByName(string name)
+		{
+			try
+			{
+				string url = "http://localhost:8080/api/Profile/SearchProfilesByCriteria";
+				string token = "";
+				if (HttpContext.Session["token"] != null)
+					token = HttpContext.Session["token"].ToString();
+				else
+					token = null;
+				var profileCriteria = new ProfileCriteria
+				{
+					Name = name,
+				};
+				var profiles = await HttpClientBuilder<ProfileCriteria>.GetListAsync<ProfileModel>(profileCriteria, url, token);
+				var viewModels = new List<ProfileViewModel>();
+				foreach (ProfileModel p in profiles)
+				{
+					viewModels.Add(ProfileConverter.FromBasicToVisual(p));
+				}
+				TempData["viewModels"] = viewModels;
+				return RedirectToAction("DisplayProfileSearchResults");
+			}
+			catch (Exception ex)
+			{
+				HandleErrorInfo info = new HandleErrorInfo(ex, "Profile", "SearchProfilesByCriteria");
+				return View("Error", info);
+			}
+		}
+
 		public ActionResult SearchProfilesByCriteria()
 		{
 			return View();
@@ -408,7 +438,7 @@ namespace WebMediaClient.Controllers
                 {
                     viewModels.Add(ProfileConverter.FromBasicToVisual(p));
                 }
-				return View(viewModels);
+				return PartialView(viewModels);
 			}
 			catch (Exception ex)
 			{
@@ -569,7 +599,7 @@ namespace WebMediaClient.Controllers
 					viewModels.Add(MessageConverter.FromBasicToVisual(m));
 				}
 				ViewBag.User = (UserModel)HttpContext.Session["currentUser"];
-				return View(viewModels);
+				return PartialView(viewModels);
 			}
 			catch (Exception ex)
 			{

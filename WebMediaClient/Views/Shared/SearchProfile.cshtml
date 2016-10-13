@@ -1,13 +1,26 @@
-﻿@model WebMediaClient.Models.ProfileCriteriaViewModel
-<ul id="actions_list" class="nav navbar-nav navbar-right">
-	@using (Html.BeginForm("SearchProfilesByCriteria", "Profile", null, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+﻿<script type="text/javascript">
+	function searchByName()
 	{
-		@Html.ValidationSummary(true, "", new { @class = "text-danger" })
-		<li>
-			@Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
-			@Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
-		</li>
-		<li><input type="submit" value="@Resources.Search" class="btn btn-default" /></li>
+		var name = $("#name_text_profile").val();
+		if (name == null || name == "") {
+			alert("Name must be filled out");
+			return false;
+		}
+		var link = '@Html.Raw(@Url.Action("SearchProfilesByName", "Profile", new { name = "oooo" }))';
+		link = link.replace("oooo", name);
+		window.location.href = link;
+		//$.ajax
+		//({
+		//	url: link,
+		//	dataType: 'json',
+		//	type: 'GET',
+		//	success: function () {
+		//	}
+		//})
 	}
+</script>
+<ul id="actions_list_profile" class="nav navbar-nav navbar-right">
+	<li>@Resources.Name: <textarea id="name_text_profile"></textarea></li>
+	<li><button class="btn btn-default" onclick="searchByName()">@Resources.Search</button></li>
 	<li>@Html.ActionLink(Resources.AdvancedSearch, "SearchProfilesByCriteria", "Profile")</li>
 </ul>

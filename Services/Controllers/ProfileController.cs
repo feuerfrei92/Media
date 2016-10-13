@@ -96,7 +96,8 @@ namespace Services.Controllers
 				Username = profile.Username,
 				Name = profile.Name,
 				Age = profile.Age,
-				Gender = profile.Gender.ToString(),
+				//Gender = profile.Gender.ToString(),
+				Gender = "Male",
 			};
 
 			_nest.Profiles.Create(newProfile);

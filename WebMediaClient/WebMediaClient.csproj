@@ -64,6 +64,10 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="NReco.VideoConverter, Version=1.1.1.0, Culture=neutral, PublicKeyToken=395ccb334978a0cd, processorArchitecture=MSIL">
+      <HintPath>..\packages\NReco.VideoConverter.1.1.1\lib\net20\NReco.VideoConverter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
       <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
@@ -888,6 +892,9 @@
     <Content Include="Views\Topic\GetTopicByOwnerAndType.cshtml" />
     <Content Include="Views\Comment\GetCommentsByTopicWithOwnerAndType.cshtml" />
     <Content Include="Views\Album\GetPhotoByID.cshtml" />
+    <Content Include="Views\Profile\SearchProfilesByName.cshtml" />
+    <Content Include="Views\Settings\GetAllSubscribedTopics.cshtml" />
+    <Content Include="Views\Settings\GetAllTopicsWithNewComments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
