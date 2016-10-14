@@ -55,20 +55,15 @@ namespace WebMediaClient.Chat
 			Clients.Caller.loadGroups(chatUser.Groups.Select(g => g.DiscussionGuid.ToString()).ToList());
 		}
 
-		public void CreateGroup(string discussionGuid = null)
+		public void CreateGroup(string discussionGuid)
 		{
 			string groupName = null;
 			if (string.IsNullOrEmpty(discussionGuid))
-			{
 				groupName = Guid.NewGuid().ToString();
-				Groups.Add(Context.ConnectionId, groupName);
-				Clients.Group(groupName).openWindow(groupName);
-			}
 			else
-			{
-				Groups.Add(discussionGuid, groupName);
-				Clients.Group(discussionGuid).openWindow(discussionGuid);
-			}
+                groupName = discussionGuid;
+            Groups.Add(Context.ConnectionId, groupName);
+			Clients.Group(groupName).openWindow(groupName);
 		}
 
 		public void AddGroupMember(string memberID, string groupName)

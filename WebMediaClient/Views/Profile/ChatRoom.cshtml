@@ -54,9 +54,10 @@
 						success: function (data) {
 							var label = document.createElement("label");
 							label.id = guid;
+							label.setAttribute("class", "group_labels");
 							$(label).css({ 'float': 'right' });
 							label.innerHTML = data.Name;
-							label.onclick = function () { chat.client.openWindow(guid) };
+							//label.onclick = function () { chat.client.openWindow(guid) };
 							$("#group_container").append(label);
 							$("#group_container").append('<br />');
 							$("#group_container").append('<br />');
@@ -324,6 +325,11 @@
 
 					$(document).on("click", "#create_group", function () {
 						chat.server.createGroup(null);
+					});
+
+					$(document).on("click", ".group_labels", function () {
+					    var guid = $(this).attr("id");
+					    chat.server.createGroup(guid);
 					});
 			});
 		});

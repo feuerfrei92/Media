@@ -455,6 +455,7 @@ D:\Projects\Media\WebMediaClient\bin\Microsoft.Web.Infrastructure.dll
 D:\Projects\Media\WebMediaClient\bin\Models.dll
 D:\Projects\Media\WebMediaClient\bin\NetSpell.SpellChecker.dll
 D:\Projects\Media\WebMediaClient\bin\Newtonsoft.Json.dll
+D:\Projects\Media\WebMediaClient\bin\NReco.VideoConverter.dll
 D:\Projects\Media\WebMediaClient\bin\Owin.dll
 D:\Projects\Media\WebMediaClient\bin\PagedList.dll
 D:\Projects\Media\WebMediaClient\bin\PagedList.Mvc.dll
@@ -488,6 +489,7 @@ D:\Projects\Media\WebMediaClient\bin\Antlr3.Runtime.pdb
 D:\Projects\Media\WebMediaClient\bin\Microsoft.AspNet.SignalR.Core.xml
 D:\Projects\Media\WebMediaClient\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
 D:\Projects\Media\WebMediaClient\bin\Newtonsoft.Json.xml
+D:\Projects\Media\WebMediaClient\bin\NReco.VideoConverter.xml
 D:\Projects\Media\WebMediaClient\bin\PagedList.xml
 D:\Projects\Media\WebMediaClient\bin\PagedList.Mvc.xml
 D:\Projects\Media\WebMediaClient\bin\System.Net.Http.Formatting.xml
@@ -558,5 +560,3 @@ D:\Projects\Media\WebMediaClient\obj\Debug\WebMediaClient.csproj.GenerateResourc
 D:\Projects\Media\WebMediaClient\obj\Debug\bg\WebMediaClient.resources.dll
 D:\Projects\Media\WebMediaClient\obj\Debug\WebMediaClient.dll
 D:\Projects\Media\WebMediaClient\obj\Debug\WebMediaClient.pdb
-D:\Projects\Media\WebMediaClient\bin\NReco.VideoConverter.dll
-D:\Projects\Media\WebMediaClient\bin\NReco.VideoConverter.xml
