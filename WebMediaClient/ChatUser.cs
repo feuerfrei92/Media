@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace WebMediaClient
 {
@@ -21,19 +22,23 @@ namespace WebMediaClient
 
 		public static void AddOnlineUser(UserModel user, string connectionID, string sessionID, List<DiscussionModel> groups)
 		{
-			var chatUser = new ChatUserModel
-			{
-				User = user,
-				ConnectionID = connectionID,
-				SessionID = sessionID,
-				Groups = groups,
-			};
-			onlineUsers.Add(chatUser);
-		}
+            if (!onlineUsers.Exists(u => u.User.ID == user.ID))
+            { 
+			    var chatUser = new ChatUserModel
+			    {
+				    User = user,
+				    ConnectionID = connectionID,
+				    SessionID = sessionID,
+				    Groups = groups,
+			    };
+			    onlineUsers.Add(chatUser);
+            }
+            HttpContext.Current.Request.Cookies["ASP.NET_SessionId"].Value = sessionID;
+        }
 
-		public static void RemoveOnlineUser(string connectionID, int userID)
+		public static void RemoveOnlineUser(int userID)
 		{
-			var user = (ChatUserModel)onlineUsers.Where(u => u.ConnectionID == connectionID && u.User.ID == userID);
+            var user = (ChatUserModel)onlineUsers.Where(u => u.User.ID == userID).FirstOrDefault(); ;
 			onlineUsers.Remove(user);
 		}
 	}

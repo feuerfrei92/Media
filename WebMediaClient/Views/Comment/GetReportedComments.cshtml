@@ -1,0 +1,66 @@
+﻿@model PagedList.IPagedList<WebMediaClient.Models.CommentViewModel>
+@using PagedList.Mvc;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script type="text/javascript">
+	window.addEventListener("load", function () { setIDs(); }, false);
+
+	function setIDs() {
+		var textAreas = document.getElementsByTagName("textarea");
+		for (i = 0; i < textAreas.length; i++) {
+			var textArea = textAreas[i];
+			if (textArea.id != "comment_text") {
+				textArea.setAttribute("id", "textarea" + "_" + i.toString());
+				CKEDITOR.replace("textarea" + "_" + i.toString(), { customConfig: "/Scripts/Myconfig.js", readOnly: true });
+			}
+		}
+		getTopic();
+	}
+</script>
+
+<script src="~/ckeditor/ckeditor.js"></script>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="list-group">
+            @foreach (var item in Model)
+            {
+                <div class="row">
+                    <div class="col-md-5">
+                        @if (!ViewBag.UserIDs.Contains(item.AuthorID))
+                        {
+                            @Html.Action("GetAuthorInfo", "User", new { userID = @item.AuthorID });
+                        }
+                        else
+                        {
+                            @Html.Action("GetAuthorInfo", "User", new { userID = @item.AuthorID, anonymous = true });
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        @Html.ActionLink(Resources.WholeTopic, "GetTopicByID", "Topic", new { ID = item.TopicID }, null);
+                    </div>
+                    <div class="col-md-4">
+                        @if (item.Name != null)
+                        {
+                            @Html.TextBoxFor(i => item.Name, new { @class = "form-control" })
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        @Html.Raw(item.Text)
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<div class="row">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("GetReportedComments",
+    new { sectionID = @ViewBag.SectionID, page }))
+</div>
+
+
+

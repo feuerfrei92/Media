@@ -895,6 +895,7 @@
     <Content Include="Views\Profile\SearchProfilesByName.cshtml" />
     <Content Include="Views\Settings\GetAllSubscribedTopics.cshtml" />
     <Content Include="Views\Settings\GetAllTopicsWithNewComments.cshtml" />
+    <Content Include="Views\Comment\GetReportedComments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -12,7 +12,7 @@ namespace WebMediaClient.Chat
 {
 	public class ChatHub : Hub
 	{
-		public void Send(string senderID, string receiverID, string message)
+        public void Send(string senderID, string receiverID, string message)
 		{
 			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.User.ID.ToString() == receiverID).FirstOrDefault();
 			if (chatUser != null)
@@ -39,8 +39,8 @@ namespace WebMediaClient.Chat
 
 		public override Task OnDisconnected(bool stopCalled)
 		{
-			WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.SessionID == HttpContext.Current.Request.Cookies["ASP.NET_SessionId"].Value).FirstOrDefault();
-			ChatUser.RemoveOnlineUser("", chatUser.User.ID);
+            WebMediaClient.ChatUser.ChatUserModel chatUser = ChatUser.onlineUsers.Where(c => c.ConnectionID == Context.ConnectionId).FirstOrDefault();
+			ChatUser.RemoveOnlineUser(chatUser.User.ID);
 			return Clients.All.left(chatUser.User.ID.ToString());
 		}
 

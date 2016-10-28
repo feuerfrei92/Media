@@ -16,5 +16,7 @@ namespace Services.Models
 		public int VoterID { get; set; }
 		[Required]
 		public string Type { get; set; }
+        [Required]
+        public bool IsLike { get; set; }
 	}
 }

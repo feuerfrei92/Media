@@ -20,5 +20,6 @@ namespace Services.Models
 		public DateTime DateCreated { get; set; }
 		public DateTime? DateModified { get; set; }
 		public int Rating { get; set; }
+        public bool IsReported { get; set; }
 	}
 }

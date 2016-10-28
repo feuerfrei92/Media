@@ -171,13 +171,19 @@ namespace Services.Controllers
 			Video video = _nest.Videos.All().Where(v => v.ID == videoID).FirstOrDefault();
 			Vote existingVote = _nest.Votes.All().Where(v => v.TargetID == videoID && v.Type == "Video" && v.VoterID == voterID).FirstOrDefault();
 
-			if (existingVote != null)
-				return BadRequest();
+            if (existingVote != null && existingVote.IsLike == like)
+                return BadRequest("You cannot vote twice the same");
 
-			if (like)
-				video.Rating++;
-			else
-				video.Rating--;
+            if (existingVote != null && existingVote.IsLike != like && like)
+                video.Rating += 2;
+
+            if (existingVote != null && existingVote.IsLike != like && !like)
+                video.Rating -= 2;
+
+            if (existingVote == null && like)
+                video.Rating++;
+            if (existingVote == null && !like)
+                video.Rating--;
 
 			_nest.Videos.Update(video);
 

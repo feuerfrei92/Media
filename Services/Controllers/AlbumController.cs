@@ -176,13 +176,19 @@ namespace Services.Controllers
 			Album album = _nest.Albums.All().Where(a => a.ID == albumID).FirstOrDefault();
 			Vote existingVote = _nest.Votes.All().Where(v => v.TargetID == albumID && v.Type == "Album" && v.VoterID == voterID).FirstOrDefault();
 
-			if (existingVote != null)
-				return BadRequest();
+            if (existingVote != null && existingVote.IsLike == like)
+                return BadRequest("You cannot vote twice the same");
 
-			if (like)
-				album.Rating++;
-			else
-				album.Rating--;
+            if (existingVote != null && existingVote.IsLike != like && like)
+                album.Rating += 2;
+
+            if (existingVote != null && existingVote.IsLike != like && !like)
+                album.Rating -= 2;
+
+            if (existingVote == null && like)
+                album.Rating++;
+            if (existingVote == null && !like)
+                album.Rating--;
 
 			_nest.Albums.Update(album);
 
@@ -368,13 +374,19 @@ namespace Services.Controllers
 			Photo photo = _nest.Photos.All().Where(p => p.ID == photoID).FirstOrDefault();
 			Vote existingVote = _nest.Votes.All().Where(v => v.TargetID == photoID && v.Type == "Photo" && v.VoterID == voterID).FirstOrDefault();
 
-			if (existingVote != null)
-				return BadRequest();
+            if (existingVote != null && existingVote.IsLike == like)
+                return BadRequest("You cannot vote twice the same");
 
-			if (like)
-				photo.Rating++;
-			else
-				photo.Rating--;
+            if (existingVote != null && existingVote.IsLike != like && like)
+                photo.Rating += 2;
+
+            if (existingVote != null && existingVote.IsLike != like && !like)
+                photo.Rating -= 2;
+
+            if (existingVote == null && like)
+                photo.Rating++;
+            if (existingVote == null && !like)
+                photo.Rating--;
 
 			_nest.Photos.Update(photo);
 

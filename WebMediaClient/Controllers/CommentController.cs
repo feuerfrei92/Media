@@ -286,6 +286,36 @@ namespace WebMediaClient.Controllers
 			}
 		}
 
+        public async Task<ActionResult> GetReportedComments(int sectionID, int? page = null)
+        {
+            try
+            {
+                string url = string.Format("http://localhost:8080/api/Comment/GetReportedComments?SectionID={0}", sectionID);
+                string token = "";
+                if (HttpContext.Session["token"] != null)
+                    token = HttpContext.Session["token"].ToString();
+                else
+                    token = null;
+                var comments = await HttpClientBuilder<CommentModel>.GetListAsync(url, token);
+                var viewModels = new List<CommentViewModel>();
+                foreach (CommentModel c in comments)
+                {
+                    viewModels.Add(CommentConverter.FromBasicToVisual(c));
+                }
+                ViewBag.SectionID = sectionID;
+
+                if (page == null)
+                    return View(viewModels.ToPagedList(1, 15));
+                else
+                    return View(viewModels.ToPagedList(page.Value, 15));
+            }
+            catch (Exception ex)
+            {
+                HandleErrorInfo info = new HandleErrorInfo(ex, "Comment", "GetReportedComments");
+                return View("Error", info);
+            }
+        }
+
 		[HttpGet]
 		public async Task<ActionResult> SearchByTextContent(string content)
 		{
@@ -360,5 +390,28 @@ namespace WebMediaClient.Controllers
 				return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
 			}
 		}
+
+        [HttpPut]
+        public async Task<ActionResult> ReportComment(int commentID, bool isReported)
+        {
+            try
+            {
+                if (!Request.IsAjaxRequest())
+                    return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+
+                string url = string.Format("http://localhost:8080/api/Comment/ReportComment?CommentID={0}&IsReported={1}", commentID, isReported);
+                string token = "";
+                if (HttpContext.Session["token"] != null)
+                    token = HttpContext.Session["token"].ToString();
+                else
+                    token = null;
+                var response = await HttpClientBuilder<HttpResponseMessage>.PutEmptyAsync(url, token);
+                return Json(new { Response = response.StatusCode == System.Net.HttpStatusCode.OK ? "OK" : "Error" }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Status = "error", Message = "An error occured" }, JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

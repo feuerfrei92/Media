@@ -110,6 +110,7 @@ namespace Services.Controllers
 				AuthorID = authorID,
 				DateCreated = DateTime.Now,
 				Rating = 0,
+                IsReported = false,
 			};
 
 			_nest.Comments.Create(newComment);
@@ -213,6 +214,22 @@ namespace Services.Controllers
 			return Ok(sectionComments);
 		}
 
+        [HttpGet]
+        [Authorize]
+        public IHttpActionResult GetReportedComments(int sectionID)
+        {
+            List<CommentModel> comments = _nest.Comments.All().Where(c => c.IsReported == true).Select(BuildCommentModel).ToList();
+            var sectionComments = new List<CommentModel>();
+            foreach (CommentModel c in comments)
+            {
+                var topic = _nest.Topics.All().Where(t => t.ID == c.TopicID).FirstOrDefault();
+                if (topic.SectionID == sectionID)
+                    sectionComments.Add(c);
+            }
+
+            return Ok(sectionComments);
+        }
+
 		[HttpGet]
 		[Authorize]
 		public IHttpActionResult SearchByTextContent(string content)
@@ -238,12 +255,18 @@ namespace Services.Controllers
 			Comment comment = _nest.Comments.All().Where(c => c.ID == commentID).FirstOrDefault();
 			Vote existingVote = _nest.Votes.All().Where(v => v.TargetID == commentID && v.Type == "Comment" && v.VoterID == voterID).FirstOrDefault();
 
-			if (existingVote != null)
-				return BadRequest();
+			if (existingVote != null && existingVote.IsLike == like)
+				return BadRequest("You cannot vote twice the same");
 
-			if (like)
+            if (existingVote != null && existingVote.IsLike != like && like)
+                comment.Rating += 2;
+
+            if (existingVote != null && existingVote.IsLike != like && !like)
+                comment.Rating -= 2;
+
+            if (existingVote == null && like)
 				comment.Rating++;
-			else
+            if (existingVote == null && !like)
 				comment.Rating--;
 
 			_nest.Comments.Update(comment);
@@ -268,6 +291,25 @@ namespace Services.Controllers
 
 			return Ok();
 		}
+
+        [HttpPut]
+        [Authorize]
+        public IHttpActionResult ReportComment(int commentID, bool isReported)
+        {
+            Comment comment = _nest.Comments.All().Where(c => c.ID == commentID).FirstOrDefault();
+            comment.IsReported = isReported;
+            _nest.Comments.Update(comment);
+            try
+            {
+                _nest.SaveChanges();
+            }
+            catch
+            {
+                throw;
+            }
+
+            return Ok();
+        }
 
 		private bool DoesMatchCriteria(Comment comment, CommentCriteria criteria)
 		{
